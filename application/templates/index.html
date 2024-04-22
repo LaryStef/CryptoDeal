@@ -1,8 +1,153 @@
 {% extends "base.html" %}
 
-{% block css %}
+{% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu+Mono&subset=latin"/>
 {% endblock %}
 
-{% block main_container %}
+{% block main-container %}
+<div class="auth-window" id="login">
+    <div class="form-container">
+        <div class="switch-window">
+        <button class="switch-button" id="left-switch"></button>
+        <button class="switch-button" id="right-switch"></button>
+        <div class="mode" id="mode-light"></div>
+        </div>
+        <div class="form-wrapper">
+        <div class="register-fields" id="register-container">
+            <div class="error-text">
+            <span>any text</span>
+            </div>
+            <form class="login-form" action="">
+            <input
+                class="sign-input"
+                type="text"
+                placeholder="login"
+                maxlength="32"
+                required
+            />
+            <input
+                class="sign-input"
+                type="password"
+                placeholder="password"
+                maxlength="32"
+                required
+            />
+            <input
+                class="sign-input"
+                type="email"
+                placeholder="email"
+                maxlength="256"
+                required
+            />
+            <input class="sign-input submit" type="button" value="submit" />
+            </form>
+        </div>
+        <div class="login-fields" id="login-container">
+            <div class="error-text">
+            <span>any text</span>
+            </div>
+            <form class="login-form" action="">
+            <input
+                class="sign-input"
+                type="text"
+                placeholder="login"
+                maxlength="32"
+                required
+            />
+            <input
+                class="sign-input"
+                type="password"
+                placeholder="password"
+                maxlength="32"
+                required
+            />
+            <input class="sign-input submit" type="button" value="submit" />
+            </form>
+            <div>
+            <div class="recovery-container">
+                <a class="password-recovery" href="#"
+                >forget password? Click here!</a
+                >
+            </div>
+            </div>
+        </div>
+        </div>
+        <div class="login-with">
+        <span>Login with: </span>
+        <a class="login-link" href="#">Google</a>
+        <a class="login-link" href="#">VK</a>
+        <a class="login-link" href="#">GitHub</a>
+        </div>
+        <div class="cancel-container">
+        <button class="cancel" id="cancel">cancel</button>
+        </div>
+    </div>
+    </div>
+    <nav class="navbar" id="navbar">
+    <div class="navbar-items">
+        <a class="navbar-link" href="#">
+        <img class="logo" src="svg/CryptoDealLogo.svg" alt="CryptoDeal" />
+        </a>
+        <ul class="navbar-links">
+        <li class="link-wrapper">
+            <a class="navbar-link" href="#">Cryptocurrency</a>
+        </li>
+        <li class="link-wrapper">
+            <a class="navbar-link" href="#">Securities</a>
+        </li>
+        <li class="link-wrapper">
+            <a class="navbar-link" href="#">Support</a>
+        </li>
+        <li class="link-wrapper">
+            <a class="navbar-link" href="#">About</a>
+        </li>
+        </ul>
+        <div class="navbar-links auth-container display-off">
+        <button class="auth-link left-link" id="sign-in">Sign in</button>
+        <button class="auth-link right-link" id="sign-up">Sign up</button>
+        </div>
+        <a class="profile" href="#">profile</a>
+        <div class="dropdown" id="dropdown">
+        <div class="dropdown-button" id="dropdown-button">Menu</div>
+        <ul class="dropdown-content">
+            <li class="drop-1">
+            <a href="#">Cryptocurrency</a>
+            </li>
+            <li class="drop-2">
+            <a href="#">Securities</a>
+            </li>
+            <li class="drop-3">
+            <a href="#">Support</a>
+            </li>
+            <li class="drop-4">
+            <a href="#">About</a>
+            </li>
+            <li class="drop-5">
+            <button href="#" id="dropdown-sign-in">Sign in</button>
+            </li>
+            <li class="drop-6">
+            <button href="#" id="dropdown-sign-up">Sign up</button>
+            </li>
+        </ul>
+        </div>
+    </div>
+    </nav>
+    <div class="main-container" id="main">
+    <div class="central-container">
+        <div class="text-container">
+        <h2 class="motto">
+            Best way to learn trade fundamentals is practice. Start investing
+            here. Effectively and losslessly.
+        </h2>
+        </div>
+        <button class="try-button" id="sign-in-try" href="#">
+        Try for free
+        </button>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="{{ url_for('static', filename='js/index.js') }}"></script>
 {% endblock %}
