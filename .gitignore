@@ -1,6 +1,7 @@
 __pycache__/
 application/__pycache__
 application/database/__pycache__/
+**/__pycache__/
 .vscode/
 *.pyc
 *.py[cod]
