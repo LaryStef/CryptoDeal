@@ -15,5 +15,5 @@ class Sign_up(Resource):
 @api.route("/sign-in")
 class Sign_in(Resource):
     def post(self):
-        data = request.form
+        data = request.form        
         return make_response(jsonify(data), 200)

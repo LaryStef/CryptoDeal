@@ -15,7 +15,7 @@ document.getElementById("login-form-id").addEventListener("submit", async (e) =>
     
     if (response.status == 200) {
         let result = await response.json();
-        console.log(result);
+        document.getElementById("login-info").innerHTML = "successful " + response.status;
     } else {
         console.log(response.status);
     }
@@ -34,7 +34,7 @@ document.getElementById("register-form-id").addEventListener("submit", async (e)
     
     if (response.status == 200) {
         let result = await response.json();
-        console.log(result);
+        document.getElementById("register-info").innerHTML = "successful " + response.status;
     } else {
         console.log(response.status);
     }
