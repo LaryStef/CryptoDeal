@@ -18,7 +18,7 @@
             <div class="error-text">
             <span>any text</span>
             </div>
-            <form class="login-form" action="">
+            <form class="login-form" id="register-form-id">
             <input
                 class="sign-input"
                 type="text"
@@ -40,14 +40,14 @@
                 maxlength="256"
                 required
             />
-            <input class="sign-input submit" type="button" value="submit" />
+            <input class="sign-input submit" type="submit" value="submit" />
             </form>
         </div>
         <div class="login-fields" id="login-container">
             <div class="error-text">
             <span>any text</span>
             </div>
-            <form class="login-form" action="">
+            <form class="login-form" id="login-form-id">
             <input
                 class="sign-input"
                 type="text"
@@ -62,7 +62,7 @@
                 maxlength="32"
                 required
             />
-            <input class="sign-input submit" type="button" value="submit" />
+            <input class="sign-input submit" type="submit" value="submit" />
             </form>
             <div>
             <div class="recovery-container">
@@ -150,4 +150,5 @@
 
 {% block script %}
 <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+<script src="{{ url_for('static', filename='js/auth.js') }}"></script>
 {% endblock %}
