@@ -1,9 +1,8 @@
 from flask import Blueprint, render_template
 from flask_mail import Message
 
+from .database.redisdb import rediska
 from .mail import mail
-# from .database.services import get_user, insert_user
-
 
 
 main = Blueprint("main", __name__)
@@ -19,8 +18,8 @@ def send_message(code):
     mail.send(message)
     return f"i guess message sent with code: {code}", 200
 
-# @main.route("/test")
-# def test():
-#     insert_user("lapochka3")
-#     data = get_user("lapochka3")
-#     return render_template("test.html", id = data["uuid"], name = data["user"], password = data["password"])
+
+@main.route("/test")
+def test():
+    rediska.set("23amogusa", "pop4pop")
+    return render_template("test.html"), 200
