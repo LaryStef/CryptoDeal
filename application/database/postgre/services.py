@@ -1,11 +1,8 @@
 from signal import SIG_DFL
-from ..database import db
+from . import db
 # from ..database.models import User
 
 from random import randint
-
-
-
 
 
 # def insert_user(username: str):
