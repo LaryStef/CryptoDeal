@@ -17,4 +17,4 @@ class AppConfig(Config):
     MAIL_USERNAME = os.getenv("MAIL")
     MAIL_PASSWORD = os.getenv("MAIL_PASSWORD")
     MAIL_DEFAULT_SENDER = os.getenv("MAIL")
-    REDIS_URl = "redis://localhost:6379/0"
+    REDIS_URL = "redis://localhost:6379/0"
