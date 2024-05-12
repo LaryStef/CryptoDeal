@@ -1,4 +1,3 @@
-from signal import SIG_DFL
 from . import db
 # from ..database.models import User
 
