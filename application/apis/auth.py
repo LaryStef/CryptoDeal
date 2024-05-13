@@ -17,15 +17,17 @@ class Sign_up(Resource):
         try:
             # data = RegisterSchema().load(datadict)
             data = request.form.to_dict()
-            
+
             if RegisterSchema().validate(data):
                 raise BadRequest
             if data.get("email") in rediska.json().get("register", "$..email"):    # type: ignore
                 raise BadRequest
             
-            create_register_request(data)
-
-            return "OK", 200
+            response = make_response()
+            response.status_code = 200
+            response.headers["request-Id"] = create_register_request(data)
+            
+            return response
         except ValidationError as ex:
             return ex.__str__, 400
         except:

@@ -6,7 +6,6 @@ document.getElementById("login-form-id").addEventListener("submit", async (e) =>
     e.preventDefault();
 
     let formData = new FormData(document.getElementById("login-form-id"));
-    formData.append("request_id", generateRequestId());
     formData.append("page", window.location.href);
     
     let response = await fetch(loginUrl, {
@@ -27,7 +26,6 @@ document.getElementById("register-form-id").addEventListener("submit", async (e)
     e.preventDefault();
 
     let formData = new FormData(document.getElementById("register-form-id"));
-    formData.append("request_id", generateRequestId());
     formData.append("page", window.location.href);
 
     let response = await fetch(registerUrl, {
@@ -43,13 +41,3 @@ document.getElementById("register-form-id").addEventListener("submit", async (e)
         console.log(response.status);
     }
 })
-
-function generateRequestId() {
-    let id = Date.now().toString();
-
-    for (let i = 0; i < 3; i++) {
-        id += Math.floor(Math.random() * 10).toString();
-    }
-
-    return id;
-}

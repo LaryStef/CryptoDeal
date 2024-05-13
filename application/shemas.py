@@ -16,8 +16,3 @@ class RegisterSchema(Schema):
     password = fields.Str(validate=validate.Length(8, 16),  required=True)
     email = fields.Email(required=True)
     page = fields.URL()
-    request_id = fields.Str(validate=validate.And(
-        validate.Length(equal=16),
-        validate.Regexp("^[0-9]+$")
-    ),  required=True)
-
