@@ -21,9 +21,6 @@ def send_message(code):
     return f"I guess message sent with code: {code}", 200
 
 
-@main.route("/test/<_id>")
-def test(_id):
-    res = rediska.json().get("register", Path("$.000000000001"))
-    print(res)
-    
+@main.route("/test")
+def test():
     return render_template("test.html"), 200

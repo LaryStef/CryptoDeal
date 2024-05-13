@@ -23,14 +23,14 @@ class Sign_up(Resource):
             if data.get("email") in rediska.json().get("register", "$..email"):    # type: ignore
                 raise BadRequest
             
-            response = make_response()
+            # TODO check uniqueness of username
+
+            response = make_response("OK")
             response.status_code = 200
             response.headers["request-Id"] = create_register_request(data)
-            
+
             return response
-        except ValidationError as ex:
-            return ex.__str__, 400
-        except:
+        except BadRequest:
             return "Bad request", 400
 
 
