@@ -35,9 +35,10 @@ document.getElementById("register-form-id").addEventListener("submit", async (e)
     });
     
     if (response.status == 200) {
-        let result = await response.json();
-        document.getElementById("register-info").innerHTML = "successful " + response.status;
+        localStorage.set("request_id", response.headers.get("Request-Id"));
+        
     } else {
-        console.log(response.status);
+        document.getElementById("login-info").innerHTML = "successful";
     }
 })
+
