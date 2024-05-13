@@ -19,7 +19,7 @@ def create_app():
     rediska.init_app(app)
     
     # with app.app_context():
-    #     from .database.models import User
+    #     from.database.postgre.models import User
     #     db.create_all()        
 
     return app
