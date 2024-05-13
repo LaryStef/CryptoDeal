@@ -747,3 +747,15 @@ li {
     width: 100%;
   }
 }
+
+/* email confirm window */
+
+/* .confirm-window {
+  display: flex;
+  padding-left: 35vw;
+  padding-top: 35vh;
+  width: 30vw;
+  height: 30vh;
+  position: absolute;
+  background-color: antiquewhite; 
+} */
