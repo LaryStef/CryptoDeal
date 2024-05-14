@@ -85,7 +85,24 @@
         <a class="login-link" href="#">GitHub</a>
         </div>
         <div class="cancel-container">
-        <button class="cancel" id="cancel">cancel</button>
+            <button class="cancel" id="cancel">cancel</button>
+        </div>
+    </div>
+</div>
+<div class="confirm-window" id="confirm-window">
+    <div class="email-confirm">
+
+        <div class="code-message">
+            <p>Enter code sent on: </p>
+            <span id="email">timurkotov1999@gmail.com</span>
+        </div>
+        <div class="input-code-wrapper">
+            <input class="input-code" type="text" placeholder="code" maxlength="6">
+            <input class="send-code" type="button" value="send">
+        </div>
+        <div class="new-code">
+            <p>get new code in: </p>
+            <span>1:20</span>
         </div>
     </div>
 </div>
@@ -108,33 +125,33 @@
             <a class="navbar-link" href="#">About</a>
         </li>
         </ul>
-        <div class="navbar-links auth-container display-off">
-        <button class="auth-link left-link" id="sign-in">Sign in</button>
-        <button class="auth-link right-link" id="sign-up">Sign up</button>
+        <div class="navbar-links auth-container">
+            <button class="auth-link left-link" id="sign-in">Sign in</button>
+            <button class="auth-link right-link" id="sign-up">Sign up</button>
         </div>
-        <a class="profile" href="#">profile</a>
+        <a class="profile  display-off" href="#">profile</a>
         <div class="dropdown" id="dropdown">
-        <div class="dropdown-button" id="dropdown-button">Menu</div>
-        <ul class="dropdown-content">
-            <li class="drop-1">
-            <a href="#">Cryptocurrency</a>
-            </li>
-            <li class="drop-2">
-            <a href="#">Securities</a>
-            </li>
-            <li class="drop-3">
-            <a href="#">Support</a>
-            </li>
-            <li class="drop-4">
-            <a href="#">About</a>
-            </li>
-            <li class="drop-5">
-            <button href="#" id="dropdown-sign-in">Sign in</button>
-            </li>
-            <li class="drop-6">
-            <button href="#" id="dropdown-sign-up">Sign up</button>
-            </li>
-        </ul>
+            <div class="dropdown-button" id="dropdown-button">Menu</div>
+            <ul class="dropdown-content">
+                <li class="drop-1">
+                    <a href="#">Cryptocurrency</a>
+                </li>
+                <li class="drop-2">
+                    <a href="#">Securities</a>
+                </li>
+                <li class="drop-3">
+                    <a href="#">Support</a>
+                </li>
+                <li class="drop-4">
+                    <a href="#">About</a>
+                </li>
+                <li class="drop-5">
+                    <button href="#" id="dropdown-sign-in">Sign in</button>
+                </li>
+                <li class="drop-6">
+                    <button href="#" id="dropdown-sign-up">Sign up</button>
+                </li>
+            </ul>
         </div>
     </div>
 </nav>
@@ -151,9 +168,6 @@
         </button>
     </div>
 </div>
-<!-- <div class="confirm-window">
-    
-</div> -->
 {% endblock %}
 
 {% block script %}

@@ -133,3 +133,33 @@ document.onkeydown = function (evt) {
     closeLoginWindow();
   }
 };
+
+function openConfirmWindow() {
+  let window = document.getElementById("confirm-window");
+  window.style.opacity = 1;
+  window.style.transform = "translate(0%)";
+  window.style.visibility = "visible";
+  document.getElementById("main").style.filter = "brightness(0.5)";
+  document.getElementById("navbar").style.filter = "brightness(0.5)";
+  // setTimeout(() => {
+  //   document.getElementById("confirm-window").style.display = "flex";
+  // }, 400)
+}
+
+function closeConfirmWindow() {
+  let window = document.getElementById("confirm-window");
+  window.style.opacity = 0;
+  window.style.transform = "translate(200%)";
+  document.getElementById("main").style.filter = "brightness(1)";
+  document.getElementById("navbar").style.filter = "brightness(1)";
+  setTimeout(() => {
+    window.style.visibility = "hidden";
+  }, 400)
+}
+
+openConfirmWindow();
+// setTimeout(closeConfirmWindow, 6000);
+// setTimeout(openConfirmWindow, 4000);
+// setTimeout(closeConfirmWindow, 8000);
+// setTimeout(openConfirmWindow, 10000);
+// setTimeout(closeConfirmWindow, 12000);
