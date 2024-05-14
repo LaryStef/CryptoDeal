@@ -853,3 +853,22 @@ li {
   color: var(--text-color);
   font-size: 1.125rem;
 }
+
+.get-code {
+  padding-left: 8px;
+  padding-right: 8px;
+  text-align: center;
+  height: 30px;
+  border-radius: 50px;
+  border-style: none;
+  outline: none;
+  background-color: var(--text-color);
+  transition: box-shadow 0.2s linear;
+  -webkit-transition: box-shadow 0.2s linear;
+  -o-transition: box-shadow 0.2s linear;
+  -moz-transition: box-shadow 0.2s linear;
+}
+
+.get-code:hover {
+  box-shadow: 0 0 5px var(--text-hover-color);
+}
