@@ -716,10 +716,6 @@ li {
   font-weight: bold;
 }
 
-.display-off {
-  display: none;
-}
-
 @media (max-width: 1500px) {
   .login-with {
     width: 60%;
@@ -781,6 +777,7 @@ li {
 
 .email-confirm {
   display: flex;
+  padding-top: 5%;
   width: 100%;
   height: 100%;
   justify-content: center;
@@ -828,30 +825,18 @@ li {
   box-shadow: 0 0 5px var(--text-hover-color);
 }
 
-.send-code {
-  text-align: center;
-  width: 90px;
-  height: 40px;
-  border-radius: 50px;
-  font-size: 1.125rem;
-  border-style: none;
-  outline: none;
-  background-color: var(--text-color);
-  color: var(--background-color);
-  transition: box-shadow 0.2s linear;
-  -webkit-transition: box-shadow 0.2s linear;
-  -o-transition: box-shadow 0.2s linear;
-  -moz-transition: box-shadow 0.2s linear;
-}
-
-.send-code:hover {
-  box-shadow: 0 0 5px var(--text-hover-color);
+.new-code {
+  height: 50px;
 }
 
 .new-code > p, span {
   display: inline;
   color: var(--text-color);
   font-size: 1.125rem;
+}
+
+.get-code-wrapper {
+  height: 50px;
 }
 
 .get-code {
@@ -871,4 +856,29 @@ li {
 
 .get-code:hover {
   box-shadow: 0 0 5px var(--text-hover-color);
+}
+
+.mail-cancel-container {
+  align-items: center;
+}
+
+.mail-cancel {
+  width: 50px;
+  border-style: none;
+  background-color: var(--background-button-color);
+  color: var(--text-color);
+  font-size: 1.125rem;
+  transition: color var(--link-transition-duration) linear;
+  -webkit-transition: color var(--link-transition-duration) linear;
+  -o-transition: color var(--link-transition-duration) linear;
+  -moz-transition: color var(--link-transition-duration) linear;
+}
+
+.mail-cancel:hover {
+  color: var(--text-hover-color);
+  cursor: pointer;
+}
+
+.display-off {
+  display: none;
 }
