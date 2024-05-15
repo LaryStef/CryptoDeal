@@ -152,6 +152,7 @@ document.onkeydown = function (evt) {
 };
 
 function openConfirmWindow() {
+  document.getElementById("email").innerHTML = document.getElementById("email-input").value;
   let window = document.getElementById("confirm-window");
   window.style.opacity = 1;
   window.style.transform = "translate(0%)";
