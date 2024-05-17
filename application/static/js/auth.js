@@ -160,9 +160,6 @@ function openConfirmWindow() {
   document.getElementById("main").style.filter = "brightness(0.5)";
   document.getElementById("navbar").style.filter = "brightness(0.5)";
   disableButtons();
-  if (!showTimeStarted) {
-    showTime(20);
-  }
 }
 
 function closeConfirmWindow() {
@@ -181,16 +178,19 @@ document.addEventListener("input", () => {
   let field = document.getElementById("input-code")
   if (field.value.length === 6) {
     field.style.backgroundColor = "#BF1A3E";
+
+    // send mail code request
   }
 })
 
-var showTimeStarted = false;
+var timerId;
+var isTimerGoing = false;
 
 function showTime(duration) {
-  showTimeStarted = true;
+  isTimerGoing = true;
   let minutes = Math.floor(duration / 60);
   let seconds = duration % 60;
-  let timerId = setInterval(() => {
+  timerId = setInterval(() => {
     var time;
     if (seconds < 10) {
       time = `${minutes}:0${seconds}`;
@@ -209,19 +209,19 @@ function showTime(duration) {
   }, 1000);
   
   setTimeout(() => {
-    clearInterval(timerId);
-    showSendMailButton();
+    if (isTimerGoing) {
+      disableTimer(timerId);
+      document.getElementById("new-code").classList.add("display-off");
+      document.getElementById("get-code-wrapper").classList.remove("display-off");
+    }
   }, (duration + 1) * 1000);
+
+  return timerId;
 }
 
-// function clearInt(timerId) {
-//   clearInterval(timerId);
-//   showSendMailButton();
-// }
-
-function showSendMailButton() {
-  document.getElementById("new-code").classList.add("display-off");
-  document.getElementById("get-code-wrapper").classList.remove("display-off");
+function disableTimer(timerID) {
+  clearInterval(timerID);
+  isTimerGoing = false;
 }
 
 function sendNewCode() {
@@ -231,7 +231,7 @@ function sendNewCode() {
   document.getElementById("new-code").classList.remove("display-off");
   document.getElementById("input-code").style.backgroundColor = "#7d42e7";
   document.getElementById("input-code").value = "";
-  showTime(20);
+  timerId = showTime(80);
 }
 
 
@@ -258,10 +258,7 @@ document.getElementById("login-form-id").addEventListener("submit", async (e) =>
     }
 })
 
-
-document.getElementById("register-form-id").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  
+async function sendNewMailCodeRequest() {
   let formData = new FormData(document.getElementById("register-form-id"));
   formData.append("page", window.location.href);
   
@@ -270,17 +267,37 @@ document.getElementById("register-form-id").addEventListener("submit", async (e)
     //     credentials: "same-origin",
     //     body: formData
     // });
+  
+  if (isTimerGoing) {
+    disableTimer(timerId);
+  }
+  document.getElementById("get-code-wrapper").classList.add("display-off");
+  document.getElementById("new-code").classList.remove("display-off");
+  document.getElementById("input-code").style.backgroundColor = "#7d42e7";
+  document.getElementById("input-code").value = "";
+  timerId = showTime(80);
+  
+  // if (response.status == 200) {
+  //       localStorage.set("request_id", response.headers.get("Request-Id"));
+  //       closeLoginWindow();
+  //       openConfirmWindow();
+  // } else {
+  //     document.getElementById("login-info").innerHTML = "successful";
+  // }
+
+  
+}
+
+document.getElementById("register-form-id").addEventListener("submit", async (e) => {
+  e.preventDefault();
     
-    closeLoginWindow();
-    openConfirmWindow();
-    
-    // if (response.status == 200) {
-      //     localStorage.set("request_id", response.headers.get("Request-Id"));
-      //     closeLoginWindow();
-      //     openConfirmWindow();
-    // } else {
-    //     document.getElementById("login-info").innerHTML = "successful";
-    // }
-  })
+  if (document.getElementById("email").innerHTML !=
+    document.getElementById("email-input").value) {
+    sendNewMailCodeRequest();
+  }
+
+  closeLoginWindow();
+  openConfirmWindow();
+})
   
 //openConfirmWindow();
