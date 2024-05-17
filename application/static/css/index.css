@@ -632,7 +632,7 @@ li {
 }
 
 .submit:hover {
-  background-color: var(--text-hover-color);
+  box-shadow: 0 0 5px var(--text-hover-color);
   cursor: pointer;
 }
 
@@ -847,6 +847,7 @@ li {
   border-radius: 50px;
   border-style: none;
   outline: none;
+  cursor: pointer;
   background-color: var(--text-color);
   transition: box-shadow 0.2s linear;
   -webkit-transition: box-shadow 0.2s linear;
