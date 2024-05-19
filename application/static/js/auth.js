@@ -168,6 +168,8 @@ function closeConfirmWindow() {
   window.style.transform = "translate(200%)";
   document.getElementById("main").style.filter = "brightness(1)";
   document.getElementById("navbar").style.filter = "brightness(1)";
+  document.getElementById("login-info").innerText = "";
+  document.getElementById("register-info").innerText = "";
   setTimeout(() => {
     window.style.visibility = "hidden";
   }, 400)
@@ -267,30 +269,57 @@ document.getElementById("register-form-id").addEventListener("submit", async (e)
   e.preventDefault();
 
   let formData = new FormData(document.getElementById("register-form-id"));
-  let response = await fetch(registerUrl, {
-    method: "POST",
-    credentials: "same-origin",
-    body: formData
-  });
 
-  if (response.status == 201) {
-    if (isTimerGoing) {
-      disableTimer(timerId);
+  if (validateRegisterData(formData)) {
+    let response = await fetch(registerUrl, {
+      method: "POST",
+      credentials: "same-origin",
+      body: formData
+    });
+  
+    if (response.status == 201) {
+      if (isTimerGoing) {
+        disableTimer(timerId);
+      }
+  
+      localStorage.setItem("request_id", response.headers.get("Request-Id"));
+      
+      document.getElementById("get-code-wrapper").classList.add("display-off");
+      document.getElementById("new-code").classList.remove("display-off");
+      document.getElementById("input-code").style.backgroundColor = "#7d42e7";
+      document.getElementById("input-code").value = "";
+      timerId = showTime(80);
+  
+      closeLoginWindow();
+      openConfirmWindow();
     }
-
-    localStorage.setItem("request_id", response.headers.get("Request-Id"));
-    
-    document.getElementById("get-code-wrapper").classList.add("display-off");
-    document.getElementById("new-code").classList.remove("display-off");
-    document.getElementById("input-code").style.backgroundColor = "#7d42e7";
-    document.getElementById("input-code").value = "";
-    timerId = showTime(80);
-
-    closeLoginWindow();
-    openConfirmWindow();
+    else {
+      error = await response.text();
+      document.getElementById("register-info").innerHTML = error.substring(1, error.length - 2);
+    }
   }
-  else {
-    error = await response.text();
-    document.getElementById("register-info").innerHTML = error.substring(1, error.length - 2);
-  }
+
 })
+
+function validateRegisterData(formData) {
+  const re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+  
+  let username = formData.get("username");
+  let pass = formData.get("password");
+  let email = formData.get("email");
+
+  if (username.length < 6 || username.length > 20) {
+    document.getElementById("register-info").innerText = "username length must be between 6 and 20";
+    return false;
+  }
+  if (pass.length < 6 || pass.length > 20) {
+    document.getElementById("register-info").innerText = "password length must be between 6 and 20";
+    return false;
+  }
+  if (!re.test(email)) {
+    document.getElementById("register-info").innerText = "invalid email";
+    return false;
+  }
+
+  return true;
+}
