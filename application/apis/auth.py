@@ -19,9 +19,11 @@ class Sign_up(Resource):
         try:
             data = request.form.to_dict()
 
+            # TODO empty password defence
+
             if RegisterSchema().validate(data):
                 raise BadRequest
-            
+
             if data.get("email") in rediska.json().get("register", "$..email"): 
                 return "Email already exists", 403
             
@@ -29,8 +31,8 @@ class Sign_up(Resource):
                 return "Username already exists", 403
             
             response = make_response("OK")
-            response.status_code = 200
-            response.headers["request-Id"] = create_register_request(data)
+            response.status_code = 201
+            response.headers["Request-Id"] = create_register_request(data)
 
             return response
         except BadRequest:

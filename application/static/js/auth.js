@@ -172,6 +172,9 @@ function closeConfirmWindow() {
     window.style.visibility = "hidden";
   }, 400)
   enableButtons();
+  if (isTimerGoing) {
+    disableTimer(timerId);
+  }
 }
 
 document.addEventListener("input", () => {
@@ -179,9 +182,10 @@ document.addEventListener("input", () => {
   if (field.value.length === 6) {
     field.style.backgroundColor = "#BF1A3E";
 
-    // send mail code request
+    // send check code request
   }
 })
+
 
 var timerId;
 var isTimerGoing = false;
@@ -206,10 +210,12 @@ function showTime(duration) {
       minutes -= 1;
       seconds = 59;
     }
+    console.log("timertick");
   }, 1000);
   
+  let thisTimerId = timerId;
   setTimeout(() => {
-    if (isTimerGoing) {
+    if (thisTimerId == timerId) {
       disableTimer(timerId);
       document.getElementById("new-code").classList.add("display-off");
       document.getElementById("get-code-wrapper").classList.remove("display-off");
@@ -224,8 +230,8 @@ function disableTimer(timerID) {
   isTimerGoing = false;
 }
 
-function sendNewCode() {
-  // send new code request to server
+async function sendNewCode() {
+  // send new code request
 
   document.getElementById("get-code-wrapper").classList.add("display-off");
   document.getElementById("new-code").classList.remove("display-off");
@@ -239,65 +245,52 @@ var loginUrl = new URL("api/auth/sign-in", location.origin);
 var registerUrl = new URL("api/auth/sign-up", location.origin);
 
 document.getElementById("login-form-id").addEventListener("submit", async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    let formData = new FormData(document.getElementById("login-form-id"));
-    formData.append("page", window.location.href);
-    
-    let response = await fetch(loginUrl, {
-        method: "POST",
-        credentials: "same-origin",
-        body: formData
-    });
-    
-    if (response.status == 200) {
-        let result = await response.json();
-        document.getElementById("login-info").innerHTML = "successful " + response.status;
-    } else {
-        console.log(response.status);
-    }
-})
-
-async function sendNewMailCodeRequest() {
-  let formData = new FormData(document.getElementById("register-form-id"));
-  formData.append("page", window.location.href);
+  let formData = new FormData(document.getElementById("login-form-id"));
   
-  // let response = await fetch(registerUrl, {
-    //     method: "POST",
-    //     credentials: "same-origin",
-    //     body: formData
-    // });
+  let response = await fetch(loginUrl, {
+    method: "POST",
+    credentials: "same-origin",
+    body: formData
+  });
   
-  if (isTimerGoing) {
-    disableTimer(timerId);
+  if (response.status == 200) {
+      let result = await response.json();
+      document.getElementById("login-info").innerHTML = "successful " + response.status;
+  } else {
+      console.log(response.status);
   }
-  document.getElementById("get-code-wrapper").classList.add("display-off");
-  document.getElementById("new-code").classList.remove("display-off");
-  document.getElementById("input-code").style.backgroundColor = "#7d42e7";
-  document.getElementById("input-code").value = "";
-  timerId = showTime(80);
-  
-  // if (response.status == 200) {
-  //       localStorage.set("request_id", response.headers.get("Request-Id"));
-  //       closeLoginWindow();
-  //       openConfirmWindow();
-  // } else {
-  //     document.getElementById("login-info").innerHTML = "successful";
-  // }
-
-  
-}
+})
 
 document.getElementById("register-form-id").addEventListener("submit", async (e) => {
   e.preventDefault();
-    
-  if (document.getElementById("email").innerHTML !=
-    document.getElementById("email-input").value) {
-    sendNewMailCodeRequest();
-  }
 
-  closeLoginWindow();
-  openConfirmWindow();
+  let formData = new FormData(document.getElementById("register-form-id"));
+  let response = await fetch(registerUrl, {
+    method: "POST",
+    credentials: "same-origin",
+    body: formData
+  });
+
+  if (response.status == 201) {
+    if (isTimerGoing) {
+      disableTimer(timerId);
+    }
+
+    localStorage.setItem("request_id", response.headers.get("Request-Id"));
+    
+    document.getElementById("get-code-wrapper").classList.add("display-off");
+    document.getElementById("new-code").classList.remove("display-off");
+    document.getElementById("input-code").style.backgroundColor = "#7d42e7";
+    document.getElementById("input-code").value = "";
+    timerId = showTime(80);
+
+    closeLoginWindow();
+    openConfirmWindow();
+  }
+  else {
+    error = await response.text();
+    document.getElementById("register-info").innerHTML = error.substring(1, error.length - 2);
+  }
 })
-  
-//openConfirmWindow();

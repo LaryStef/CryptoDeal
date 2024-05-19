@@ -1,8 +1,5 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, request
 from flask_mail import Message
-from marshmallow import pre_dump
-from redis.commands.json.path import Path
-from .database.redisdb import rediska
 from .mail import mail
 
 from redis.commands.json.path import Path
@@ -23,4 +20,5 @@ def send_message(code):
 
 @main.route("/test")
 def test():
+    print(request.remote_addr)
     return render_template("test.html"), 200

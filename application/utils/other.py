@@ -7,5 +7,5 @@ def generate_id(length: int) -> str:
     _id = ""
 
     for _ in range(length):
-        _id += symbols[randint(0, 62)]
+        _id += symbols[randint(0, 61)]
     return _id
