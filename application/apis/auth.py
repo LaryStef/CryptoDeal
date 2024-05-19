@@ -18,8 +18,9 @@ class Sign_up(Resource):
     def post(self):
         try:
             data = request.form.to_dict()
-
-            # TODO empty password defence
+            
+            for k, v in data.items():
+                data[k] = v.replace(" ", "")
 
             if RegisterSchema().validate(data):
                 raise BadRequest

@@ -298,7 +298,6 @@ document.getElementById("register-form-id").addEventListener("submit", async (e)
       document.getElementById("register-info").innerHTML = error.substring(1, error.length - 2);
     }
   }
-
 })
 
 function validateRegisterData(formData) {
@@ -312,8 +311,16 @@ function validateRegisterData(formData) {
     document.getElementById("register-info").innerText = "username length must be between 6 and 20";
     return false;
   }
+  if (username.includes(" ")) {
+    document.getElementById("register-info").innerText = "username can't include any spaces";
+    return false;
+  }
   if (pass.length < 6 || pass.length > 20) {
     document.getElementById("register-info").innerText = "password length must be between 6 and 20";
+    return false;
+  }
+  if (pass.includes(" ")) {
+    document.getElementById("register-info").innerText = "password can't include any spaces";
     return false;
   }
   if (!re.test(email)) {
