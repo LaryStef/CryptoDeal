@@ -191,6 +191,7 @@ document.addEventListener("input", () => {
 
 var timerId;
 var isTimerGoing = false;
+var cooldown = 30;
 
 function showTime(duration) {
   isTimerGoing = true;
@@ -250,12 +251,13 @@ async function sendNewCode() {
     body: JSON.stringify(Object.fromEntries(data))
   });
 
-
-  document.getElementById("get-code-wrapper").classList.add("display-off");
-  document.getElementById("new-code").classList.remove("display-off");
-  document.getElementById("input-code").style.backgroundColor = "#7d42e7";
-  document.getElementById("input-code").value = "";
-  timerId = showTime(15);
+  if (response.status == 200) {
+    document.getElementById("get-code-wrapper").classList.add("display-off");
+    document.getElementById("new-code").classList.remove("display-off");
+    document.getElementById("input-code").style.backgroundColor = "#7d42e7";
+    document.getElementById("input-code").value = "";
+    timerId = showTime(cooldown);
+  }
 }
 
 
@@ -302,7 +304,7 @@ document.getElementById("register-form-id").addEventListener("submit", async (e)
       document.getElementById("new-code").classList.remove("display-off");
       document.getElementById("input-code").style.backgroundColor = "#7d42e7";
       document.getElementById("input-code").value = "";
-      timerId = showTime(15);
+      timerId = showTime(cooldown);
   
       closeLoginWindow();
       openConfirmWindow();

@@ -1,13 +1,16 @@
+from time import time
+
 from flask_restx import Namespace, Resource
 from flask import request, make_response, jsonify
 from marshmallow.exceptions import ValidationError
 from werkzeug.exceptions import BadRequest
 
+from ..config import AppConfig
 from ..shemas import RegisterSchema
 from ..database.redisdb import rediska
 from ..database.postgre.models import User
 from ..database.postgre.services import get
-from ..database.redisdb.services import create_register_request
+from ..database.redisdb.services import create_register_request, refresh_register_code
 
 
 api = Namespace("auth", path="/auth/")
@@ -44,7 +47,22 @@ class Sign_up(Resource):
 class Refresh_code(Resource):
     def post(self):
         try:
-            data = request.json
+            email = request.json.get("email")
+            request_id = request.headers.get("Request-Id")
+
+            register_data = rediska.json().get("register", request_id)
+
+            if (register_data.get("email") != email):
+                raise BadRequest
+
+            if int(register_data.get("attempts")) >= 10:
+                rediska.json().delete("register", request_id)
+                return "Too many requests", 429
+            
+            if int(register_data.get("accept_new_request")) > int(time()):
+                return "Too early", 425
+
+            refresh_register_code(register_data, request_id)
 
             response = make_response("OK")
             response.status_code = 200
