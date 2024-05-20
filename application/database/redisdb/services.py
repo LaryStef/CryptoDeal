@@ -3,7 +3,7 @@ from random import randint
 
 from ...config import AppConfig
 from . import rediska
-from ...utils.other import generate_id
+from ...utils.generators import generate_id
 from ...mail.senders import send_email_code
 
 
