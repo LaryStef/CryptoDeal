@@ -15,6 +15,6 @@ class AppConfig(Config):
     MAIL_USE_SSL = True
     MAIL_USERNAME = os.getenv("MAIL")
     MAIL_PASSWORD = os.getenv("MAIL_PASSWORD")
-    MAIL_DEFAULT_SENDER = os.getenv("MAIL")
+    MAIL_DEFAULT_SENDER = ("CryptoDeal", os.getenv("MAIL"))
     REDIS_URL = "redis://localhost:6379/0"
     MAIL_CODE_COOLDOWN = 30
