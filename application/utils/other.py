@@ -7,5 +7,9 @@ def generate_id(length: int) -> str:
     _id = ""
 
     for _ in range(length):
-        _id += symbols[randint(0, 62)]
+        _id += symbols[randint(0, 61)]
     return _id
+
+
+def generate_mail_code() -> str:
+    return "".join([str(randint(0, 10)) for _ in range(6)])

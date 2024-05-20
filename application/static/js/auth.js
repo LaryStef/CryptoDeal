@@ -168,10 +168,15 @@ function closeConfirmWindow() {
   window.style.transform = "translate(200%)";
   document.getElementById("main").style.filter = "brightness(1)";
   document.getElementById("navbar").style.filter = "brightness(1)";
+  document.getElementById("login-info").innerText = "";
+  document.getElementById("register-info").innerText = "";
   setTimeout(() => {
     window.style.visibility = "hidden";
   }, 400)
   enableButtons();
+  if (isTimerGoing) {
+    disableTimer(timerId);
+  }
 }
 
 document.addEventListener("input", () => {
@@ -179,9 +184,10 @@ document.addEventListener("input", () => {
   if (field.value.length === 6) {
     field.style.backgroundColor = "#BF1A3E";
 
-    // send mail code request
+    // send check code request
   }
 })
+
 
 var timerId;
 var isTimerGoing = false;
@@ -208,8 +214,9 @@ function showTime(duration) {
     }
   }, 1000);
   
+  let thisTimerId = timerId;
   setTimeout(() => {
-    if (isTimerGoing) {
+    if (thisTimerId == timerId) {
       disableTimer(timerId);
       document.getElementById("new-code").classList.add("display-off");
       document.getElementById("get-code-wrapper").classList.remove("display-off");
@@ -224,80 +231,116 @@ function disableTimer(timerID) {
   isTimerGoing = false;
 }
 
-function sendNewCode() {
-  // send new code request to server
-
-  document.getElementById("get-code-wrapper").classList.add("display-off");
-  document.getElementById("new-code").classList.remove("display-off");
-  document.getElementById("input-code").style.backgroundColor = "#7d42e7";
-  document.getElementById("input-code").value = "";
-  timerId = showTime(80);
-}
-
 
 var loginUrl = new URL("api/auth/sign-in", location.origin);
 var registerUrl = new URL("api/auth/sign-up", location.origin);
+var newCodeUrl = new URL("api/auth/refresh-code", location.origin);
 
-document.getElementById("login-form-id").addEventListener("submit", async (e) => {
-    e.preventDefault();
+async function sendNewCode() {
+  let data = new Map();
+  data.set("email", document.getElementById("email-input").value);
 
-    let formData = new FormData(document.getElementById("login-form-id"));
-    formData.append("page", window.location.href);
-    
-    let response = await fetch(loginUrl, {
-        method: "POST",
-        credentials: "same-origin",
-        body: formData
-    });
-    
-    if (response.status == 200) {
-        let result = await response.json();
-        document.getElementById("login-info").innerHTML = "successful " + response.status;
-    } else {
-        console.log(response.status);
-    }
-})
+  response = await fetch(newCodeUrl, {
+    method: "POST",
+    credentials: "same-origin",
+    headers: {
+      "Content-Type": "application/json",
+      "Request-Id": sessionStorage.getItem("request_id")
+    },
+    body: JSON.stringify(Object.fromEntries(data))
+  });
 
-async function sendNewMailCodeRequest() {
-  let formData = new FormData(document.getElementById("register-form-id"));
-  formData.append("page", window.location.href);
-  
-  // let response = await fetch(registerUrl, {
-    //     method: "POST",
-    //     credentials: "same-origin",
-    //     body: formData
-    // });
-  
-  if (isTimerGoing) {
-    disableTimer(timerId);
-  }
+
   document.getElementById("get-code-wrapper").classList.add("display-off");
   document.getElementById("new-code").classList.remove("display-off");
   document.getElementById("input-code").style.backgroundColor = "#7d42e7";
   document.getElementById("input-code").value = "";
-  timerId = showTime(80);
-  
-  // if (response.status == 200) {
-  //       localStorage.set("request_id", response.headers.get("Request-Id"));
-  //       closeLoginWindow();
-  //       openConfirmWindow();
-  // } else {
-  //     document.getElementById("login-info").innerHTML = "successful";
-  // }
-
-  
+  timerId = showTime(15);
 }
+
+
+
+document.getElementById("login-form-id").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  let formData = new FormData(document.getElementById("login-form-id"));
+  
+  let response = await fetch(loginUrl, {
+    method: "POST",
+    credentials: "same-origin",
+    body: formData
+  });
+  
+  if (response.status == 200) {
+      let result = await response.json();
+      document.getElementById("login-info").innerHTML = "successful " + response.status;
+  } else {
+      console.log(response.status);
+  }
+})
 
 document.getElementById("register-form-id").addEventListener("submit", async (e) => {
   e.preventDefault();
-    
-  if (document.getElementById("email").innerHTML !=
-    document.getElementById("email-input").value) {
-    sendNewMailCodeRequest();
+
+  let formData = new FormData(document.getElementById("register-form-id"));
+
+  if (validateRegisterData(formData)) {
+    let response = await fetch(registerUrl, {
+      method: "POST",
+      credentials: "same-origin",
+      body: formData
+    });
+  
+    if (response.status == 201) {
+      if (isTimerGoing) {
+        disableTimer(timerId);
+      }
+  
+      sessionStorage.setItem("request_id", response.headers.get("Request-Id"));
+      
+      document.getElementById("get-code-wrapper").classList.add("display-off");
+      document.getElementById("new-code").classList.remove("display-off");
+      document.getElementById("input-code").style.backgroundColor = "#7d42e7";
+      document.getElementById("input-code").value = "";
+      timerId = showTime(15);
+  
+      closeLoginWindow();
+      openConfirmWindow();
+    }
+    else {
+      error = await response.text();
+      document.getElementById("register-info").innerHTML = error.substring(1, error.length - 2);
+    }
+  }
+})
+
+function validateRegisterData(formData) {
+  const re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+  
+  let username = formData.get("username");
+  let pass = formData.get("password");
+  let email = formData.get("email");
+
+  if (username.length < 6 || username.length > 20) {
+    document.getElementById("register-info").innerText = "username length must be between 6 and 20";
+    return false;
+  }
+  if (username.includes(" ")) {
+    document.getElementById("register-info").innerText = "username can't include any spaces";
+    return false;
+  }
+  if (pass.length < 6 || pass.length > 20) {
+    document.getElementById("register-info").innerText = "password length must be between 6 and 20";
+    return false;
+  }
+  if (pass.includes(" ")) {
+    document.getElementById("register-info").innerText = "password can't include any spaces";
+    return false;
+  }
+  if (!re.test(email)) {
+    document.getElementById("register-info").innerText = "invalid email";
+    return false;
   }
 
-  closeLoginWindow();
-  openConfirmWindow();
-})
-  
-//openConfirmWindow();
+  return true;
+}

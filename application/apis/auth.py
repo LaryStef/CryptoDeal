@@ -18,10 +18,13 @@ class Sign_up(Resource):
     def post(self):
         try:
             data = request.form.to_dict()
+            
+            for k, v in data.items():
+                data[k] = v.replace(" ", "")
 
             if RegisterSchema().validate(data):
                 raise BadRequest
-            
+
             if data.get("email") in rediska.json().get("register", "$..email"): 
                 return "Email already exists", 403
             
@@ -29,12 +32,26 @@ class Sign_up(Resource):
                 return "Username already exists", 403
             
             response = make_response("OK")
-            response.status_code = 200
-            response.headers["request-Id"] = create_register_request(data)
+            response.status_code = 201
+            response.headers["Request-Id"] = create_register_request(data)
 
             return response
         except BadRequest:
-            return "Bad request", 400
+            return "Invalid data", 400
+
+
+@api.route("/refresh-code")
+class Refresh_code(Resource):
+    def post(self):
+        try:
+            data = request.json
+
+            response = make_response("OK")
+            response.status_code = 200
+            return response
+
+        except BadRequest:
+            return "Invalid data", 400
 
 
 @api.route("/sign-in")
