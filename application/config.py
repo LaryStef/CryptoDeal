@@ -17,3 +17,4 @@ class AppConfig(Config):
     MAIL_PASSWORD = os.getenv("MAIL_PASSWORD")
     MAIL_DEFAULT_SENDER = os.getenv("MAIL")
     REDIS_URL = "redis://localhost:6379/0"
+    MAIL_CODE_COOLDOWN = 30

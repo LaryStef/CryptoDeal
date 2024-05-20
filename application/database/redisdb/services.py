@@ -1,31 +1,33 @@
 from time import time
 from random import randint
-from threading import Thread
 
-from flask_mail import Message
-
+from ...config import AppConfig
 from . import rediska
-from ...utils.cryptography import hash_password
 from ...utils.other import generate_id
-from ...mail import mail
+from ...mail.senders import send_email_code
 
 
 def create_register_request(data: dict) -> str:
-    # data["password"] = hash_password(data["password"])
     # TODO password hash
 
     request_id = generate_id(16)
 
-    data["email"] = "timurkotov1999@gmail.com"  # just for tests
-
     data["code"] = "".join([str(randint(0, 10)) for _ in range(5)])
-    
-    thread = Thread(target=lambda message: mail.send, args=[Message(f"Secret code: {data['code']}", recipients=[data["email"]])])
-    thread.start()
-    # mail.send(message=Message(f"Secret code: {data['code']}", recipients=[data["email"]]))
+    send_email_code(data["code"], data["email"])
 
-    data["attemtps"] = 0
+    data["attempts"] = 0
     data["creation_time"] = str(int(time()))
-    data["last_send_mail_request"] = str(int(time()))
+    data["accept_new_request"] = str(int(time()) + AppConfig.MAIL_CODE_COOLDOWN)
     rediska.json().set("register", request_id, data, nx=True)
     return request_id
+
+
+def refresh_register_code(data: dict, request_id: str):
+    data["attempts"] = str(int(data["attempts"]) + 1)
+    data["accept_new_request"] = str(int(time()) + AppConfig.MAIL_CODE_COOLDOWN)
+
+    data["code"] = "".join([str(randint(0, 10)) for _ in range(5)])
+    send_email_code(data["code"], data["email"])
+
+    rediska.json().delete("register", request_id)
+    rediska.json().set("register", request_id, data, nx=True)
