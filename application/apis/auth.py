@@ -37,7 +37,21 @@ class Sign_up(Resource):
 
             return response
         except BadRequest:
-            return "Bad request", 400
+            return "Invalid data", 400
+
+
+@api.route("/refresh-code")
+class Refresh_code(Resource):
+    def post(self):
+        try:
+            data = request.json
+
+            response = make_response("OK")
+            response.status_code = 200
+            return response
+
+        except BadRequest:
+            return "Invalid data", 400
 
 
 @api.route("/sign-in")

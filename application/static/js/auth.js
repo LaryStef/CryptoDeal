@@ -212,7 +212,6 @@ function showTime(duration) {
       minutes -= 1;
       seconds = 59;
     }
-    console.log("timertick");
   }, 1000);
   
   let thisTimerId = timerId;
@@ -232,19 +231,34 @@ function disableTimer(timerID) {
   isTimerGoing = false;
 }
 
+
+var loginUrl = new URL("api/auth/sign-in", location.origin);
+var registerUrl = new URL("api/auth/sign-up", location.origin);
+var newCodeUrl = new URL("api/auth/refresh-code", location.origin);
+
 async function sendNewCode() {
-  // send new code request
+  let data = new Map();
+  data.set("email", document.getElementById("email-input").value);
+
+  response = await fetch(newCodeUrl, {
+    method: "POST",
+    credentials: "same-origin",
+    headers: {
+      "Content-Type": "application/json",
+      "Request-Id": sessionStorage.getItem("request_id")
+    },
+    body: JSON.stringify(Object.fromEntries(data))
+  });
+
 
   document.getElementById("get-code-wrapper").classList.add("display-off");
   document.getElementById("new-code").classList.remove("display-off");
   document.getElementById("input-code").style.backgroundColor = "#7d42e7";
   document.getElementById("input-code").value = "";
-  timerId = showTime(80);
+  timerId = showTime(15);
 }
 
 
-var loginUrl = new URL("api/auth/sign-in", location.origin);
-var registerUrl = new URL("api/auth/sign-up", location.origin);
 
 document.getElementById("login-form-id").addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -282,13 +296,13 @@ document.getElementById("register-form-id").addEventListener("submit", async (e)
         disableTimer(timerId);
       }
   
-      localStorage.setItem("request_id", response.headers.get("Request-Id"));
+      sessionStorage.setItem("request_id", response.headers.get("Request-Id"));
       
       document.getElementById("get-code-wrapper").classList.add("display-off");
       document.getElementById("new-code").classList.remove("display-off");
       document.getElementById("input-code").style.backgroundColor = "#7d42e7";
       document.getElementById("input-code").value = "";
-      timerId = showTime(80);
+      timerId = showTime(15);
   
       closeLoginWindow();
       openConfirmWindow();
