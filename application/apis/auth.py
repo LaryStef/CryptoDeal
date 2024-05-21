@@ -2,15 +2,14 @@ from time import time
 
 from flask_restx import Namespace, Resource
 from flask import request, make_response, jsonify
-from marshmallow.exceptions import ValidationError
 from werkzeug.exceptions import BadRequest
 
 from ..config import AppConfig
 from ..shemas import RegisterSchema
-from ..database.redisdb import rediska
 from ..database.postgre.models import User
 from ..database.postgre.services import get
-from ..database.redisdb.services import create_register_request, refresh_register_code
+from ..database.redisdb import rediska
+from ..database.redisdb.services import create_register_request, refresh_register_code, increase_verify_attempts
 
 
 api = Namespace("auth", path="/auth/")
@@ -52,20 +51,49 @@ class Refresh_code(Resource):
 
             register_data = rediska.json().get("register", request_id)
 
-            if (register_data.get("email") != email):
+            if register_data is None or register_data.get("email") != email:
                 raise BadRequest
 
-            if int(register_data.get("attempts")) >= 10:
+            if register_data.get("refresh_attempts") >= 3:
                 rediska.json().delete("register", request_id)
                 return "Too many requests", 429
             
-            if int(register_data.get("accept_new_request")) > int(time()):
+            if register_data.get("accept_new_request") > int(time()):
                 return "Too early", 425
 
             refresh_register_code(register_data, request_id)
 
             response = make_response("OK")
             response.status_code = 200
+            return response
+
+        except BadRequest:
+            return "Invalid data", 400
+
+
+@api.route("/verify-code")
+class Verify_code(Resource):
+    def post(self):
+        try:
+            code = request.json.get("code")
+            request_id = request.headers.get("Request-Id")
+
+            register_data = rediska.json().get("register", request_id)
+
+            if register_data is None:
+                raise BadRequest
+
+            if register_data.get("verify_attempts") >= 3:
+                rediska.json().delete("register", request_id)
+                return "Too many requests", 429
+
+            if register_data.get("code") != code:
+                increase_verify_attempts(register_data, request_id)
+                return "Invalid code", 400
+
+            response = make_response("OK")
+            response.status_code = 200
+            response.set_cookie("some-cookie", "123")
             return response
 
         except BadRequest:

@@ -136,6 +136,8 @@ function closeLoginWindow() {
   loginWindow.style.transform = "translate(-100%, 30%)";
   document.getElementById("main").style.filter = "brightness(1)";
   document.getElementById("navbar").style.filter = "brightness(1)";
+  document.getElementById("login-info").innerText = "";
+  document.getElementById("register-info").innerText = "";
   enableButtons();
 }
 
@@ -157,6 +159,7 @@ function openConfirmWindow() {
   window.style.opacity = 1;
   window.style.transform = "translate(0%)";
   window.style.visibility = "visible";
+
   document.getElementById("main").style.filter = "brightness(0.5)";
   document.getElementById("navbar").style.filter = "brightness(0.5)";
   disableButtons();
@@ -168,8 +171,9 @@ function closeConfirmWindow() {
   window.style.transform = "translate(200%)";
   document.getElementById("main").style.filter = "brightness(1)";
   document.getElementById("navbar").style.filter = "brightness(1)";
-  document.getElementById("login-info").innerText = "";
-  document.getElementById("register-info").innerText = "";
+  document.getElementById("input-code").style.backgroundColor = "#7d42e7";
+  document.getElementById("input-code").value = "";
+
   setTimeout(() => {
     window.style.visibility = "hidden";
   }, 400)
@@ -180,11 +184,10 @@ function closeConfirmWindow() {
 }
 
 document.addEventListener("input", () => {
-  let field = document.getElementById("input-code")
+  let field = document.getElementById("input-code");
   if (field.value.length === 6) {
-    field.style.backgroundColor = "#BF1A3E";
-
-    // send check code request
+    field.style.backgroundColor = "#d7f171";
+    verifyCode();
   }
 })
 
@@ -236,6 +239,31 @@ function disableTimer(timerID) {
 var loginUrl = new URL("api/auth/sign-in", location.origin);
 var registerUrl = new URL("api/auth/sign-up", location.origin);
 var newCodeUrl = new URL("api/auth/refresh-code", location.origin);
+var verifyCodeUrl = new URL("api/auth/verify-code", location.origin);
+
+
+async function verifyCode() {
+  let data = new Map();
+  data.set("code", document.getElementById("input-code").value);
+
+  response = await fetch(verifyCodeUrl, {
+    method: "POST",
+    credentials: "same-origin",
+    headers: {
+      "Content-Type": "application/json",
+      "Request-Id": sessionStorage.getItem("request_id")
+    },
+    body: JSON.stringify(Object.fromEntries(data))
+  });
+
+  if (response.status == 200) {
+    closeConfirmWindow();
+
+    // show profile
+  } else {
+    document.getElementById("input-code").style.backgroundColor = "#BF1A3E";
+  }
+}
 
 async function sendNewCode() {
   let data = new Map();
@@ -259,8 +287,6 @@ async function sendNewCode() {
     timerId = showTime(cooldown);
   }
 }
-
-
 
 document.getElementById("login-form-id").addEventListener("submit", async (e) => {
   e.preventDefault();
