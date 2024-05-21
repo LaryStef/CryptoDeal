@@ -76,12 +76,8 @@ function rightSwitch() {
   rightSwitchTransform();
   setTimeout(() => {
     document.getElementById("mode-light").classList.remove("transition-off");
-    document
-      .getElementById("register-container")
-      .classList.remove("transition-off");
-    document
-      .getElementById("login-container")
-      .classList.remove("transition-off");
+    document.getElementById("register-container").classList.remove("transition-off");
+    document.getElementById("login-container").classList.remove("transition-off");
   }, 400);
 }
 
@@ -93,12 +89,8 @@ function leftSwitch() {
   leftSwitchTransform();
   setTimeout(() => {
     document.getElementById("mode-light").classList.remove("transition-off");
-    document
-      .getElementById("register-container")
-      .classList.remove("transition-off");
-    document
-      .getElementById("login-container")
-      .classList.remove("transition-off");
+    document.getElementById("register-container").classList.remove("transition-off");
+    document.getElementById("login-container").classList.remove("transition-off");
   }, 400);
 }
 

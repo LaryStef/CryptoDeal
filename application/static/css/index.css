@@ -883,3 +883,10 @@ li {
 .display-off {
   display: none;
 }
+
+.transition-off {
+  transition: none;
+  -webkit-transition: none;
+  -o-transition: none;
+  -moz-transition: none;
+}
