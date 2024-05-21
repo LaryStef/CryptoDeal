@@ -18,6 +18,7 @@ def create_register_request(data: dict) -> str:
     data["refresh_attempts"] = 0
     data["verify_attempts"] = 0
     data["creation_time"] = int(time())
+    data["deactivation_time"] = int(time()) + AppConfig.REGISTER_LIFETIME
     data["accept_new_request"] = int(time()) + AppConfig.MAIL_CODE_COOLDOWN
     rediska.json().set("register", request_id, data, nx=True)
     return request_id

@@ -54,7 +54,7 @@ class Refresh_code(Resource):
             if register_data is None or register_data.get("email") != email:
                 raise BadRequest
 
-            if register_data.get("refresh_attempts") >= 3:
+            if register_data.get("refresh_attempts") >= AppConfig.MAIL_CODE_REFRESH_ATTEMTPTS:
                 rediska.json().delete("register", request_id)
                 return "Too many requests", 429
             
@@ -83,7 +83,7 @@ class Verify_code(Resource):
             if register_data is None:
                 raise BadRequest
 
-            if register_data.get("verify_attempts") >= 3:
+            if register_data.get("verify_attempts") >= AppConfig.MAIL_CODE_VERIFY_ATTEMPTS:
                 rediska.json().delete("register", request_id)
                 return "Too many requests", 429
 
@@ -91,6 +91,7 @@ class Verify_code(Resource):
                 increase_verify_attempts(register_data, request_id)
                 return "Invalid code", 400
 
+            rediska.json().delete("register", request_id)
             response = make_response("OK")
             response.status_code = 200
             response.set_cookie("some-cookie", "123")
