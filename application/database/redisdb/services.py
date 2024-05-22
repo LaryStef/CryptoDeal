@@ -8,8 +8,6 @@ from ...mail.senders import send_email_code
 
 
 def create_register_request(data: dict) -> str:
-    # TODO password hash
-
     request_id = generate_id(16)
 
     data["code"] = "".join([str(randint(0, 9)) for _ in range(6)])
