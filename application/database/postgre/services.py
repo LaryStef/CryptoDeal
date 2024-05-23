@@ -1,5 +1,6 @@
 from typing import Any
 from time import time
+from uuid import uuid4
 
 from . import db
 from .models import User
@@ -13,7 +14,7 @@ def get(table: Any, **kwargs) -> Any | None:
 def add_user(user_data: dict):
     hash, salt = hash_password(user_data["password"])
     row: User = User(
-        uuid = "12383a",
+        uuid = uuid4().__str__(),
         username = user_data["username"],
         password_hash = hash,
         salt = salt,

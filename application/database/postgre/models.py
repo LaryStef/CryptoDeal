@@ -5,7 +5,7 @@ from . import db
 
 
 class User(db.Model):
-    uuid: Mapped[str] = mapped_column(String(16), primary_key=True, unique=True, nullable=False)
+    uuid: Mapped[str] = mapped_column(String(36), primary_key=True, unique=True, nullable=False)
     username: Mapped[str] = mapped_column(String(30), nullable=False)
     password_hash: Mapped[str] = mapped_column(String(64), nullable=False)
     salt: Mapped[str] = mapped_column(String(29), nullable=False)
