@@ -8,7 +8,7 @@ from .mail import mail
 from .database.redisdb import rediska
 
 
-def create_app():
+def create_app(rebuild_db: bool):
     app = Flask(__name__)
     app.config.from_object(AppConfig)
     app.register_blueprint(main)
@@ -18,8 +18,9 @@ def create_app():
     mail.init_app(app)
     rediska.init_app(app)
     
-    # with app.app_context():
-    #     from.database.postgre.models import User
-    #     db.create_all()        
+    if rebuild_db:
+        with app.app_context():
+            from.database.postgre.models import User
+            db.create_all()        
 
     return app

@@ -7,7 +7,7 @@ from werkzeug.exceptions import BadRequest
 from ..config import AppConfig
 from ..shemas import RegisterSchema
 from ..database.postgre.models import User
-from ..database.postgre.services import get
+from ..database.postgre.services import get, add_user
 from ..database.redisdb import rediska
 from ..database.redisdb.services import create_register_request, refresh_register_code, increase_verify_attempts
 
@@ -27,7 +27,7 @@ class Sign_up(Resource):
             if RegisterSchema().validate(data):
                 raise BadRequest
 
-            if data.get("email") in rediska.json().get("register", "$..email"): 
+            if data.get("email") in rediska.json().get("register", "$..email") or get(User, email=data.get("email")): 
                 return "Email already exists", 403
             
             if data.get("username") in rediska.json().get("register", "$..username") or get(User, username=data.get("username")):
@@ -91,7 +91,9 @@ class Verify_code(Resource):
                 increase_verify_attempts(register_data, request_id)
                 return "Invalid code", 400
 
+            add_user(register_data)
             rediska.json().delete("register", request_id)
+
             response = make_response("OK")
             response.status_code = 200
             response.set_cookie("some-cookie", "123")
