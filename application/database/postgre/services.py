@@ -12,32 +12,9 @@ def get(table: Any, **kwargs) -> Any | None:
 
 
 def add_user(user_data: dict):
-    hash, salt = hash_password(user_data["password"])
-    row: User = User(
-        uuid = uuid4().__str__(),
-        username = user_data["username"],
-        password_hash = hash,
-        salt = salt,
-        email = user_data["email"],
-        register_date = int(time())
-    )
+    user_data["uuid"] = uuid4().__str__()
+    user_data["register_date"] = int(time())
+
+    row: User = User(user_data)
     db.session.add(row)
     db.session.commit()
-
-
-# def get_all_users() -> list[str]:
-#     user_names: list[str] = [user.username for user in User.query.all()]
-
-#     return user_names
-
-# def insert_user(username: str):
-#     print("here")
-#     uuid = randint(1, 1000000)
-#     password = "123"
-#     row = User(uuid = uuid, username = username, password = password)
-#     db.session.add(row)
-#     db.session.commit()
-
-# def get_user(username: str):
-#     data = User.query.filter_by(user = username).first()
-#     return data.__dict__

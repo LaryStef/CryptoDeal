@@ -18,6 +18,8 @@ def create_app(rebuild_db: bool):
     mail.init_app(app)
     rediska.init_app(app)
     
+    app.extensions["mail"].debug = 0
+    
     if rebuild_db:
         with app.app_context():
             from.database.postgre.models import User

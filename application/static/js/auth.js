@@ -6,7 +6,7 @@ document.getElementById("sign-up").onclick = openSignUpWindow;
 
 document.getElementById("sign-in").onclick = openSignInWindow;
 
-document.getElementById("sign-in-try").onclick = openSignInWindow;
+document.getElementById("sign-in-try").onclick = openSignUpWindow;
 
 document.getElementById("dropdown-sign-in").onclick = openSignInWindow;
 
@@ -178,7 +178,6 @@ function closeConfirmWindow() {
 document.addEventListener("input", () => {
   let field = document.getElementById("input-code");
   if (field.value.length === 6) {
-    field.style.backgroundColor = "#d7f171";
     verifyCode();
   }
 })
