@@ -28,10 +28,10 @@ class Sign_up(Resource):
                 raise BadRequest
 
             if data.get("email") in rediska.json().get("register", "$..email") or get(User, email=data.get("email")): 
-                return "Email already exists", 403
+                return "Email already exists", 409
             
-            if data.get("username") in rediska.json().get("register", "$..username") or get(User, username=data.get("username")):
-                return "Username already exists", 403
+            if data.get("username") in rediska.json().get("register", "$..username") or get(User, name=data.get("username")):
+                return "Username already exists", 409
             
             response = make_response("OK")
             response.status_code = 201
