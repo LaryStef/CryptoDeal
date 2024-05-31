@@ -8,24 +8,19 @@ from ...mail.senders import send_email_code
 
 from ...utils.cryptography import hash_password
 
-import pprint
+
 def create_register_request(data: dict) -> str:
-    pprint.pprint(data)
-    
     request_id = generate_id(16)
-    password_hash, salt = hash_password(data["password"])
-
-    data["password_hash"] = password_hash
-    data["salt"] = salt
-
-    data["code"] = "".join([str(randint(0, 9)) for _ in range(6)])
-    send_email_code(data["code"], data["email"])
 
     data["refresh_attempts"] = 0
     data["verify_attempts"] = 0
     data["creation_time"] = int(time())
     data["deactivation_time"] = int(time()) + AppConfig.REGISTER_LIFETIME
     data["accept_new_request"] = int(time()) + AppConfig.MAIL_CODE_COOLDOWN
+    data["password_hash"] = hash_password(data["password"])
+    data["code"] = "".join([str(randint(0, 9)) for _ in range(6)])
+
+    send_email_code(data["code"], data["email"])
     rediska.json().set("register", request_id, data, nx=True)
     return request_id
 

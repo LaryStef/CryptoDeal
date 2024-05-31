@@ -5,9 +5,7 @@ from . import mail
 
 def send_email_code(code: str, recipient: str) -> None:
     recipients = ["timurkotov1999@gmail.com"]   # just for tests
-
-    print(code)
-    print(recipient)    
+  
     message = Message(f"Registration on CryptoDeal", recipients=recipients)
     message.html = f"""
         <h2>Secret code: {code}<h2>
