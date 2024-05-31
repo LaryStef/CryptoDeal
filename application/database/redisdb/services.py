@@ -6,9 +6,17 @@ from . import rediska
 from ...utils.generators import generate_id
 from ...mail.senders import send_email_code
 
+from ...utils.cryptography import hash_password
 
+import pprint
 def create_register_request(data: dict) -> str:
+    pprint.pprint(data)
+    
     request_id = generate_id(16)
+    password_hash, salt = hash_password(data["password"])
+
+    data["password_hash"] = password_hash
+    data["salt"] = salt
 
     data["code"] = "".join([str(randint(0, 9)) for _ in range(6)])
     send_email_code(data["code"], data["email"])
