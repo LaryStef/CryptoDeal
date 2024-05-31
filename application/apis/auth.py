@@ -80,7 +80,7 @@ class Verify_code(Resource):
 
             register_data = rediska.json().get("register", request_id)
 
-            if register_data is None: # or register_data["deactivation_time"] <= int(time())
+            if register_data is None or register_data["deactivation_time"] <= int(time()): 
                 raise BadRequest
 
             if register_data.get("verify_attempts") >= AppConfig.MAIL_CODE_VERIFY_ATTEMPTS:
