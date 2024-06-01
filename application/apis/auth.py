@@ -28,10 +28,22 @@ class Sign_up(Resource):
                 raise BadRequest
 
             if data.get("email") in rediska.json().get("register", "$..email") or get(User, email=data.get("email")): 
-                return "Email already exists", 409
+                return {
+                    "error": {
+                        "code": "Conflict",
+                        "message": "Email already taken",
+                        "details": "User with this email already exists or he is being registered now"
+                    }
+                }, 409
             
             if data.get("username") in rediska.json().get("register", "$..username") or get(User, name=data.get("username")):
-                return "Username already exists", 409
+                return {
+                    "error": {
+                        "code": "Conflict",
+                        "message": "Username already taken",
+                        "details": "User with this username already exists or he is being registered now"
+                    }
+                }, 409
             
             response = make_response("OK")
             response.status_code = 201
@@ -39,7 +51,13 @@ class Sign_up(Resource):
 
             return response
         except BadRequest:
-            return "Invalid data", 400
+            return {
+                "error": {
+                    "code": "Bad request",
+                    "message": "Invalid data",
+                    "details": "Invalid format of data or no such register ID"
+                }
+            }, 400
 
 
 @api.route("/refresh-code")
@@ -56,10 +74,22 @@ class Refresh_code(Resource):
 
             if register_data.get("refresh_attempts") >= AppConfig.MAIL_CODE_REFRESH_ATTEMTPTS:
                 rediska.json().delete("register", request_id)
-                return "Too many requests", 429
+                return {
+                    "error": {
+                        "code": "Too many requests",
+                        "message": "Too many refresh code requests",
+                        "details": "Application for registration has been cancelled"
+                    }
+                }, 429
             
             if register_data.get("accept_new_request") > int(time()):
-                return "Too early", 425
+                return {
+                    "error": {
+                        "code": "Too early",
+                        "message": "Too frequent refresh code requests",
+                        "details": "Try later"
+                    }
+                }, 425
 
             refresh_register_code(register_data, request_id)
 
@@ -68,7 +98,13 @@ class Refresh_code(Resource):
             return response
 
         except BadRequest:
-            return "Invalid data", 400
+            return {
+                "error": {
+                    "code": "Bad request",
+                    "message": "Invalid data",
+                    "details": "Invalid format of data or no such register ID"
+                }
+            }, 400
 
 
 @api.route("/verify-code")
@@ -85,11 +121,25 @@ class Verify_code(Resource):
 
             if register_data.get("verify_attempts") >= AppConfig.MAIL_CODE_VERIFY_ATTEMPTS:
                 rediska.json().delete("register", request_id)
-                return "Too many requests", 429
+                return {
+                    "error": {
+                        "code": "Too many requests",
+                        "message": "Too many verify code requests",
+                        "details": "Application for registration has been cancelled"
+                    }
+                }, 429
 
             if register_data.get("code") != code:
                 increase_verify_attempts(register_data, request_id)
                 return "Invalid code", 400
+                return {
+                    "error": {
+                        "code": "Bad request",
+                        "message": "Invalid code",
+                        "details": "Try one more time or get new code"
+                    }
+                }, 400
+                
 
             add_user(register_data)
             rediska.json().delete("register", request_id)
@@ -100,7 +150,13 @@ class Verify_code(Resource):
             return response
 
         except BadRequest:
-            return "Invalid data", 400
+            return {
+                "error": {
+                    "code": "Bad request",
+                    "message": "Invalid data",
+                    "details": "Invalid format of data or no such register ID"
+                }
+            }, 400
 
 
 @api.route("/sign-in")
