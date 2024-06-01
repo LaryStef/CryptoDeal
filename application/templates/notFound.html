@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <title>CryptoDeal{{ " - " + title }}</title>
+    <link rel="icon" href="{{ url_for('static', filename='svg/CryptoDealLogo.svg') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/notFound.css') }}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu+Mono&subset=latin"/>
+    <style>
+        body {
+            background-image: url("{{ url_for('static', filename='svg/CryptoDealLogo.svg') }}");
+        }
+    </style>
+</head>
+<body>
+<div class="error-wrapper">
+    <span class="error">Page not found</span>
+    <a class="index-url" href="{{ url_for('main.index') }}">go to main page</a>
+</div>
+</body>
+</html>
