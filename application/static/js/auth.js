@@ -290,11 +290,11 @@ document.getElementById("login-form-id").addEventListener("submit", async (e) =>
     body: formData
   });
   
-  if (response.status == 401) {
+  if (response.status == 200) {
+    closeLoginWindow();
+  } else {
       let error = await response.json();
       document.getElementById("login-info").innerHTML = error["error"]["message"];
-  } else {
-    document.getElementById("login-info").innerHTML = "successful";
   }
 })
 
