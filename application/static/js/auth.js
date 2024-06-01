@@ -279,24 +279,24 @@ async function sendNewCode() {
   }
 }
 
-// document.getElementById("login-form-id").addEventListener("submit", async (e) => {
-//   e.preventDefault();
+document.getElementById("login-form-id").addEventListener("submit", async (e) => {
+  e.preventDefault();
 
-//   let formData = new FormData(document.getElementById("login-form-id"));
+  let formData = new FormData(document.getElementById("login-form-id"));
   
-//   let response = await fetch(loginUrl, {
-//     method: "POST",
-//     credentials: "same-origin",
-//     body: formData
-//   });
+  let response = await fetch(loginUrl, {
+    method: "POST",
+    credentials: "same-origin",
+    body: formData
+  });
   
-//   if (response.status == 200) {
-//       let result = await response.json();
-//       document.getElementById("login-info").innerHTML = "successful " + response.status;
-//   } else {
-//       console.log(response.status);
-//   }
-// })
+  if (response.status == 401) {
+      let error = await response.json();
+      document.getElementById("login-info").innerHTML = error["error"]["message"];
+  } else {
+    document.getElementById("login-info").innerHTML = "successful";
+  }
+})
 
 document.getElementById("register-form-id").addEventListener("submit", async (e) => {
   e.preventDefault();

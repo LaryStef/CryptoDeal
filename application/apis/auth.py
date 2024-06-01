@@ -1,15 +1,17 @@
 from time import time
 
 from flask_restx import Namespace, Resource
-from flask import request, make_response, jsonify
+from flask import request, make_response
 from werkzeug.exceptions import BadRequest
+from bcrypt import checkpw
 
 from ..config import AppConfig
-from ..shemas import RegisterSchema
+from ..shemas import RegisterSchema, LoginSchema
 from ..database.postgre.models import User
 from ..database.postgre.services import get, add_user
 from ..database.redisdb import rediska
 from ..database.redisdb.services import create_register_request, refresh_register_code, increase_verify_attempts
+
 
 
 api = Namespace("auth", path="/auth/")
@@ -139,14 +141,13 @@ class Verify_code(Resource):
                         "details": "Try one more time or get new code"
                     }
                 }, 400
-                
-
+            
             add_user(register_data)
             rediska.json().delete("register", request_id)
 
             response = make_response("OK")
             response.status_code = 200
-            response.set_cookie("some-cookie", "123")
+            response.set_cookie("some-cookie", str(int(time())))
             return response
 
         except BadRequest:
@@ -162,5 +163,36 @@ class Verify_code(Resource):
 @api.route("/sign-in")
 class Sign_in(Resource):
     def post(self):
-        data = request.form        
-        return make_response(jsonify(data), 200)
+        try:
+            data = request.form.to_dict()
+
+            for k, v in data.items():
+                data[k] = v.replace(" ", "")
+
+            if LoginSchema().validate(data):
+                raise BadRequest
+            
+            user = get(User, name=data.get("username"))
+
+            if user is not None and checkpw(data.get("password").encode("utf-8"), user.password_hash.encode("utf-8")):
+                response = make_response("OK")
+                response.status_code = 200
+                response.set_cookie("some-cookie", str(int(time())))
+                return response
+            
+            return {
+                "error": {
+                    "code": "Unauthorized",
+                    "message": "Invalid login or password",
+                    "details": "Try one more time or restore password"
+                }
+            }, 401               
+            
+        except BadRequest:
+            return {
+                "error": {
+                    "code": "Bad request",
+                    "message": "Invalid data",
+                    "details": "Invalid format of data"
+                }
+            }, 400
