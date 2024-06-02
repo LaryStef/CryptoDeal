@@ -363,3 +363,19 @@ function validateRegisterData(formData) {
 
   return true;
 }
+
+function openEmailWindow() {
+  let window = document.getElementById("email-window");
+  window.style.opacity = 1;
+  window.style.transform = "translate(0%)";
+  window.style.visibility = "visible";
+
+  document.getElementById("main").style.filter = "brightness(0.5)";
+  document.getElementById("navbar").style.filter = "brightness(0.5)";
+  disableButtons();
+}
+
+document.getElementById("recovery-btn").addEventListener("click", () => {
+  closeLoginWindow();
+  openEmailWindow();
+})
