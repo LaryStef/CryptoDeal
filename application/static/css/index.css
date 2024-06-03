@@ -440,7 +440,7 @@ li {
   padding-top: 5vh;
   padding-bottom: 2vh;
   width: 50vw;
-  height: 65vh;
+  height: 55vh;
   max-height: 500px;
   border-radius: 50px;
   opacity: 0;
@@ -882,10 +882,6 @@ li {
   cursor: pointer;
 }
 
-.display-off {
-  display: none;
-}
-
 .transition-off {
   transition: none;
   -webkit-transition: none;
@@ -898,7 +894,7 @@ li {
   margin-left: 30vw;
   margin-top: 35vh;
   width: 40vw;
-  height: 30vh;
+  height: 35vh;
   z-index: 1;
   opacity: 0;
   visibility: hidden;
@@ -911,20 +907,21 @@ li {
   -o-transform: translate(200%);
   -moz-transform: translate(200%);
   transition: all var(--login-transition-duration) ease-out;
-  -webkit-transition: all var(--login-transition-duration) ease-out;
-  -o-transition: all var(--login-transition-duration) ease-out;
-  -moz-transition: all var(--login-transition-duration) ease-out;
 }
 
 .email-wrapper {
   display: flex;
-  padding-top: 3%;
+  padding-top: 4%;
   width: 100%;
   height: 100%;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   gap: 10%;
+}
+
+.pass-info {
+  height: 10px;
 }
 
 .email-text {
@@ -941,9 +938,9 @@ li {
   gap: 8px;
 }
 
-.email-input {
+.email-input-recovery {
   padding-left: 3%;
-  width: 40%;
+  width: 60%;
   height: 40px;
   border-radius: 50px;
   border-style: none;
@@ -951,6 +948,16 @@ li {
   background-color: var(--text-color);
   color: var(--background-color);
   font-size: 1.125rem;
+}
+
+.email-input-recovery::placeholder {
+  color: var(--background-button-color);
+  opacity: 0.6;
+}
+
+.email-input-recovery:focus {
+  outline: none !important;
+  box-shadow: 0 0 5px var(--text-hover-color);
 }
 
 .email-submit {
@@ -975,7 +982,6 @@ li {
 
 .email-cancel-container {
   align-items: center;
-  margin-top: 5%;
 }
 
 .email-cancel {
@@ -993,4 +999,82 @@ li {
 .email-cancel:hover {
   color: var(--text-hover-color);
   cursor: pointer;
+}
+
+.email-confirm-rec {
+  display: flex;
+  padding-top: 3%;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 4%;
+}
+
+.pass-info-wrapper {
+  height: 20px;
+}
+
+.confirm-window-rec {
+  position: absolute;
+  margin-left: 30vw;
+  margin-top: 25vh;
+  width: 40vw;
+  height: 60vh;
+  z-index: 1;
+  opacity: 0;
+  visibility: hidden;
+  border-radius: 50px;
+  filter: brightness(1);
+  background-color: var(--background-button-color);
+  transform: translate(200%);
+  -ms-transform: translate(200%);
+  -webkit-transform: translate(200%);
+  -o-transform: translate(200%);
+  -moz-transform: translate(200%);
+  transition: all var(--login-transition-duration) ease-out;
+  -webkit-transition: all var(--login-transition-duration) ease-out;
+  -o-transition: all var(--login-transition-duration) ease-out;
+  -moz-transition: all var(--login-transition-duration) ease-out;
+}
+
+.email-form-rec {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+  width: 90%;
+  gap: 8px;
+}
+
+.input-code-rec {
+  text-align: center;
+  width: 40%;
+  height: 40px;
+  border-radius: 50px;
+  border-style: none;
+  outline: none;
+  background-color: var(--text-color);
+  color: var(--background-color);
+  font-size: 1.125rem;
+  transition: box-shadow 0.2s linear;
+  -webkit-transition: box-shadow 0.2s linear;
+  -o-transition: box-shadow 0.2s linear;
+  -moz-transition: box-shadow 0.2s linear;
+}
+
+.input-code-rec::placeholder {
+  color: var(--background-button-color);
+  opacity: 0.6;
+}
+
+.input-code-rec:focus {
+  outline: none !important;
+  box-shadow: 0 0 5px var(--text-hover-color);
+}
+
+.display-off {
+  display: none;
 }

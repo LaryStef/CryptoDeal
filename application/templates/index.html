@@ -122,11 +122,65 @@
             <p>Enter your email please:</p>
         </div>
         <form class="email-form">
-            <input class="email-input" type="email">
-            <input class="email-submit" type="submit" value="sumbit">
+            <input
+                class="email-input-recovery"
+                id="email-input-recovery"
+                type="email"
+                placeholder="email"
+                value="123@gmail.com"
+            >
+            <input class="email-submit" id="email-submit" type="submit" value="sumbit">
         </form>
+        <div class="pass-info-wrapper">
+            <span id="pass-info"></span>
+        </div>
         <div class="email-cancel-container">
             <button class="email-cancel" id="email-cancel">cancel</button>
+        </div>
+    </div>
+</div>
+<div class="confirm-window-rec" id="confirm-window-rec">
+    <div class="email-confirm-rec">
+        <div class="code-message">
+            <p>Enter code sent on: </p>
+            <span id="email-rec"></span>
+        </div>
+        <div class="pass-info-wrapper">
+            <span class="" id="new-pass-info"></span>
+        </div>
+        <form class="email-form-rec">
+            <input
+            class="email-input-recovery"
+            id="email-rec1" type="text"
+            placeholder="password"
+            minlength="6"
+            maxlength="20"
+            >
+            <input
+            class="email-input-recovery"
+            id="email-rec2" type="text"
+            placeholder="repeat password"
+            minlength="6"
+            maxlength="20"
+            >
+            <input
+                class="input-code-rec"
+                id="input-code-rec"
+                type="text"
+                placeholder="code"
+                maxlength="6"
+            >
+            <input class="email-submit" id="submit-rec" type="submit" value="sumbit">
+        </form>
+        <div class="new-code" id="new-code-rec">
+            <p>get new code in: </p>
+            <span id="code-time-rec">0:00</span>
+        </div>
+        <div class="get-code-wrapper display-off" id="get-code-wrapper-rec">
+            <button class="get-code" id="code-btn-rec">get new code</button>
+        </div>
+        <div class="mail-cancel-container">
+            <button class="mail-cancel" id="mail-cancel-rec">cancel</button>
         </div>
     </div>
 </div>

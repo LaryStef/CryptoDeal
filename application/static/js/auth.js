@@ -1,22 +1,20 @@
 document.getElementById("left-switch").onclick = leftSwitchTransform;
-
 document.getElementById("right-switch").onclick = rightSwitchTransform;
-
 document.getElementById("sign-up").onclick = openSignUpWindow;
-
 document.getElementById("sign-in").onclick = openSignInWindow;
-
 document.getElementById("sign-in-try").onclick = openSignUpWindow;
 
 document.getElementById("dropdown-sign-in").onclick = openSignInWindow;
-
 document.getElementById("dropdown-sign-up").onclick = openSignUpWindow;
 
 document.getElementById("cancel").onclick = closeLoginWindow;
-
 document.getElementById("mail-cancel").onclick = closeConfirmWindow;
+document.getElementById("email-cancel").onclick = closeEmailWindow;
+document.getElementById("mail-cancel-rec").onclick = closePasswordWindow;
 
 document.getElementById("code-btn").onclick = sendNewCode;
+document.getElementById("code-btn-rec").onclick = sendNewCodeRec;
+
 
 function disableButtons() {
   document.getElementsByClassName("auth-link")[0].disabled = true;
@@ -145,8 +143,8 @@ document.onkeydown = function (evt) {
   }
 };
 
-function openConfirmWindow() {
-  document.getElementById("email").innerHTML = document.getElementById("email-input").value;
+function openConfirmWindow(email) {
+  document.getElementById("email").innerText = email;
   let window = document.getElementById("confirm-window");
   window.style.opacity = 1;
   window.style.transform = "translate(0%)";
@@ -324,7 +322,7 @@ document.getElementById("register-form-id").addEventListener("submit", async (e)
       timerId = showTime(cooldown);
   
       closeLoginWindow();
-      openConfirmWindow();
+      openConfirmWindow(document.getElementById("email-input").value);
     }
     else {
       error = await response.json();
@@ -375,7 +373,157 @@ function openEmailWindow() {
   disableButtons();
 }
 
+function closeEmailWindow() {
+  let window = document.getElementById("email-window");
+  window.style.opacity = 0;
+  window.style.transform = "translate(-200%)";
+  document.getElementById("main").style.filter = "brightness(1)";
+  document.getElementById("navbar").style.filter = "brightness(1)";
+  document.getElementById("email-input-recovery").value = "";
+
+  
+  setTimeout(() => {
+    window.style.visibility = "hidden";
+    window.style.transition = "none";
+    window.style.transform = "translate(200%)";
+    window.style.transition = "all var(--login-transition-duration) ease-out";
+  }, 400)
+  
+  
+  enableButtons();
+}
+
+function openPasswordWindow(email) {
+  document.getElementById("email-rec").innerText = email;
+  let window = document.getElementById("confirm-window-rec");
+  window.style.opacity = 1;
+  window.style.transform = "translate(0%)";
+  window.style.visibility = "visible";
+
+  document.getElementById("main").style.filter = "brightness(0.5)";
+  document.getElementById("navbar").style.filter = "brightness(0.5)";
+  disableButtons();
+}
+
+function closePasswordWindow() {
+  if (isTimerGoingRec) {
+    disableTimerRec(timerIdRec);
+  }
+
+  let window = document.getElementById("confirm-window-rec");
+  window.style.opacity = 0;
+  window.style.transform = "translate(200%)";
+  document.getElementById("main").style.filter = "brightness(1)";
+  document.getElementById("navbar").style.filter = "brightness(1)";
+  document.getElementById("input-code-rec").style.backgroundColor = "#7d42e7";
+  document.getElementById("input-code-rec").value = "";
+  document.getElementById("email-rec1").value = "";
+  document.getElementById("email-rec2").value = "";
+
+  setTimeout(() => {
+    window.style.visibility = "hidden";
+  }, 400)
+  enableButtons();
+}
+
 document.getElementById("recovery-btn").addEventListener("click", () => {
   closeLoginWindow();
   openEmailWindow();
 })
+
+
+var timerIdRec;
+var isTimerGoingRec = false;
+var cooldownRec = 20;
+
+function showTimeRec(duration) {
+  isTimerGoingRec = true;
+  let minutes = Math.floor(duration / 60);
+  let seconds = duration % 60;
+  timerIdRec = setInterval(() => {
+    var time;
+    if (seconds < 10) {
+      time = `${minutes}:0${seconds}`;
+    }
+    else {
+      time = `${minutes}:${seconds}`;
+    }
+    document.getElementById("code-time-rec").innerHTML = time;
+    if (seconds != 0) {
+      seconds -= 1;
+    }
+    else {
+      minutes -= 1;
+      seconds = 59;
+    }
+  }, 1000);
+  
+  let thisTimerIdRec = timerIdRec;
+  setTimeout(() => {
+    if (thisTimerIdRec == timerIdRec && isTimerGoingRec) {
+      disableTimerRec(timerIdRec);
+      document.getElementById("new-code-rec").classList.add("display-off");
+      document.getElementById("get-code-wrapper-rec").classList.remove("display-off");
+    }
+  }, (duration + 1) * 1000);
+
+  return timerIdRec;
+}
+
+async function sendNewCodeRec() {
+  // let data = new Map();
+  // data.set("email", document.getElementById("email-input").value);
+
+  // response = await fetch(newCodeUrl, {
+  //   method: "POST",
+  //   credentials: "same-origin",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //     "Request-Id": sessionStorage.getItem("request_id")
+  //   },
+  //   body: JSON.stringify(Object.fromEntries(data))
+  // });
+
+  // if (response.status == 200) {
+  //   document.getElementById("get-code-wrapper").classList.add("display-off");
+  //   document.getElementById("new-code").classList.remove("display-off");
+  //   document.getElementById("input-code").style.backgroundColor = "#7d42e7";
+  //   document.getElementById("input-code").value = "";
+  //   timerId = showTime(cooldown);
+  // }
+  document.getElementById("get-code-wrapper-rec").classList.add("display-off");
+  document.getElementById("new-code-rec").classList.remove("display-off");
+  document.getElementById("input-code-rec").value = "";
+
+  if (isTimerGoingRec) {
+    disableTimerRec(timerIdRec);
+  }
+
+  timerIdRec = showTimeRec(cooldownRec);
+  isTimerGoingRec = true
+}
+
+document.getElementById("email-submit").addEventListener("click", (e) => {
+  e.preventDefault();
+
+  // if status === 200
+  const email = document.getElementById("email-input-recovery").value;
+  closeEmailWindow();
+  openPasswordWindow(email);
+  if (isTimerGoingRec) {
+    disableTimerRec(timerIdRec);
+  }
+  document.getElementById("get-code-wrapper-rec").classList.add("display-off");
+  document.getElementById("new-code-rec").classList.remove("display-off");
+  timerIdRec = showTimeRec(cooldownRec);
+})
+
+document.getElementById("submit-rec").addEventListener("click", (e) => {
+  e.preventDefault();
+
+})
+
+function disableTimerRec(timerID) {
+  clearInterval(timerID);
+  isTimerGoingRec = false;
+}
