@@ -1,3 +1,13 @@
+const loginUrl = new URL("api/auth/sign-in", location.origin);
+const registerUrl = new URL("api/auth/sign-up", location.origin);
+const newCodeUrl = new URL("api/auth/refresh-code", location.origin);
+const restoreUrl = new URL("api/auth/restore", location.origin);
+const verifyCodeUrl = new URL("api/auth/verify-code", location.origin);
+
+const cooldown = 30;
+const cooldownRec = 30;
+
+
 document.getElementById("left-switch").onclick = leftSwitchTransform;
 document.getElementById("right-switch").onclick = rightSwitchTransform;
 document.getElementById("sign-up").onclick = openSignUpWindow;
@@ -183,7 +193,6 @@ document.addEventListener("input", () => {
 
 var timerId;
 var isTimerGoing = false;
-var cooldown = 30;
 
 function showTime(duration) {
   isTimerGoing = true;
@@ -223,13 +232,6 @@ function disableTimer(timerID) {
   clearInterval(timerID);
   isTimerGoing = false;
 }
-
-
-var loginUrl = new URL("api/auth/sign-in", location.origin);
-var registerUrl = new URL("api/auth/sign-up", location.origin);
-var newCodeUrl = new URL("api/auth/refresh-code", location.origin);
-var verifyCodeUrl = new URL("api/auth/verify-code", location.origin);
-
 
 async function verifyCode() {
   let data = new Map();
@@ -380,7 +382,6 @@ function closeEmailWindow() {
   document.getElementById("main").style.filter = "brightness(1)";
   document.getElementById("navbar").style.filter = "brightness(1)";
   document.getElementById("email-input-recovery").value = "";
-
   
   setTimeout(() => {
     window.style.visibility = "hidden";
@@ -388,7 +389,6 @@ function closeEmailWindow() {
     window.style.transform = "translate(200%)";
     window.style.transition = "all var(--login-transition-duration) ease-out";
   }, 400)
-  
   
   enableButtons();
 }
@@ -434,7 +434,6 @@ document.getElementById("recovery-btn").addEventListener("click", () => {
 
 var timerIdRec;
 var isTimerGoingRec = false;
-var cooldownRec = 20;
 
 function showTimeRec(duration) {
   isTimerGoingRec = true;
@@ -474,7 +473,7 @@ async function sendNewCodeRec() {
   // let data = new Map();
   // data.set("email", document.getElementById("email-input").value);
 
-  // response = await fetch(newCodeUrl, {
+  // let response = await fetch(newCodeUrl, {
   //   method: "POST",
   //   credentials: "same-origin",
   //   headers: {
@@ -503,19 +502,38 @@ async function sendNewCodeRec() {
   isTimerGoingRec = true
 }
 
-document.getElementById("email-submit").addEventListener("click", (e) => {
+document.getElementById("email-submit").addEventListener("click", async (e) => {
   e.preventDefault();
 
-  // if status === 200
   const email = document.getElementById("email-input-recovery").value;
-  closeEmailWindow();
-  openPasswordWindow(email);
-  if (isTimerGoingRec) {
-    disableTimerRec(timerIdRec);
+
+  let data = new Map();
+  data.set("email", email);
+
+  let response = await fetch(restoreUrl, {
+    method: "POST",
+    credentials: "same-origin",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(Object.fromEntries(data))
+  })
+
+  if (response.status === 200) {
+    closeEmailWindow();
+    openPasswordWindow(email);
+    if (isTimerGoingRec) {
+      disableTimerRec(timerIdRec);
+    }
+
+    document.getElementById("get-code-wrapper-rec").classList.add("display-off");
+    document.getElementById("new-code-rec").classList.remove("display-off");
+    timerIdRec = showTimeRec(cooldownRec);
   }
-  document.getElementById("get-code-wrapper-rec").classList.add("display-off");
-  document.getElementById("new-code-rec").classList.remove("display-off");
-  timerIdRec = showTimeRec(cooldownRec);
+
+  else {
+    document.getElementById("pass-info").innerText = "fail: " + response.status;
+  }
 })
 
 document.getElementById("submit-rec").addEventListener("click", (e) => {

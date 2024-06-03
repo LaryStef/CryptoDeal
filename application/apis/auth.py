@@ -10,7 +10,7 @@ from ..shemas import RegisterSchema, LoginSchema
 from ..database.postgre.models import User
 from ..database.postgre.services import get, add_user
 from ..database.redisdb import rediska
-from ..database.redisdb.services import create_register_request, refresh_register_code, increase_verify_attempts
+from ..database.redisdb.services import RediskaHandler
 
 
 
@@ -49,7 +49,7 @@ class Sign_up(Resource):
             
             response = make_response("OK")
             response.status_code = 201
-            response.headers["Request-Id"] = create_register_request(data)
+            response.headers["Request-Id"] = RediskaHandler.create_register_request(data)
 
             return response
         except BadRequest:
@@ -93,7 +93,7 @@ class Refresh_code(Resource):
                     }
                 }, 425
 
-            refresh_register_code(register_data, request_id)
+            RediskaHandler.refresh_register_code(register_data, request_id)
 
             response = make_response("OK")
             response.status_code = 200
@@ -132,7 +132,7 @@ class Verify_code(Resource):
                 }, 429
 
             if register_data.get("code") != code:
-                increase_verify_attempts(register_data, request_id)
+                RediskaHandler.increase_verify_attempts(register_data, request_id)
                 return "Invalid code", 400
                 return {
                     "error": {
@@ -188,6 +188,51 @@ class Sign_in(Resource):
                 }
             }, 401               
             
+        except BadRequest:
+            return {
+                "error": {
+                    "code": "Bad request",
+                    "message": "Invalid data",
+                    "details": "Invalid format of data"
+                }
+            }, 400
+
+
+@api.route("/restore")
+class Restore(Resource):
+    def post(self):
+        try:
+            data = request.form.to_dict()
+
+            if data is None:
+                raise BadRequest
+
+            user = get(User, email=data.get("email"))
+            if user is None:
+                return {
+                    "error": {
+                        "code": "Conflict",
+                        "message": "Email not found",
+                        "details": "No user with this email"
+                    }
+                }, 404
+
+            # cooldown = user.password_cooldown - int(time())
+            # if cooldown >= 0:
+            #     return {
+            #         "error": {
+            #             "code": "Too early",
+            #             "message": f"Password has been restored recently, try in { cooldown // 60 + 1 } minutes",
+            #             "details": "Password restore procedure has 10 minutes cooldown"
+            #         }
+            #     }, 425
+
+            response = make_response("OK")
+            response.status_code = 201
+            response.headers["Request-Id"] = RediskaHandler.create_restore_request(data)
+
+            return response
+
         except BadRequest:
             return {
                 "error": {
