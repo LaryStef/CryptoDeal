@@ -13,13 +13,13 @@ class RediskaHandler:
     @staticmethod
     def create_register_request(data: dict) -> str:
         request_id = generate_id(16)
-        time = int(time())
+        timestamp = int(time())
 
         data["refresh_attempts"] = 0
         data["verify_attempts"] = 0
-        data["creation_time"] = time
-        data["deactivation_time"] = time + AppConfig.REGISTER_LIFETIME
-        data["accept_new_request"] = time + AppConfig.MAIL_CODE_COOLDOWN
+        data["creation_time"] = timestamp
+        data["deactivation_time"] = timestamp + AppConfig.REGISTER_LIFETIME
+        data["accept_new_request"] = timestamp + AppConfig.MAIL_CODE_COOLDOWN
         data["password_hash"] = hash_password(data["password"])
         data["code"] = "".join([str(randint(0, 9)) for _ in range(6)])
 
@@ -49,15 +49,17 @@ class RediskaHandler:
 
 
     @staticmethod
-    def create_restore_request(data: dict) -> str:
+    def create_restore_request(email: str) -> str:
         request_id = generate_id(16)
-        time = int(time())
+        timestamp = int(time())
 
+        data = dict()
+        data["email"] = email
         data["refresh_attempts"] = 0
         data["verify_attempts"] = 0
-        data["creation_time"] = time
-        data["deactivation_time"] = time + AppConfig.RESTORE_LIFETIME
-        data["accept_new_request"] = time + AppConfig.MAIL_CODE_COOLDOWN
+        data["creation_time"] = timestamp
+        data["deactivation_time"] = timestamp + AppConfig.RESTORE_LIFETIME
+        data["accept_new_request"] = timestamp + AppConfig.MAIL_CODE_COOLDOWN
 
 
         rediska.json().set("password_restore", request_id, data, nx=True)

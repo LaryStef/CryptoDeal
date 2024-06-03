@@ -202,12 +202,12 @@ class Sign_in(Resource):
 class Restore(Resource):
     def post(self):
         try:
-            data = request.form.to_dict()
+            email = request.json.get("email")
 
-            if data is None:
+            if email is None:
                 raise BadRequest
 
-            user = get(User, email=data.get("email"))
+            user = get(User, email=email)
             if user is None:
                 return {
                     "error": {
@@ -217,19 +217,19 @@ class Restore(Resource):
                     }
                 }, 404
 
-            # cooldown = user.password_cooldown - int(time())
-            # if cooldown >= 0:
-            #     return {
-            #         "error": {
-            #             "code": "Too early",
-            #             "message": f"Password has been restored recently, try in { cooldown // 60 + 1 } minutes",
-            #             "details": "Password restore procedure has 10 minutes cooldown"
-            #         }
-            #     }, 425
+            cooldown = user.restore_cooldown - int(time())
+            if cooldown >= 0:
+                return {
+                    "error": {
+                        "code": "Too early",
+                        "message": f"Password has been restored recently, try in { cooldown // 60 + 1 } minutes",
+                        "details": "Password restore procedure has 10 minutes cooldown"
+                    }
+                }, 425
 
             response = make_response("OK")
             response.status_code = 201
-            response.headers["Request-Id"] = RediskaHandler.create_restore_request(data)
+            response.headers["Request-Id"] = RediskaHandler.create_restore_request(email)
 
             return response
 

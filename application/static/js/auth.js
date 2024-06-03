@@ -519,7 +519,7 @@ document.getElementById("email-submit").addEventListener("click", async (e) => {
     body: JSON.stringify(Object.fromEntries(data))
   })
 
-  if (response.status === 200) {
+  if (response.status === 201) {
     closeEmailWindow();
     openPasswordWindow(email);
     if (isTimerGoingRec) {
@@ -529,10 +529,11 @@ document.getElementById("email-submit").addEventListener("click", async (e) => {
     document.getElementById("get-code-wrapper-rec").classList.add("display-off");
     document.getElementById("new-code-rec").classList.remove("display-off");
     timerIdRec = showTimeRec(cooldownRec);
-  }
 
-  else {
-    document.getElementById("pass-info").innerText = "fail: " + response.status;
+    sessionStorage.setItem("request_id", response.headers.get("Request-Id"));
+  } else if (response.status === 404 || response.status === 425) {
+    let error = await response.json();
+    document.getElementById("pass-info").innerText = error["error"]["message"];
   }
 })
 

@@ -922,6 +922,7 @@ li {
 
 .pass-info {
   height: 10px;
+  color: var(--text-hover-color)
 }
 
 .email-text {

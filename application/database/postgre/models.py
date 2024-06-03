@@ -6,15 +6,17 @@ from . import db
 
 class User(db.Model):
     def __init__(self, user_data):
-        self.uuid = user_data["uuid"]
-        self.name = user_data["username"]
-        self.password_hash = user_data["password_hash"]
-        self.email = user_data["email"]
-        self.register_date = user_data["register_date"]
+        self.uuid = user_data.get("uuid")
+        self.name = user_data.get("username")
+        self.password_hash = user_data.get("password_hash")
+        self.email = user_data.get("email")
+        self.register_date = user_data.get("register_date")
+        self.restore_cooldown = user_data.get("restore_cooldown")
 
 
-    uuid: Mapped[str] = mapped_column(String(36), primary_key=True, unique=True, nullable=False)
-    name: Mapped[str] = mapped_column(String(30), nullable=False)
-    password_hash: Mapped[str] = mapped_column(String(64), nullable=False)
-    email: Mapped[str] = mapped_column(String(256), nullable=False, unique=True)
-    register_date: Mapped[int] = mapped_column(Integer, nullable=False)
+    uuid: Mapped[str] = mapped_column(String(36), primary_key=True, unique=True)
+    name: Mapped[str] = mapped_column(String(30))
+    password_hash: Mapped[str] = mapped_column(String(64))
+    email: Mapped[str] = mapped_column(String(256), unique=True)
+    register_date: Mapped[int] = mapped_column(Integer)
+    restore_cooldown: Mapped[int] = mapped_column(Integer, default=0)
