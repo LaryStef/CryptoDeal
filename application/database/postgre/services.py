@@ -18,3 +18,9 @@ def add_user(user_data: dict):
     row: User = User(user_data)
     db.session.add(row)
     db.session.commit()
+
+
+def update_restore_cooldown(email: str):
+    user = get(User, email=email)
+    user.restore_cooldown = int(time()) + AppConfig.RESTORE_COOLDOWN
+    db.session.commit()

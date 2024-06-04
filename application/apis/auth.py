@@ -8,7 +8,7 @@ from bcrypt import checkpw
 from ..config import AppConfig
 from ..shemas import RegisterSchema, LoginSchema
 from ..database.postgre.models import User
-from ..database.postgre.services import get, add_user
+from ..database.postgre.services import get, add_user, update_restore_cooldown
 from ..database.redisdb import rediska
 from ..database.redisdb.services import RediskaHandler
 
@@ -211,7 +211,7 @@ class Restore(Resource):
             if user is None:
                 return {
                     "error": {
-                        "code": "Conflict",
+                        "code": "Not found",
                         "message": "Email not found",
                         "details": "No user with this email"
                     }
@@ -228,9 +228,8 @@ class Restore(Resource):
                 }, 425
 
             response = make_response("OK")
-            response.status_code = 201
+            response.status_code = 201             
             response.headers["Request-Id"] = RediskaHandler.create_restore_request(email)
-
             return response
 
         except BadRequest:
@@ -241,3 +240,60 @@ class Restore(Resource):
                     "details": "Invalid format of data"
                 }
             }, 400
+
+
+@api.route("/restore-new-code")
+class RestoreNewCode(Resource):
+    def post(self):
+        try:
+            email = request.json.get("email")
+            request_id = request.headers.get("Request-Id")
+
+            if email is None or request_id is None:
+                raise BadRequest
+            
+            restore_data = rediska.json().get("password_restore", request_id)
+            if restore_data is None:
+                return {
+                    "error": {
+                        "code": "Not found",
+                        "message": "Email not found",
+                        "details": "No user with this email"
+                    }
+                }, 404
+
+            if restore_data.get("refresh_attempts") >= AppConfig.MAIL_CODE_REFRESH_ATTEMTPTS:
+                rediska.json().delete("password_restore", request_id)
+                return {
+                    "error": {
+                        "code": "Too many requests",
+                        "message": "Too many refresh code requests",
+                        "details": "Application for password restore has been cancelled"
+                    }
+                }, 429
+
+            if restore_data.get("accept_new_request") > int(time()):
+                return {
+                    "error": {
+                        "code": "Too early",
+                        "message": "Too frequent refresh code requests",
+                        "details": "Try later"
+                    }
+                }, 425
+
+            RediskaHandler.refresh_restore_code(restore_data, request_id)
+            response = make_response("OK")
+            response.status_code = 200
+            return response
+
+        except BadRequest:
+            return {
+                "error": {
+                    "code": "Bad request",
+                    "message": "Invalid data",
+                    "details": "Invalid format of data"
+                }
+            }, 400
+
+
+# TODO update restore cooldown for users after password change

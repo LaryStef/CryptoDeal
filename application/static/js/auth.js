@@ -3,6 +3,7 @@ const registerUrl = new URL("api/auth/sign-up", location.origin);
 const newCodeUrl = new URL("api/auth/refresh-code", location.origin);
 const restoreUrl = new URL("api/auth/restore", location.origin);
 const verifyCodeUrl = new URL("api/auth/verify-code", location.origin);
+const restoreNewCodeUrl = new URL("api/auth/restore-new-code", location.origin);
 
 const cooldown = 30;
 const cooldownRec = 30;
@@ -470,36 +471,36 @@ function showTimeRec(duration) {
 }
 
 async function sendNewCodeRec() {
-  // let data = new Map();
-  // data.set("email", document.getElementById("email-input").value);
+  let data = new Map();
+  data.set("email", document.getElementById("email-input").value);
 
-  // let response = await fetch(newCodeUrl, {
-  //   method: "POST",
-  //   credentials: "same-origin",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //     "Request-Id": sessionStorage.getItem("request_id")
-  //   },
-  //   body: JSON.stringify(Object.fromEntries(data))
-  // });
+  let response = await fetch(restoreNewCodeUrl, {
+    method: "POST",
+    credentials: "same-origin",
+    headers: {
+      "Content-Type": "application/json",
+      "Request-Id": sessionStorage.getItem("request_id")
+    },
+    body: JSON.stringify(Object.fromEntries(data))
+  });
 
-  // if (response.status == 200) {
-  //   document.getElementById("get-code-wrapper").classList.add("display-off");
-  //   document.getElementById("new-code").classList.remove("display-off");
-  //   document.getElementById("input-code").style.backgroundColor = "#7d42e7";
-  //   document.getElementById("input-code").value = "";
-  //   timerId = showTime(cooldown);
-  // }
-  document.getElementById("get-code-wrapper-rec").classList.add("display-off");
-  document.getElementById("new-code-rec").classList.remove("display-off");
-  document.getElementById("input-code-rec").value = "";
-
-  if (isTimerGoingRec) {
-    disableTimerRec(timerIdRec);
+  if (response.status === 200) {
+    document.getElementById("get-code-wrapper-rec").classList.add("display-off");
+    document.getElementById("new-code-rec").classList.remove("display-off");
+    document.getElementById("input-code-rec").value = "";
+  
+    if (isTimerGoingRec) {
+      disableTimerRec(timerIdRec);
+    }
+  
+    timerIdRec = showTimeRec(cooldownRec);
+    isTimerGoingRec = true
   }
 
-  timerIdRec = showTimeRec(cooldownRec);
-  isTimerGoingRec = true
+  if (response.status === 404 || response.status === 425) {
+    error = await response.json();
+    document.getElementById("new-pass-info").innerText = error["error"]["message"];
+  }
 }
 
 document.getElementById("email-submit").addEventListener("click", async (e) => {

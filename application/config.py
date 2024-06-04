@@ -17,8 +17,9 @@ class AppConfig(Config):
     MAIL_USERNAME = os.getenv("MAIL")
     MAIL_PASSWORD = os.getenv("MAIL_PASSWORD")
     MAIL_DEFAULT_SENDER = ("CryptoDeal", os.getenv("MAIL"))
-    MAIL_CODE_COOLDOWN = 30
+    MAIL_CODE_COOLDOWN = 20
     MAIL_CODE_VERIFY_ATTEMPTS = 3
     MAIL_CODE_REFRESH_ATTEMTPTS = 3
     REGISTER_LIFETIME = 1200
     RESTORE_LIFETIME = 1200
+    RESTORE_COOLDOWN = 2000         # restore_cooldown must be less then restore_lifetime
