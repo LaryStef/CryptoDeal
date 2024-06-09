@@ -20,7 +20,7 @@ def add_user(user_data: dict):
     db.session.commit()
 
 
-def update_restore_cooldown(email: str):
-    user = get(User, email=email)
+def update_after_password_change(user: User, password: str):
     user.restore_cooldown = int(time()) + AppConfig.RESTORE_COOLDOWN
+    user.password_hash = hash_password(password)
     db.session.commit()

@@ -42,11 +42,11 @@ class RediskaHandler:
 
 
     @staticmethod
-    def increase_verify_attempts(data: dict, request_id: str):
+    def increase_verify_attempts(file: str, data: dict, request_id: str):
         data["verify_attempts"] = data["verify_attempts"] + 1
 
-        rediska.json().delete("register", request_id)
-        rediska.json().set("register", request_id, data, nx=True)
+        rediska.json().delete(file, request_id)
+        rediska.json().set(file, request_id, data, nx=True)
 
 
     @staticmethod

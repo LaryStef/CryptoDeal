@@ -8,7 +8,7 @@ from bcrypt import checkpw
 from ..config import AppConfig
 from ..shemas import RegisterSchema, LoginSchema
 from ..database.postgre.models import User
-from ..database.postgre.services import get, add_user, update_restore_cooldown
+from ..database.postgre.services import get, add_user, update_after_password_change
 from ..database.redisdb import rediska
 from ..database.redisdb.services import RediskaHandler
 
@@ -17,6 +17,7 @@ from ..database.redisdb.services import RediskaHandler
 api = Namespace("auth", path="/auth/")
 
 
+# TODO update api routes
 @api.route("/sign-up")
 class Sign_up(Resource):
     def post(self):
@@ -62,7 +63,7 @@ class Sign_up(Resource):
             }, 400
 
 
-@api.route("/refresh-code")
+@api.route("/register/refresh-code")
 class Refresh_code(Resource):
     def post(self):
         try:
@@ -109,7 +110,7 @@ class Refresh_code(Resource):
             }, 400
 
 
-@api.route("/verify-code")
+@api.route("/register/verify-code")
 class Verify_code(Resource):
     def post(self):
         try:
@@ -132,7 +133,7 @@ class Verify_code(Resource):
                 }, 429
 
             if register_data.get("code") != code:
-                RediskaHandler.increase_verify_attempts(register_data, request_id)
+                RediskaHandler.increase_verify_attempts("register", register_data, request_id)
                 return "Invalid code", 400
                 return {
                     "error": {
@@ -198,7 +199,7 @@ class Sign_in(Resource):
             }, 400
 
 
-@api.route("/restore")
+@api.route("/restore/apply")
 class Restore(Resource):
     def post(self):
         try:
@@ -242,7 +243,7 @@ class Restore(Resource):
             }, 400
 
 
-@api.route("/restore-new-code")
+@api.route("/restore/new-code")
 class RestoreNewCode(Resource):
     def post(self):
         try:
@@ -296,4 +297,63 @@ class RestoreNewCode(Resource):
             }, 400
 
 
-# TODO update restore cooldown for users after password change
+@api.route("/restore/verify")
+class RestoreVerify(Resource):
+    def post(self):
+        try:
+            user_data = request.json
+            request_id = request.headers.get("Request_Id")
+
+            if None in [user_data.get("password"), user_data.get("code"), request_id] or \
+                    len(user_data.get("password")) < 6 or \
+                    len(user_data.get("password")) > 20:
+                raise BadRequest
+
+            request_data = rediska.json().get("password_restore", request_id)
+
+            if request_data is None:
+                return {
+                    "error": {
+                        "code": "Not found",
+                        "message": "Request not found",
+                        "details": "No password restore request with this id"
+                    }
+                }, 404
+
+            if request_data.get("verify_attempts") >= AppConfig.MAIL_CODE_VERIFY_ATTEMPTS:
+                rediska.json().delete("password_restore", request_id)
+                return {
+                    "error": {
+                        "code": "Too many requests",
+                        "message": "Too many verify code requests",
+                        "details": "Application for registration has been cancelled"
+                    }
+                }, 429
+            
+
+            if request_data.get("code") != user_data.get("code"):
+                RediskaHandler.increase_verify_attempts("password_restore", request_data, request_id) 
+                return {
+                    "error": {
+                        "code": "Bad request",
+                        "message": "Invalid code",
+                        "details": "Try one more time or get new code"
+                    }
+                }, 400
+
+            user = get(User, email=request_data.get("email"))
+            update_after_password_change(user, user_data.get("password"))
+
+            response = make_response("OK")
+            response.status_code = 200
+            response.set_cookie("some-cookie", str(int(time())))
+            return response
+
+        except BadRequest:
+            return {
+                "error": {
+                    "code": "Bad request",
+                    "message": "Invalid data",
+                    "details": "Invalid format of data"
+                }
+            }, 400

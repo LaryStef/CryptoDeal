@@ -1,9 +1,10 @@
 const loginUrl = new URL("api/auth/sign-in", location.origin);
 const registerUrl = new URL("api/auth/sign-up", location.origin);
-const newCodeUrl = new URL("api/auth/refresh-code", location.origin);
-const restoreUrl = new URL("api/auth/restore", location.origin);
-const verifyCodeUrl = new URL("api/auth/verify-code", location.origin);
-const restoreNewCodeUrl = new URL("api/auth/restore-new-code", location.origin);
+const newCodeUrl = new URL("api/auth/register/refresh-code", location.origin);
+const verifyCodeUrl = new URL("api/auth/register/verify-code", location.origin);
+const restoreUrl = new URL("api/auth/restore/apply", location.origin);
+const restoreNewCodeUrl = new URL("api/auth/restore/new-code", location.origin);
+const restoreVerifyUrl = new URL("api/auth/restore/verify", location.origin);
 
 const cooldown = 30;
 const cooldownRec = 30;
@@ -498,7 +499,7 @@ async function sendNewCodeRec() {
   }
 
   if (response.status === 404 || response.status === 425) {
-    error = await response.json();
+    let error = await response.json();
     document.getElementById("new-pass-info").innerText = error["error"]["message"];
   }
 }
@@ -538,9 +539,32 @@ document.getElementById("email-submit").addEventListener("click", async (e) => {
   }
 })
 
-document.getElementById("submit-rec").addEventListener("click", (e) => {
+document.getElementById("submit-rec").addEventListener("click", async (e) => {
   e.preventDefault();
 
+  let password = document.getElementById("email-rec1").value;
+
+  if (password != document.getElementById("email-rec2").value) {
+    document.getElementById("new-pass-info").innerText = "Passwords aren't match";
+    return;
+  }
+
+  let response = await fetch(restoreVerifyUrl, {
+    method: "Post",
+    credentials: "same-origin",
+    headers: {
+      "Content-Type": "application/json",
+      "Request-Id": sessionStorage.getItem("request_id")
+    },
+    body: JSON.stringify({
+      "password": password,
+      "code": document.getElementById("input-code-rec").value
+    })
+  })
+
+  if (response.status === 200) {
+    closePasswordWindow();
+  } 
 })
 
 function disableTimerRec(timerID) {
