@@ -4,6 +4,7 @@ from uuid import uuid4
 
 from . import db
 from .models import User
+from ...config import AppConfig
 from ...utils.cryptography import hash_password
 
 
@@ -17,4 +18,10 @@ def add_user(user_data: dict):
 
     row: User = User(user_data)
     db.session.add(row)
+    db.session.commit()
+
+
+def update_after_password_change(user: User, password: str):
+    user.restore_cooldown = int(time()) + AppConfig.RESTORE_COOLDOWN
+    user.password_hash = hash_password(password)
     db.session.commit()

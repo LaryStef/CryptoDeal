@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu+Mono&subset=latin"/>
 {% endblock %}
 
-{% block main_container %}
+{% block first_container %}
 <div class="auth-window" id="login">
     <div class="form-container">
         <div class="switch-window">
@@ -77,8 +77,8 @@
             </form>
             <div>
             <div class="recovery-container">
-                <a class="password-recovery" href="#"
-                >forget password? Click here!</a
+                <button class="password-recovery" id="recovery-btn" href="#"
+                >forget password? Click here!</button
                 >
             </div>
             </div>
@@ -116,55 +116,76 @@
         </div>
     </div>
 </div>
-<nav class="navbar" id="navbar">
-    <div class="navbar-items">
-        <a class="navbar-link" href="#">
-        <img class="logo" src="{{ url_for('static', filename='svg/CryptoDealLogo.svg') }}" alt="CryptoDeal" />
-        </a>
-        <ul class="navbar-links">
-        <li class="link-wrapper">
-            <a class="navbar-link" href="#">Cryptocurrency</a>
-        </li>
-        <li class="link-wrapper">
-            <a class="navbar-link" href="#">Securities</a>
-        </li>
-        <li class="link-wrapper">
-            <a class="navbar-link" href="#">Support</a>
-        </li>
-        <li class="link-wrapper">
-            <a class="navbar-link" href="#">About</a>
-        </li>
-        </ul>
-        <div class="navbar-links auth-container">
-            <button class="auth-link left-link" id="sign-in">Sign in</button>
-            <button class="auth-link right-link" id="sign-up">Sign up</button>
+<div class="email-recover-window" id="email-window">
+    <div class="email-wrapper">
+        <div class="email-text">
+            <p>Enter your email please:</p>
         </div>
-        <a class="profile display-off" href="#">profile</a>
-        <div class="dropdown" id="dropdown">
-            <div class="dropdown-button" id="dropdown-button">Menu</div>
-            <ul class="dropdown-content">
-                <li class="drop-1">
-                    <a href="#">Cryptocurrency</a>
-                </li>
-                <li class="drop-2">
-                    <a href="#">Securities</a>
-                </li>
-                <li class="drop-3">
-                    <a href="#">Support</a>
-                </li>
-                <li class="drop-4">
-                    <a href="#">About</a>
-                </li>
-                <li class="drop-5">
-                    <button href="#" id="dropdown-sign-in">Sign in</button>
-                </li>
-                <li class="drop-6">
-                    <button href="#" id="dropdown-sign-up">Sign up</button>
-                </li>
-            </ul>
+        <form class="email-form">
+            <input
+                class="email-input-recovery"
+                id="email-input-recovery"
+                type="email"
+                placeholder="email"
+            >
+            <input class="email-submit" id="email-submit" type="submit" value="sumbit">
+        </form>
+        <div class="pass-info-wrapper">
+            <span id="pass-info"></span>
+        </div>
+        <div class="email-cancel-container">
+            <button class="email-cancel" id="email-cancel">cancel</button>
         </div>
     </div>
-</nav>
+</div>
+<div class="confirm-window-rec" id="confirm-window-rec">
+    <div class="email-confirm-rec">
+        <div class="code-message">
+            <p>Enter code sent on: </p>
+            <span id="email-rec"></span>
+        </div>
+        <div class="pass-info-wrapper">
+            <span id="new-pass-info"></span>
+        </div>
+        <form class="email-form-rec">
+            <input
+            class="email-input-recovery"
+            id="email-rec1" type="text"
+            placeholder="password"
+            minlength="6"
+            maxlength="20"
+            >
+            <input
+            class="email-input-recovery"
+            id="email-rec2" type="text"
+            placeholder="repeat password"
+            minlength="6"
+            maxlength="20"
+            >
+            <input
+                class="input-code-rec"
+                id="input-code-rec"
+                type="text"
+                placeholder="code"
+                maxlength="6"
+            >
+            <input class="email-submit" id="submit-rec" type="submit" value="sumbit">
+        </form>
+        <div class="new-code" id="new-code-rec">
+            <p>get new code in: </p>
+            <span id="code-time-rec">0:00</span>
+        </div>
+        <div class="get-code-wrapper display-off" id="get-code-wrapper-rec">
+            <button class="get-code" id="code-btn-rec">get new code</button>
+        </div>
+        <div class="mail-cancel-container">
+            <button class="mail-cancel" id="mail-cancel-rec">cancel</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block main_container %}
 <div class="main-container" id="main">
     <div class="central-container">
         <div class="text-container">
