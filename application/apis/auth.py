@@ -18,10 +18,6 @@ api = Namespace("auth", path="/auth/")
 
 
 # TODO change timezone from gmt-3 to gmt
-# TODO turn on email senders
-# TODO change desciptions BadRequest
-
-
 @api.route("/sign-in")
 class Sign_in(Resource):
     def post(self):
@@ -100,7 +96,7 @@ class Sign_up(Resource):
                 "error": {
                     "code": "Bad request",
                     "message": "Invalid data",
-                    "details": "Invalid format of data or no such register ID"
+                    "details": "Invalid format of data"
                 }
             }, 400
 
@@ -287,7 +283,7 @@ class RestoreNewCode(Resource):
                 "error": {
                     "code": "Bad request",
                     "message": "Invalid data",
-                    "details": "Invalid format of data"
+                    "details": "Invalid format of data or no such register ID"
                 }
             }, 400
 
@@ -307,13 +303,7 @@ class RestoreVerify(Resource):
             request_data = rediska.json().get("password_restore", request_id)
 
             if request_data is None:
-                return {
-                    "error": {
-                        "code": "Not found",
-                        "message": "Request not found",
-                        "details": "No password restore request with this id"
-                    }
-                }, 404
+                raise BadRequest
             
             if request_data.get("verify_attempts") >= AppConfig.MAIL_CODE_VERIFY_ATTEMPTS:
                 rediska.json().delete("password_restore", request_id)
@@ -349,6 +339,6 @@ class RestoreVerify(Resource):
                 "error": {
                     "code": "Bad request",
                     "message": "Invalid data",
-                    "details": "Invalid format of data"
+                    "details": "Invalid format of data or no such register ID"
                 }
             }, 400
