@@ -418,7 +418,6 @@ function closePasswordWindow() {
   window.style.transform = "translate(200%)";
   document.getElementById("main").style.filter = "brightness(1)";
   document.getElementById("navbar").style.filter = "brightness(1)";
-  document.getElementById("input-code-rec").style.backgroundColor = "#7d42e7";
   document.getElementById("input-code-rec").value = "";
   document.getElementById("email-rec1").value = "";
   document.getElementById("email-rec2").value = "";
@@ -571,6 +570,10 @@ document.getElementById("submit-rec").addEventListener("click", async (e) => {
 
   if (response.status === 200) {
     closePasswordWindow();
+  }
+  if (response.status === 429 || response.status === 400) {
+    error = await response.json();
+    document.getElementById("new-pass-info").innerText = error["error"]["message"]
   }
 })
 
