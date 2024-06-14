@@ -1,7 +1,7 @@
 const loginUrl = new URL("api/auth/sign-in", location.origin);
-const registerUrl = new URL("api/auth/sign-up", location.origin);
-const newCodeUrl = new URL("api/auth/register/refresh-code", location.origin);
-const verifyCodeUrl = new URL("api/auth/register/verify-code", location.origin);
+const registerUrl = new URL("api/auth/register/apply", location.origin);
+const newCodeUrl = new URL("api/auth/register/new-code", location.origin);
+const verifyCodeUrl = new URL("api/auth/register/verify", location.origin);
 const restoreUrl = new URL("api/auth/restore/apply", location.origin);
 const restoreNewCodeUrl = new URL("api/auth/restore/new-code", location.origin);
 const restoreVerifyUrl = new URL("api/auth/restore/verify", location.origin);
@@ -252,7 +252,7 @@ async function verifyCode() {
   if (response.status == 200) {
     closeConfirmWindow();
 
-    // show profile
+    // update profile
   } else {
     document.getElementById("input-code").style.backgroundColor = "#BF1A3E";
   }
@@ -571,7 +571,7 @@ document.getElementById("submit-rec").addEventListener("click", async (e) => {
 
   if (response.status === 200) {
     closePasswordWindow();
-  } 
+  }
 })
 
 function disableTimerRec(timerID) {

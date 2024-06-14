@@ -12,7 +12,7 @@ def send_register_code(code: str, recipient: str) -> None:
         <p style="font-size: 14px; color: black">Don't reply to this email<p>
         <p style="font-size: 14px; color: black">Support on Support@cryptodeal.com<p>
     """
-    mail.send(message)
+    # mail.send(message)
 
 
 def send_restore_code(code: str, recipient: str) -> None:
@@ -25,4 +25,4 @@ def send_restore_code(code: str, recipient: str) -> None:
         <p style="font-size: 14px; color: black">Don't reply to this email<p>
         <p style="font-size: 14px; color: black">Support on Support@cryptodeal.com<p>
     """
-    mail.send(message)
+    # mail.send(message)

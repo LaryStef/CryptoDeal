@@ -17,7 +17,7 @@ class AppConfig(Config):
     MAIL_USERNAME = os.getenv("MAIL")
     MAIL_PASSWORD = os.getenv("MAIL_PASSWORD")
     MAIL_DEFAULT_SENDER = ("CryptoDeal", os.getenv("MAIL"))
-    MAIL_CODE_COOLDOWN = 20
+    MAIL_CODE_COOLDOWN = 20         # cooldown and cooldownRec in auth.js must be same or longer
     MAIL_CODE_VERIFY_ATTEMPTS = 3
     MAIL_CODE_REFRESH_ATTEMTPTS = 3
     REGISTER_LIFETIME = 1200
