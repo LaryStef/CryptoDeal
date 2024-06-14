@@ -384,6 +384,7 @@ function closeEmailWindow() {
   document.getElementById("main").style.filter = "brightness(1)";
   document.getElementById("navbar").style.filter = "brightness(1)";
   document.getElementById("email-input-recovery").value = "";
+  document.getElementById("pass-info").innerText = "";
   
   setTimeout(() => {
     window.style.visibility = "hidden";
@@ -421,6 +422,7 @@ function closePasswordWindow() {
   document.getElementById("input-code-rec").value = "";
   document.getElementById("email-rec1").value = "";
   document.getElementById("email-rec2").value = "";
+  document.getElementById("new-pass-info").innerText = "";
 
   setTimeout(() => {
     window.style.visibility = "hidden";
@@ -545,7 +547,12 @@ document.getElementById("submit-rec").addEventListener("click", async (e) => {
   let password = document.getElementById("email-rec1").value;
 
   if (password != document.getElementById("email-rec2").value) {
-    document.getElementById("new-pass-info").innerText = "Passwords aren't match";
+    document.getElementById("new-pass-info").innerText = "passwords aren't match";
+    return;
+  }
+  
+  if (password.length < 6 || password.length > 20) {
+    document.getElementById("new-pass-info").innerText = "username length must be between 6 and 20";
     return;
   }
 

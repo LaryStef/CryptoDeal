@@ -13,11 +13,48 @@ from ..database.redisdb import rediska
 from ..database.redisdb.services import RediskaHandler
 
 
-
 api = Namespace("auth", path="/auth/")
 
 
-# TODO update api routes
+# TODO change timezone from gmt-3 to gmt
+@api.route("/sign-in")
+class Sign_in(Resource):
+    def post(self):
+        try:
+            data = request.form.to_dict()
+
+            for k, v in data.items():
+                data[k] = v.replace(" ", "")
+
+            if LoginSchema().validate(data):
+                raise BadRequest
+            
+            user = get(User, name=data.get("username"))
+
+            if user is not None and checkpw(data.get("password").encode("utf-8"), user.password_hash.encode("utf-8")):
+                response = make_response("OK")
+                response.status_code = 200
+                response.set_cookie("some-cookie", str(int(time())))
+                return response
+            
+            return {
+                "error": {
+                    "code": "Unauthorized",
+                    "message": "Invalid login or password",
+                    "details": "Try one more time or restore password"
+                }
+            }, 401               
+            
+        except BadRequest:
+            return {
+                "error": {
+                    "code": "Bad request",
+                    "message": "Invalid data",
+                    "details": "Invalid format of data"
+                }
+            }, 400
+
+
 @api.route("/sign-up")
 class Sign_up(Resource):
     def post(self):
@@ -161,44 +198,6 @@ class Verify_code(Resource):
             }, 400
 
 
-@api.route("/sign-in")
-class Sign_in(Resource):
-    def post(self):
-        try:
-            data = request.form.to_dict()
-
-            for k, v in data.items():
-                data[k] = v.replace(" ", "")
-
-            if LoginSchema().validate(data):
-                raise BadRequest
-            
-            user = get(User, name=data.get("username"))
-
-            if user is not None and checkpw(data.get("password").encode("utf-8"), user.password_hash.encode("utf-8")):
-                response = make_response("OK")
-                response.status_code = 200
-                response.set_cookie("some-cookie", str(int(time())))
-                return response
-            
-            return {
-                "error": {
-                    "code": "Unauthorized",
-                    "message": "Invalid login or password",
-                    "details": "Try one more time or restore password"
-                }
-            }, 401               
-            
-        except BadRequest:
-            return {
-                "error": {
-                    "code": "Bad request",
-                    "message": "Invalid data",
-                    "details": "Invalid format of data"
-                }
-            }, 400
-
-
 @api.route("/restore/apply")
 class Restore(Resource):
     def post(self):
@@ -330,7 +329,6 @@ class RestoreVerify(Resource):
                     }
                 }, 429
             
-
             if request_data.get("code") != user_data.get("code"):
                 RediskaHandler.increase_verify_attempts("password_restore", request_data, request_id) 
                 return {
@@ -343,6 +341,7 @@ class RestoreVerify(Resource):
 
             user = get(User, email=request_data.get("email"))
             update_after_password_change(user, user_data.get("password"))
+            rediska.json().delete("password_restore", request_id)
 
             response = make_response("OK")
             response.status_code = 200

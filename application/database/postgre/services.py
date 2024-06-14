@@ -4,6 +4,7 @@ from uuid import uuid4
 
 from . import db
 from .models import User
+from ...config import AppConfig
 from ...utils.cryptography import hash_password
 
 
