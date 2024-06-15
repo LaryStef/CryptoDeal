@@ -1,4 +1,4 @@
-from time import time
+from datetime import datetime, UTC
 
 from flask_restx import Namespace, Resource
 from flask import request, make_response
@@ -17,7 +17,7 @@ from ..database.redisdb.services import RediskaHandler
 api = Namespace("auth", path="/auth/")
 
 
-# TODO change timezone from gmt-3 to gmt
+# TODO change timezone from gmt-3 to gmt int(datetime.datetime.now(datetime.UTC).timestamp())
 @api.route("/sign-in")
 class Sign_in(Resource):
     def post(self):
@@ -35,7 +35,7 @@ class Sign_in(Resource):
             if user is not None and checkpw(data.get("password").encode("utf-8"), user.password_hash.encode("utf-8")):
                 response = make_response("OK")
                 response.status_code = 200
-                response.set_cookie("some-cookie", str(int(time())))
+                response.set_cookie("some-cookie", str(int(datetime.datetime.now(datetime.UTC).timestamp())))
                 return response
             
             return {
@@ -122,7 +122,7 @@ class Refresh_code(Resource):
                     }
                 }, 429
             
-            if register_data.get("accept_new_request") > int(time()):
+            if register_data.get("accept_new_request") > int(datetime.datetime.now(datetime.UTC).timestamp()):
                 return {
                     "error": {
                         "code": "Too early",
@@ -156,7 +156,7 @@ class Verify_code(Resource):
 
             register_data = rediska.json().get("register", request_id)
 
-            if register_data is None or register_data["deactivation_time"] <= int(time()) or code is None:
+            if register_data is None or register_data["deactivation_time"] <= int(datetime.datetime.now(datetime.UTC).timestamp()) or code is None:
                 raise BadRequest
 
             if register_data.get("verify_attempts") >= AppConfig.MAIL_CODE_VERIFY_ATTEMPTS:
@@ -185,7 +185,7 @@ class Verify_code(Resource):
 
             response = make_response("OK")
             response.status_code = 200
-            response.set_cookie("some-cookie", str(int(time())))
+            response.set_cookie("some-cookie", str(int(datetime.datetime.now(datetime.UTC).timestamp())))
             return response
 
         except (BadRequest, ResponseError):
@@ -217,7 +217,7 @@ class Restore(Resource):
                     }
                 }, 404
 
-            cooldown = user.restore_cooldown - int(time())
+            cooldown = user.restore_cooldown - int(datetime.datetime.now(datetime.UTC).timestamp())
             if cooldown >= 0:
                 return {
                     "error": {
@@ -264,7 +264,7 @@ class RestoreNewCode(Resource):
                     }
                 }, 429
 
-            if restore_data.get("accept_new_request") > int(time()):
+            if restore_data.get("accept_new_request") > int(datetime.datetime.now(datetime.UTC).timestamp()):
                 return {
                     "error": {
                         "code": "Too early",
@@ -331,7 +331,7 @@ class RestoreVerify(Resource):
 
             response = make_response("OK")
             response.status_code = 200
-            response.set_cookie("some-cookie", str(int(time())))
+            response.set_cookie("some-cookie", str(int(datetime.datetime.now(datetime.UTC).timestamp())))
             return response
 
         except (BadRequest, ResponseError):
