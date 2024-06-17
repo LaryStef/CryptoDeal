@@ -71,9 +71,11 @@ document.getElementById("register-form-id").addEventListener("submit", async (e)
       document.getElementById("input-code").style.backgroundColor = "#7d42e7";
       document.getElementById("input-code").value = "";
       timerId = showTime(cooldown);
-  
+      
+      let email = document.getElementById("email-input").value;
+      sessionStorage.setItem("email-reg", email)
       closeLoginWindow();
-      openConfirmWindow(document.getElementById("email-input").value);
+      openConfirmWindow(email);
     }
     else {
       error = await response.json();
@@ -247,15 +249,15 @@ document.addEventListener("input", () => {
 })
 
 
-var timerId;
-var isTimerGoing = false;
+let timerId;
+let isTimerGoing = false;
 
 function showTime(duration) {
   isTimerGoing = true;
   let minutes = Math.floor(duration / 60);
   let seconds = duration % 60;
   timerId = setInterval(() => {
-    var time;
+    let time;
     if (seconds < 10) {
       time = `${minutes}:0${seconds}`;
     }
@@ -314,7 +316,7 @@ async function verifyCode() {
 
 async function sendNewCode() {
   let data = new Map();
-  data.set("email", document.getElementById("email-input").value);
+  data.set("email", sessionStorage.getItem("email-reg"));
 
   response = await fetch(newCodeUrl, {
     method: "POST",
@@ -374,7 +376,9 @@ document.getElementById("recovery-btn").addEventListener("click", () => {
 document.getElementById("email-submit").addEventListener("click", async (e) => {
   e.preventDefault();
 
+
   const email = document.getElementById("email-input-recovery").value;
+  sessionStorage.setItem("email-rec", email)
 
   let data = new Map();
   data.set("email", email);
@@ -430,7 +434,7 @@ function closeEmailWindow() {
     window.style.visibility = "hidden";
     window.style.transition = "none";
     window.style.transform = "translate(200%)";
-    window.style.transition = "all var(--login-transition-duration) ease-out";
+    window.style.transition = "all let(--login-transition-duration) ease-out";
   }, 400)
   
   enableButtons();
@@ -438,7 +442,7 @@ function closeEmailWindow() {
 
 async function sendNewCodeRec() {
   let data = new Map();
-  data.set("email", document.getElementById("email-input").value);
+  data.set("email", sessionStorage.getItem("email-rec"));
 
   let response = await fetch(restoreNewCodeUrl, {
     method: "POST",
@@ -539,15 +543,15 @@ function closePasswordWindow() {
   enableButtons();
 }
 
-var timerIdRec;
-var isTimerGoingRec = false;
+let timerIdRec;
+let isTimerGoingRec = false;
 
 function showTimeRec(duration) {
   isTimerGoingRec = true;
   let minutes = Math.floor(duration / 60);
   let seconds = duration % 60;
   timerIdRec = setInterval(() => {
-    var time;
+    let time;
     if (seconds < 10) {
       time = `${minutes}:0${seconds}`;
     }
