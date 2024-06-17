@@ -1,7 +1,7 @@
 from datetime import datetime, UTC
 
 from flask_restx import Namespace, Resource
-from flask import request, make_response
+from flask import request, make_response, Response
 from werkzeug.exceptions import BadRequest
 from redis.exceptions import ResponseError
 from bcrypt import checkpw
@@ -9,7 +9,7 @@ from bcrypt import checkpw
 from ..config import AppConfig
 from ..shemas import RegisterSchema, LoginSchema
 from ..database.postgre.models import User
-from ..database.postgre.services import get, add_user, update_after_password_change
+from ..database.postgre.services import get, add_user, update_password
 from ..database.redisdb import rediska
 from ..database.redisdb.services import RediskaHandler
 
@@ -17,12 +17,11 @@ from ..database.redisdb.services import RediskaHandler
 api = Namespace("auth", path="/auth/")
 
 
-# TODO change timezone from gmt-3 to gmt int(datetime.datetime.now(datetime.UTC).timestamp())
 @api.route("/sign-in")
 class Sign_in(Resource):
-    def post(self):
+    def post(self) -> tuple[dict[str, dict[str, str]], int] | Response:
         try:
-            data = request.form.to_dict()
+            data: dict[str, str] = request.form.to_dict()
 
             for k, v in data.items():
                 data[k] = v.replace(" ", "")
@@ -30,12 +29,12 @@ class Sign_in(Resource):
             if LoginSchema().validate(data):
                 raise BadRequest
             
-            user = get(User, name=data.get("username"))
+            user: User | None = get(User, name=data.get("username"))
 
-            if user is not None and checkpw(data.get("password").encode("utf-8"), user.password_hash.encode("utf-8")):
-                response = make_response("OK")
+            if user is not None and checkpw(data.get("password", "").encode("utf-8"), user.password_hash.encode("utf-8")):
+                response: Response = make_response("OK")
                 response.status_code = 200
-                response.set_cookie("some-cookie", str(int(datetime.datetime.now(datetime.UTC).timestamp())))
+                response.set_cookie("some-cookie", str(int(datetime.now(UTC).timestamp())))
                 return response
             
             return {
@@ -58,9 +57,9 @@ class Sign_in(Resource):
 
 @api.route("/register/apply")
 class Sign_up(Resource):
-    def post(self):
+    def post(self) -> tuple[dict[str, dict[str, str]], int] | Response:
         try:
-            data = request.form.to_dict()
+            data: dict[str, str] = request.form.to_dict()
             
             for k, v in data.items():
                 data[k] = v.replace(" ", "")
@@ -86,7 +85,7 @@ class Sign_up(Resource):
                     }
                 }, 409
             
-            response = make_response("OK")
+            response: Response = make_response("OK")
             response.status_code = 201
             response.headers["Request-Id"] = RediskaHandler.create_register_request(data)
 
@@ -103,16 +102,21 @@ class Sign_up(Resource):
 
 @api.route("/register/new-code")
 class Refresh_code(Resource):
-    def post(self):
+    def post(self) -> tuple[dict[str, dict[str, str]], int] | Response:
         try:
-            email = request.json.get("email")
-            request_id = request.headers.get("Request-Id")
-            register_data = rediska.json().get("register", request_id)
+            user_data: dict[str, str] | None = request.json
 
-            if register_data is None or register_data.get("email") != email:
+            if user_data is None:
                 raise BadRequest
 
-            if register_data.get("refresh_attempts") >= AppConfig.MAIL_CODE_REFRESH_ATTEMTPTS:
+            email: str = user_data.get("email", "")
+            request_id: str | None = request.headers.get("Request-Id")
+            register_data: dict[str, str | int] = rediska.json().get("register", request_id)
+
+            if request_id is None or register_data.get("email") != email:
+                raise BadRequest
+
+            if register_data.get("refresh_attempts") >= AppConfig.MAIL_CODE_REFRESH_ATTEMTPTS:    # type: ignore
                 rediska.json().delete("register", request_id)
                 return {
                     "error": {
@@ -122,7 +126,7 @@ class Refresh_code(Resource):
                     }
                 }, 429
             
-            if register_data.get("accept_new_request") > int(datetime.datetime.now(datetime.UTC).timestamp()):
+            if register_data.get("accept_new_request") > int(datetime.now(UTC).timestamp()):    # type: ignore
                 return {
                     "error": {
                         "code": "Too early",
@@ -133,7 +137,7 @@ class Refresh_code(Resource):
 
             RediskaHandler.refresh_register_code(register_data, request_id)
 
-            response = make_response("OK")
+            response: Response = make_response("OK")
             response.status_code = 200
             return response
 
@@ -149,15 +153,29 @@ class Refresh_code(Resource):
 
 @api.route("/register/verify")
 class Verify_code(Resource):
-    def post(self):
+    def post(self) -> tuple[dict[str, dict[str, str]], int] | Response:
         try:
-            code = request.json.get("code")
-            request_id = request.headers.get("Request-Id")
+            user_data: dict[str, str] | None = request.json
+            request_id: str | None = request.headers.get("Request-Id")
+
+            if user_data is None or request_id is None:
+                raise BadRequest
+
+            code: str | None = user_data.get("code")
 
             register_data = rediska.json().get("register", request_id)
 
-            if register_data is None or register_data["deactivation_time"] <= int(datetime.datetime.now(datetime.UTC).timestamp()) or code is None:
+            if code is None or register_data is None:
                 raise BadRequest
+            
+            if register_data["deactivation_time"] <= int(datetime.now(UTC).timestamp()):
+                return {
+                    "error": {
+                        "code": "Bad Request",
+                        "message": "Application registreation has been cancelled",
+                        "details": "It's too many time since you applied for registration"
+                    }
+                }, 400
 
             if register_data.get("verify_attempts") >= AppConfig.MAIL_CODE_VERIFY_ATTEMPTS:
                 rediska.json().delete("register", request_id)
@@ -168,10 +186,9 @@ class Verify_code(Resource):
                         "details": "Application for registration has been cancelled"
                     }
                 }, 429
-
+            
             if register_data.get("code") != code:
                 RediskaHandler.increase_verify_attempts("register", register_data, request_id)
-                return "Invalid code", 400
                 return {
                     "error": {
                         "code": "Bad request",
@@ -183,9 +200,9 @@ class Verify_code(Resource):
             add_user(register_data)
             rediska.json().delete("register", request_id)
 
-            response = make_response("OK")
+            response: Response = make_response("OK")
             response.status_code = 200
-            response.set_cookie("some-cookie", str(int(datetime.datetime.now(datetime.UTC).timestamp())))
+            response.set_cookie("some-cookie", str(int(datetime.now(UTC).timestamp())))
             return response
 
         except (BadRequest, ResponseError):
@@ -200,14 +217,17 @@ class Verify_code(Resource):
 
 @api.route("/restore/apply")
 class Restore(Resource):
-    def post(self):
+    def post(self) -> tuple[dict[str, dict[str, str]], int] | Response:
         try:
-            email = request.json.get("email")
+            user_data: dict[str, str] | None = request.json
+            if user_data is None:
+                raise BadRequest
 
+            email: str | None = user_data.get("email", "")
             if email is None:
                 raise BadRequest
 
-            user = get(User, email=email)
+            user: User | None = get(User, email=email)
             if user is None:
                 return {
                     "error": {
@@ -217,7 +237,7 @@ class Restore(Resource):
                     }
                 }, 404
 
-            cooldown = user.restore_cooldown - int(datetime.datetime.now(datetime.UTC).timestamp())
+            cooldown: int = user.restore_cooldown - int(datetime.now(UTC).timestamp())
             if cooldown >= 0:
                 return {
                     "error": {
@@ -227,7 +247,7 @@ class Restore(Resource):
                     }
                 }, 425
 
-            response = make_response("OK")
+            response: Response = make_response("OK")
             response.status_code = 201             
             response.headers["Request-Id"] = RediskaHandler.create_restore_request(email)
             return response
@@ -244,17 +264,22 @@ class Restore(Resource):
 
 @api.route("/restore/new-code")
 class RestoreNewCode(Resource):
-    def post(self):
+    def post(self) -> tuple[dict[str, dict[str, str]], int] | Response:
         try:
-            email = request.json.get("email")
-            request_id = request.headers.get("Request-Id")
+            user_data: dict[str, str] | None = request.json
+            request_id: str | None = request.headers.get("Request-Id")
+
+            if user_data is None or request_id is None:
+                raise BadRequest
+
+            email: str | None = user_data.get("email", "")
             
-            restore_data = rediska.json().get("password_restore", request_id)
+            restore_data: dict[str, str | int] | None = rediska.json().get("password_restore", request_id)
 
             if restore_data is None or restore_data.get("email") != email:
                 raise BadRequest
 
-            if restore_data.get("refresh_attempts") >= AppConfig.MAIL_CODE_REFRESH_ATTEMTPTS:
+            if restore_data.get("refresh_attempts") >= AppConfig.MAIL_CODE_REFRESH_ATTEMTPTS:    # type: ignore
                 rediska.json().delete("password_restore", request_id)
                 return {
                     "error": {
@@ -264,7 +289,7 @@ class RestoreNewCode(Resource):
                     }
                 }, 429
 
-            if restore_data.get("accept_new_request") > int(datetime.datetime.now(datetime.UTC).timestamp()):
+            if restore_data.get("accept_new_request") > int(datetime.now(UTC).timestamp()):    # type: ignore
                 return {
                     "error": {
                         "code": "Too early",
@@ -290,14 +315,19 @@ class RestoreNewCode(Resource):
 
 @api.route("/restore/verify")
 class RestoreVerify(Resource):
-    def post(self):
+    def post(self) -> tuple[dict[str, dict[str, str]], int] | Response:
         try:
-            user_data = request.json
-            code = user_data.get("code")
-            password = user_data.get("password")
-            request_id = request.headers.get("Request_Id")
+            user_data: dict[str, str] | None = request.json
 
-            if None in [password, code, request_id] or len(password) < 6 or len(password) > 20:
+            if user_data is None:
+                raise BadRequest
+            
+            code: str | None = user_data.get("code")
+            password: str | None = user_data.get("password")
+            request_id: str | None = request.headers.get("Request_Id")
+
+            if password is None or code is None or request_id is None or \
+                len(password) < 6 or len(password) > 20:
                 raise BadRequest
 
             request_data = rediska.json().get("password_restore", request_id)
@@ -325,13 +355,17 @@ class RestoreVerify(Resource):
                     }
                 }, 400
 
-            user = get(User, email=request_data.get("email"))
-            update_after_password_change(user, password)
+            user: User | None = get(User, email=request_data.get("email"))
+
+            if user is None:
+                raise BadRequest
+            
+            update_password(user, password)
             rediska.json().delete("password_restore", request_id)
 
             response = make_response("OK")
             response.status_code = 200
-            response.set_cookie("some-cookie", str(int(datetime.datetime.now(datetime.UTC).timestamp())))
+            response.set_cookie("some-cookie", str(int(datetime.now(UTC).timestamp())))
             return response
 
         except (BadRequest, ResponseError):
