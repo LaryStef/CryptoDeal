@@ -8,8 +8,8 @@ from .mail import mail
 from .database.redisdb import rediska
 
 
-def create_app():
-    app = Flask(__name__)
+def create_app() -> Flask:
+    app: Flask = Flask(__name__)
     app.config.from_object(AppConfig)
     app.register_blueprint(main)
 

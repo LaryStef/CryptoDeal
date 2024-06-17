@@ -1,4 +1,5 @@
 from datetime import datetime, UTC
+from typing import Union
 
 from flask_restx import Namespace, Resource
 from flask import request, make_response, Response
@@ -87,7 +88,7 @@ class Sign_up(Resource):
             
             response: Response = make_response("OK")
             response.status_code = 201
-            response.headers["Request-Id"] = RediskaHandler.create_register_request(data)
+            response.headers["Request-Id"] = RediskaHandler.create_register_request(data)    # type: ignore[arg-type]
 
             return response
         except (BadRequest, ResponseError):
@@ -116,7 +117,7 @@ class Refresh_code(Resource):
             if request_id is None or register_data.get("email") != email:
                 raise BadRequest
 
-            if register_data.get("refresh_attempts") >= AppConfig.MAIL_CODE_REFRESH_ATTEMTPTS:    # type: ignore
+            if register_data.get("refresh_attempts") >= AppConfig.MAIL_CODE_REFRESH_ATTEMTPTS:    # type: ignore[operator]
                 rediska.json().delete("register", request_id)
                 return {
                     "error": {
@@ -126,7 +127,7 @@ class Refresh_code(Resource):
                     }
                 }, 429
             
-            if register_data.get("accept_new_request") > int(datetime.now(UTC).timestamp()):    # type: ignore
+            if register_data.get("accept_new_request") > int(datetime.now(UTC).timestamp()):    # type: ignore[operator]
                 return {
                     "error": {
                         "code": "Too early",
@@ -163,12 +164,12 @@ class Verify_code(Resource):
 
             code: str | None = user_data.get("code")
 
-            register_data = rediska.json().get("register", request_id)
+            register_data: dict[str, str | int] = rediska.json().get("register", request_id)
 
             if code is None or register_data is None:
                 raise BadRequest
             
-            if register_data["deactivation_time"] <= int(datetime.now(UTC).timestamp()):
+            if register_data["deactivation_time"] <= int(datetime.now(UTC).timestamp()):    # type: ignore[operator]
                 return {
                     "error": {
                         "code": "Bad Request",
@@ -177,7 +178,7 @@ class Verify_code(Resource):
                     }
                 }, 400
 
-            if register_data.get("verify_attempts") >= AppConfig.MAIL_CODE_VERIFY_ATTEMPTS:
+            if register_data.get("verify_attempts") >= AppConfig.MAIL_CODE_VERIFY_ATTEMPTS:    # type: ignore[operator]
                 rediska.json().delete("register", request_id)
                 return {
                     "error": {
@@ -279,7 +280,7 @@ class RestoreNewCode(Resource):
             if restore_data is None or restore_data.get("email") != email:
                 raise BadRequest
 
-            if restore_data.get("refresh_attempts") >= AppConfig.MAIL_CODE_REFRESH_ATTEMTPTS:    # type: ignore
+            if restore_data.get("refresh_attempts") >= AppConfig.MAIL_CODE_REFRESH_ATTEMTPTS:    # type: ignore[operator]
                 rediska.json().delete("password_restore", request_id)
                 return {
                     "error": {
@@ -289,7 +290,7 @@ class RestoreNewCode(Resource):
                     }
                 }, 429
 
-            if restore_data.get("accept_new_request") > int(datetime.now(UTC).timestamp()):    # type: ignore
+            if restore_data.get("accept_new_request") > int(datetime.now(UTC).timestamp()):    # type: ignore[operator]
                 return {
                     "error": {
                         "code": "Too early",
@@ -330,12 +331,12 @@ class RestoreVerify(Resource):
                 len(password) < 6 or len(password) > 20:
                 raise BadRequest
 
-            request_data = rediska.json().get("password_restore", request_id)
+            request_data: dict[str, str | int] = rediska.json().get("password_restore", request_id)
 
             if request_data is None:
                 raise BadRequest
             
-            if request_data.get("verify_attempts") >= AppConfig.MAIL_CODE_VERIFY_ATTEMPTS:
+            if request_data.get("verify_attempts") >= AppConfig.MAIL_CODE_VERIFY_ATTEMPTS:    # type: ignore[operator]
                 rediska.json().delete("password_restore", request_id)
                 return {
                     "error": {

@@ -1,4 +1,4 @@
 from flask_redis import Redis
 
 
-rediska = Redis()
+rediska: Redis = Redis()

@@ -4,14 +4,14 @@ from sqlalchemy.orm import mapped_column, Mapped
 from . import db
 
 
-class User(db.Model):
-    def __init__(self, user_data):
-        self.uuid = user_data.get("uuid")
-        self.name = user_data.get("username")
-        self.password_hash = user_data.get("password_hash")
-        self.email = user_data.get("email")
-        self.register_date = user_data.get("register_date")
-        self.restore_cooldown = user_data.get("restore_cooldown")
+class User(db.Model):    # type: ignore[name-defined]
+    def __init__(self, user_data: dict[str, str | int]):
+        self.uuid = user_data.get("uuid")    # type: ignore[assignment]
+        self.name: Mapped[str] = user_data.get("username")    # type: ignore[assignment]
+        self.password_hash: int = user_data.get("password_hash")    # type: ignore[assignment]
+        self.email: str | None = user_data.get("email")    # type: ignore[assignment]
+        self.register_date: int | None = user_data.get("register_date")    # type: ignore[assignment]
+        self.restore_cooldown: int | None = user_data.get("restore_cooldown")    # type: ignore[assignment]
 
 
     uuid: Mapped[str] = mapped_column(String(36), primary_key=True, unique=True)

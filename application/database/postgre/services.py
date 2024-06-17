@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, NoReturn
 from time import time
 from uuid import uuid4
 
@@ -8,11 +8,11 @@ from ...config import AppConfig
 from ...utils.cryptography import hash_password
 
 
-def get(table: Any, **kwargs) -> Any | None:
+def get(table: db.Model, **kwargs: Any) -> Any | None:
     return db.session.query(table).filter_by(**kwargs).first()
 
 
-def add_user(user_data: dict):
+def add_user(user_data: dict[str, str | int]) -> None:
     user_data["uuid"] = uuid4().__str__()
     user_data["register_date"] = int(time())
 
@@ -21,7 +21,7 @@ def add_user(user_data: dict):
     db.session.commit()
 
 
-def update_password(user: User, password: str):
+def update_password(user: User, password: str) -> None:
     user.restore_cooldown = int(time()) + AppConfig.RESTORE_COOLDOWN
     user.password_hash = hash_password(password)
     db.session.commit()
