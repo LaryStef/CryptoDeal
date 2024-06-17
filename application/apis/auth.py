@@ -1,5 +1,4 @@
 from datetime import datetime, UTC
-from typing import Union
 
 from flask_restx import Namespace, Resource
 from flask import request, make_response, Response

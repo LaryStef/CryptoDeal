@@ -28,6 +28,60 @@ document.getElementById("code-btn").onclick = sendNewCode;
 document.getElementById("code-btn-rec").onclick = sendNewCodeRec;
 
 
+document.getElementById("login-form-id").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  let formData = new FormData(document.getElementById("login-form-id"));
+  
+  let response = await fetch(loginUrl, {
+    method: "POST",
+    credentials: "same-origin",
+    body: formData
+  });
+  
+  if (response.status == 200) {
+    closeLoginWindow();
+  } else {
+      let error = await response.json();
+      document.getElementById("login-info").innerHTML = error["error"]["message"];
+  }
+})
+
+document.getElementById("register-form-id").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  let formData = new FormData(document.getElementById("register-form-id"));
+
+  if (validateRegisterData(formData)) {
+    let response = await fetch(registerUrl, {
+      method: "POST",
+      credentials: "same-origin",
+      body: formData
+    });
+  
+    if (response.status == 201) {
+      if (isTimerGoing) {
+        disableTimer(timerId);
+      }
+  
+      sessionStorage.setItem("request_id", response.headers.get("Request-Id"));
+      
+      document.getElementById("get-code-wrapper").classList.add("display-off");
+      document.getElementById("new-code").classList.remove("display-off");
+      document.getElementById("input-code").style.backgroundColor = "#7d42e7";
+      document.getElementById("input-code").value = "";
+      timerId = showTime(cooldown);
+  
+      closeLoginWindow();
+      openConfirmWindow(document.getElementById("email-input").value);
+    }
+    else {
+      error = await response.json();
+      document.getElementById("register-info").innerHTML = error["error"]["message"];
+    }
+  }
+})
+
 function disableButtons() {
   document.getElementsByClassName("auth-link")[0].disabled = true;
   document.getElementsByClassName("auth-link")[1].disabled = true;
@@ -281,60 +335,6 @@ async function sendNewCode() {
   }
 }
 
-document.getElementById("login-form-id").addEventListener("submit", async (e) => {
-  e.preventDefault();
-
-  let formData = new FormData(document.getElementById("login-form-id"));
-  
-  let response = await fetch(loginUrl, {
-    method: "POST",
-    credentials: "same-origin",
-    body: formData
-  });
-  
-  if (response.status == 200) {
-    closeLoginWindow();
-  } else {
-      let error = await response.json();
-      document.getElementById("login-info").innerHTML = error["error"]["message"];
-  }
-})
-
-document.getElementById("register-form-id").addEventListener("submit", async (e) => {
-  e.preventDefault();
-
-  let formData = new FormData(document.getElementById("register-form-id"));
-
-  if (validateRegisterData(formData)) {
-    let response = await fetch(registerUrl, {
-      method: "POST",
-      credentials: "same-origin",
-      body: formData
-    });
-  
-    if (response.status == 201) {
-      if (isTimerGoing) {
-        disableTimer(timerId);
-      }
-  
-      sessionStorage.setItem("request_id", response.headers.get("Request-Id"));
-      
-      document.getElementById("get-code-wrapper").classList.add("display-off");
-      document.getElementById("new-code").classList.remove("display-off");
-      document.getElementById("input-code").style.backgroundColor = "#7d42e7";
-      document.getElementById("input-code").value = "";
-      timerId = showTime(cooldown);
-  
-      closeLoginWindow();
-      openConfirmWindow(document.getElementById("email-input").value);
-    }
-    else {
-      error = await response.json();
-      document.getElementById("register-info").innerHTML = error["error"]["message"];
-    }
-  }
-})
-
 function validateRegisterData(formData) {
   const re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
   
@@ -366,144 +366,10 @@ function validateRegisterData(formData) {
   return true;
 }
 
-function openEmailWindow() {
-  let window = document.getElementById("email-window");
-  window.style.opacity = 1;
-  window.style.transform = "translate(0%)";
-  window.style.visibility = "visible";
-
-  document.getElementById("main").style.filter = "brightness(0.5)";
-  document.getElementById("navbar").style.filter = "brightness(0.5)";
-  disableButtons();
-}
-
-function closeEmailWindow() {
-  let window = document.getElementById("email-window");
-  window.style.opacity = 0;
-  window.style.transform = "translate(-200%)";
-  document.getElementById("main").style.filter = "brightness(1)";
-  document.getElementById("navbar").style.filter = "brightness(1)";
-  document.getElementById("email-input-recovery").value = "";
-  document.getElementById("pass-info").innerText = "";
-  
-  setTimeout(() => {
-    window.style.visibility = "hidden";
-    window.style.transition = "none";
-    window.style.transform = "translate(200%)";
-    window.style.transition = "all var(--login-transition-duration) ease-out";
-  }, 400)
-  
-  enableButtons();
-}
-
-function openPasswordWindow(email) {
-  document.getElementById("email-rec").innerText = email;
-  let window = document.getElementById("confirm-window-rec");
-  window.style.opacity = 1;
-  window.style.transform = "translate(0%)";
-  window.style.visibility = "visible";
-
-  document.getElementById("main").style.filter = "brightness(0.5)";
-  document.getElementById("navbar").style.filter = "brightness(0.5)";
-  disableButtons();
-}
-
-function closePasswordWindow() {
-  if (isTimerGoingRec) {
-    disableTimerRec(timerIdRec);
-  }
-
-  let window = document.getElementById("confirm-window-rec");
-  window.style.opacity = 0;
-  window.style.transform = "translate(200%)";
-  document.getElementById("main").style.filter = "brightness(1)";
-  document.getElementById("navbar").style.filter = "brightness(1)";
-  document.getElementById("input-code-rec").value = "";
-  document.getElementById("email-rec1").value = "";
-  document.getElementById("email-rec2").value = "";
-  document.getElementById("new-pass-info").innerText = "";
-
-  setTimeout(() => {
-    window.style.visibility = "hidden";
-  }, 400)
-  enableButtons();
-}
-
 document.getElementById("recovery-btn").addEventListener("click", () => {
   closeLoginWindow();
   openEmailWindow();
 })
-
-
-var timerIdRec;
-var isTimerGoingRec = false;
-
-function showTimeRec(duration) {
-  isTimerGoingRec = true;
-  let minutes = Math.floor(duration / 60);
-  let seconds = duration % 60;
-  timerIdRec = setInterval(() => {
-    var time;
-    if (seconds < 10) {
-      time = `${minutes}:0${seconds}`;
-    }
-    else {
-      time = `${minutes}:${seconds}`;
-    }
-    document.getElementById("code-time-rec").innerHTML = time;
-    if (seconds != 0) {
-      seconds -= 1;
-    }
-    else {
-      minutes -= 1;
-      seconds = 59;
-    }
-  }, 1000);
-  
-  let thisTimerIdRec = timerIdRec;
-  setTimeout(() => {
-    if (thisTimerIdRec == timerIdRec && isTimerGoingRec) {
-      disableTimerRec(timerIdRec);
-      document.getElementById("new-code-rec").classList.add("display-off");
-      document.getElementById("get-code-wrapper-rec").classList.remove("display-off");
-    }
-  }, (duration + 1) * 1000);
-
-  return timerIdRec;
-}
-
-async function sendNewCodeRec() {
-  let data = new Map();
-  data.set("email", document.getElementById("email-input").value);
-
-  let response = await fetch(restoreNewCodeUrl, {
-    method: "POST",
-    credentials: "same-origin",
-    headers: {
-      "Content-Type": "application/json",
-      "Request-Id": sessionStorage.getItem("request_id")
-    },
-    body: JSON.stringify(Object.fromEntries(data))
-  });
-
-  if (response.status === 200) {
-    document.getElementById("get-code-wrapper-rec").classList.add("display-off");
-    document.getElementById("new-code-rec").classList.remove("display-off");
-    document.getElementById("input-code-rec").value = "";
-  
-    if (isTimerGoingRec) {
-      disableTimerRec(timerIdRec);
-    }
-  
-    timerIdRec = showTimeRec(cooldownRec);
-    isTimerGoingRec = true
-  }
-
-  if (response.status === 404 || response.status === 425) {
-    let error = await response.json();
-    document.getElementById("new-pass-info").innerText = error["error"]["message"];
-  }
-}
 
 document.getElementById("email-submit").addEventListener("click", async (e) => {
   e.preventDefault();
@@ -539,6 +405,69 @@ document.getElementById("email-submit").addEventListener("click", async (e) => {
     document.getElementById("pass-info").innerText = error["error"]["message"];
   }
 })
+
+function openEmailWindow() {
+  let window = document.getElementById("email-window");
+  window.style.opacity = 1;
+  window.style.transform = "translate(0%)";
+  window.style.visibility = "visible";
+
+  document.getElementById("main").style.filter = "brightness(0.5)";
+  document.getElementById("navbar").style.filter = "brightness(0.5)";
+  disableButtons();
+}
+
+function closeEmailWindow() {
+  let window = document.getElementById("email-window");
+  window.style.opacity = 0;
+  window.style.transform = "translate(-200%)";
+  document.getElementById("main").style.filter = "brightness(1)";
+  document.getElementById("navbar").style.filter = "brightness(1)";
+  document.getElementById("email-input-recovery").value = "";
+  document.getElementById("pass-info").innerText = "";
+  
+  setTimeout(() => {
+    window.style.visibility = "hidden";
+    window.style.transition = "none";
+    window.style.transform = "translate(200%)";
+    window.style.transition = "all var(--login-transition-duration) ease-out";
+  }, 400)
+  
+  enableButtons();
+}
+
+async function sendNewCodeRec() {
+  let data = new Map();
+  data.set("email", document.getElementById("email-input").value);
+
+  let response = await fetch(restoreNewCodeUrl, {
+    method: "POST",
+    credentials: "same-origin",
+    headers: {
+      "Content-Type": "application/json",
+      "Request-Id": sessionStorage.getItem("request_id")
+    },
+    body: JSON.stringify(Object.fromEntries(data))
+  });
+
+  if (response.status === 200) {
+    document.getElementById("get-code-wrapper-rec").classList.add("display-off");
+    document.getElementById("new-code-rec").classList.remove("display-off");
+    document.getElementById("input-code-rec").value = "";
+  
+    if (isTimerGoingRec) {
+      disableTimerRec(timerIdRec);
+    }
+  
+    timerIdRec = showTimeRec(cooldownRec);
+    isTimerGoingRec = true
+  }
+
+  if (response.status === 404 || response.status === 425) {
+    let error = await response.json();
+    document.getElementById("new-pass-info").innerText = error["error"]["message"];
+  }
+}
 
 document.getElementById("submit-rec").addEventListener("click", async (e) => {
   e.preventDefault();
@@ -576,6 +505,76 @@ document.getElementById("submit-rec").addEventListener("click", async (e) => {
     document.getElementById("new-pass-info").innerText = error["error"]["message"]
   }
 })
+
+function openPasswordWindow(email) {
+  document.getElementById("email-rec").innerText = email;
+  let window = document.getElementById("confirm-window-rec");
+  window.style.opacity = 1;
+  window.style.transform = "translate(0%)";
+  window.style.visibility = "visible";
+
+  document.getElementById("main").style.filter = "brightness(0.5)";
+  document.getElementById("navbar").style.filter = "brightness(0.5)";
+  disableButtons();
+}
+
+function closePasswordWindow() {
+  if (isTimerGoingRec) {
+    disableTimerRec(timerIdRec);
+  }
+
+  let window = document.getElementById("confirm-window-rec");
+  window.style.opacity = 0;
+  window.style.transform = "translate(200%)";
+  document.getElementById("main").style.filter = "brightness(1)";
+  document.getElementById("navbar").style.filter = "brightness(1)";
+  document.getElementById("input-code-rec").value = "";
+  document.getElementById("email-rec1").value = "";
+  document.getElementById("email-rec2").value = "";
+  document.getElementById("new-pass-info").innerText = "";
+
+  setTimeout(() => {
+    window.style.visibility = "hidden";
+  }, 400)
+  enableButtons();
+}
+
+var timerIdRec;
+var isTimerGoingRec = false;
+
+function showTimeRec(duration) {
+  isTimerGoingRec = true;
+  let minutes = Math.floor(duration / 60);
+  let seconds = duration % 60;
+  timerIdRec = setInterval(() => {
+    var time;
+    if (seconds < 10) {
+      time = `${minutes}:0${seconds}`;
+    }
+    else {
+      time = `${minutes}:${seconds}`;
+    }
+    document.getElementById("code-time-rec").innerHTML = time;
+    if (seconds != 0) {
+      seconds -= 1;
+    }
+    else {
+      minutes -= 1;
+      seconds = 59;
+    }
+  }, 1000);
+  
+  let thisTimerIdRec = timerIdRec;
+  setTimeout(() => {
+    if (thisTimerIdRec == timerIdRec && isTimerGoingRec) {
+      disableTimerRec(timerIdRec);
+      document.getElementById("new-code-rec").classList.add("display-off");
+      document.getElementById("get-code-wrapper-rec").classList.remove("display-off");
+    }
+  }, (duration + 1) * 1000);
+
+  return timerIdRec;
+}
 
 function disableTimerRec(timerID) {
   clearInterval(timerID);
