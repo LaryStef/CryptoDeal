@@ -3,8 +3,6 @@ from werkzeug.exceptions import NotFound
 from flask_mail import Message
 from .mail import mail
 
-from redis.commands.json.path import Path
-
 
 main: Blueprint = Blueprint("main", __name__)
 
