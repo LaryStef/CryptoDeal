@@ -9,7 +9,7 @@ load_dotenv()
 class AppConfig(Config):
     DEBUG: bool = True
     SQLALCHEMY_DATABASE_URI: str = f"postgresql://postgres:{os.getenv('DATABASE_PASSWORD')}@localhost:5432/postgres"
-    REDIS_URL: str = "redis://localhost:6379/0"
+    REDIS_URL: str = "redis://localhost:6380/0"
     SECRET_KEY: str | None = os.getenv("SECRET_KEY")
     MAIL_SERVER: str = "smtp.gmail.com"
     MAIL_PORT: int = 465
