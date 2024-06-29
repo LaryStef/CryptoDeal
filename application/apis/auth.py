@@ -263,7 +263,7 @@ class Restore(Resource):
 
 
 @api.route("/restore/new-code")
-class RestoreNewCode(Resource):
+class Restore_new_code(Resource):
     def post(self) -> tuple[dict[str, dict[str, str]], int] | Response:
         try:
             user_data: dict[str, str] | None = request.json
@@ -314,7 +314,7 @@ class RestoreNewCode(Resource):
 
 
 @api.route("/restore/verify")
-class RestoreVerify(Resource):
+class Restore_verify(Resource):
     def post(self) -> tuple[dict[str, dict[str, str]], int] | Response:
         try:
             user_data: dict[str, str] | None = request.json
@@ -369,6 +369,22 @@ class RestoreVerify(Resource):
             return response
 
         except (BadRequest, ResponseError):
+            return {
+                "error": {
+                    "code": "Bad request",
+                    "message": "Invalid data",
+                    "details": "Invalid format of data or no such register ID"
+                }
+            }, 400
+
+
+@api.route("/refresh-access")
+class Refresh_access(Resource):
+    def post():
+        try:
+            pass
+
+        except BadRequest:
             return {
                 "error": {
                     "code": "Bad request",
