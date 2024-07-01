@@ -23,3 +23,5 @@ class AppConfig(Config):
     REGISTER_LIFETIME: int = 1200
     RESTORE_LIFETIME: int = 1200
     RESTORE_COOLDOWN: int = 2000         # restore_cooldown must be less then restore_lifetime
+    ACCESS_TOKEN_LIFETIME: int = 900
+    REFRESH_TOKEN_LIFETIME: int = 31536000

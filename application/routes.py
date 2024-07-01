@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request
 from werkzeug.exceptions import NotFound
 from flask_mail import Message
+
 from .mail import mail
 
 

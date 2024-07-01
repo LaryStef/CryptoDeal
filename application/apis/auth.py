@@ -7,6 +7,8 @@ from redis.exceptions import ResponseError
 from bcrypt import checkpw
 
 from ..config import AppConfig
+from ..utils.generators import generate_id
+from ..utils.JWT import generate_tokens
 from ..shemas import RegisterSchema, LoginSchema
 from ..database.postgre.models import User
 from ..database.postgre.services import get, add_user, update_password
@@ -34,7 +36,39 @@ class Sign_in(Resource):
             if user is not None and checkpw(data.get("password", "").encode("utf-8"), user.password_hash.encode("utf-8")):
                 response: Response = make_response("OK")
                 response.status_code = 200
-                response.set_cookie("some-cookie", str(int(datetime.now(UTC).timestamp())))
+
+                refresh_token_id = generate_id(16)
+                access_scrf_token = generate_id(32)
+                refresh_scrf_token = generate_id(32)
+   
+                access_token, refresh_token = generate_tokens(
+                    payload={
+                        "uuid": user.uuid,
+                        "role": user.role,
+                        "email": user.email
+                    },
+                    access_scrf_token=access_scrf_token,
+                    refresh_scrf_token=refresh_scrf_token,
+                    refresh_id=refresh_token_id
+                )
+
+                response.set_cookie(
+                    key="access_token",
+                    value=access_token
+                )
+                response.set_cookie(
+                    key="refresh_token",
+                    value=refresh_token
+                )
+                response.set_cookie(
+                    key="access_scrf_token",
+                    value=access_scrf_token
+                )
+                response.set_cookie(
+                    key="refresh_scrf_token",
+                    value=refresh_scrf_token
+                )
+
                 return response
             
             return {
@@ -146,7 +180,7 @@ class Refresh_code(Resource):
                 "error": {
                     "code": "Bad request",
                     "message": "Invalid data",
-                    "details": "Invalid format of data or no such register ID"
+                    "details": "Invalid format of data or no such request ID"
                 }
             }, 400
 
@@ -308,7 +342,7 @@ class Restore_new_code(Resource):
                 "error": {
                     "code": "Bad request",
                     "message": "Invalid data",
-                    "details": "Invalid format of data or no such register ID"
+                    "details": "Invalid format of data or no such request ID"
                 }
             }, 400
 
@@ -373,7 +407,7 @@ class Restore_verify(Resource):
                 "error": {
                     "code": "Bad request",
                     "message": "Invalid data",
-                    "details": "Invalid format of data or no such register ID"
+                    "details": "Invalid format of data or no such request ID"
                 }
             }, 400
 
@@ -389,6 +423,6 @@ class Refresh_access(Resource):
                 "error": {
                     "code": "Bad request",
                     "message": "Invalid data",
-                    "details": "Invalid format of data or no such register ID"
+                    "details": "Invalid format of data or no such request ID"
                 }
             }, 400
