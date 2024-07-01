@@ -8,16 +8,16 @@ from ..config import AppConfig
 def generate_tokens(
         payload: dict[str, str | int],
         access_scrf_token: str,
-        refersh_scrf_token: str,
+        refresh_scrf_token: str,
         refresh_id: str
     ) -> (str, str):
 
     timestamp = int(datetime.now(UTC).timestamp())
 
     payload.update({
-        "scrf": access_scrf_token,
-        "exp": AppConfig.ACCESS_TOKEN_LIFETIME,
-        "iat": timestamp
+        "exp": timestamp + AppConfig.ACCESS_TOKEN_LIFETIME,
+        "iat": timestamp,
+        "scrf": access_scrf_token
     })
 
     access: bytes = encode(
@@ -27,10 +27,10 @@ def generate_tokens(
     )
     refresh: bytes = encode(
         payload={
-            "scrf": refersh_scrf_token,
-            "exp": AppConfig.REFRESH_TOKEN_LIFETIME,
+            "exp": timestamp + AppConfig.REFRESH_TOKEN_LIFETIME,
             "iat": timestamp,
-            "jti": refresh_id
+            "jti": refresh_id,
+            "scrf": refresh_scrf_token
         },
         key=AppConfig.SECRET_KEY,
         algorithm="HS256"
