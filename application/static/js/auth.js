@@ -32,7 +32,8 @@ document.getElementById("login-form-id").addEventListener("submit", async (e) =>
   e.preventDefault();
 
   let formData = new FormData(document.getElementById("login-form-id"));
-  
+  formData.append("device", "temporary device")
+
   let response = await fetch(loginUrl, {
     method: "POST",
     credentials: "same-origin",
@@ -294,6 +295,7 @@ function disableTimer(timerID) {
 async function verifyCode() {
   let data = new Map();
   data.set("code", document.getElementById("input-code").value);
+  data.set("device", "temporary device")
 
   response = await fetch(verifyCodeUrl, {
     method: "POST",
@@ -497,7 +499,8 @@ document.getElementById("submit-rec").addEventListener("click", async (e) => {
     },
     body: JSON.stringify({
       "password": password,
-      "code": document.getElementById("input-code-rec").value
+      "code": document.getElementById("input-code-rec").value,
+      "device": "temporary device"
     })
   })
 
