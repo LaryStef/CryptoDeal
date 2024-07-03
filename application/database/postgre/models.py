@@ -42,11 +42,11 @@ class Session(db.Model):
     session4: Mapped[str] = mapped_column(String(16), nullable=True)
     session5: Mapped[str] = mapped_column(String(16), nullable=True)
 
-    device1: Mapped[str] = mapped_column(String, default="unnkown device")
-    device2: Mapped[str] = mapped_column(String, default="unnkown device")
-    device3: Mapped[str] = mapped_column(String, default="unnkown device")
-    device4: Mapped[str] = mapped_column(String, default="unnkown device")
-    device5: Mapped[str] = mapped_column(String, default="unnkown device")
+    device1: Mapped[str] = mapped_column(String(30), default="unnkown device")
+    device2: Mapped[str] = mapped_column(String(30), default="unnkown device")
+    device3: Mapped[str] = mapped_column(String(30), default="unnkown device")
+    device4: Mapped[str] = mapped_column(String(30), default="unnkown device")
+    device5: Mapped[str] = mapped_column(String(30), default="unnkown device")
 
     activity1: Mapped[int] = mapped_column(Integer, default=0)
     activity2: Mapped[int] = mapped_column(Integer, default=0)
