@@ -19,9 +19,23 @@ def send_message(code: int) -> tuple[str, int]:
     return f"I guess message sent with code: {code}", 200
 
 
+
+
 @main.route("/test")
 def test() -> tuple[str, int]:
-    print(request.remote_addr)
+    from .database.postgre.models import Session
+    from pprint import pprint
+    from .database.postgre.services import get
+    id = "23874892"
+    sessions_raw: Session = get(Session, uuid=id)
+    sessions_data: dict[str, str] = sessions_raw.__dict__
+    
+
+    earlier_activity = float("inf")
+    for key, value in sessions_data.items():
+        if key.startswith("activity") and value < earlier_activity:
+            earlier_activity = value
+            oldest_session = int(key.replace("activity", ""))
     return render_template("test.html"), 200
 
 

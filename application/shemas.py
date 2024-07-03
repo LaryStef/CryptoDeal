@@ -17,3 +17,4 @@ class RegisterSchema(Schema):
 class LoginSchema(Schema):
     username: Field = fields.Str(validate=validate.Length(6, 20), required=True)
     password: Field = fields.Str(validate=validate.Length(6, 20), required=True)
+    device: Field = fields.Str(validate=validate.Length(6, 30))

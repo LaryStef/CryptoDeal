@@ -11,7 +11,7 @@ from ..utils.generators import generate_id
 from ..utils.JWT import generate_tokens
 from ..shemas import RegisterSchema, LoginSchema
 from ..database.postgre.models import User
-from ..database.postgre.services import get, add_user, update_password
+from ..database.postgre.services import get, add_user, update_password, add_session
 from ..database.redisdb import rediska
 from ..database.redisdb.services import RediskaHandler
 
@@ -26,6 +26,8 @@ class Sign_in(Resource):
             data: dict[str, str] = request.form.to_dict()
 
             for k, v in data.items():
+                if k == "device":
+                    continue
                 data[k] = v.replace(" ", "")
 
             if LoginSchema().validate(data):
@@ -37,10 +39,12 @@ class Sign_in(Resource):
                 response: Response = make_response("OK")
                 response.status_code = 200
 
-                refresh_token_id = generate_id(16)
-                access_scrf_token = generate_id(32)
-                refresh_scrf_token = generate_id(32)
-   
+                refresh_token_id: str = generate_id(16)
+                access_scrf_token: str = generate_id(32)
+                refresh_scrf_token: str = generate_id(32)
+
+                add_session(refresh_id=refresh_token_id, user_id=user.uuid, device=data.get("device"))
+
                 access_token, refresh_token = generate_tokens(
                     payload={
                         "uuid": user.uuid,
@@ -231,12 +235,46 @@ class Verify_code(Resource):
                     }
                 }, 400
             
-            add_user(register_data)
+            _id: str = add_user(register_data)
             rediska.json().delete("register", request_id)
 
             response: Response = make_response("OK")
             response.status_code = 200
-            response.set_cookie("some-cookie", str(int(datetime.now(UTC).timestamp())))
+
+            refresh_token_id: str = generate_id(16)
+            access_scrf_token: str = generate_id(32)
+            refresh_scrf_token: str = generate_id(32)
+
+            add_session(refresh_id=refresh_token_id, user_id=_id, device=user_data.get("device"))
+
+            access_token, refresh_token = generate_tokens(
+                payload={
+                    "uuid": _id,
+                    "role": "user",
+                    "email": register_data["email"]
+                },
+                access_scrf_token=access_scrf_token,
+                refresh_scrf_token=refresh_scrf_token,
+                refresh_id=refresh_token_id
+            )
+
+            response.set_cookie(
+                key="access_token",
+                value=access_token
+            )
+            response.set_cookie(
+                key="refresh_token",
+                value=refresh_token
+            )
+            response.set_cookie(
+                key="access_scrf_token",
+                value=access_scrf_token
+            )
+            response.set_cookie(
+                key="refresh_scrf_token",
+                value=refresh_scrf_token
+            )
+
             return response
 
         except (BadRequest, ResponseError):
@@ -356,12 +394,12 @@ class Restore_verify(Resource):
             if user_data is None:
                 raise BadRequest
             
+
             code: str | None = user_data.get("code")
             password: str | None = user_data.get("password")
             request_id: str | None = request.headers.get("Request_Id")
-
-            if password is None or code is None or request_id is None or \
-                len(password) < 6 or len(password) > 20:
+            
+            if not all([code, password, request_id]) or len(password) < 6 or len(password) > 20:
                 raise BadRequest
 
             request_data: dict[str, str | int] = rediska.json().get("password_restore", request_id)
@@ -399,7 +437,41 @@ class Restore_verify(Resource):
 
             response = make_response("OK")
             response.status_code = 200
-            response.set_cookie("some-cookie", str(int(datetime.now(UTC).timestamp())))
+
+            refresh_token_id: str = generate_id(16)
+            access_scrf_token: str = generate_id(32)
+            refresh_scrf_token: str = generate_id(32)
+
+            add_session(refresh_id=refresh_token_id, user_id=user.uuid, device=user_data.get("device"))
+
+            access_token, refresh_token = generate_tokens(
+                payload={
+                    "uuid": user.uuid,
+                    "role": "user",
+                    "email": user.email
+                },
+                access_scrf_token=access_scrf_token,
+                refresh_scrf_token=refresh_scrf_token,
+                refresh_id=refresh_token_id
+            )
+
+            response.set_cookie(
+                key="access_token",
+                value=access_token
+            )
+            response.set_cookie(
+                key="refresh_token",
+                value=refresh_token
+            )
+            response.set_cookie(
+                key="access_scrf_token",
+                value=access_scrf_token
+            )
+            response.set_cookie(
+                key="refresh_scrf_token",
+                value=refresh_scrf_token
+            )
+
             return response
 
         except (BadRequest, ResponseError):
