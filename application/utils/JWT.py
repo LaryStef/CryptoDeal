@@ -10,7 +10,7 @@ def generate_tokens(
         access_scrf_token: str,
         refresh_scrf_token: str,
         refresh_id: str
-    ) -> (str, str):
+    ) -> tuple[str, str]:
 
     timestamp = int(datetime.now(UTC).timestamp())
 
