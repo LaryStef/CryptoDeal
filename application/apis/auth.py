@@ -1,4 +1,5 @@
 from datetime import datetime, UTC
+from typing import Any
 
 from flask_restx import Namespace, Resource
 from flask import request, make_response, Response
@@ -6,9 +7,10 @@ from werkzeug.exceptions import BadRequest
 from redis.exceptions import ResponseError
 from bcrypt import checkpw
 
+from ..mail.senders import send_scrf_attention
 from ..config import AppConfig
 from ..utils.generators import generate_id
-from ..utils.JWT import generate_tokens
+from ..utils.JWT import generate_tokens, validate_refresh
 from ..shemas import RegisterSchema, LoginSchema
 from ..database.postgre.models import User
 from ..database.postgre.services import get, add_user, update_password, add_session
@@ -398,7 +400,7 @@ class Restore_verify(Resource):
             code: str | None = user_data.get("code")
             password: str | None = user_data.get("password")
             request_id: str | None = request.headers.get("Request_Id")
-            
+
             if not all([code, password, request_id]) or len(password) < 6 or len(password) > 20:
                 raise BadRequest
 
@@ -486,15 +488,72 @@ class Restore_verify(Resource):
 
 @api.route("/refresh-access")
 class Refresh_access(Resource):
-    def post():
+    def post(self) -> tuple[dict[str, dict[str, str]], int] | Response:
         try:
-            pass
+            # add device header
+            device: str | None = request.headers.get("device", "unknown device")
+            scrf_header: str | None = request.headers.get("X-CSRF-TOKEN")
+            scrf_cookie: str | None = request.cookies.get("refresh_scrf_token")
+            refresh_token: str | None = request.cookies.get("refresh_token")
+
+            payload: dict[str, Any] | None = validate_refresh(refresh_token)
+            if not all([scrf_cookie, scrf_header, payload]):
+                raise BadRequest
+
+            if scrf_cookie != scrf_header or scrf_cookie != payload["scrf"]:
+                send_scrf_attention(payload.get("email"))
+                return {
+                    "error": {
+                        "code": "Forbidden",
+                        "message": "Invalid scrf token",
+                        "details": "Invalid scrf token. Someone tries to get access from your behalf"   
+                    }
+                }, 403
+
+            response = make_response("OK")
+            response.status_code = 200
+
+            refresh_token_id: str = generate_id(16)
+            access_scrf_token: str = generate_id(32)
+            refresh_scrf_token: str = generate_id(32)
+
+            add_session(refresh_id=refresh_token_id, user_id=payload.get("uuid"), device=device)
+
+            access_token, refresh_token = generate_tokens(
+                payload={
+                    "uuid": payload.get("uuid"),
+                    "role": "user",
+                    "email": payload.get("email")
+                },
+                access_scrf_token=access_scrf_token,
+                refresh_scrf_token=refresh_scrf_token,
+                refresh_id=refresh_token_id
+            )
+
+            response.set_cookie(
+                key="access_token",
+                value=access_token
+            )
+            response.set_cookie(
+                key="refresh_token",
+                value=refresh_token
+            )
+            response.set_cookie(
+                key="access_scrf_token",
+                value=access_scrf_token
+            )
+            response.set_cookie(
+                key="refresh_scrf_token",
+                value=refresh_scrf_token
+            )
+
+            return response
 
         except BadRequest:
             return {
                 "error": {
                     "code": "Bad request",
                     "message": "Invalid data",
-                    "details": "Invalid format of data or no such request ID"
+                    "details": "Invalid token or invalid format of data"
                 }
             }, 400
