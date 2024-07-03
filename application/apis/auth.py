@@ -486,15 +486,15 @@ class Restore_verify(Resource):
             }, 400
 
 
-@api.route("/refresh-access")
+@api.route("/refresh-tokens")
 class Refresh_access(Resource):
     def post(self) -> tuple[dict[str, dict[str, str]], int] | Response:
         try:
             # add device header
             device: str | None = request.headers.get("device", "unknown device")
-            scrf_header: str | None = request.headers.get("X-CSRF-TOKEN")
             scrf_cookie: str | None = request.cookies.get("refresh_scrf_token")
             refresh_token: str | None = request.cookies.get("refresh_token")
+            scrf_header: str | None = request.headers.get("X-SCRF-TOKEN")
 
             payload: dict[str, Any] | None = validate_refresh(refresh_token)
             if not all([scrf_cookie, scrf_header, payload]):
