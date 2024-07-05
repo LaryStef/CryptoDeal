@@ -1,14 +1,62 @@
-const loginUrl = new URL("api/auth/sign-in", location.origin);
-const registerUrl = new URL("api/auth/register/apply", location.origin);
-const newCodeUrl = new URL("api/auth/register/new-code", location.origin);
-const verifyCodeUrl = new URL("api/auth/register/verify", location.origin);
-const restoreUrl = new URL("api/auth/restore/apply", location.origin);
-const restoreNewCodeUrl = new URL("api/auth/restore/new-code", location.origin);
-const restoreVerifyUrl = new URL("api/auth/restore/verify", location.origin);
+const origin = location.origin;
+const loginUrl = new URL("api/auth/sign-in", origin);
+const registerUrl = new URL("api/auth/register/apply", origin);
+const newCodeUrl = new URL("api/auth/register/new-code", origin);
+const verifyCodeUrl = new URL("api/auth/register/verify", origin);
+const restoreUrl = new URL("api/auth/restore/apply", origin);
+const restoreNewCodeUrl = new URL("api/auth/restore/new-code", origin);
+const restoreVerifyUrl = new URL("api/auth/restore/verify", origin);
+const refreshTokensUrl = new URL("", origin);
 
 const cooldown = 30;
 const cooldownRec = 30;
 
+
+if (isTokensRefreshRequired()) {
+  refreshTokens();
+}
+
+async function refreshTokens() {
+  let response = await fetch(refreshTokensUrl, {
+    method: "POST",
+    credentials: "same-origin",
+    headers: {
+      "X-SCRF-TOKEN": getCookie("refresh_scrf_token")
+    }
+  })
+
+  if (response.status === 200) {
+    console.log("OK");
+  }
+}
+
+function isTokensRefreshRequired() {
+  let access = getCookie("access_token");
+  let refresh = getCookie("refresh)token");
+
+  if (
+    access === "" ||
+    refresh === "" ||
+    Number(JSON.parse(atob(access.split(".")[1])).exp) - 3 < Math.floor(Date.now() / 1000)
+    ) {
+    return false;
+  }
+
+  return true;
+}
+
+function getCookie(cookie) {
+  cookie += "=";
+  let cookies = document.cookie.split("; ");
+  let token = "";
+
+  cookies.forEach((element) => {
+    if (element.substring(0, cookie.length) === cookie) {
+      token = element.substring(cookie.length, element.length);
+    }
+  });
+  return token;
+}
 
 document.getElementById("left-switch").onclick = leftSwitchTransform;
 document.getElementById("right-switch").onclick = rightSwitchTransform;
