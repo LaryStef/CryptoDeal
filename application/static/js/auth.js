@@ -6,7 +6,7 @@ const verifyCodeUrl = new URL("api/auth/register/verify", origin);
 const restoreUrl = new URL("api/auth/restore/apply", origin);
 const restoreNewCodeUrl = new URL("api/auth/restore/new-code", origin);
 const restoreVerifyUrl = new URL("api/auth/restore/verify", origin);
-const refreshTokensUrl = new URL("", origin);
+const refreshTokensUrl = new URL("api/auth/refresh-tokens", origin);
 
 const cooldown = 30;
 const cooldownRec = 30;
@@ -21,27 +21,23 @@ async function refreshTokens() {
     method: "POST",
     credentials: "same-origin",
     headers: {
-      "X-SCRF-TOKEN": getCookie("refresh_scrf_token")
+      "X-SCRF-TOKEN": getCookie("refresh_scrf_token"),
+      "Device": "temporary device"
     }
   })
 
   if (response.status === 200) {
+    // update profile link
     console.log("OK");
   }
 }
 
 function isTokensRefreshRequired() {
   let access = getCookie("access_token");
-  let refresh = getCookie("refresh)token");
 
-  if (
-    access === "" ||
-    refresh === "" ||
-    Number(JSON.parse(atob(access.split(".")[1])).exp) - 3 < Math.floor(Date.now() / 1000)
-    ) {
+  if (access != "" && Math.floor(Date.now() / 1000) < Number(JSON.parse(atob(access.split(".")[1])).exp) - 1) {
     return false;
   }
-
   return true;
 }
 
