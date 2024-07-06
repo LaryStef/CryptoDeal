@@ -10,7 +10,7 @@ from bcrypt import checkpw
 from ..mail.senders import send_scrf_attention
 from ..config import AppConfig
 from ..utils.generators import generate_id
-from ..utils.JWT import generate_tokens, validate_refresh
+from ..utils.JWT import generate_tokens, validate_token
 from ..shemas import RegisterSchema, LoginSchema
 from ..database.postgre.models import User
 from ..database.postgre.services import get, add_user, update_password, add_session, update_session
@@ -498,7 +498,7 @@ class Refresh_access(Resource):
             device: str = request.headers.get("Device", "unknown device")
             scrf_header: str | None = request.headers.get("X-SCRF-TOKEN")
 
-            payload: dict[str, Any] | None = validate_refresh(refresh_token)
+            payload: dict[str, Any] | None = validate_token(refresh_token, "refresh")
             if not all([scrf_cookie, scrf_header, payload]):
                 raise BadRequest
 

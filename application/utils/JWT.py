@@ -1,5 +1,5 @@
 from time import time
-from typing import Any
+from typing import Any, Literal
 
 from jwt import encode, decode, InvalidTokenError
 
@@ -42,26 +42,39 @@ def generate_tokens(
     return access, refresh
 
 
-def validate_refresh(token: str | None) -> dict[str, Any] | None:
+def validate_token(token: str | None, type: Literal["access", "refresh"]) -> dict[str, Any] | None:
     if token is None:
         return token
+
+    if type == "access":
+        token_requirements = [
+            "exp",
+            "iat",
+            "scrf",
+            "email",
+            "role",
+            "uuid"
+        ]
+    else:
+        token_requirements = [
+            "exp",
+            "iat",
+            "jti",
+            "scrf",
+            "email",
+            "uuid"
+        ]
 
     try:
         return decode(
             token,
-            key="F1QX6i1XJC5B7GBLYRkroDDLykcb3nTQ",
+            key=AppConfig.SECRET_KEY,
             algorithms=[AppConfig.JWT_ENCODING_ALGORITHM],
             options={
                 "verify_exp": True,
                 "verify_signature": True,
-                "require": [
-                    "exp",
-                    "iat",
-                    "jti",
-                    "scrf",
-                    "email",
-                    "uuid"
-                ]
+                "require": token_requirements
             })
+
     except InvalidTokenError:
         return None
