@@ -131,17 +131,18 @@ li {
   border-color: var(--background-color);
 }
 
+
 .profile {
-  padding-left: 12px;
-  padding-right: 12px;
   display: flex;
-  justify-content: center;
+  padding-left: 20px;
+  padding-right: 20px;
   align-items: center;
+  gap: 10px;
   height: 40px;
   border-radius: 50px;
   border-style: none;
-  background-color: var(--background-button-color);
   font-size: 1.125rem;
+  background-color: var(--background-button-color);
   color: var(--text-color);
   transition: color var(--link-transition-duration) linear;
   -webkit-transition: color var(--link-transition-duration) linear;
@@ -151,6 +152,12 @@ li {
 
 .profile:hover {
   color: var(--text-hover-color);
+}
+
+.avatar {
+  height: 30px;
+  width: 30px;
+  border-radius: 8px;
 }
 
 /* dropdown menu */

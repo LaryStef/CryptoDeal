@@ -27,7 +27,7 @@ async function refreshTokens() {
   })
 
   if (response.status === 200) {
-    // update profile link
+    load_profile();
     console.log("OK");
   }
 }
@@ -36,7 +36,7 @@ function isTokensRefreshRequired() {
   let access = getCookie("access_token");
 
   if (access != "" && Math.floor(Date.now() / 1000) < Number(JSON.parse(atob(access.split(".")[1])).exp) - 1) {
-    return false;
+    load_profile();
   }
   return true;
 }
@@ -52,6 +52,13 @@ function getCookie(cookie) {
     }
   });
   return token;
+}
+
+function load_profile() {
+  let name = JSON.parse(atob(access.split(".")[1])).name
+  // name still not in jwt
+  // get username from jwt
+  // request avatar by uuid from jwt
 }
 
 document.getElementById("left-switch").onclick = leftSwitchTransform;
