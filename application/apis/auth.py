@@ -1,4 +1,4 @@
-from datetime import datetime, UTC
+from time import time
 from typing import Any
 
 from flask_restx import Namespace, Resource
@@ -13,7 +13,7 @@ from ..utils.generators import generate_id
 from ..utils.JWT import generate_tokens, validate_refresh
 from ..shemas import RegisterSchema, LoginSchema
 from ..database.postgre.models import User
-from ..database.postgre.services import get, add_user, update_password, add_session
+from ..database.postgre.services import get, add_user, update_password, add_session, update_session
 from ..database.redisdb import rediska
 from ..database.redisdb.services import RediskaHandler
 
@@ -45,8 +45,9 @@ class Sign_in(Resource):
                 access_scrf_token: str = generate_id(32)
                 refresh_scrf_token: str = generate_id(32)
 
-                add_session(refresh_id=refresh_token_id, user_id=user.uuid, device=data.get("device"))
-
+                if not add_session(refresh_id=refresh_token_id, user_id=user.uuid, device=data.get("device")):
+                    raise BadRequest
+                
                 access_token, refresh_token = generate_tokens(
                     payload={
                         "uuid": user.uuid,
@@ -166,7 +167,7 @@ class Refresh_code(Resource):
                     }
                 }, 429
             
-            if register_data.get("accept_new_request") > int(datetime.now(UTC).timestamp()):    # type: ignore[operator]
+            if register_data.get("accept_new_request") > int(time()):    # type: ignore[operator]
                 return {
                     "error": {
                         "code": "Too early",
@@ -208,7 +209,7 @@ class Verify_code(Resource):
             if code is None or register_data is None:
                 raise BadRequest
             
-            if register_data["deactivation_time"] <= int(datetime.now(UTC).timestamp()):    # type: ignore[operator]
+            if register_data["deactivation_time"] <= int(time()):    # type: ignore[operator]
                 return {
                     "error": {
                         "code": "Bad Request",
@@ -247,7 +248,8 @@ class Verify_code(Resource):
             access_scrf_token: str = generate_id(32)
             refresh_scrf_token: str = generate_id(32)
 
-            add_session(refresh_id=refresh_token_id, user_id=_id, device=user_data.get("device"))
+            if not add_session(refresh_id=refresh_token_id, user_id=_id, device=user_data.get("device")):
+                raise BadRequest
 
             access_token, refresh_token = generate_tokens(
                 payload={
@@ -311,7 +313,7 @@ class Restore(Resource):
                     }
                 }, 404
 
-            cooldown: int = user.restore_cooldown - int(datetime.now(UTC).timestamp())
+            cooldown: int = user.restore_cooldown - int(time())
             if cooldown >= 0:
                 return {
                     "error": {
@@ -363,7 +365,7 @@ class Restore_new_code(Resource):
                     }
                 }, 429
 
-            if restore_data.get("accept_new_request") > int(datetime.now(UTC).timestamp()):    # type: ignore[operator]
+            if restore_data.get("accept_new_request") > int(time()):    # type: ignore[operator]
                 return {
                     "error": {
                         "code": "Too early",
@@ -444,7 +446,8 @@ class Restore_verify(Resource):
             access_scrf_token: str = generate_id(32)
             refresh_scrf_token: str = generate_id(32)
 
-            add_session(refresh_id=refresh_token_id, user_id=user.uuid, device=user_data.get("device"))
+            if not add_session(refresh_id=refresh_token_id, user_id=user.uuid, device=user_data.get("device")):
+                raise BadRequest
 
             access_token, refresh_token = generate_tokens(
                 payload={
@@ -490,10 +493,9 @@ class Restore_verify(Resource):
 class Refresh_access(Resource):
     def post(self) -> tuple[dict[str, dict[str, str]], int] | Response:
         try:
-            # add device header
-            device: str | None = request.headers.get("device", "unknown device")
             scrf_cookie: str | None = request.cookies.get("refresh_scrf_token")
             refresh_token: str | None = request.cookies.get("refresh_token")
+            device: str = request.headers.get("Device", "unknown device")
             scrf_header: str | None = request.headers.get("X-SCRF-TOKEN")
 
             payload: dict[str, Any] | None = validate_refresh(refresh_token)
@@ -517,7 +519,13 @@ class Refresh_access(Resource):
             access_scrf_token: str = generate_id(32)
             refresh_scrf_token: str = generate_id(32)
 
-            add_session(refresh_id=refresh_token_id, user_id=payload.get("uuid"), device=device)
+            if not update_session(
+                old_refresh_id=payload.get("jti"),
+                new_refresh_id=refresh_token_id,
+                user_id=payload.get("uuid"),
+                device=device
+                ):
+                raise BadRequest
 
             access_token, refresh_token = generate_tokens(
                 payload={

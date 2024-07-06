@@ -1,7 +1,7 @@
-from datetime import datetime, UTC
+from time import time
 from typing import Any
 
-from jwt import encode, decode, DecodeError
+from jwt import encode, decode, InvalidTokenError
 
 from ..config import AppConfig
 
@@ -13,7 +13,7 @@ def generate_tokens(
         refresh_id: str
     ) -> tuple[str, str]:
 
-    timestamp = int(datetime.now(UTC).timestamp())
+    timestamp = int(time())
 
     payload.update({
         "exp": timestamp + AppConfig.ACCESS_TOKEN_LIFETIME,
@@ -24,7 +24,7 @@ def generate_tokens(
     access: bytes = encode(
         payload=payload,
         key=AppConfig.SECRET_KEY,
-        algorithm="HS256"
+        algorithm=AppConfig.JWT_ENCODING_ALGORITHM
     )
     refresh: bytes = encode(
         payload={
@@ -36,7 +36,7 @@ def generate_tokens(
             "uuid": payload.get("uuid")
         },
         key=AppConfig.SECRET_KEY,
-        algorithm="HS256"
+        algorithm=AppConfig.JWT_ENCODING_ALGORITHM
     )
 
     return access, refresh
@@ -50,7 +50,7 @@ def validate_refresh(token: str | None) -> dict[str, Any] | None:
         return decode(
             token,
             key="F1QX6i1XJC5B7GBLYRkroDDLykcb3nTQ",
-            algorithms=["HS256"],
+            algorithms=[AppConfig.JWT_ENCODING_ALGORITHM],
             options={
                 "verify_exp": True,
                 "verify_signature": True,
@@ -63,5 +63,5 @@ def validate_refresh(token: str | None) -> dict[str, Any] | None:
                     "uuid"
                 ]
             })
-    except DecodeError:
+    except InvalidTokenError:
         return None

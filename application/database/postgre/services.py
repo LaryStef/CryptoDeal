@@ -1,5 +1,5 @@
 from typing import Any
-from datetime import datetime, UTC
+from time import time
 from uuid import uuid4
 
 from . import db
@@ -21,7 +21,7 @@ def add_user(user_data: dict[str, str | int]) -> None:
         password_hash=user_data["password_hash"],
         role="user",
         email=user_data["email"],
-        register_date=int(datetime.now(UTC).timestamp()),
+        register_date=int(time()),
         restore_cooldown=0
     )
 
@@ -34,7 +34,7 @@ def add_user(user_data: dict[str, str | int]) -> None:
 
 
 def update_password(user: User, password: str) -> None:
-    user.restore_cooldown = int(datetime.now(UTC).timestamp()) + AppConfig.RESTORE_COOLDOWN
+    user.restore_cooldown = int(time()) + AppConfig.RESTORE_COOLDOWN
     user.password_hash = hash_password(password)
     db.session.commit()
 
@@ -42,7 +42,7 @@ def update_password(user: User, password: str) -> None:
 def add_session(refresh_id: str, user_id: str, device: str) -> None:
     sessions_raw: Session | None = get(Session, uuid=user_id)
     if sessions_raw is None:
-        return
+        return False
     
     sessions_data: dict[str, str] = sessions_raw.__dict__
     
@@ -53,11 +53,29 @@ def add_session(refresh_id: str, user_id: str, device: str) -> None:
             oldest_session: str = key.replace("activity", "")
     
     setattr(sessions_raw, "session" + oldest_session, refresh_id)
-    setattr(sessions_raw, "activity" + oldest_session, datetime.now(UTC).timestamp())
+    setattr(sessions_raw, "activity" + oldest_session, int(time()))
 
     if device is None:
-        setattr(sessions_raw, "device" + oldest_session, "unnkown device")
-    else:
-        setattr(sessions_raw, "device" + oldest_session, device)
+        device = "unknown device"
+    setattr(sessions_raw, "device" + oldest_session, device)
 
     db.session.commit()
+    return True
+
+
+def update_session(old_refresh_id: str, new_refresh_id: str, user_id: str, device: str):
+    sessions_raw: Session | None = get(Session, uuid=user_id)
+    if sessions_raw is None:
+        return False
+    
+    sessions_data: dict[str, str] = sessions_raw.__dict__
+    for key, value in sessions_data.items():
+        if key.startswith("session") and value == old_refresh_id:
+            session_num: str = key.replace("session", "")
+            setattr(sessions_raw, "session" + session_num, new_refresh_id)
+            setattr(sessions_raw, "activity" + session_num, int(time()))
+            setattr(sessions_raw, "device" + session_num, device)
+            db.session.commit()
+            return True
+
+    return False
