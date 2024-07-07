@@ -12,7 +12,7 @@ def get(table: db.Model, **kwargs: Any) -> Any | None:
     return db.session.query(table).filter_by(**kwargs).first()
 
 
-def add_user(user_data: dict[str, str | int]) -> None:
+def add_user(user_data: dict[str, str | int]) -> str:
     _id = uuid4().__str__()
 
     user: User = User(
@@ -39,7 +39,7 @@ def update_password(user: User, password: str) -> None:
     db.session.commit()
 
 
-def add_session(refresh_id: str, user_id: str, device: str) -> None:
+def add_session(refresh_id: str, user_id: str, device: str | int) -> bool:
     sessions_raw: Session | None = get(Session, uuid=user_id)
     if sessions_raw is None:
         return False
@@ -63,7 +63,7 @@ def add_session(refresh_id: str, user_id: str, device: str) -> None:
     return True
 
 
-def update_session(old_refresh_id: str, new_refresh_id: str, user_id: str, device: str):
+def update_session(old_refresh_id: str, new_refresh_id: str, user_id: str, device: str) -> bool:
     sessions_raw: Session | None = get(Session, uuid=user_id)
     if sessions_raw is None:
         return False
