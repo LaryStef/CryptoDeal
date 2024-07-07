@@ -22,6 +22,7 @@ class RediskaHandler:
         data["accept_new_request"] = timestamp + AppConfig.MAIL_CODE_COOLDOWN
         data["password_hash"] = hash_password(data["password"])    # type: ignore[arg-type]
         data["code"] = "".join([str(randint(0, 9)) for _ in range(6)])
+        data["role"] = "user"
 
         send_register_code(data["code"], data["email"])    # type: ignore[arg-type]
         
