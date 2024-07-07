@@ -255,8 +255,9 @@ class Verify_code(Resource):
             access_token, refresh_token = generate_tokens(
                 payload={
                     "uuid": _id,
-                    "role": register_data["username"],
-                    "email": register_data["email"]
+                    "role": register_data["role"],
+                    "email": register_data["email"],
+                    "name": register_data["username"]
                 },
                 access_scrf_token=access_scrf_token,
                 refresh_scrf_token=refresh_scrf_token,
