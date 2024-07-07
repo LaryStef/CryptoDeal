@@ -32,13 +32,13 @@
                 <a class="navbar-link" href="#">About</a>
             </li>
             </ul>
-            <div class="navbar-links auth-container display-off">
+            <div class="navbar-links auth-container" id="auth-button">
                 <button class="auth-link left-link" id="sign-in">Sign in</button>
                 <button class="auth-link right-link" id="sign-up">Sign up</button>
             </div>
-            <a class="profile" href="#">
-                <img src="{{ url_for('static', filename='png/test-avatar.png') }}" alt="avatar" class="avatar" decoding="async">
-                <div class="username">usernasdkiklsfnkwe</div>
+            <a class="profile display-off" id="profile-button" href="#">
+                <img src="{{ url_for('static', filename='png/test-avatar.png') }}" alt="avatar" class="avatar" id="avatar" decoding="async">
+                <div class="username" id="name">usernasdkiklsfnkwe</div>
             </a>
             <div class="dropdown" id="dropdown">
                 <div class="dropdown-button" id="dropdown-button">Menu</div>
