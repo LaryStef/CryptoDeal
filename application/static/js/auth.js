@@ -57,9 +57,17 @@ function getCookie(cookie) {
 
 function load_profile() {
   authClasses = document.getElementById("auth-button").classList;
-  profileClasses = document.getElementById("profile-button").classList; 
-  if (!authClasses.contains("display-off") && profileClasses.contains("display-off")) {
+  tryButtonClasses = document.getElementById("sign-in-try").classList;
+  profileClasses = document.getElementById("profile-button").classList;
+  if (
+    !authClasses.contains("display-off") &&
+    !tryButtonClasses.contains("display-off") &&
+    profileClasses.contains("display-off")
+  )
+  
+  {
     authClasses.add("display-off");
+    tryButtonClasses.add("display-off");
     profileClasses.remove("display-off");
   }
   
