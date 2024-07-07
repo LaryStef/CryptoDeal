@@ -506,7 +506,7 @@ class Refresh_access(Resource):
                 raise BadRequest
 
             if scrf_cookie != scrf_header or scrf_cookie != payload["scrf"]:
-                send_scrf_attention(payload.get("email"))
+                send_scrf_attention(recipient=payload.get("email"), origin=request.headers.get("Origin"))
                 return {
                     "error": {
                         "code": "Forbidden",
