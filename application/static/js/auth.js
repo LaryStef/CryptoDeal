@@ -55,9 +55,10 @@ function getCookie(cookie) {
 }
 
 function load_profile() {
-  let name = JSON.parse(atob(access.split(".")[1])).name
-  // name still not in jwt
-  // get username from jwt
+  payload = JSON.parse(atob(access.split(".")[1]))
+  let uuid = payload.uuid
+  let name = payload.name
+
   // request avatar by uuid from jwt
 }
 

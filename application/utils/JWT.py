@@ -32,7 +32,6 @@ def generate_tokens(
             "iat": timestamp,
             "jti": refresh_id,
             "scrf": refresh_scrf_token,
-            "email": payload.get("email"),
             "uuid": payload.get("uuid")
         },
         key=AppConfig.SECRET_KEY,
@@ -53,7 +52,8 @@ def validate_token(token: str | None, type: Literal["access", "refresh"]) -> dic
             "scrf",
             "email",
             "role",
-            "uuid"
+            "uuid",
+            "name"
         ]
     else:
         token_requirements = [
@@ -61,7 +61,6 @@ def validate_token(token: str | None, type: Literal["access", "refresh"]) -> dic
             "iat",
             "jti",
             "scrf",
-            "email",
             "uuid"
         ]
 

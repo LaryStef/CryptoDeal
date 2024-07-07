@@ -52,7 +52,8 @@ class Sign_in(Resource):
                     payload={
                         "uuid": user.uuid,
                         "role": user.role,
-                        "email": user.email
+                        "email": user.email,
+                        "name": user.name
                     },
                     access_scrf_token=access_scrf_token,
                     refresh_scrf_token=refresh_scrf_token,
@@ -254,7 +255,7 @@ class Verify_code(Resource):
             access_token, refresh_token = generate_tokens(
                 payload={
                     "uuid": _id,
-                    "role": "user",
+                    "role": register_data["username"],
                     "email": register_data["email"]
                 },
                 access_scrf_token=access_scrf_token,
@@ -452,8 +453,9 @@ class Restore_verify(Resource):
             access_token, refresh_token = generate_tokens(
                 payload={
                     "uuid": user.uuid,
-                    "role": "user",
-                    "email": user.email
+                    "role": user.role,
+                    "email": user.email,
+                    "name": user.name
                 },
                 access_scrf_token=access_scrf_token,
                 refresh_scrf_token=refresh_scrf_token,
@@ -512,6 +514,7 @@ class Refresh_access(Resource):
                     }
                 }, 403
 
+            user: User = get(User, uuid=payload.get("uuid"))
             response = make_response("OK")
             response.status_code = 200
 
@@ -519,7 +522,7 @@ class Refresh_access(Resource):
             access_scrf_token: str = generate_id(32)
             refresh_scrf_token: str = generate_id(32)
 
-            if not update_session(
+            if user is None or not update_session(
                 old_refresh_id=payload.get("jti"),
                 new_refresh_id=refresh_token_id,
                 user_id=payload.get("uuid"),
@@ -529,9 +532,10 @@ class Refresh_access(Resource):
 
             access_token, refresh_token = generate_tokens(
                 payload={
-                    "uuid": payload.get("uuid"),
-                    "role": "user",
-                    "email": payload.get("email")
+                    "uuid": user.uuid,
+                    "role": user.role,
+                    "email": user.email,
+                    "name": user.name
                 },
                 access_scrf_token=access_scrf_token,
                 refresh_scrf_token=refresh_scrf_token,
