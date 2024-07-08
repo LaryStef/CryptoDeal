@@ -53,7 +53,8 @@ class Sign_in(Resource):
                         "uuid": user.uuid,
                         "role": user.role,
                         "email": user.email,
-                        "name": user.name
+                        "name": user.name,
+                        "alien_number": user.alien_number
                     },
                     access_scrf_token=access_scrf_token,
                     refresh_scrf_token=refresh_scrf_token,
@@ -239,7 +240,7 @@ class Verify_code(Resource):
                     }
                 }, 400
             
-            _id: str = add_user(register_data)
+            _id, alien_number = add_user(register_data)
             rediska.json().delete("register", request_id)
 
             response: Response = make_response("OK")
@@ -257,7 +258,8 @@ class Verify_code(Resource):
                     "uuid": _id,
                     "role": register_data["role"],
                     "email": register_data["email"],
-                    "name": register_data["username"]
+                    "name": register_data["username"],
+                    "alien_number": alien_number
                 },
                 access_scrf_token=access_scrf_token,
                 refresh_scrf_token=refresh_scrf_token,
@@ -456,7 +458,8 @@ class Restore_verify(Resource):
                     "uuid": user.uuid,
                     "role": user.role,
                     "email": user.email,
-                    "name": user.name
+                    "name": user.name,
+                    "alien_number": user.alien_number
                 },
                 access_scrf_token=access_scrf_token,
                 refresh_scrf_token=refresh_scrf_token,
@@ -536,7 +539,8 @@ class Refresh_access(Resource):
                     "uuid": user.uuid,
                     "role": user.role,
                     "email": user.email,
-                    "name": user.name
+                    "name": user.name,
+                    "alien_number": user.alien_number
                 },
                 access_scrf_token=access_scrf_token,
                 refresh_scrf_token=refresh_scrf_token,

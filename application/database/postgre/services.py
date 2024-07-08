@@ -1,5 +1,6 @@
 from typing import Any
 from time import time
+from random import randint
 from uuid import uuid4
 
 from . import db
@@ -12,8 +13,9 @@ def get(table: db.Model, **kwargs: Any) -> Any | None:
     return db.session.query(table).filter_by(**kwargs).first()
 
 
-def add_user(user_data: dict[str, str | int]) -> str:
-    _id = uuid4().__str__()
+def add_user(user_data: dict[str, str | int]) -> tuple[str, int]:
+    _id: str = uuid4().__str__()
+    alien_number: int = randint(1, 6)
 
     user: User = User(
         uuid=_id,
@@ -22,7 +24,8 @@ def add_user(user_data: dict[str, str | int]) -> str:
         role="user",
         email=user_data["email"],
         register_date=int(time()),
-        restore_cooldown=0
+        restore_cooldown=0,
+        alien_number=alien_number
     )
 
     db.session.add(user)
@@ -30,7 +33,7 @@ def add_user(user_data: dict[str, str | int]) -> str:
     db.session.add(session)
 
     db.session.commit()
-    return _id
+    return _id, alien_number
 
 
 def update_password(user: User, password: str) -> None:
@@ -39,12 +42,12 @@ def update_password(user: User, password: str) -> None:
     db.session.commit()
 
 
-def add_session(refresh_id: str, user_id: str, device: str | int) -> bool:
+def add_session(refresh_id: str, user_id: str, device: str | None) -> bool:
     sessions_raw: Session | None = get(Session, uuid=user_id)
     if sessions_raw is None:
         return False
     
-    sessions_data: dict[str, str] = sessions_raw.__dict__
+    sessions_data: dict[str, str | int] = sessions_raw.__dict__
     
     earlier_activity: float = float("inf")
     for key, value in sessions_data.items():

@@ -1,6 +1,7 @@
 from sqlalchemy import Integer, String
 from sqlalchemy.orm import mapped_column, Mapped
 
+
 from . import db
 
 # TODO change datatype for timestamps in db to suitable datatype
@@ -13,7 +14,8 @@ class User(db.Model):
             role: str,
             email: str,
             register_date: int,
-            restore_cooldown: int
+            restore_cooldown: int,
+            alien_number: int
         ):
 
         self.uuid: str = uuid
@@ -23,14 +25,16 @@ class User(db.Model):
         self.email: str = email
         self.register_date: int = register_date
         self.restore_cooldown: int = restore_cooldown
+        self.alien_number: int = alien_number
 
     uuid: Mapped[str] = mapped_column(String(36), primary_key=True, unique=True)
     name: Mapped[str] = mapped_column(String(30))
     password_hash: Mapped[str] = mapped_column(String(64))
     role: Mapped[str] = mapped_column(String(5), default="user")
     email: Mapped[str] = mapped_column(String(256), unique=True)
-    register_date: Mapped[int] = mapped_column(Integer)
+    register_date: Mapped[int] = mapped_column(Integer, nullable=True)
     restore_cooldown: Mapped[int] = mapped_column(Integer, default=0)
+    alien_number: Mapped[int] = mapped_column(Integer, default=0)
 
 
 class Session(db.Model):
