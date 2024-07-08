@@ -77,7 +77,7 @@ function load_profile() {
   let name = payload.name;
 
   document.getElementById("name").innerText = name;
-  document.getElementById("avatar").src = new URL("/static/png/Alien6.jpg", location.origin);
+  document.getElementById("avatar").src = new URL("/static/jpg/Alien6.jpg", location.origin);
   //document.getElementById("avatar").src = avatarUrl + uuid;
 }
 
