@@ -32,7 +32,7 @@ def add_user(user_data: dict[str, str | int]) -> tuple[str, int]:
 
 def update_password(user: User, password: str) -> None:
     user.password_hash = hash_password(password)
-    user.restore_cooldown = utcnow()
+    user.restore_date = utcnow()
     db.session.commit()
 
 

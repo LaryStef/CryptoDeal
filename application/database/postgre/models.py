@@ -17,7 +17,7 @@ class User(db.Model):
     role: Mapped[str] = mapped_column(String(5), default="user")
     email: Mapped[str] = mapped_column(String(256), unique=True)
     register_date: Mapped[datetime] = mapped_column(TIMESTAMP, nullable=True, server_default=utcnow())
-    restore_cooldown: Mapped[datetime] = mapped_column(TIMESTAMP, server_default=utcnow(), onupdate=utcnow())
+    restore_date: Mapped[datetime] = mapped_column(TIMESTAMP, server_default=utcnow())
     alien_number: Mapped[int] = mapped_column(Integer, default=0)
     session: Mapped[List["Session"]] = relationship()
 

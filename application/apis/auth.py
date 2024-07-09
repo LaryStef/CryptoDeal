@@ -133,7 +133,7 @@ class Sign_up(Resource):
             
             response: Response = make_response("OK")
             response.status_code = 201
-            response.headers["Request-Id"] = RediskaHandler.create_register_request(data)    # type: ignore[arg-type]
+            response.headers["Request-Id"] = RediskaHandler.create_register_request(data)
 
             return response
         except (BadRequest, ResponseError):
@@ -162,7 +162,7 @@ class Refresh_code(Resource):
             if request_id is None or register_data.get("email") != email:
                 raise BadRequest
 
-            if register_data.get("refresh_attempts") >= AppConfig.MAIL_CODE_REFRESH_ATTEMTPTS:    # type: ignore[operator]
+            if register_data.get("refresh_attempts") >= AppConfig.MAIL_CODE_REFRESH_ATTEMTPTS:
                 rediska.json().delete("register", request_id)
                 return {
                     "error": {
@@ -172,7 +172,7 @@ class Refresh_code(Resource):
                     }
                 }, 429
             
-            if register_data.get("accept_new_request") > int(time()):    # type: ignore[operator]
+            if register_data.get("accept_new_request") > int(time()):
                 return {
                     "error": {
                         "code": "Too early",
@@ -214,7 +214,7 @@ class Verify_code(Resource):
             if code is None or register_data is None:
                 raise BadRequest
             
-            if register_data["deactivation_time"] <= int(time()):    # type: ignore[operator]
+            if register_data["deactivation_time"] <= int(time()):
                 return {
                     "error": {
                         "code": "Bad Request",
@@ -223,7 +223,7 @@ class Verify_code(Resource):
                     }
                 }, 400
 
-            if register_data.get("verify_attempts") >= AppConfig.MAIL_CODE_VERIFY_ATTEMPTS:    # type: ignore[operator]
+            if register_data.get("verify_attempts") >= AppConfig.MAIL_CODE_VERIFY_ATTEMPTS:
                 rediska.json().delete("register", request_id)
                 return {
                     "error": {
@@ -322,7 +322,7 @@ class Restore(Resource):
                     }
                 }, 404
 
-            cooldown: int = int(datetime.now().timestamp()) - int(user.restore_cooldown.timestamp() + int(timedelta(hours=3.0).total_seconds()))
+            cooldown: int = int(datetime.now().timestamp()) - int(user.restore_date.timestamp() + int(timedelta(hours=3.0).total_seconds()))
             if cooldown < AppConfig.RESTORE_COOLDOWN:
                 return {
                     "error": {
@@ -364,7 +364,7 @@ class Restore_new_code(Resource):
             if restore_data is None or restore_data.get("email") != email:
                 raise BadRequest
 
-            if restore_data.get("refresh_attempts") >= AppConfig.MAIL_CODE_REFRESH_ATTEMTPTS:    # type: ignore[operator]
+            if restore_data.get("refresh_attempts") >= AppConfig.MAIL_CODE_REFRESH_ATTEMTPTS:
                 rediska.json().delete("password_restore", request_id)
                 return {
                     "error": {
@@ -374,7 +374,7 @@ class Restore_new_code(Resource):
                     }
                 }, 429
 
-            if restore_data.get("accept_new_request") > int(time()):    # type: ignore[operator]
+            if restore_data.get("accept_new_request") > int(time()):
                 return {
                     "error": {
                         "code": "Too early",
@@ -420,7 +420,7 @@ class Restore_verify(Resource):
             if request_data is None:
                 raise BadRequest
             
-            if request_data.get("verify_attempts") >= AppConfig.MAIL_CODE_VERIFY_ATTEMPTS:    # type: ignore[operator]
+            if request_data.get("verify_attempts") >= AppConfig.MAIL_CODE_VERIFY_ATTEMPTS:
                 rediska.json().delete("password_restore", request_id)
                 return {
                     "error": {
