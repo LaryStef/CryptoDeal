@@ -2,6 +2,7 @@ from typing import Any
 from random import randint
 from uuid import uuid4
 
+from .timestamp import utcnow
 from . import db
 from .models import User, Session
 from ...utils.cryptography import hash_password
@@ -31,6 +32,7 @@ def add_user(user_data: dict[str, str | int]) -> tuple[str, int]:
 
 def update_password(user: User, password: str) -> None:
     user.password_hash = hash_password(password)
+    user.restore_cooldown = utcnow()
     db.session.commit()
 
 
