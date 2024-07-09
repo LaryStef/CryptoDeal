@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 from time import time
 from typing import Any
 
@@ -45,9 +46,11 @@ class Sign_in(Resource):
                 access_scrf_token: str = generate_id(32)
                 refresh_scrf_token: str = generate_id(32)
 
-                if not add_session(refresh_id=refresh_token_id, user_id=user.uuid, device=data.get("device")):
-                    raise BadRequest
-                
+                add_session(
+                    refresh_id=refresh_token_id,
+                    user_id=user.uuid,
+                    device=data.get("device")
+                )
                 access_token, refresh_token = generate_tokens(
                     payload={
                         "uuid": user.uuid,
@@ -240,7 +243,7 @@ class Verify_code(Resource):
                     }
                 }, 400
             
-            _id, alien_number = add_user(register_data)
+            id_, alien_number = add_user(register_data)
             rediska.json().delete("register", request_id)
 
             response: Response = make_response("OK")
@@ -250,12 +253,14 @@ class Verify_code(Resource):
             access_scrf_token: str = generate_id(32)
             refresh_scrf_token: str = generate_id(32)
 
-            if not add_session(refresh_id=refresh_token_id, user_id=_id, device=user_data.get("device")):
-                raise BadRequest
-
+            add_session(
+                refresh_id=refresh_token_id,
+                user_id=id_,
+                device=user_data.get("device")
+            )
             access_token, refresh_token = generate_tokens(
                 payload={
-                    "uuid": _id,
+                    "uuid": id_,
                     "role": register_data["role"],
                     "email": register_data["email"],
                     "name": register_data["username"],
@@ -317,12 +322,12 @@ class Restore(Resource):
                     }
                 }, 404
 
-            cooldown: int = user.restore_cooldown - int(time())
-            if cooldown >= 0:
+            cooldown: int = int(datetime.now().timestamp()) - int(user.restore_cooldown.timestamp() + int(timedelta(hours=3.0).total_seconds()))
+            if cooldown < AppConfig.RESTORE_COOLDOWN:
                 return {
                     "error": {
                         "code": "Too early",
-                        "message": f"Password has been restored recently, try in { cooldown // 60 + 1 } minutes",
+                        "message": f"Password has been restored recently, try in {(AppConfig.RESTORE_COOLDOWN - cooldown) // 60 + 1} minutes",
                         "details": "Password restore procedure has 10 minutes cooldown"
                     }
                 }, 425
@@ -450,9 +455,11 @@ class Restore_verify(Resource):
             access_scrf_token: str = generate_id(32)
             refresh_scrf_token: str = generate_id(32)
 
-            if not add_session(refresh_id=refresh_token_id, user_id=user.uuid, device=user_data.get("device")):
-                raise BadRequest
-
+            add_session(
+                refresh_id=refresh_token_id,
+                user_id=user.uuid,
+                device=user_data.get("device")
+            )
             access_token, refresh_token = generate_tokens(
                 payload={
                     "uuid": user.uuid,
@@ -518,22 +525,20 @@ class Refresh_access(Resource):
                     }
                 }, 403
 
-            user: User = get(User, uuid=payload.get("uuid"))
-            response = make_response("OK")
-            response.status_code = 200
+            user: User | None = get(User, uuid=payload.get("uuid"))
+            if user is None:
+                raise BadRequest
 
             refresh_token_id: str = generate_id(16)
             access_scrf_token: str = generate_id(32)
             refresh_scrf_token: str = generate_id(32)
 
-            if user is None or not update_session(
-                old_refresh_id=payload.get("jti"),
+            update_session(
+                old_refresh_id=payload.get("jti", ""),
                 new_refresh_id=refresh_token_id,
-                user_id=payload.get("uuid"),
+                user_id=payload.get("uuid", ""),
                 device=device
-                ):
-                raise BadRequest
-
+            )
             access_token, refresh_token = generate_tokens(
                 payload={
                     "uuid": user.uuid,
@@ -546,6 +551,9 @@ class Refresh_access(Resource):
                 refresh_scrf_token=refresh_scrf_token,
                 refresh_id=refresh_token_id
             )
+
+            response = make_response("OK")
+            response.status_code = 200
 
             response.set_cookie(
                 key="access_token",
