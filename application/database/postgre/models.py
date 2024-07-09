@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import List
 
-from sqlalchemy import Integer, String, TIMESTAMP
+from sqlalchemy import Integer, String, TIMESTAMP, ForeignKey
 from sqlalchemy.orm import mapped_column, Mapped, relationship
 
 from . import db
@@ -10,14 +10,14 @@ from .timestamp import utcnow
 
 class User(db.Model):
     def __init__(
-            self,
-            uuid: str,
-            name: str,
-            password_hash: str,
-            role: str,
-            email: str,
-            alien_number: int
-        ):
+        self,
+        uuid: str,
+        name: str,
+        password_hash: str,
+        role: str,
+        email: str,
+        alien_number: int
+    ) -> None:
 
         self.uuid: Mapped[str] = uuid
         self.name: Mapped[str] = name
@@ -36,13 +36,16 @@ class User(db.Model):
     register_date: Mapped[datetime] = mapped_column(TIMESTAMP, nullable=True, server_default=utcnow())
     restore_cooldown: Mapped[datetime] = mapped_column(TIMESTAMP, server_default=utcnow(), onupdate=utcnow())
     alien_number: Mapped[int] = mapped_column(Integer, default=0)
-    session: Mapped[List["Session"]] = relationship()
+
+    sessions: Mapped[list["Session"]] = relationship(back_populates="user")
 
 
 class Session(db.Model):
     __tablename__ = "session"
 
+    user_id: Mapped[str] = mapped_column(Integer, ForeignKey("user.uuid"), primary_key=True)
     session_id: Mapped[str] = mapped_column(String(36))
-    user_id: Mapped[str] = mapped_column(primary_key=True, ForeignKey="user.uuid")
     device: Mapped[str] = mapped_column(String(30), default="unknown device")
     last_activity: Mapped[datetime] = mapped_column(TIMESTAMP, server_default=utcnow(), onupdate=utcnow())
+
+    user: Mapped[User] = relationship(back_populates="sessions")
