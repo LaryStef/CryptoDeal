@@ -506,7 +506,7 @@ function closeEmailWindow() {
     window.style.visibility = "hidden";
     window.style.transition = "none";
     window.style.transform = "translate(200%)";
-    window.style.transition = "all let(--login-transition-duration) ease-out";
+    window.style.transition = "all var(--login-transition-duration) ease-out";
   }, 400)
   
   enableButtons();
