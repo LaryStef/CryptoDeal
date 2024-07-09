@@ -66,19 +66,28 @@ class Sign_in(Resource):
 
                 response.set_cookie(
                     key="access_token",
-                    value=access_token
+                    value=access_token,
+                    max_age=AppConfig.ACCESS_TOKEN_LIFETIME,
+                    samesite="Strict"
                 )
                 response.set_cookie(
                     key="refresh_token",
-                    value=refresh_token
+                    value=refresh_token,
+                    max_age=AppConfig.REFRESH_TOKEN_LIFETIME,
+                    httponly=True,
+                    samesite="Strict"
                 )
                 response.set_cookie(
                     key="access_scrf_token",
-                    value=access_scrf_token
+                    value=access_scrf_token,
+                    max_age=AppConfig.ACCESS_TOKEN_LIFETIME,
+                    samesite="Strict"
                 )
                 response.set_cookie(
                     key="refresh_scrf_token",
-                    value=refresh_scrf_token
+                    value=refresh_scrf_token,
+                    max_age=AppConfig.REFRESH_TOKEN_LIFETIME,
+                    samesite="Strict"
                 )
 
                 return response
@@ -273,19 +282,31 @@ class Verify_code(Resource):
 
             response.set_cookie(
                 key="access_token",
-                value=access_token
+                value=access_token,
+                max_age=AppConfig.ACCESS_TOKEN_LIFETIME,
+                httponly=True,
+                samesite="Strict"
             )
             response.set_cookie(
                 key="refresh_token",
-                value=refresh_token
+                value=refresh_token,
+                max_age=AppConfig.REFRESH_TOKEN_LIFETIME,
+                httponly=True,
+                samesite="Strict"
             )
             response.set_cookie(
                 key="access_scrf_token",
-                value=access_scrf_token
+                value=access_scrf_token,
+                max_age=AppConfig.ACCESS_TOKEN_LIFETIME,
+                httponly=True,
+                samesite="Strict"
             )
             response.set_cookie(
                 key="refresh_scrf_token",
-                value=refresh_scrf_token
+                value=refresh_scrf_token,
+                max_age=AppConfig.REFRESH_TOKEN_LIFETIME,
+                httponly=True,
+                samesite="Strict"
             )
 
             return response
@@ -475,19 +496,31 @@ class Restore_verify(Resource):
 
             response.set_cookie(
                 key="access_token",
-                value=access_token
+                value=access_token,
+                max_age=AppConfig.ACCESS_TOKEN_LIFETIME,
+                httponly=True,
+                samesite="Strict"
             )
             response.set_cookie(
                 key="refresh_token",
-                value=refresh_token
+                value=refresh_token,
+                max_age=AppConfig.REFRESH_TOKEN_LIFETIME,
+                httponly=True,
+                samesite="Strict"
             )
             response.set_cookie(
                 key="access_scrf_token",
-                value=access_scrf_token
+                value=access_scrf_token,
+                max_age=AppConfig.ACCESS_TOKEN_LIFETIME,
+                httponly=True,
+                samesite="Strict"
             )
             response.set_cookie(
                 key="refresh_scrf_token",
-                value=refresh_scrf_token
+                value=refresh_scrf_token,
+                max_age=AppConfig.REFRESH_TOKEN_LIFETIME,
+                httponly=True,
+                samesite="Strict"
             )
 
             return response
@@ -557,19 +590,28 @@ class Refresh_access(Resource):
 
             response.set_cookie(
                 key="access_token",
-                value=access_token
+                value=access_token,
+                max_age=AppConfig.ACCESS_TOKEN_LIFETIME,
+                samesite="Strict"
             )
             response.set_cookie(
                 key="refresh_token",
-                value=refresh_token
+                value=refresh_token,
+                max_age=AppConfig.REFRESH_TOKEN_LIFETIME,
+                httponly=True,
+                samesite="Strict"
             )
             response.set_cookie(
                 key="access_scrf_token",
-                value=access_scrf_token
+                value=access_scrf_token,
+                max_age=AppConfig.ACCESS_TOKEN_LIFETIME,
+                samesite="Strict"
             )
             response.set_cookie(
                 key="refresh_scrf_token",
-                value=refresh_scrf_token
+                value=refresh_scrf_token,
+                max_age=AppConfig.REFRESH_TOKEN_LIFETIME,
+                samesite="Strict"
             )
 
             return response
