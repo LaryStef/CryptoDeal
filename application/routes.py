@@ -1,8 +1,5 @@
 from flask import Blueprint, render_template
 from werkzeug.exceptions import NotFound
-from flask_mail import Message
-
-from .mail import mail
 
 
 main: Blueprint = Blueprint("main", __name__)
@@ -15,8 +12,12 @@ def index() -> tuple[str, int]:
 
 @main.route("/test")
 def test() -> tuple[str, int]:
-    from .mail.senders import send_scrf_attention
-    send_scrf_attention("", origin="no origin")
+    from .database.postgre.models import User
+    from .database.postgre.services import get
+    user = get(User, uuid="be7aad9c-bdeb-449c-9087-fa5f7e62f4e7")
+    if user is not None:
+        print(user.register_date)
+        print(type(user.register_date))
     return render_template("test.html"), 200
 
 

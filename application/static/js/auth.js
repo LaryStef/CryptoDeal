@@ -78,7 +78,6 @@ function load_profile() {
 
   document.getElementById("name").innerText = name;
   document.getElementById("avatar").src = new URL(`/static/jpg/Alien${alien}.jpg`, location.origin);
-  //document.getElementById("avatar").src = avatarUrl + uuid;
 }
 
 document.getElementById("left-switch").onclick = leftSwitchTransform;
