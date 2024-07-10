@@ -312,7 +312,6 @@ class VerifyCode(Resource):
                 key="access_token",
                 value=access_token,
                 max_age=AppConfig.ACCESS_TOKEN_LIFETIME,
-                httponly=True,
                 samesite="Strict"
             )
             response.set_cookie(
@@ -326,14 +325,12 @@ class VerifyCode(Resource):
                 key="access_scrf_token",
                 value=access_scrf_token,
                 max_age=AppConfig.ACCESS_TOKEN_LIFETIME,
-                httponly=True,
                 samesite="Strict"
             )
             response.set_cookie(
                 key="refresh_scrf_token",
                 value=refresh_scrf_token,
                 max_age=AppConfig.REFRESH_TOKEN_LIFETIME,
-                httponly=True,
                 samesite="Strict"
             )
 
@@ -546,7 +543,6 @@ class RestoreVerify(Resource):
                 key="access_token",
                 value=access_token,
                 max_age=AppConfig.ACCESS_TOKEN_LIFETIME,
-                httponly=True,
                 samesite="Strict"
             )
             response.set_cookie(
@@ -560,14 +556,12 @@ class RestoreVerify(Resource):
                 key="access_scrf_token",
                 value=access_scrf_token,
                 max_age=AppConfig.ACCESS_TOKEN_LIFETIME,
-                httponly=True,
                 samesite="Strict"
             )
             response.set_cookie(
                 key="refresh_scrf_token",
                 value=refresh_scrf_token,
                 max_age=AppConfig.REFRESH_TOKEN_LIFETIME,
-                httponly=True,
                 samesite="Strict"
             )
 
