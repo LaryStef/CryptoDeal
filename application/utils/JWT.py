@@ -7,11 +7,11 @@ from ..config import AppConfig
 
 
 def generate_tokens(
-        payload: dict[str, str | int],
-        access_scrf_token: str,
-        refresh_scrf_token: str,
-        refresh_id: str
-    ) -> tuple[str, str]:
+    payload: dict[str, str | int],
+    access_scrf_token: str,
+    refresh_scrf_token: str,
+    refresh_id: str
+) -> tuple[str, str]:
 
     timestamp = int(time())
 
@@ -41,7 +41,10 @@ def generate_tokens(
     return access, refresh
 
 
-def validate_token(token: str | None, type: Literal["access", "refresh"]) -> dict[str, Any] | None:
+def validate_token(
+    token: str | None,
+    type: Literal["access", "refresh"]
+) -> dict[str, Any] | None:
     if token is None:
         return token
 

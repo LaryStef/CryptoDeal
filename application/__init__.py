@@ -17,12 +17,11 @@ def create_app() -> Flask:
     db.init_app(app)
     mail.init_app(app)
     rediska.init_app(app)
-    
+
     app.extensions["mail"].debug = 0
-    
 
     with app.app_context():
-        from.database.postgre.models import User
-        db.create_all()        
+        from .database.postgre.models import User  # noqa: F401
+        db.create_all()
 
     return app

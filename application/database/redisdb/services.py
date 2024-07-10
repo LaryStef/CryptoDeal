@@ -20,35 +20,39 @@ class RediskaHandler:
         data["creation_time"] = timestamp
         data["deactivation_time"] = timestamp + AppConfig.REGISTER_LIFETIME
         data["accept_new_request"] = timestamp + AppConfig.MAIL_CODE_COOLDOWN
-        data["password_hash"] = hash_password(data["password"])    # type: ignore[arg-type]
+        data["password_hash"] = hash_password(data["password"])
         data["code"] = "".join([str(randint(0, 9)) for _ in range(6)])
         data["role"] = "user"
 
-        send_register_code(data["code"], data["email"])    # type: ignore[arg-type]
-        
+        send_register_code(data["code"], data["email"])
+
         rediska.json().set("register", request_id, data, nx=True)
         return request_id
 
-
     @staticmethod
-    def refresh_register_code(data: dict[str, str | int], request_id: str) -> None:
-        data["refresh_attempts"] += 1        # type: ignore[operator]
+    def refresh_register_code(
+        data: dict[str, str | int],
+        request_id: str
+    ) -> None:
+        data["refresh_attempts"] += 1
         data["accept_new_request"] = int(time()) + AppConfig.MAIL_CODE_COOLDOWN
 
         data["code"] = "".join([str(randint(0, 9)) for _ in range(6)])
-        send_register_code(data["code"], data["email"])    # type: ignore[arg-type]
+        send_register_code(data["code"], data["email"])
 
         rediska.json().delete("register", request_id)
         rediska.json().set("register", request_id, data, nx=True)
 
-
     @staticmethod
-    def increase_verify_attempts(file: str, data: dict[str, str | int], request_id: str) -> None:
-        data["verify_attempts"] = data["verify_attempts"] + 1        # type: ignore[operator]
+    def increase_verify_attempts(
+        file: str,
+        data: dict[str, str | int],
+        request_id: str
+    ) -> None:
+        data["verify_attempts"] = data["verify_attempts"] + 1
 
         rediska.json().delete(file, request_id)
         rediska.json().set(file, request_id, data, nx=True)
-
 
     @staticmethod
     def create_restore_request(email: str) -> str:
@@ -64,22 +68,23 @@ class RediskaHandler:
         data["accept_new_request"] = timestamp + AppConfig.MAIL_CODE_COOLDOWN
         data["code"] = "".join([str(randint(0, 9)) for _ in range(6)])
 
-        send_restore_code(data["code"], email)    # type: ignore[arg-type]
+        send_restore_code(data["code"], email)
 
         rediska.json().set("password_restore", request_id, data, nx=True)
         return request_id
 
-
     @staticmethod
-    def refresh_restore_code(data: dict[str, str | int], request_id: str) -> None:
+    def refresh_restore_code(
+        data: dict[str, str | int],
+        request_id: str
+    ) -> None:
         timestamp: int = int(time())
 
-        data["refresh_attempts"] += 1        # type: ignore[operator]
+        data["refresh_attempts"] += 1
         data["accept_new_request"] = timestamp + AppConfig.MAIL_CODE_COOLDOWN
         data["code"] = "".join([str(randint(0, 9)) for _ in range(6)])
         data["deactivation_time"] = timestamp + AppConfig.RESTORE_LIFETIME
 
-        send_restore_code(data["code"], data["email"])    # type: ignore[arg-type]
-
+        send_restore_code(data["code"], data["email"])
         rediska.json().delete("password_restore", request_id)
         rediska.json().set("password_restore", request_id, data, nx=True)

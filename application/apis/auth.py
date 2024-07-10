@@ -14,16 +14,18 @@ from ..utils.generators import generate_id
 from ..utils.JWT import generate_tokens, validate_token
 from ..shemas import RegisterSchema, LoginSchema
 from ..database.postgre.models import User
-from ..database.postgre.services import get, add_user, update_password, add_session, update_session
 from ..database.redisdb import rediska
 from ..database.redisdb.services import RediskaHandler
+from ..database.postgre.services import (
+    get, add_user, update_password, add_session, update_session
+)
 
 
 api = Namespace("auth", path="/auth/")
 
 
 @api.route("/sign-in")
-class Sign_in(Resource):
+class SignIn(Resource):
     def post(self) -> tuple[dict[str, dict[str, str]], int] | Response:
         try:
             data: dict[str, str] = request.form.to_dict()
@@ -38,7 +40,10 @@ class Sign_in(Resource):
 
             user: User | None = get(User, name=data.get("username"))
 
-            if user is not None and checkpw(data.get("password", "").encode("utf-8"), user.password_hash.encode("utf-8")):
+            if user is not None and checkpw(
+                data.get("password", "").encode("utf-8"),
+                user.password_hash.encode("utf-8")
+            ):
                 response: Response = make_response("OK")
                 response.status_code = 200
 
@@ -98,8 +103,8 @@ class Sign_in(Resource):
                     "message": "Invalid login or password",
                     "details": "Try one more time or restore password"
                 }
-            }, 401               
- 
+            }, 401
+
         except (BadRequest, ResponseError):
             return {
                 "error": {
@@ -122,27 +127,37 @@ class SignUp(Resource):
             if RegisterSchema().validate(data):
                 raise BadRequest
 
-            if data.get("email") in rediska.json().get("register", "$..email") or get(User, email=data.get("email")): 
+            if data.get("email") in \
+                rediska.json().get("register", "$..email") \
+                    or get(User, email=data.get("email")):
                 return {
                     "error": {
                         "code": "Conflict",
                         "message": "Email already taken",
-                        "details": "User with this email already exists or he is being registered now"
+                        "details": """
+                            User with this email already exists or he is being
+                            registered now
+                        """
                     }
                 }, 409
-            
-            if data.get("username") in rediska.json().get("register", "$..username") or get(User, name=data.get("username")):
+
+            if data.get("username") in\
+                rediska.json().get("register", "$..username") \
+                    or get(User, name=data.get("username")):
                 return {
                     "error": {
                         "code": "Conflict",
                         "message": "Username already taken",
-                        "details": "User with this username already exists or he is being registered now"
+                        "details": """User with this username already exists
+                            or he is being registered now
+                        """
                     }
                 }, 409
 
             response: Response = make_response("OK")
             response.status_code = 201
-            response.headers["Request-Id"] = RediskaHandler.create_register_request(data)
+            response.headers["Request-Id"] = \
+                RediskaHandler.create_register_request(data)
 
             return response
         except (BadRequest, ResponseError):
@@ -156,7 +171,7 @@ class SignUp(Resource):
 
 
 @api.route("/register/new-code")
-class Refresh_code(Resource):
+class RefreshCode(Resource):
     def post(self) -> tuple[dict[str, dict[str, str]], int] | Response:
         try:
             user_data: dict[str, str] | None = request.json
@@ -166,18 +181,22 @@ class Refresh_code(Resource):
 
             email: str = user_data.get("email", "")
             request_id: str | None = request.headers.get("Request-Id")
-            register_data: dict[str, str | int] = rediska.json().get("register", request_id)
+            register_data: dict[str, str | int] = \
+                rediska.json().get("register", request_id)
 
             if request_id is None or register_data.get("email") != email:
                 raise BadRequest
 
-            if register_data.get("refresh_attempts") >= AppConfig.MAIL_CODE_REFRESH_ATTEMTPTS:
+            if register_data.get("refresh_attempts") >= \
+                    AppConfig.MAIL_CODE_REFRESH_ATTEMTPTS:
                 rediska.json().delete("register", request_id)
                 return {
                     "error": {
                         "code": "Too many requests",
                         "message": "Too many refresh code requests",
-                        "details": "Application for registration has been cancelled"
+                        "details": """Application for registration has been
+                            cancelled
+                        """
                     }
                 }, 429
 
@@ -207,7 +226,7 @@ class Refresh_code(Resource):
 
 
 @api.route("/register/verify")
-class Verify_code(Resource):
+class VerifyCode(Resource):
     def post(self) -> tuple[dict[str, dict[str, str]], int] | Response:
         try:
             user_data: dict[str, str] | None = request.json
@@ -218,7 +237,8 @@ class Verify_code(Resource):
 
             code: str | None = user_data.get("code")
 
-            register_data: dict[str, str | int] = rediska.json().get("register", request_id)
+            register_data: dict[str, str | int] = \
+                rediska.json().get("register", request_id)
 
             if code is None or register_data is None:
                 raise BadRequest
@@ -227,23 +247,31 @@ class Verify_code(Resource):
                 return {
                     "error": {
                         "code": "Bad Request",
-                        "message": "Application registreation has been cancelled",
-                        "details": "It's too many time since you applied for registration"
+                        "message": """Application registreation has been
+                            cancelled""",
+                        "details": """It's too many time since you applied for
+                            registration"""
                     }
                 }, 400
 
-            if register_data.get("verify_attempts") >= AppConfig.MAIL_CODE_VERIFY_ATTEMPTS:
+            if register_data.get("verify_attempts") >= \
+                    AppConfig.MAIL_CODE_VERIFY_ATTEMPTS:
                 rediska.json().delete("register", request_id)
                 return {
                     "error": {
                         "code": "Too many requests",
                         "message": "Too many verify code requests",
-                        "details": "Application for registration has been cancelled"
+                        "details": """Application for registration has been
+                            cancelled"""
                     }
                 }, 429
 
             if register_data.get("code") != code:
-                RediskaHandler.increase_verify_attempts("register", register_data, request_id)
+                RediskaHandler.increase_verify_attempts(
+                    file="register",
+                    data=register_data,
+                    request_id=request_id
+                )
                 return {
                     "error": {
                         "code": "Bad request",
@@ -343,19 +371,28 @@ class Restore(Resource):
                     }
                 }, 404
 
-            cooldown: int = int(datetime.now().timestamp()) - int(user.restore_date.timestamp() + int(timedelta(hours=3.0).total_seconds()))
+            cooldown: int = int(datetime.now().timestamp()) \
+                - int(user.restore_date.timestamp()) \
+                + int(timedelta(hours=3.0).total_seconds())
+
             if cooldown < AppConfig.RESTORE_COOLDOWN:
                 return {
                     "error": {
                         "code": "Too early",
-                        "message": f"Password has been restored recently, try in {(AppConfig.RESTORE_COOLDOWN - cooldown) // 60 + 1} minutes",
-                        "details": "Password restore procedure has 10 minutes cooldown"
+                        "message": f"""Password has been restored recently,
+                            try in
+                            {(AppConfig.RESTORE_COOLDOWN - cooldown) // 60 + 1}
+                            minutes
+                        """,
+                        "details": """Password restore procedure has 10
+                            minutes cooldown"""
                     }
                 }, 425
 
             response: Response = make_response("OK")
-            response.status_code = 201             
-            response.headers["Request-Id"] = RediskaHandler.create_restore_request(email)
+            response.status_code = 201
+            response.headers["Request-Id"] = \
+                RediskaHandler.create_restore_request(email)
             return response
 
         except (BadRequest, ResponseError):
@@ -369,7 +406,7 @@ class Restore(Resource):
 
 
 @api.route("/restore/new-code")
-class Restore_new_code(Resource):
+class RestoreNewCode(Resource):
     def post(self) -> tuple[dict[str, dict[str, str]], int] | Response:
         try:
             user_data: dict[str, str] | None = request.json
@@ -380,18 +417,21 @@ class Restore_new_code(Resource):
 
             email: str | None = user_data.get("email", "")
 
-            restore_data: dict[str, str | int] | None = rediska.json().get("password_restore", request_id)
+            restore_data: dict[str, str | int] | None = \
+                rediska.json().get("password_restore", request_id)
 
             if restore_data is None or restore_data.get("email") != email:
                 raise BadRequest
 
-            if restore_data.get("refresh_attempts") >= AppConfig.MAIL_CODE_REFRESH_ATTEMTPTS:
+            if restore_data.get("refresh_attempts") >= \
+                    AppConfig.MAIL_CODE_REFRESH_ATTEMTPTS:
                 rediska.json().delete("password_restore", request_id)
                 return {
                     "error": {
                         "code": "Too many requests",
                         "message": "Too many refresh code requests",
-                        "details": "Application for password restore has been cancelled"
+                        "details": """Application for password restore has
+                            been cancelled"""
                     }
                 }, 429
 
@@ -420,7 +460,7 @@ class Restore_new_code(Resource):
 
 
 @api.route("/restore/verify")
-class Restore_verify(Resource):
+class RestoreVerify(Resource):
     def post(self) -> tuple[dict[str, dict[str, str]], int] | Response:
         try:
             user_data: dict[str, str] | None = request.json
@@ -428,31 +468,39 @@ class Restore_verify(Resource):
             if user_data is None:
                 raise BadRequest
 
-
             code: str | None = user_data.get("code")
             password: str | None = user_data.get("password")
             request_id: str | None = request.headers.get("Request_Id")
 
-            if not all([code, password, request_id]) or len(password) < 6 or len(password) > 20:
+            if not all([code, password, request_id]) \
+                    or len(password) < 6 \
+                    or len(password) > 20:
                 raise BadRequest
 
-            request_data: dict[str, str | int] = rediska.json().get("password_restore", request_id)
+            request_data: dict[str, str | int] = \
+                rediska.json().get("password_restore", request_id)
 
             if request_data is None:
                 raise BadRequest
 
-            if request_data.get("verify_attempts") >= AppConfig.MAIL_CODE_VERIFY_ATTEMPTS:
+            if request_data.get("verify_attempts") >= \
+                    AppConfig.MAIL_CODE_VERIFY_ATTEMPTS:
                 rediska.json().delete("password_restore", request_id)
                 return {
                     "error": {
                         "code": "Too many requests",
                         "message": "Too many verify code requests",
-                        "details": "Application for registration has been cancelled"
+                        "details": """Application for registration has been
+                            cancelled"""
                     }
                 }, 429
 
             if request_data.get("code") != code:
-                RediskaHandler.increase_verify_attempts("password_restore", request_data, request_id)
+                RediskaHandler.increase_verify_attempts(
+                    file="password_restore",
+                    data=request_data,
+                    request_id=request_id
+                )
                 return {
                     "error": {
                         "code": "Bad request",
@@ -536,7 +584,7 @@ class Restore_verify(Resource):
 
 
 @api.route("/refresh-tokens")
-class Refresh_access(Resource):
+class RefreshAccess(Resource):
     def post(self) -> tuple[dict[str, dict[str, str]], int] | Response:
         try:
             scrf_cookie: str | None = request.cookies.get("refresh_scrf_token")
@@ -544,17 +592,24 @@ class Refresh_access(Resource):
             device: str = request.headers.get("Device", "unknown device")
             scrf_header: str | None = request.headers.get("X-SCRF-TOKEN")
 
-            payload: dict[str, Any] | None = validate_token(refresh_token, "refresh")
+            payload: dict[str, Any] | None = validate_token(
+                token=refresh_token,
+                type="refresh"
+            )
             if not all([scrf_cookie, scrf_header, payload]):
                 raise BadRequest
 
             if scrf_cookie != scrf_header or scrf_cookie != payload["scrf"]:
-                send_scrf_attention(recipient=payload.get("email"), origin=request.headers.get("Origin"))
+                send_scrf_attention(
+                    recipient=payload.get("email"),
+                    origin=request.headers.get("Origin")
+                )
                 return {
                     "error": {
                         "code": "Forbidden",
                         "message": "Invalid scrf token",
-                        "details": "Invalid scrf token. Someone tries to get access from your behalf"   
+                        "details": """Invalid scrf token. Someone tries to get
+                            access from your behalf"""
                     }
                 }, 403
 

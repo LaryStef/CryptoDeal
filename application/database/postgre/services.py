@@ -49,8 +49,16 @@ def add_session(refresh_id: str, user_id: str, device: str | None) -> None:
     db.session.commit()
 
 
-def update_session(old_refresh_id: str, new_refresh_id: str, user_id: str, device: str) -> None:
-    session_raw: Session | None = db.session.query(Session).filter_by(user_id=user_id, session_id=old_refresh_id).first()
+def update_session(
+        old_refresh_id: str,
+        new_refresh_id: str,
+        user_id: str,
+        device: str
+) -> None:
+    session_raw: Session | None = db.session.query(Session).filter_by(
+        user_id=user_id,
+        session_id=old_refresh_id
+    ).first()
     if session_raw is None:
         return
 
