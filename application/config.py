@@ -9,8 +9,7 @@ load_dotenv()
 
 class AppConfig(Config):
     DEBUG: bool = True
-    SQLALCHEMY_DATABASE_URI: str = f"""postgresql://postgres:
-        {os.getenv('DATABASE_PASSWORD')}@localhost:5432/postgres"""
+    SQLALCHEMY_DATABASE_URI: str = f"postgresql://postgres:{os.getenv('DATABASE_PASSWORD')}@localhost:5432/postgres"  # noqa F501
     REDIS_URL: str = "redis://localhost:6379/0"
     SECRET_KEY: str | None = os.getenv("SECRET_KEY")
     MAIL_SERVER: str = "smtp.gmail.com"
@@ -27,7 +26,7 @@ class AppConfig(Config):
     REGISTER_LIFETIME: int = 1200
     RESTORE_LIFETIME: int = 1200
     # restore_cooldown must be less then restore_lifetime
-    ACCESS_TOKEN_LIFETIME: int = 60
+    ACCESS_TOKEN_LIFETIME: int = 300
     RESTORE_COOLDOWN: int = 2000
     REFRESH_TOKEN_LIFETIME: int = 1200
     JWT_ENCODING_ALGORITHM: str = "HS256"
