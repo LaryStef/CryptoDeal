@@ -35,7 +35,7 @@ class Sign_in(Resource):
 
             if LoginSchema().validate(data):
                 raise BadRequest
-            
+
             user: User | None = get(User, name=data.get("username"))
 
             if user is not None and checkpw(data.get("password", "").encode("utf-8"), user.password_hash.encode("utf-8")):
@@ -91,7 +91,7 @@ class Sign_in(Resource):
                 )
 
                 return response
-            
+
             return {
                 "error": {
                     "code": "Unauthorized",
@@ -99,7 +99,7 @@ class Sign_in(Resource):
                     "details": "Try one more time or restore password"
                 }
             }, 401               
-            
+ 
         except (BadRequest, ResponseError):
             return {
                 "error": {
@@ -111,11 +111,11 @@ class Sign_in(Resource):
 
 
 @api.route("/register/apply")
-class Sign_up(Resource):
+class SignUp(Resource):
     def post(self) -> tuple[dict[str, dict[str, str]], int] | Response:
         try:
             data: dict[str, str] = request.form.to_dict()
-            
+
             for k, v in data.items():
                 data[k] = v.replace(" ", "")
 
@@ -139,7 +139,7 @@ class Sign_up(Resource):
                         "details": "User with this username already exists or he is being registered now"
                     }
                 }, 409
-            
+
             response: Response = make_response("OK")
             response.status_code = 201
             response.headers["Request-Id"] = RediskaHandler.create_register_request(data)
@@ -180,7 +180,7 @@ class Refresh_code(Resource):
                         "details": "Application for registration has been cancelled"
                     }
                 }, 429
-            
+
             if register_data.get("accept_new_request") > int(time()):
                 return {
                     "error": {
@@ -222,7 +222,7 @@ class Verify_code(Resource):
 
             if code is None or register_data is None:
                 raise BadRequest
-            
+
             if register_data["deactivation_time"] <= int(time()):
                 return {
                     "error": {
@@ -241,7 +241,7 @@ class Verify_code(Resource):
                         "details": "Application for registration has been cancelled"
                     }
                 }, 429
-            
+
             if register_data.get("code") != code:
                 RediskaHandler.increase_verify_attempts("register", register_data, request_id)
                 return {
@@ -251,7 +251,7 @@ class Verify_code(Resource):
                         "details": "Try one more time or get new code"
                     }
                 }, 400
-            
+
             id_, alien_number = add_user(register_data)
             rediska.json().delete("register", request_id)
 
@@ -379,7 +379,7 @@ class Restore_new_code(Resource):
                 raise BadRequest
 
             email: str | None = user_data.get("email", "")
-            
+
             restore_data: dict[str, str | int] | None = rediska.json().get("password_restore", request_id)
 
             if restore_data is None or restore_data.get("email") != email:
@@ -427,7 +427,7 @@ class Restore_verify(Resource):
 
             if user_data is None:
                 raise BadRequest
-            
+
 
             code: str | None = user_data.get("code")
             password: str | None = user_data.get("password")
@@ -440,7 +440,7 @@ class Restore_verify(Resource):
 
             if request_data is None:
                 raise BadRequest
-            
+
             if request_data.get("verify_attempts") >= AppConfig.MAIL_CODE_VERIFY_ATTEMPTS:
                 rediska.json().delete("password_restore", request_id)
                 return {
@@ -450,9 +450,9 @@ class Restore_verify(Resource):
                         "details": "Application for registration has been cancelled"
                     }
                 }, 429
-            
+
             if request_data.get("code") != code:
-                RediskaHandler.increase_verify_attempts("password_restore", request_data, request_id) 
+                RediskaHandler.increase_verify_attempts("password_restore", request_data, request_id)
                 return {
                     "error": {
                         "code": "Bad request",
@@ -465,7 +465,7 @@ class Restore_verify(Resource):
 
             if user is None:
                 raise BadRequest
-            
+
             update_password(user, password)
             rediska.json().delete("password_restore", request_id)
 
