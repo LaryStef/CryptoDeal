@@ -8,7 +8,7 @@ from .models import User, Session
 from ...utils.cryptography import hash_password
 
 
-def get(table: db.Model, **kwargs: Any) -> Any | None:
+def get(table: Any, **kwargs: Any) -> Any | None:
     return db.session.query(table).filter_by(**kwargs).first()
 
 
