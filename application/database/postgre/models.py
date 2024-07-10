@@ -1,5 +1,4 @@
 from datetime import datetime
-from typing import List
 
 from sqlalchemy import Integer, String, TIMESTAMP, ForeignKey
 from sqlalchemy.orm import mapped_column, Mapped, relationship
@@ -19,7 +18,7 @@ class User(db.Model):
     register_date: Mapped[datetime] = mapped_column(TIMESTAMP, nullable=True, server_default=utcnow())
     restore_date: Mapped[datetime] = mapped_column(TIMESTAMP, server_default=utcnow())
     alien_number: Mapped[int] = mapped_column(Integer, default=0)
-    session: Mapped[List["Session"]] = relationship()
+    session: Mapped[list["Session"]] = relationship()
 
     def __init__(
         self,
