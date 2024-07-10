@@ -1,0 +1,7 @@
+{
+    "prettier": {
+        "semi": true,
+        "tabWidth": 4,
+        "bracketSpacing": false
+    }
+}
