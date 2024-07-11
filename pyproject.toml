@@ -42,7 +42,7 @@ rpds-py = "0.18.0"
 setuptools = "70.1.1"
 sqlalchemy = "2.0.29"
 typing-extensions = "4.11.0"
-werkzeug = "3.0.1"
+werkzeug = "3.0.3"
 wheel = "0.43.0"
 
 
