@@ -7,7 +7,7 @@ main: Blueprint = Blueprint("main", __name__)
 
 @main.route("/")
 def index() -> tuple[str, int]:
-    return render_template("index.html", title="Homepage"), 200  # Text return
+    return render_template("index.html", title="Homepage"), 200
 
 
 @main.route("/test")

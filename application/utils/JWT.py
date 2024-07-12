@@ -21,12 +21,12 @@ def generate_tokens(
         "scrf": access_scrf_token
     })
 
-    access: bytes = encode(
+    access: str = encode(
         payload=payload,
         key=AppConfig.SECRET_KEY,
         algorithm=AppConfig.JWT_ENCODING_ALGORITHM
     )
-    refresh: bytes = encode(
+    refresh: str = encode(
         payload={
             "exp": timestamp + AppConfig.REFRESH_TOKEN_LIFETIME,
             "iat": timestamp,
@@ -44,7 +44,7 @@ def generate_tokens(
 def validate_token(
     token: str | None,
     type: Literal["access", "refresh"]
-) -> dict[str, Any] | None:
+) -> Any:
     if token is None:
         return token
 
