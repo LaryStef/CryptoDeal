@@ -36,10 +36,7 @@ def update_password(user: User, password: str) -> None:
     db.session.commit()
 
 
-def add_session(refresh_id: str, user_id: str, device: str | None) -> None:
-    if device is None:
-        device = "unknown device"
-
+def add_session(refresh_id: str, user_id: str, device: str) -> None:
     session_raw: Session = Session(
         session_id=refresh_id,
         user_id=user_id,

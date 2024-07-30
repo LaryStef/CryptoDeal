@@ -31,9 +31,8 @@ class SignIn(Resource):
             data: dict[str, str] = request.form.to_dict()
 
             for k, v in data.items():
-                if k == "device":
-                    continue
-                data[k] = v.replace(" ", "")
+                if k in ["password", "username"]:
+                    data[k] = v.replace(" ", "")
 
             if LoginSchema().validate(data):
                 raise BadRequest
@@ -54,7 +53,7 @@ class SignIn(Resource):
                 add_session(
                     refresh_id=refresh_token_id,
                     user_id=user.uuid,
-                    device=data.get("device")
+                    device=request.headers.get("Device", "unknown device")
                 )
                 access_token, refresh_token = generate_tokens(
                     payload={
@@ -293,7 +292,7 @@ class VerifyCode(Resource):
             add_session(
                 refresh_id=refresh_token_id,
                 user_id=id_,
-                device=user_data.get("device")
+                device=request.headers.get("Device", "unknown device")
             )
             access_token, refresh_token = generate_tokens(
                 payload={
@@ -524,7 +523,7 @@ class RestoreVerify(Resource):
             add_session(
                 refresh_id=refresh_token_id,
                 user_id=user.uuid,
-                device=user_data.get("device")
+                device=request.headers.get("Device", "unknown device")
             )
             access_token, refresh_token = generate_tokens(
                 payload={
@@ -583,7 +582,6 @@ class RefreshAccess(Resource):
         try:
             scrf_cookie: str | None = request.cookies.get("refresh_scrf_token")
             refresh_token: str | None = request.cookies.get("refresh_token")
-            device: str = request.headers.get("Device", "unknown device")
             scrf_header: str | None = request.headers.get("X-SCRF-TOKEN")
 
             payload: dict[str, Any] | None = validate_token(
@@ -619,7 +617,7 @@ class RefreshAccess(Resource):
                 old_refresh_id=payload.get("jti", ""),
                 new_refresh_id=refresh_token_id,
                 user_id=payload.get("uuid", ""),
-                device=device
+                device=request.headers.get("Device", "unknown device")
             )
             access_token, refresh_token = generate_tokens(
                 payload={

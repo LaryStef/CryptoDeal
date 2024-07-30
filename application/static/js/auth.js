@@ -1,5 +1,5 @@
 const origin = location.origin;
-const avatarUrl = new URL("api/", origin);
+
 const loginUrl = new URL("api/auth/sign-in", origin);
 const registerUrl = new URL("api/auth/register/apply", origin);
 const newCodeUrl = new URL("api/auth/register/new-code", origin);
@@ -12,6 +12,95 @@ const refreshTokensUrl = new URL("api/auth/refresh-tokens", origin);
 const cooldown = 30;
 const cooldownRec = 30;
 
+function getDeviceData() {
+    let browser = "unknown browser";
+    let os = "unknown os";
+    let osVersion = "";
+
+    let userAgent = navigator.userAgent;
+
+    if (userAgent.indexOf("Edg") > -1) {
+        browser = "Microsoft Edge";
+    } else if (userAgent.indexOf("Chrome") > -1) {
+        browser = "Chrome";
+    } else if (userAgent.indexOf("Firefox") > -1) {
+        browser = "Firefox";
+    } else if (userAgent.indexOf("Safari") > -1) {
+        browser = "Safari";
+    } else if (userAgent.indexOf("Opera") > -1) {
+        browser = "Opera";
+    } else if (
+        userAgent.indexOf("Trident") > -1 ||
+        userAgent.indexOf("MSIE") > -1
+    ) {
+        browser = "Internet Explorer";
+    }
+
+    const clientStrings = [
+        {s: "Windows 10", r: /(Windows 10.0|Windows NT 10.0)/},
+        {s: "Windows 8.1", r: /(Windows 8.1|Windows NT 6.3)/},
+        {s: "Windows 8", r: /(Windows 8|Windows NT 6.2)/},
+        {s: "Windows 7", r: /(Windows 7|Windows NT 6.1)/},
+        {s: "Windows Vista", r: /Windows NT 6.0/},
+        {s: "Windows Server 2003", r: /Windows NT 5.2/},
+        {s: "Windows XP", r: /(Windows NT 5.1|Windows XP)/},
+        {s: "Windows 2000", r: /(Windows NT 5.0|Windows 2000)/},
+        {s: "Windows ME", r: /(Win 9x 4.90|Windows ME)/},
+        {s: "Windows 98", r: /(Windows 98|Win98)/},
+        {s: "Windows 95", r: /(Windows 95|Win95|Windows_95)/},
+        {s: "Windows NT 4.0", r: /(Windows NT 4.0|WinNT4.0|WinNT|Windows NT)/},
+        {s: "Windows CE", r: /Windows CE/},
+        {s: "Windows 3.11", r: /Win16/},
+        {s: "Android", r: /Android/},
+        {s: "Open BSD", r: /OpenBSD/},
+        {s: "Sun OS", r: /SunOS/},
+        {s: "Chrome OS", r: /CrOS/},
+        {s: "Linux", r: /(Linux|X11(?!.*CrOS))/},
+        {s: "iOS", r: /(iPhone|iPad|iPod)/},
+        {s: "Mac OS X", r: /Mac OS X/},
+        {s: "Mac OS", r: /(Mac OS|MacPPC|MacIntel|Mac_PowerPC|Macintosh)/},
+        {s: "QNX", r: /QNX/},
+        {s: "UNIX", r: /UNIX/},
+        {s: "BeOS", r: /BeOS/},
+        {s: "OS/2", r: /OS\/2/},
+        {
+            s: "Search Bot",
+            r: /(nuhk|Googlebot|Yammybot|Openbot|Slurp|MSNBot|Ask Jeeves\/Teoma|ia_archiver)/,
+        },
+    ];
+    for (let id in clientStrings) {
+        let cs = clientStrings[id];
+        if (cs.r.test(userAgent)) {
+            os = cs.s;
+            break;
+        }
+    }
+
+    if (/Windows/.test(os)) {
+        osVersion = /Windows (.*)/.exec(os)[1];
+        os = "Windows";
+    }
+
+    switch (os) {
+        case "Mac OS":
+        case "Mac OS X":
+        case "Android":
+            osVersion =
+                /(?:Android|Mac OS|Mac OS X|MacPPC|MacIntel|Mac_PowerPC|Macintosh) ([\.\_\d]+)/.exec(
+                    userAgent
+                )[1];
+            break;
+
+        case "iOS":
+            osVersion = /OS (\d+)_(\d+)_?(\d+)?/.exec(nVer);
+            osVersion =
+                osVersion[1] + "." + osVersion[2] + "." + (osVersion[3] | 0);
+            break;
+    }
+
+    return browser + ", " + os + osVersion;
+}
+
 if (isTokensRefreshRequired()) {
     refreshTokens();
 }
@@ -22,7 +111,7 @@ async function refreshTokens() {
         credentials: "same-origin",
         headers: {
             "X-SCRF-TOKEN": getCookie("refresh_scrf_token"),
-            Device: "temporary device",
+            "Device": getDeviceData(),
         },
     });
 
@@ -107,12 +196,14 @@ document
         e.preventDefault();
 
         let formData = new FormData(document.getElementById("login-form-id"));
-        formData.append("device", "temporary device");
 
         let response = await fetch(loginUrl, {
             method: "POST",
             credentials: "same-origin",
             body: formData,
+            headers: {
+                "Device": getDeviceData()
+            }
         });
 
         if (response.status == 200) {
@@ -399,7 +490,6 @@ function disableTimer(timerID) {
 async function verifyCode() {
     let data = new Map();
     data.set("code", document.getElementById("input-code").value);
-    data.set("device", "temporary device");
 
     response = await fetch(verifyCodeUrl, {
         method: "POST",
@@ -407,6 +497,7 @@ async function verifyCode() {
         headers: {
             "Content-Type": "application/json",
             "Request-Id": sessionStorage.getItem("request_id"),
+            "Device": getDeviceData()
         },
         body: JSON.stringify(Object.fromEntries(data)),
     });
@@ -617,12 +708,12 @@ document.getElementById("submit-rec").addEventListener("click", async (e) => {
         headers: {
             "Content-Type": "application/json",
             "Request-Id": sessionStorage.getItem("request_id"),
+            "Device": getDeviceData()
         },
         body: JSON.stringify({
             password: password,
-            code: document.getElementById("input-code-rec").value,
-            device: "temporary device",
-        }),
+            code: document.getElementById("input-code-rec").value
+        })
     });
 
     if (response.status === 200) {
