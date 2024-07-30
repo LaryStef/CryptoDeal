@@ -2,7 +2,7 @@ from typing import Any
 from random import randint
 from uuid import uuid4
 
-from .timestamp import utcnow
+from .utc_time import utcnow
 from . import db
 from .models import User, Session
 from ...utils.cryptography import hash_password
