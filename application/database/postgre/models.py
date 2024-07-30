@@ -4,7 +4,7 @@ from sqlalchemy import Integer, String, TIMESTAMP, ForeignKey
 from sqlalchemy.orm import mapped_column, Mapped, relationship
 
 from . import db
-from .timestamp import utcnow
+from .utc_time import utcnow
 
 
 class User(db.Model):
