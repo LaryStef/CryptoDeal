@@ -515,7 +515,7 @@ async function sendNewCode() {
     data.set("email", sessionStorage.getItem("email-reg"));
 
     response = await fetch(newCodeUrl, {
-        method: "POST",
+        method: "PATCH",
         credentials: "same-origin",
         headers: {
             "Content-Type": "application/json",
@@ -654,7 +654,7 @@ async function sendNewCodeRec() {
     data.set("email", sessionStorage.getItem("email-rec"));
 
     let response = await fetch(restoreNewCodeUrl, {
-        method: "POST",
+        method: "PATCH",
         credentials: "same-origin",
         headers: {
             "Content-Type": "application/json",

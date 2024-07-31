@@ -171,7 +171,7 @@ class SignUp(Resource):
 
 @api.route("/register/new-code")
 class RefreshCode(Resource):
-    def post(self) -> tuple[dict[str, dict[str, str]], int] | Response:
+    def patch(self) -> tuple[dict[str, dict[str, str]], int] | Response:
         try:
             user_data: dict[str, str] | None = request.json
 
@@ -403,7 +403,7 @@ class Restore(Resource):
 
 @api.route("/restore/new-code")
 class RestoreNewCode(Resource):
-    def post(self) -> tuple[dict[str, dict[str, str]], int] | Response:
+    def patch(self) -> tuple[dict[str, dict[str, str]], int] | Response:
         try:
             user_data: dict[str, str] | None = request.json
             request_id: str | None = request.headers.get("Request-Id")
