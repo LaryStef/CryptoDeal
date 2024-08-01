@@ -1,8 +1,9 @@
-{% extends "base.html" %} {% block head %}
-<link
-    rel="stylesheet"
-    href="{{ url_for('static', filename='css/navbar.css') }}"
-/>
-{% endblock %} {% block script %}
-<script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+{% extends "base.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+{% endblock %}
+
+{% block script %}
+<script src="{{ url_for('static', filename='js/profile.js') }}"></script>
 {% endblock %}
