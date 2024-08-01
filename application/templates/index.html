@@ -5,198 +5,24 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu+Mono&subset=latin"/>
 {% endblock %}
 
-{% block first_container %}
-<div class="auth-window" id="login">
-    <div class="form-container">
-        <div class="switch-window">
-        <button class="switch-button" id="left-switch"></button>
-        <button class="switch-button" id="right-switch"></button>
-        <div class="mode" id="mode-light"></div>
-        </div>
-        <div class="form-wrapper">
-        <div class="register-fields" id="register-container">
-            <div class="error-text">
-            <span id="register-info"></span>
-            </div>
-            <form class="login-form" id="register-form-id">
-            <input
-                class="sign-input"
-                type="text"
-                name="username"
-                placeholder="username"
-                maxlength="32"
-                autocomplete="name"
-                required
-            />
-            <input
-                class="sign-input"
-                type="password"
-                name="password"
-                placeholder="password"
-                maxlength="32"
-                autocomplete="new-password"
-                required
-            />
-            <input
-                class="sign-input"
-                type="text"
-                name="email"
-                id="email-input"
-                placeholder="email"
-                maxlength="256"
-                autocomplete="email"
-                required
-            />
-            <input class="sign-input submit" type="submit" value="submit" />
-            </form>
-        </div>
-        <div class="login-fields" id="login-container">
-            <div class="error-text">
-            <span id="login-info"></span>
-            </div>
-            <form class="login-form" id="login-form-id">
-            <input
-                class="sign-input"
-                type="text"
-                name="username"
-                placeholder="username"
-                maxlength="32"
-                autocomplete="name"
-                required
-            />
-            <input
-                class="sign-input"
-                type="password"
-                name="password"
-                placeholder="password"
-                maxlength="32"
-                autocomplete="current-password"
-                required
-            />
-            <input class="sign-input submit" type="submit" value="submit" />
-            </form>
-            <div>
-            <div class="recovery-container">
-                <button class="password-recovery" id="recovery-btn" href="#"
-                >forget password? Click here!</button
-                >
-            </div>
-            </div>
-        </div>
-        </div>
-        <div class="login-with">
-        <span>Login with: </span>
-        <a class="login-link" href="#">Google</a>
-        <a class="login-link" href="#">VK</a>
-        <a class="login-link" href="#">GitHub</a>
-        </div>
-        <div class="cancel-container">
-            <button class="cancel" id="cancel">cancel</button>
-        </div>
-    </div>
-</div>
-<div class="confirm-window" id="confirm-window">
-    <div class="email-confirm">
-        <div class="code-message">
-            <p>Enter code sent on: </p>
-            <span id="email"></span>
-        </div>
-        <div class="input-code-wrapper">
-            <input class="input-code" id="input-code" type="text" placeholder="code" maxlength="6">
-        </div>
-        <div class="new-code" id="new-code">
-            <p>get new code in: </p>
-            <span id="code-time">0:00</span>
-        </div>
-        <div class="get-code-wrapper display-off" id="get-code-wrapper">
-            <button class="get-code" id="code-btn">get new code</button>
-        </div>
-        <div class="mail-cancel-container">
-            <button class="mail-cancel" id="mail-cancel">cancel</button>
-        </div>
-    </div>
-</div>
-<div class="email-recover-window" id="email-window">
-    <div class="email-wrapper">
-        <div class="email-text">
-            <p>Enter your email please:</p>
-        </div>
-        <form class="email-form">
-            <input
-                class="email-input-recovery"
-                id="email-input-recovery"
-                type="email"
-                placeholder="email"
-            >
-            <input class="email-submit" id="email-submit" type="submit" value="sumbit">
-        </form>
-        <div class="pass-info-wrapper">
-            <span id="pass-info"></span>
-        </div>
-        <div class="email-cancel-container">
-            <button class="email-cancel" id="email-cancel">cancel</button>
-        </div>
-    </div>
-</div>
-<div class="confirm-window-rec" id="confirm-window-rec">
-    <div class="email-confirm-rec">
-        <div class="code-message">
-            <p>Enter code sent on: </p>
-            <span id="email-rec"></span>
-        </div>
-        <div class="pass-info-wrapper">
-            <span id="new-pass-info"></span>
-        </div>
-        <form class="email-form-rec">
-            <input
-            class="email-input-recovery"
-            id="email-rec1" type="text"
-            placeholder="password"
-            minlength="6"
-            maxlength="20"
-            >
-            <input
-            class="email-input-recovery"
-            id="email-rec2" type="text"
-            placeholder="repeat password"
-            minlength="6"
-            maxlength="20"
-            >
-            <input
-                class="input-code-rec"
-                id="input-code-rec"
-                type="text"
-                placeholder="code"
-                maxlength="6"
-            >
-            <input class="email-submit" id="submit-rec" type="submit" value="sumbit">
-        </form>
-        <div class="new-code" id="new-code-rec">
-            <p>get new code in: </p>
-            <span id="code-time-rec">0:00</span>
-        </div>
-        <div class="get-code-wrapper display-off" id="get-code-wrapper-rec">
-            <button class="get-code" id="code-btn-rec">get new code</button>
-        </div>
-        <div class="mail-cancel-container">
-            <button class="mail-cancel" id="mail-cancel-rec">cancel</button>
-        </div>
-    </div>
-</div>
-{% endblock %}
-
 {% block main_container %}
 <div class="main-container" id="main">
     <div class="central-container">
         <div class="text-container">
-        <h2 class="motto">
-            Best way to learn trade fundamentals is practice. Start investing
-            here. Effectively and losslessly.
-        </h2>
+            <h2 class="motto">
+                Best way to learn trade fundamentals is practice. Start investing
+                here. Effectively and losslessly.
+            </h2>
         </div>
+
+
+
         <button class="try-button" id="sign-in-try" href="#">
-        Try for free
+            Try for free
         </button>
+
+
+        
     </div>
 </div>
 {% endblock %}
