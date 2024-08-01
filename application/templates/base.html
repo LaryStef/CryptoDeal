@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CryptoDeal{{ " - " + title }}</title>
     <link rel="icon" href="{{ url_for('static', filename='svg/CryptoDealLogo.svg') }}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu+Mono&subset=latin"/>
     {% block head %}
     {% endblock %}
 </head>
@@ -213,7 +214,7 @@
                 <button class="auth-link left-link" id="sign-in">Sign in</button>
                 <button class="auth-link right-link" id="sign-up">Sign up</button>
             </div>
-            <a class="profile display-off" id="profile-button" href="#">
+            <a class="profile display-off" id="profile-button" href="{{ url_for('main.profile') }}">
                 <img src="" alt="" class="avatar" id="avatar" decoding="async">
                 <div class="username" id="name">username</div>
             </a>
