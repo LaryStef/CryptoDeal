@@ -2,7 +2,6 @@
 
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu+Mono&subset=latin"/>
 {% endblock %}
 
 {% block main_container %}
@@ -14,19 +13,10 @@
                 here. Effectively and losslessly.
             </h2>
         </div>
-
-
-
-        <button class="try-button" id="sign-in-try" href="#">
-            Try for free
-        </button>
-
-
-        
     </div>
 </div>
 {% endblock %}
 
-{% block script %}
-<script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+{% block script %}  
+<script src="{{ url_for('static', filename='js/index.js') }}"></script>
 {% endblock %}

@@ -93,8 +93,7 @@ function getDeviceData() {
 
         case "iOS":
             osVersion = /OS (\d+)_(\d+)_?(\d+)?/.exec(nVer);
-            osVersion =
-                osVersion[1] + "." + osVersion[2] + "." + (osVersion[3] | 0);
+            osVersion = osVersion[1] + "." + osVersion[2] + "." + (osVersion[3] | 0);
             break;
     }
 
@@ -149,26 +148,21 @@ function getCookie(cookie) {
 
 function load_profile() {
     authClasses = document.getElementById("auth-button").classList;
-    tryButtonClasses = document.getElementById("sign-in-try").classList;
     profileClasses = document.getElementById("profile-button").classList;
     if (
         !authClasses.contains("display-off") &&
-        !tryButtonClasses.contains("display-off") &&
         profileClasses.contains("display-off")
     ) {
         authClasses.add("display-off");
-        tryButtonClasses.add("display-off");
         profileClasses.remove("display-off");
     }
 
     let access = getCookie("access_token");
     let payload = JSON.parse(atob(access.split(".")[1]));
-    let alien = payload.alien_number;
-    let name = payload.name;
 
-    document.getElementById("name").innerText = name;
+    document.getElementById("name").innerText = payload.name;
     document.getElementById("avatar").src = new URL(
-        `/static/jpg/Alien${alien}.jpg`,
+        `/static/jpg/Alien${payload.alien_number}.jpg`,
         location.origin
     );
 }
@@ -177,7 +171,6 @@ document.getElementById("left-switch").onclick = leftSwitchTransform;
 document.getElementById("right-switch").onclick = rightSwitchTransform;
 document.getElementById("sign-up").onclick = openSignUpWindow;
 document.getElementById("sign-in").onclick = openSignInWindow;
-document.getElementById("sign-in-try").onclick = openSignUpWindow;
 
 document.getElementById("dropdown-sign-in").onclick = openSignInWindow;
 document.getElementById("dropdown-sign-up").onclick = openSignUpWindow;
