@@ -1055,6 +1055,65 @@ span {
     box-shadow: 0 0 5px var(--text-hover-color);
 }
 
+.first-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 3%;
+    padding-right: 5%;
+}
+
+.user-info-wrapper {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    width: 40%;
+    gap: 20%;
+}
+
+.main-avatar {
+    width: 15%;
+    height: 15%;
+}
+
+.main-name {
+    font-size: 2rem;
+    color: var(--text-color);
+}
+
+.settings-btn {
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 32px;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 50px;
+    border-style: none;
+    outline: none;
+    background-color: var(--background-button-color);
+    font-size: 1.125rem;
+    color: var(--text-color);
+    transition: color var(--link-transition-duration) linear;
+}
+
+.settings-btn:hover {
+    color: var(--text-hover-color);
+}
+
+.st-block {
+    border: 3px solid var(--text-hover-color);
+    border-radius: 16px;
+}
+
+.st-header {
+    padding: 3%;
+    padding-left: 5%;
+    font-size: 1.5rem;
+    color: var(--text-color);
+}
+
 .display-off {
     display: none;
 }
