@@ -46,7 +46,7 @@ def validate_token(
     type: Literal["access", "refresh"]
 ) -> Any:
     if token is None:
-        return token
+        return None
 
     if type == "access":
         token_requirements = [
