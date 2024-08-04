@@ -10,10 +10,10 @@ from ..mail.senders import send_scrf_attention
 
 def authorization_required(
     token_type: Literal["access", "refresh"]
-) -> Callable:
-    def wrap(func: Callable) -> Callable:
+) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
+    def wrap(func: Callable[..., Any]) -> Callable[..., Any]:
         @wraps(func)
-        def handler(*args, **kwargs) -> Any:
+        def handler(*args: Any, **kwargs: Any) -> Any:
             scrf_header: str | None = request.headers.get("X-SCRF-TOKEN")
             scrf_cookie: str | None = \
                 request.cookies.get(f"{token_type}_scrf_token")
