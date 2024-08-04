@@ -58,7 +58,7 @@ def validate_token(
             "uuid",
             "name"
         ]
-    else:
+    elif type == "refresh":
         token_requirements = [
             "exp",
             "iat",

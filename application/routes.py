@@ -15,9 +15,6 @@ def profile() -> tuple[str, int]:
     return render_template("profile.html", title="Profile"), 200
 
 
-# from .utils.decorators import authorization_required
-
-
 # @main.route("/test")
 # @authorization_required
 # def test() -> tuple[str, int]:
