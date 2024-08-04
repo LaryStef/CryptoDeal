@@ -161,6 +161,7 @@ function load_profile() {
     let payload = JSON.parse(atob(access.split(".")[1]));
 
     document.getElementById("name").innerText = payload.name;
+    document.getElementById("username").innerText = payload.name;
     document.getElementById("avatar").src = new URL(
         `/static/jpg/Alien${payload.alien_number}.jpg`,
         location.origin
