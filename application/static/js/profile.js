@@ -199,7 +199,8 @@ document
             }
         });
 
-        if (response.status == 200) {
+        console.log("here");
+        if (response.status === 200) {
             closeLoginWindow();
             load_profile();
         } else {
@@ -225,7 +226,7 @@ document
                 body: formData,
             });
 
-            if (response.status == 201) {
+            if (response.status === 201) {
                 if (isTimerGoing) {
                     disableTimer(timerId);
                 }
@@ -359,7 +360,7 @@ function openSignInWindow() {
     } else {
         loginWindow.style.transform = "translate(50%, 30%)";
     }
-    document.getElementById("main").style.filter = "brightness(0.5)";
+    document.getElementById("main-wrap").style.filter = "brightness(0.5)";
     document.getElementById("navbar").style.filter = "brightness(0.5)";
     disableButtons();
 }
@@ -373,7 +374,7 @@ function openSignUpWindow() {
     } else {
         loginWindow.style.transform = "translate(50%, 30%)";
     }
-    document.getElementById("main").style.filter = "brightness(0.5)";
+    document.getElementById("main-wrap").style.filter = "brightness(0.5)";
     document.getElementById("navbar").style.filter = "brightness(0.5)";
     disableButtons();
 }
@@ -382,7 +383,7 @@ function closeLoginWindow() {
     let loginWindow = document.getElementById("login");
     loginWindow.style.opacity = 0;
     loginWindow.style.transform = "translate(-100%, 30%)";
-    document.getElementById("main").style.filter = "brightness(1)";
+    document.getElementById("main-wrap").style.filter = "brightness(1)";
     document.getElementById("navbar").style.filter = "brightness(1)";
     document.getElementById("login-info").innerText = "";
     document.getElementById("register-info").innerText = "";
@@ -408,7 +409,7 @@ function openConfirmWindow(email) {
     window.style.transform = "translate(0%)";
     window.style.visibility = "visible";
 
-    document.getElementById("main").style.filter = "brightness(0.5)";
+    document.getElementById("main-wrap").style.filter = "brightness(0.5)";
     document.getElementById("navbar").style.filter = "brightness(0.5)";
     disableButtons();
 }
@@ -417,7 +418,7 @@ function closeConfirmWindow() {
     let window = document.getElementById("confirm-window");
     window.style.opacity = 0;
     window.style.transform = "translate(200%)";
-    document.getElementById("main").style.filter = "brightness(1)";
+    document.getElementById("main-wrap").style.filter = "brightness(1)";
     document.getElementById("navbar").style.filter = "brightness(1)";
     document.getElementById("input-code").style.backgroundColor = "#7d42e7";
     document.getElementById("input-code").value = "";
@@ -617,7 +618,7 @@ function openEmailWindow() {
     window.style.transform = "translate(0%)";
     window.style.visibility = "visible";
 
-    document.getElementById("main").style.filter = "brightness(0.5)";
+    document.getElementById("main-wrap").style.filter = "brightness(0.5)";
     document.getElementById("navbar").style.filter = "brightness(0.5)";
     disableButtons();
 }
@@ -626,7 +627,7 @@ function closeEmailWindow() {
     let window = document.getElementById("email-window");
     window.style.opacity = 0;
     window.style.transform = "translate(-200%)";
-    document.getElementById("main").style.filter = "brightness(1)";
+    document.getElementById("main-wrap").style.filter = "brightness(1)";
     document.getElementById("navbar").style.filter = "brightness(1)";
     document.getElementById("email-input-recovery").value = "";
     document.getElementById("pass-info").innerText = "";
@@ -727,7 +728,7 @@ function openPasswordWindow(email) {
     window.style.transform = "translate(0%)";
     window.style.visibility = "visible";
 
-    document.getElementById("main").style.filter = "brightness(0.5)";
+    document.getElementById("main-wrap").style.filter = "brightness(0.5)";
     document.getElementById("navbar").style.filter = "brightness(0.5)";
     disableButtons();
 }
@@ -740,7 +741,7 @@ function closePasswordWindow() {
     let window = document.getElementById("confirm-window-rec");
     window.style.opacity = 0;
     window.style.transform = "translate(200%)";
-    document.getElementById("main").style.filter = "brightness(1)";
+    document.getElementById("main-wrap").style.filter = "brightness(1)";
     document.getElementById("navbar").style.filter = "brightness(1)";
     document.getElementById("input-code-rec").value = "";
     document.getElementById("email-rec1").value = "";

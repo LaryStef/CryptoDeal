@@ -5,16 +5,18 @@
 {% endblock %}
 
 {% block main_container %}
-<div class="first-line" id="first-line">
-    <div class="user-info-wrapper">
-        <img src="/static/jpg/Alien1.jpg" alt="your avatar" class="main-avatar" id="main-avatar" decoding="async">
-        <h2 class="main-name">Your username</h2>
+<div id="main-wrap">
+    <div class="first-line" id="first-line">
+        <div class="user-info-wrapper">
+            <img src="/static/jpg/Alien1.jpg" alt="your avatar" class="main-avatar" id="main-avatar" decoding="async">
+            <h2 class="main-name">Your username</h2>
+        </div>
+        <button class="settings-btn" id="settings-btn">settings</button>
     </div>
-    <button class="settings-btn" id="settings-btn">settings</button>
-</div>
-<div class="st-block">
-    <div class="st-header">
-        <h3>Statistics</h3>
+    <div class="st-block">
+        <div class="st-header">
+            <h3>Statistics</h3>
+        </div>
     </div>
 </div>
 {% endblock %}
