@@ -1102,6 +1102,57 @@ span {
     color: var(--text-hover-color);
 }
 
+.settings-win {
+    position: absolute;
+    left: 15vw;
+    top: 15vh;
+    width: 70vw;
+    height: 70vh;
+    border-radius: 50px;
+    background-color: var(--background-button-color);
+    transform: translate(-150%);
+    -ms-transform: translate(-150%);
+    -webkit-transform: translate(-150%);
+    -o-transform: translate(-150%);
+    -moz-transform: translate(-150%);
+    transition: all var(--login-transition-duration) ease-out;
+}
+
+.header-set {
+    padding: 3%;
+    color: var(--text-color);
+    font-size: 2rem;
+}
+
+.sessions-block {
+    padding: 1%;
+    padding-left: 3%;
+    color: var(--text-color);
+    font-size: 1.5rem;
+}
+
+.cancel-set-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 36%;
+}
+
+.cancel-set {
+    border-style: none;
+    background-color: var(--background-button-color);
+    color: var(--text-color);
+    font-size: 1.125rem;
+    transition: color var(--link-transition-duration) linear;
+    -webkit-transition: color var(--link-transition-duration) linear;
+    -o-transition: color var(--link-transition-duration) linear;
+    -moz-transition: color var(--link-transition-duration) linear;
+}
+
+.cancel-set:hover {
+    color: var(--text-hover-color);
+}
+
 .st-block {
     border: 3px solid var(--text-hover-color);
     border-radius: 16px;

@@ -172,6 +172,7 @@ document.getElementById("left-switch").onclick = leftSwitchTransform;
 document.getElementById("right-switch").onclick = rightSwitchTransform;
 document.getElementById("sign-up").onclick = openSignUpWindow;
 document.getElementById("sign-in").onclick = openSignInWindow;
+document.getElementById("set-btn").onclick = openSettingsWindow;
 
 document.getElementById("dropdown-sign-in").onclick = openSignInWindow;
 document.getElementById("dropdown-sign-up").onclick = openSignUpWindow;
@@ -180,6 +181,7 @@ document.getElementById("cancel").onclick = closeLoginWindow;
 document.getElementById("mail-cancel").onclick = closeConfirmWindow;
 document.getElementById("email-cancel").onclick = closeEmailWindow;
 document.getElementById("mail-cancel-rec").onclick = closePasswordWindow;
+document.getElementById("cancel-set").onclick = closeSettingsWindow;
 
 document.getElementById("code-btn").onclick = sendNewCode;
 document.getElementById("code-btn-rec").onclick = sendNewCodeRec;
@@ -797,4 +799,20 @@ function showTimeRec(duration) {
 function disableTimerRec(timerID) {
     clearInterval(timerID);
     isTimerGoingRec = false;
+}
+
+function openSettingsWindow() {
+    let window = document.getElementById("set-win");
+    window.style.transform = "translate(0%)";
+    document.getElementById("main-wrap").style.filter = "brightness(0.5)";
+    document.getElementById("navbar").style.filter = "brightness(0.5)";
+    disableButtons();
+}
+
+function closeSettingsWindow() {
+    let window = document.getElementById("set-win");
+    window.style.transform = "translate(-150%)";
+    document.getElementById("main-wrap").style.filter = "brightness(1)";
+    document.getElementById("navbar").style.filter = "brightness(1)";
+    enableButtons();
 }
