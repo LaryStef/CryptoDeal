@@ -82,7 +82,7 @@ class Profile(Resource):
                     {
                         "sessionId": session.session_id,
                         "device": session.device,
-                        "lastActivity": session.last_activity
+                        "lastActivity": str(session.last_activity)
                     }
                 )
 
