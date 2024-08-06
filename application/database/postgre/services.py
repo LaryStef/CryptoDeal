@@ -2,14 +2,36 @@ from typing import Any
 from random import randint
 from uuid import uuid4
 
+from sqlalchemy import select, Result
+from sqlalchemy.orm import Mapped
+
 from .utc_time import utcnow
 from . import db
 from .models import User, Session
 from ...utils.cryptography import hash_password
 
 
-def get(table: Any, **kwargs: Any) -> Any | None:
-    return db.session.query(table).filter_by(**kwargs).first()
+def get(
+    table: db.Model = None,
+    fields: list[Mapped] = [],
+    many: bool = False,
+    **kwargs: Any
+) -> Any | None:
+    if table is not None:
+        result: Result = db.session.execute(
+            select(table).filter_by(**kwargs)
+        )
+        if many:
+            return result.scalars()
+        return result.scalar()
+
+    result: Result = db.session.execute(
+        select(*fields).filter_by(**kwargs)
+    )
+
+    if many:
+        return result.scalars()
+    return result.fetchone()
 
 
 def add_user(user_data: dict[str, str | int]) -> tuple[str, int]:
