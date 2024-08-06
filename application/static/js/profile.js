@@ -8,6 +8,7 @@ const restoreUrl = new URL("api/auth/restore/apply", origin);
 const restoreNewCodeUrl = new URL("api/auth/restore/new-code", origin);
 const restoreVerifyUrl = new URL("api/auth/restore/verify", origin);
 const refreshTokensUrl = new URL("api/auth/refresh-tokens", origin);
+const profileDataUrl = new URL("api/profile", origin)
 
 const cooldown = 30;
 const cooldownRec = 30;
@@ -147,8 +148,14 @@ function getCookie(cookie) {
 }
 
 function load_profile() {
-    authClasses = document.getElementById("auth-button").classList;
-    profileClasses = document.getElementById("profile-button").classList;
+    let profileData = getProfileData();
+
+    if (profileData === null) {
+        return;
+    }
+
+    let authClasses = document.getElementById("auth-button").classList;
+    let profileClasses = document.getElementById("profile-button").classList;
     if (
         !authClasses.contains("display-off") &&
         profileClasses.contains("display-off")
@@ -166,6 +173,18 @@ function load_profile() {
         `/static/jpg/Alien${payload.alien_number}.jpg`,
         location.origin
     );
+}
+
+async function getProfileData() {
+    let response = await fetch(profileDataUrl, {
+        method: "GET",
+        credentials: "same-origin",
+        headers: {
+            "X-SCRF-TOKEN": getCookie("access_scrf_token")
+        },
+    });
+
+    return await response.json();
 }
 
 document.getElementById("left-switch").onclick = leftSwitchTransform;
