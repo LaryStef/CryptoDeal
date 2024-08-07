@@ -91,6 +91,3 @@ def update_session(
     session_raw.session_id = new_refresh_id
     session_raw.device = device
     db.session.commit()
-
-
-
