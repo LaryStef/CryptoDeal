@@ -1,12 +1,12 @@
+from uuid import uuid4
 from typing import Any
 from random import randint
-from uuid import uuid4
 
-from sqlalchemy import select, Result
 from sqlalchemy.orm import Mapped
+from sqlalchemy import select, Result, delete
 
-from .utc_time import utcnow
 from . import db
+from .utc_time import utcnow
 from .models import User, Session
 from ...utils.cryptography import hash_password
 
@@ -32,6 +32,13 @@ def get(
     if many:
         return result.scalars()
     return result.fetchone()
+
+
+def remove(table: db.Model, **kwargs: Any):
+    db.session.execute(
+        delete(table).filter_by(**kwargs)
+    )
+    db.session.commit()
 
 
 def add_user(user_data: dict[str, str | int]) -> tuple[str, int]:
@@ -84,3 +91,6 @@ def update_session(
     session_raw.session_id = new_refresh_id
     session_raw.device = device
     db.session.commit()
+
+
+
