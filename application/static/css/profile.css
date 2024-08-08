@@ -1055,6 +1055,187 @@ span {
     box-shadow: 0 0 5px var(--text-hover-color);
 }
 
+.first-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 3%;
+    padding-right: 5%;
+}
+
+.user-info-wrapper {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    width: 40%;
+    gap: 20%;
+}
+
+.main-avatar {
+    width: 15%;
+    height: 15%;
+}
+
+.main-name {
+    font-size: 2rem;
+    color: var(--text-color);
+}
+
+.settings-btn {
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 32px;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 50px;
+    border-style: none;
+    outline: none;
+    background-color: var(--background-button-color);
+    font-size: 1.125rem;
+    color: var(--text-color);
+    transition: color var(--link-transition-duration) linear;
+}
+
+.settings-btn:hover {
+    color: var(--text-hover-color);
+}
+
+.settings-win {
+    position: absolute;
+    left: 25vw;
+    top: 15vh;
+    width: 50vw;
+    height: 70vh;
+    border-radius: 50px;
+    background-color: var(--background-button-color);
+    transform: translate(-150%);
+    -ms-transform: translate(-150%);
+    -webkit-transform: translate(-150%);
+    -o-transform: translate(-150%);
+    -moz-transform: translate(-150%);
+    transition: all var(--login-transition-duration) ease-out;
+}
+
+.header-set {
+    padding: 5%;
+    color: var(--text-color);
+    font-size: 2rem;
+}
+
+.cancel-set-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 1%;
+}
+
+.cancel-set {
+    border-style: none;
+    background-color: var(--background-button-color);
+    color: var(--text-color);
+    font-size: 1.125rem;
+    transition: color var(--link-transition-duration) linear;
+    -webkit-transition: color var(--link-transition-duration) linear;
+    -o-transition: color var(--link-transition-duration) linear;
+    -moz-transition: color var(--link-transition-duration) linear;
+}
+
+.cancel-set:hover {
+    color: var(--text-hover-color);
+}
+
+.st-block {
+    border: 3px solid var(--text-hover-color);
+    border-radius: 16px;
+}
+
+.st-header {
+    padding: 3%;
+    padding-left: 5%;
+    font-size: 1.5rem;
+    color: var(--text-color);
+}
+
+.sessions-cap {
+    padding-bottom: 10px;
+    color: var(--text-color);
+    font-size: 1.5rem;
+}
+
+.ses-table {
+    border: 1px solid var(--text-hover-color);
+    border-radius: 10px;
+}
+
+.col-head {
+    color: var(--text-color);
+    font-size: 1.125rem;
+}
+
+.cell {
+    padding: 20px;
+    padding-top: 15px;
+    color: var(--text-color);
+}
+
+.table-wrap {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
+.term-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.term-all {
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    border-style: solid;
+    border-radius: 50px;
+    border-width: 1px;
+    transition: all var(--link-transition-duration) linear;
+    -webkit-transition: all var(--link-transition-duration) linear;
+    -o-transition: all var(--link-transition-duration) linear;
+    -moz-transition: all var(--link-transition-duration) linear;
+}
+
+.term-all:hover {
+    background-color: var(--background-button-color);
+    box-shadow: 0 0 10px var(--text-color);
+}
+
+.term-btn {
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    border-style: solid;
+    border-radius: 50px;
+    border-width: 1px;
+    transition: all var(--link-transition-duration) linear;
+    -webkit-transition: all var(--link-transition-duration) linear;
+    -o-transition: all var(--link-transition-duration) linear;
+    -moz-transition: all var(--link-transition-duration) linear;
+}
+
+.term-btn:hover {
+    background-color: var(--background-button-color);
+    box-shadow: 0 0 10px var(--text-color);
+}
+
+.cur-ses {
+    color: var(--text-hover-color);
+}
+
 .display-off {
     display: none;
 }

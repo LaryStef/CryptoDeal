@@ -4,13 +4,13 @@ from typing import Any
 
 from flask_restx import Namespace, Resource
 from flask import request, make_response, Response
-from werkzeug.exceptions import BadRequest
+from werkzeug.exceptions import BadRequest, Unauthorized
 from redis.exceptions import ResponseError
 from bcrypt import checkpw
 
-from ..mail.senders import send_scrf_attention
 from ..config import AppConfig
 from ..utils.generators import generate_id
+from ..utils.decorators import authorization_required
 from ..utils.JWT import generate_tokens, validate_token
 from ..shemas import RegisterSchema, LoginSchema
 from ..database.postgre.models import User
@@ -578,32 +578,14 @@ class RestoreVerify(Resource):
 
 @api.route("/refresh-tokens")
 class RefreshAccess(Resource):
+    @authorization_required("refresh")
     def post(self) -> tuple[dict[str, dict[str, str]], int] | Response:
         try:
-            scrf_cookie: str | None = request.cookies.get("refresh_scrf_token")
             refresh_token: str | None = request.cookies.get("refresh_token")
-            scrf_header: str | None = request.headers.get("X-SCRF-TOKEN")
-
             payload: dict[str, Any] | None = validate_token(
                 token=refresh_token,
                 type="refresh"
             )
-            if not all([scrf_cookie, scrf_header, payload]):
-                raise BadRequest
-
-            if scrf_cookie != scrf_header or scrf_cookie != payload["scrf"]:
-                send_scrf_attention(
-                    recipient=payload.get("email"),
-                    origin=request.headers.get("Origin")
-                )
-                return {
-                    "error": {
-                        "code": "Forbidden",
-                        "message": "Invalid scrf token",
-                        "details": """Invalid scrf token. Someone tries to get
-                            access from your behalf"""
-                    }
-                }, 403
 
             user: User | None = get(User, uuid=payload.get("uuid"))
             if user is None:
@@ -660,10 +642,9 @@ class RefreshAccess(Resource):
                 max_age=AppConfig.REFRESH_TOKEN_LIFETIME,
                 samesite="Strict"
             )
-
             return response
 
-        except BadRequest:
+        except (BadRequest, Unauthorized):
             return {
                 "error": {
                     "code": "Bad request",
