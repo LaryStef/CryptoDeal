@@ -1232,6 +1232,10 @@ span {
     box-shadow: 0 0 10px var(--text-color);
 }
 
+.cur-ses {
+    color: var(--text-hover-color);
+}
+
 .display-off {
     display: none;
 }

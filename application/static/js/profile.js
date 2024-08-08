@@ -199,15 +199,22 @@ function loadSessions(clearFirst) {
             }
 
             sessions.forEach(session => {
-                table.innerHTML += `<tr>
+                if (session.isCurrent) {
+                    table.innerHTML += `<tr>
+                        <td class="cell">${session.device}</td>
+                        <td class="cell">${session.lastActivity}</td>
+                        <td class="cell term-wrap cur-ses">Current</td>
+                    </tr>`
+                }
+                else {
+                    table.innerHTML += `<tr>
                         <td class="cell">${session.device}</td>
                         <td class="cell">${session.lastActivity}</td>
                         <td class="cell term-wrap">
                             <button class="term-btn" sessionId=${session.sessionId}>terminate</button>
                         </td>
                     </tr>`
-
-                
+                }
             })
         });
 }
