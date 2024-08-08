@@ -166,10 +166,13 @@ function loadProfile() {
 
     document.getElementById("name").innerText = payload.name;
     document.getElementById("username").innerText = payload.name;
-    document.getElementById("avatar").src = new URL(
-        `/static/jpg/Alien${payload.alien_number}.jpg`,
+
+    const avatarUrl = new URL(
+        `/static/png/Alien${payload.alien_number}.png`,
         location.origin
     );
+    document.getElementById("avatar").src = avatarUrl;
+    document.getElementById("main-avatar").src = avatarUrl;
 }
 
 function loadSessions(clearFirst) {
@@ -288,7 +291,6 @@ document
             }
         });
 
-        console.log("here");
         if (response.status === 200) {
             closeLoginWindow();
             loadProfile();

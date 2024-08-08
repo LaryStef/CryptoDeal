@@ -162,7 +162,7 @@ function load_profile() {
 
     document.getElementById("name").innerText = payload.name;
     document.getElementById("avatar").src = new URL(
-        `/static/jpg/Alien${payload.alien_number}.jpg`,
+        `/static/png/Alien${payload.alien_number}.png`,
         location.origin
     );
 }
