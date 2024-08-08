@@ -33,12 +33,14 @@ class Profile(Resource):
             #             {
             #                 "sessionId": "5ZB7k7c7hxr9KcX2",
             #                 "device": "Chrome, Windows10",
-            #                 "lastActivity": "2024-07-30 19:56:41.192498"
+            #                 "lastActivity": "2024-07-30 19:56:41.192498",
+            #                 "isCurrent": false
             #             },
             #             {
             #                 "sessionId": "vLEiYUtkmK8DHZWg",
             #                 "device": "Chrome, Linux",
-            #                 "lastActivity": "2024-08-04 20:27:41.80115"
+            #                 "lastActivity": "2024-08-04 20:27:41.80115",
+            #                 "isCurrent": true
             #             }
             #         ]
             #     }
@@ -88,7 +90,9 @@ class Profile(Resource):
                     {
                         "sessionId": session.session_id,
                         "device": session.device,
-                        "lastActivity": str(session.last_activity),
+                        "lastActivity": session.last_activity.strftime(
+                            "%Y-%m-%d %H:%M"
+                        ),
                         "isCurrent": session.session_id == current_session_id
                     }
                 )
