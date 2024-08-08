@@ -44,12 +44,18 @@ class Profile(Resource):
             #     }
             # }
 
+            refresh_token: str | None = request.cookies.get("refresh_token")
+            refresh_payload: t.Any = validate_token(token=refresh_token,
+                                                    type="refresh")
             access_token: str | None = request.cookies.get("access_token")
-            payload: t.Any = validate_token(token=access_token, type="access")
+            access_payload: t.Any = validate_token(token=access_token,
+                                                   type="access")
 
-            if payload is None:
+            if access_payload is None or refresh_payload is None:
                 raise BadRequest
-            uuid: str | None = payload.get("uuid")
+
+            current_session_id: str = refresh_payload.get("jti", "")
+            uuid: str = access_payload.get("uuid", "")
 
             user: User = services.get(fields=[
                 User.alien_number,
@@ -82,7 +88,8 @@ class Profile(Resource):
                     {
                         "sessionId": session.session_id,
                         "device": session.device,
-                        "lastActivity": str(session.last_activity)
+                        "lastActivity": str(session.last_activity),
+                        "isCurrent": session.session_id == current_session_id
                     }
                 )
 
