@@ -41,6 +41,18 @@ def remove(table: db.Model, **kwargs: Any):
     db.session.commit()
 
 
+def delete_exclude(
+    table: db.Model,
+    column: Mapped[Any],
+    exclude: list[Any],
+    **kwargs: Any
+):
+    db.session.execute(
+        delete(table).where(column.not_in(exclude)).filter_by(**kwargs)
+    )
+    db.session.commit()
+
+
 def add_user(user_data: dict[str, str | int]) -> tuple[str, int]:
     id_: str = uuid4().__str__()
     alien_number: int = randint(1, 6)

@@ -18,15 +18,31 @@ class Sessions(Resource):
     @authorization_required("access")
     def delete(self, id_: str):
         try:
-            access_token: str | None = request.cookies.get("access_token")
-            payload: t.Any = validate_token(token=access_token, type="access")
+            access_token: str = request.cookies.get("access_token", "")
+            access_payload: t.Any = validate_token(token=access_token,
+                                                   type="access")
 
-            if payload is None:
+            if access_payload is None:
                 raise BadRequest
-            uuid: str | None = payload.get("uuid")
+            uuid: str | None = access_payload.get("uuid")
 
             if (id_ == "all"):
-                services.remove(Session, user_id=uuid)
+                refresh_token: str = request.cookies.get("refresh_token", "")
+                refresh_payload: t.Any = validate_token(token=refresh_token,
+                                                        type="refresh")
+
+                if refresh_payload is None:
+                    raise BadRequest
+
+                session_id: str = refresh_payload.get("jti", "")
+
+                services.delete_exclude(
+                    table=Session,
+                    column=Session.session_id,
+                    exclude=[session_id],
+                    user_id=uuid
+                )
+                return "OK", 200
 
             services.remove(Session, user_id=uuid, session_id=id_)
             return "OK", 200
