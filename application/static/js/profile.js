@@ -8,6 +8,8 @@ const restoreUrl = new URL("api/auth/restore/apply", origin);
 const restoreNewCodeUrl = new URL("api/auth/restore/new-code", origin);
 const restoreVerifyUrl = new URL("api/auth/restore/verify", origin);
 const refreshTokensUrl = new URL("api/auth/refresh-tokens", origin);
+const profileDataUrl = new URL("api/profile", origin);
+const sessionUrl = new URL("api/sessions", origin);
 
 const cooldown = 30;
 const cooldownRec = 30;
@@ -115,7 +117,7 @@ async function refreshTokens() {
     });
 
     if (response.status === 200) {
-        load_profile();
+        loadProfile();
     }
 }
 
@@ -127,7 +129,7 @@ function isTokensRefreshRequired() {
         Math.floor(Date.now() / 1000) <
             Number(JSON.parse(atob(access.split(".")[1])).exp) - 1
     ) {
-        load_profile();
+        loadProfile();
         return false;
     }
     return true;
@@ -146,9 +148,11 @@ function getCookie(cookie) {
     return token;
 }
 
-function load_profile() {
-    authClasses = document.getElementById("auth-button").classList;
-    profileClasses = document.getElementById("profile-button").classList;
+function loadProfile() {
+    loadSessions();
+
+    let authClasses = document.getElementById("auth-button").classList;
+    let profileClasses = document.getElementById("profile-button").classList;
     if (
         !authClasses.contains("display-off") &&
         profileClasses.contains("display-off")
@@ -161,16 +165,68 @@ function load_profile() {
     let payload = JSON.parse(atob(access.split(".")[1]));
 
     document.getElementById("name").innerText = payload.name;
-    document.getElementById("avatar").src = new URL(
-        `/static/jpg/Alien${payload.alien_number}.jpg`,
+    document.getElementById("username").innerText = payload.name;
+
+    const avatarUrl = new URL(
+        `/static/png/Alien${payload.alien_number}.png`,
         location.origin
     );
+    document.getElementById("avatar").src = avatarUrl;
+    document.getElementById("main-avatar").src = avatarUrl;
+}
+
+function loadSessions(clearFirst) {
+    fetch(profileDataUrl, {
+        method: "GET",
+        credentials: "same-origin",
+        headers: {
+            "X-SCRF-TOKEN": getCookie("access_scrf_token")
+        },
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            const sessions = data.userData.sessions;
+            
+            let table = document.getElementById("ses-table");
+
+            if (clearFirst) {
+                table.innerHTML = `
+                    <caption class="sessions-cap">sessions</caption>
+                    <tr>
+                        <th class="col-head cell">Device</th>
+                        <th class="col-head cell">Last activity</th>
+                        <th class="cell term-wrap">
+                            <button class="term-all" id="term-all">terminate all</button>
+                        </th>
+                    </tr>`
+            }
+
+            sessions.forEach(session => {
+                if (session.isCurrent) {
+                    table.innerHTML += `<tr>
+                        <td class="cell">${session.device}</td>
+                        <td class="cell">${session.lastActivity}</td>
+                        <td class="cell term-wrap cur-ses">Current</td>
+                    </tr>`
+                }
+                else {
+                    table.innerHTML += `<tr>
+                        <td class="cell">${session.device}</td>
+                        <td class="cell">${session.lastActivity}</td>
+                        <td class="cell term-wrap">
+                            <button class="term-btn" sessionId=${session.sessionId}>terminate</button>
+                        </td>
+                    </tr>`
+                }
+            })
+        });
 }
 
 document.getElementById("left-switch").onclick = leftSwitchTransform;
 document.getElementById("right-switch").onclick = rightSwitchTransform;
 document.getElementById("sign-up").onclick = openSignUpWindow;
 document.getElementById("sign-in").onclick = openSignInWindow;
+document.getElementById("set-btn").onclick = openSettingsWindow;
 
 document.getElementById("dropdown-sign-in").onclick = openSignInWindow;
 document.getElementById("dropdown-sign-up").onclick = openSignUpWindow;
@@ -179,9 +235,45 @@ document.getElementById("cancel").onclick = closeLoginWindow;
 document.getElementById("mail-cancel").onclick = closeConfirmWindow;
 document.getElementById("email-cancel").onclick = closeEmailWindow;
 document.getElementById("mail-cancel-rec").onclick = closePasswordWindow;
+document.getElementById("cancel-set").onclick = closeSettingsWindow;
 
 document.getElementById("code-btn").onclick = sendNewCode;
 document.getElementById("code-btn-rec").onclick = sendNewCodeRec;
+
+document.getElementById("ses-table").addEventListener("click", (event) => {
+    if (event.target.classList.contains("term-btn")) {
+        let sessionId = event.target.attributes.sessionid.value;
+
+        fetch(sessionUrl + "/" + sessionId, {
+            method: "DELETE",
+            credentials: "same-origin",
+            headers: {
+                "X-SCRF-TOKEN": getCookie("access_scrf_token")
+            }
+        }).then(
+            (response) => {
+                if (response.status === 200) {
+                    loadSessions(clearFirst=true);
+                }
+            }
+        )
+    }
+    else if (event.target.classList.contains("term-all")) {
+        fetch(sessionUrl + "/all", {
+            method: "DELETE",
+            credentials: "same-origin",
+            headers: {
+                "X-SCRF-TOKEN": getCookie("access_scrf_token")
+            }
+        }).then(
+            (response) => {
+                if (response.status === 200) {
+                    loadSessions(clearFirst=true);
+                }
+            }
+        )
+    }
+});
 
 document
     .getElementById("login-form-id")
@@ -199,9 +291,9 @@ document
             }
         });
 
-        if (response.status == 200) {
+        if (response.status === 200) {
             closeLoginWindow();
-            load_profile();
+            loadProfile();
         } else {
             let error = await response.json();
             document.getElementById("login-info").innerHTML =
@@ -225,7 +317,7 @@ document
                 body: formData,
             });
 
-            if (response.status == 201) {
+            if (response.status === 201) {
                 if (isTimerGoing) {
                     disableTimer(timerId);
                 }
@@ -359,7 +451,7 @@ function openSignInWindow() {
     } else {
         loginWindow.style.transform = "translate(50%, 30%)";
     }
-    document.getElementById("main").style.filter = "brightness(0.5)";
+    document.getElementById("main-wrap").style.filter = "brightness(0.5)";
     document.getElementById("navbar").style.filter = "brightness(0.5)";
     disableButtons();
 }
@@ -373,7 +465,7 @@ function openSignUpWindow() {
     } else {
         loginWindow.style.transform = "translate(50%, 30%)";
     }
-    document.getElementById("main").style.filter = "brightness(0.5)";
+    document.getElementById("main-wrap").style.filter = "brightness(0.5)";
     document.getElementById("navbar").style.filter = "brightness(0.5)";
     disableButtons();
 }
@@ -382,7 +474,7 @@ function closeLoginWindow() {
     let loginWindow = document.getElementById("login");
     loginWindow.style.opacity = 0;
     loginWindow.style.transform = "translate(-100%, 30%)";
-    document.getElementById("main").style.filter = "brightness(1)";
+    document.getElementById("main-wrap").style.filter = "brightness(1)";
     document.getElementById("navbar").style.filter = "brightness(1)";
     document.getElementById("login-info").innerText = "";
     document.getElementById("register-info").innerText = "";
@@ -408,7 +500,7 @@ function openConfirmWindow(email) {
     window.style.transform = "translate(0%)";
     window.style.visibility = "visible";
 
-    document.getElementById("main").style.filter = "brightness(0.5)";
+    document.getElementById("main-wrap").style.filter = "brightness(0.5)";
     document.getElementById("navbar").style.filter = "brightness(0.5)";
     disableButtons();
 }
@@ -417,7 +509,7 @@ function closeConfirmWindow() {
     let window = document.getElementById("confirm-window");
     window.style.opacity = 0;
     window.style.transform = "translate(200%)";
-    document.getElementById("main").style.filter = "brightness(1)";
+    document.getElementById("main-wrap").style.filter = "brightness(1)";
     document.getElementById("navbar").style.filter = "brightness(1)";
     document.getElementById("input-code").style.backgroundColor = "#7d42e7";
     document.getElementById("input-code").value = "";
@@ -497,7 +589,7 @@ async function verifyCode() {
 
     if (response.status == 200) {
         closeConfirmWindow();
-        load_profile();
+        loadProfile();
     } else {
         document.getElementById("input-code").style.backgroundColor = "#BF1A3E";
     }
@@ -617,7 +709,7 @@ function openEmailWindow() {
     window.style.transform = "translate(0%)";
     window.style.visibility = "visible";
 
-    document.getElementById("main").style.filter = "brightness(0.5)";
+    document.getElementById("main-wrap").style.filter = "brightness(0.5)";
     document.getElementById("navbar").style.filter = "brightness(0.5)";
     disableButtons();
 }
@@ -626,7 +718,7 @@ function closeEmailWindow() {
     let window = document.getElementById("email-window");
     window.style.opacity = 0;
     window.style.transform = "translate(-200%)";
-    document.getElementById("main").style.filter = "brightness(1)";
+    document.getElementById("main-wrap").style.filter = "brightness(1)";
     document.getElementById("navbar").style.filter = "brightness(1)";
     document.getElementById("email-input-recovery").value = "";
     document.getElementById("pass-info").innerText = "";
@@ -711,7 +803,7 @@ document.getElementById("submit-rec").addEventListener("click", async (e) => {
 
     if (response.status === 200) {
         closePasswordWindow();
-        load_profile();
+        loadProfile();
     }
     if (response.status === 429 || response.status === 400) {
         error = await response.json();
@@ -727,7 +819,7 @@ function openPasswordWindow(email) {
     window.style.transform = "translate(0%)";
     window.style.visibility = "visible";
 
-    document.getElementById("main").style.filter = "brightness(0.5)";
+    document.getElementById("main-wrap").style.filter = "brightness(0.5)";
     document.getElementById("navbar").style.filter = "brightness(0.5)";
     disableButtons();
 }
@@ -740,7 +832,7 @@ function closePasswordWindow() {
     let window = document.getElementById("confirm-window-rec");
     window.style.opacity = 0;
     window.style.transform = "translate(200%)";
-    document.getElementById("main").style.filter = "brightness(1)";
+    document.getElementById("main-wrap").style.filter = "brightness(1)";
     document.getElementById("navbar").style.filter = "brightness(1)";
     document.getElementById("input-code-rec").value = "";
     document.getElementById("email-rec1").value = "";
@@ -796,3 +888,26 @@ function disableTimerRec(timerID) {
     clearInterval(timerID);
     isTimerGoingRec = false;
 }
+
+function openSettingsWindow() {
+    let window = document.getElementById("set-win");
+    window.style.transform = "translate(0%)";
+    document.getElementById("main-wrap").style.filter = "brightness(0.5)";
+    document.getElementById("navbar").style.filter = "brightness(0.5)";
+    disableButtons();
+}
+
+function closeSettingsWindow() {
+    let window = document.getElementById("set-win");
+    window.style.transform = "translate(-150%)";
+    document.getElementById("main-wrap").style.filter = "brightness(1)";
+    document.getElementById("navbar").style.filter = "brightness(1)";
+    enableButtons();
+}
+
+// for (let i = 0; i < 10; i++) {
+    
+//     document.getElementsByClassName("term-btn")[i].addEventListener("click", () => {
+//         let btn = this.classList()
+//     })
+// }

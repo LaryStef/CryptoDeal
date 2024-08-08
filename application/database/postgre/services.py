@@ -1,20 +1,61 @@
+from uuid import uuid4
 from typing import Any
 from random import randint
-from uuid import uuid4
 
-from .utc_time import utcnow
+from sqlalchemy.orm import Mapped
+from sqlalchemy import select, Result, delete
+
 from . import db
+from .utc_time import utcnow
 from .models import User, Session
 from ...utils.cryptography import hash_password
 
 
-def get(table: Any, **kwargs: Any) -> Any | None:
-    return db.session.query(table).filter_by(**kwargs).first()
+def get(
+    table: db.Model = None,
+    fields: list[Mapped] = [],
+    many: bool = False,
+    **kwargs: Any
+) -> Any | None:
+    if table is not None:
+        result: Result = db.session.execute(
+            select(table).filter_by(**kwargs)
+        )
+        if many:
+            return result.scalars()
+        return result.scalar()
+
+    result: Result = db.session.execute(
+        select(*fields).filter_by(**kwargs)
+    )
+
+    if many:
+        return result.scalars()
+    return result.fetchone()
+
+
+def remove(table: db.Model, **kwargs: Any):
+    db.session.execute(
+        delete(table).filter_by(**kwargs)
+    )
+    db.session.commit()
+
+
+def delete_exclude(
+    table: db.Model,
+    column: Mapped[Any],
+    exclude: list[Any],
+    **kwargs: Any
+):
+    db.session.execute(
+        delete(table).where(column.not_in(exclude)).filter_by(**kwargs)
+    )
+    db.session.commit()
 
 
 def add_user(user_data: dict[str, str | int]) -> tuple[str, int]:
     id_: str = uuid4().__str__()
-    alien_number: int = randint(1, 6)
+    alien_number: int = randint(1, 5)
 
     user: User = User(
         uuid=id_,
