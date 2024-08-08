@@ -20,7 +20,7 @@ class Profile(Resource):
         try:
             # response example
             # {
-            #     "user": {
+            #     "userData": {
             #         "uuid": 123,
             #         "profile": {
             #             "name": "Chirill",
