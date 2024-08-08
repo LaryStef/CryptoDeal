@@ -1104,9 +1104,9 @@ span {
 
 .settings-win {
     position: absolute;
-    left: 15vw;
+    left: 25vw;
     top: 15vh;
-    width: 70vw;
+    width: 50vw;
     height: 70vh;
     border-radius: 50px;
     background-color: var(--background-button-color);
@@ -1119,23 +1119,16 @@ span {
 }
 
 .header-set {
-    padding: 3%;
+    padding: 5%;
     color: var(--text-color);
     font-size: 2rem;
-}
-
-.sessions-block {
-    padding: 1%;
-    padding-left: 3%;
-    color: var(--text-color);
-    font-size: 1.5rem;
 }
 
 .cancel-set-wrap {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding-top: 36%;
+    padding-top: 1%;
 }
 
 .cancel-set {
@@ -1163,6 +1156,80 @@ span {
     padding-left: 5%;
     font-size: 1.5rem;
     color: var(--text-color);
+}
+
+.sessions-cap {
+    padding-bottom: 10px;
+    color: var(--text-color);
+    font-size: 1.5rem;
+}
+
+.ses-table {
+    border: 1px solid var(--text-hover-color);
+    border-radius: 10px;
+}
+
+.col-head {
+    color: var(--text-color);
+    font-size: 1.125rem;
+}
+
+.cell {
+    padding: 20px;
+    padding-top: 15px;
+    color: var(--text-color);
+}
+
+.table-wrap {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
+.term-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.term-all {
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    border-style: solid;
+    border-radius: 50px;
+    border-width: 1px;
+    transition: all var(--link-transition-duration) linear;
+    -webkit-transition: all var(--link-transition-duration) linear;
+    -o-transition: all var(--link-transition-duration) linear;
+    -moz-transition: all var(--link-transition-duration) linear;
+}
+
+.term-all:hover {
+    background-color: var(--background-button-color);
+    box-shadow: 0 0 10px var(--text-color);
+}
+
+.term-btn {
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    border-style: solid;
+    border-radius: 50px;
+    border-width: 1px;
+    transition: all var(--link-transition-duration) linear;
+    -webkit-transition: all var(--link-transition-duration) linear;
+    -o-transition: all var(--link-transition-duration) linear;
+    -moz-transition: all var(--link-transition-duration) linear;
+}
+
+.term-btn:hover {
+    background-color: var(--background-button-color);
+    box-shadow: 0 0 10px var(--text-color);
 }
 
 .display-off {
