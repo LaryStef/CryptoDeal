@@ -55,7 +55,7 @@ def delete_exclude(
 
 def add_user(user_data: dict[str, str | int]) -> tuple[str, int]:
     id_: str = uuid4().__str__()
-    alien_number: int = randint(1, 6)
+    alien_number: int = randint(1, 5)
 
     user: User = User(
         uuid=id_,
