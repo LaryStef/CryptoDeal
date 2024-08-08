@@ -8,7 +8,6 @@ from werkzeug.exceptions import BadRequest, Unauthorized
 from redis.exceptions import ResponseError
 from bcrypt import checkpw
 
-from ..mail.senders import send_scrf_attention
 from ..config import appConfig
 from ..utils.generators import generate_id
 from ..utils.decorators import authorization_required
