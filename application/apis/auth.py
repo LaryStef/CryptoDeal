@@ -9,7 +9,7 @@ from redis.exceptions import ResponseError
 from bcrypt import checkpw
 
 from ..mail.senders import send_scrf_attention
-from ..config import AppConfig
+from ..config import appConfig
 from ..utils.generators import generate_id
 from ..utils.JWT import generate_tokens, validate_token
 from ..shemas import RegisterSchema, LoginSchema
@@ -71,26 +71,26 @@ class SignIn(Resource):
                 response.set_cookie(
                     key="access_token",
                     value=access_token,
-                    max_age=AppConfig.ACCESS_TOKEN_LIFETIME,
+                    max_age=appConfig.ACCESS_TOKEN_LIFETIME,
                     samesite="Strict"
                 )
                 response.set_cookie(
                     key="refresh_token",
                     value=refresh_token,
-                    max_age=AppConfig.REFRESH_TOKEN_LIFETIME,
+                    max_age=appConfig.REFRESH_TOKEN_LIFETIME,
                     httponly=True,
                     samesite="Strict"
                 )
                 response.set_cookie(
                     key="access_scrf_token",
                     value=access_scrf_token,
-                    max_age=AppConfig.ACCESS_TOKEN_LIFETIME,
+                    max_age=appConfig.ACCESS_TOKEN_LIFETIME,
                     samesite="Strict"
                 )
                 response.set_cookie(
                     key="refresh_scrf_token",
                     value=refresh_scrf_token,
-                    max_age=AppConfig.REFRESH_TOKEN_LIFETIME,
+                    max_age=appConfig.REFRESH_TOKEN_LIFETIME,
                     samesite="Strict"
                 )
 
@@ -187,7 +187,7 @@ class RefreshCode(Resource):
                 raise BadRequest
 
             if register_data.get("refresh_attempts") >= \
-                    AppConfig.MAIL_CODE_REFRESH_ATTEMTPTS:
+                    appConfig.MAIL_CODE_REFRESH_ATTEMTPTS:
                 rediska.json().delete("register", request_id)
                 return {
                     "error": {
@@ -254,7 +254,7 @@ class VerifyCode(Resource):
                 }, 400
 
             if register_data.get("verify_attempts") >= \
-                    AppConfig.MAIL_CODE_VERIFY_ATTEMPTS:
+                    appConfig.MAIL_CODE_VERIFY_ATTEMPTS:
                 rediska.json().delete("register", request_id)
                 return {
                     "error": {
@@ -310,26 +310,26 @@ class VerifyCode(Resource):
             response.set_cookie(
                 key="access_token",
                 value=access_token,
-                max_age=AppConfig.ACCESS_TOKEN_LIFETIME,
+                max_age=appConfig.ACCESS_TOKEN_LIFETIME,
                 samesite="Strict"
             )
             response.set_cookie(
                 key="refresh_token",
                 value=refresh_token,
-                max_age=AppConfig.REFRESH_TOKEN_LIFETIME,
+                max_age=appConfig.REFRESH_TOKEN_LIFETIME,
                 httponly=True,
                 samesite="Strict"
             )
             response.set_cookie(
                 key="access_scrf_token",
                 value=access_scrf_token,
-                max_age=AppConfig.ACCESS_TOKEN_LIFETIME,
+                max_age=appConfig.ACCESS_TOKEN_LIFETIME,
                 samesite="Strict"
             )
             response.set_cookie(
                 key="refresh_scrf_token",
                 value=refresh_scrf_token,
-                max_age=AppConfig.REFRESH_TOKEN_LIFETIME,
+                max_age=appConfig.REFRESH_TOKEN_LIFETIME,
                 samesite="Strict"
             )
 
@@ -371,13 +371,13 @@ class Restore(Resource):
                 - int(user.restore_date.timestamp()) \
                 + int(timedelta(hours=3.0).total_seconds())
 
-            if cooldown < AppConfig.RESTORE_COOLDOWN:
+            if cooldown < appConfig.RESTORE_COOLDOWN:
                 return {
                     "error": {
                         "code": "Too early",
                         "message": f"""Password has been restored recently,
                             try in
-                            {(AppConfig.RESTORE_COOLDOWN - cooldown) // 60 + 1}
+                            {(appConfig.RESTORE_COOLDOWN - cooldown) // 60 + 1}
                             minutes
                         """,
                         "details": """Password restore procedure has 10
@@ -420,7 +420,7 @@ class RestoreNewCode(Resource):
                 raise BadRequest
 
             if restore_data.get("refresh_attempts") >= \
-                    AppConfig.MAIL_CODE_REFRESH_ATTEMTPTS:
+                    appConfig.MAIL_CODE_REFRESH_ATTEMTPTS:
                 rediska.json().delete("password_restore", request_id)
                 return {
                     "error": {
@@ -480,7 +480,7 @@ class RestoreVerify(Resource):
                 raise BadRequest
 
             if request_data.get("verify_attempts") >= \
-                    AppConfig.MAIL_CODE_VERIFY_ATTEMPTS:
+                    appConfig.MAIL_CODE_VERIFY_ATTEMPTS:
                 rediska.json().delete("password_restore", request_id)
                 return {
                     "error": {
@@ -541,26 +541,26 @@ class RestoreVerify(Resource):
             response.set_cookie(
                 key="access_token",
                 value=access_token,
-                max_age=AppConfig.ACCESS_TOKEN_LIFETIME,
+                max_age=appConfig.ACCESS_TOKEN_LIFETIME,
                 samesite="Strict"
             )
             response.set_cookie(
                 key="refresh_token",
                 value=refresh_token,
-                max_age=AppConfig.REFRESH_TOKEN_LIFETIME,
+                max_age=appConfig.REFRESH_TOKEN_LIFETIME,
                 httponly=True,
                 samesite="Strict"
             )
             response.set_cookie(
                 key="access_scrf_token",
                 value=access_scrf_token,
-                max_age=AppConfig.ACCESS_TOKEN_LIFETIME,
+                max_age=appConfig.ACCESS_TOKEN_LIFETIME,
                 samesite="Strict"
             )
             response.set_cookie(
                 key="refresh_scrf_token",
                 value=refresh_scrf_token,
-                max_age=AppConfig.REFRESH_TOKEN_LIFETIME,
+                max_age=appConfig.REFRESH_TOKEN_LIFETIME,
                 samesite="Strict"
             )
 
@@ -638,26 +638,26 @@ class RefreshAccess(Resource):
             response.set_cookie(
                 key="access_token",
                 value=access_token,
-                max_age=AppConfig.ACCESS_TOKEN_LIFETIME,
+                max_age=appConfig.ACCESS_TOKEN_LIFETIME,
                 samesite="Strict"
             )
             response.set_cookie(
                 key="refresh_token",
                 value=refresh_token,
-                max_age=AppConfig.REFRESH_TOKEN_LIFETIME,
+                max_age=appConfig.REFRESH_TOKEN_LIFETIME,
                 httponly=True,
                 samesite="Strict"
             )
             response.set_cookie(
                 key="access_scrf_token",
                 value=access_scrf_token,
-                max_age=AppConfig.ACCESS_TOKEN_LIFETIME,
+                max_age=appConfig.ACCESS_TOKEN_LIFETIME,
                 samesite="Strict"
             )
             response.set_cookie(
                 key="refresh_scrf_token",
                 value=refresh_scrf_token,
-                max_age=AppConfig.REFRESH_TOKEN_LIFETIME,
+                max_age=appConfig.REFRESH_TOKEN_LIFETIME,
                 samesite="Strict"
             )
 

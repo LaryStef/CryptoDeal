@@ -30,3 +30,6 @@ class AppConfig(Config):
     RESTORE_COOLDOWN: int = 2000
     REFRESH_TOKEN_LIFETIME: int = 1200
     JWT_ENCODING_ALGORITHM: str = "HS256"
+
+
+appConfig: AppConfig = AppConfig()

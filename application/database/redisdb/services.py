@@ -1,7 +1,7 @@
 from time import time
 from random import randint
 
-from ...config import AppConfig
+from ...config import appConfig
 from . import rediska
 from ...utils.generators import generate_id
 from ...mail.senders import send_register_code, send_restore_code
@@ -18,8 +18,8 @@ class RediskaHandler:
         data["refresh_attempts"] = 0
         data["verify_attempts"] = 0
         data["creation_time"] = timestamp
-        data["deactivation_time"] = timestamp + AppConfig.REGISTER_LIFETIME
-        data["accept_new_request"] = timestamp + AppConfig.MAIL_CODE_COOLDOWN
+        data["deactivation_time"] = timestamp + appConfig.REGISTER_LIFETIME
+        data["accept_new_request"] = timestamp + appConfig.MAIL_CODE_COOLDOWN
         data["password_hash"] = hash_password(data["password"])
         data["code"] = "".join([str(randint(0, 9)) for _ in range(6)])
         data["role"] = "user"
@@ -35,7 +35,7 @@ class RediskaHandler:
         request_id: str
     ) -> None:
         data["refresh_attempts"] += 1
-        data["accept_new_request"] = int(time()) + AppConfig.MAIL_CODE_COOLDOWN
+        data["accept_new_request"] = int(time()) + appConfig.MAIL_CODE_COOLDOWN
 
         data["code"] = "".join([str(randint(0, 9)) for _ in range(6)])
         send_register_code(data["code"], data["email"])
@@ -64,8 +64,8 @@ class RediskaHandler:
         data["refresh_attempts"] = 0
         data["verify_attempts"] = 0
         data["creation_time"] = timestamp
-        data["deactivation_time"] = timestamp + AppConfig.RESTORE_LIFETIME
-        data["accept_new_request"] = timestamp + AppConfig.MAIL_CODE_COOLDOWN
+        data["deactivation_time"] = timestamp + appConfig.RESTORE_LIFETIME
+        data["accept_new_request"] = timestamp + appConfig.MAIL_CODE_COOLDOWN
         data["code"] = "".join([str(randint(0, 9)) for _ in range(6)])
 
         send_restore_code(data["code"], email)
@@ -81,9 +81,9 @@ class RediskaHandler:
         timestamp: int = int(time())
 
         data["refresh_attempts"] += 1
-        data["accept_new_request"] = timestamp + AppConfig.MAIL_CODE_COOLDOWN
+        data["accept_new_request"] = timestamp + appConfig.MAIL_CODE_COOLDOWN
         data["code"] = "".join([str(randint(0, 9)) for _ in range(6)])
-        data["deactivation_time"] = timestamp + AppConfig.RESTORE_LIFETIME
+        data["deactivation_time"] = timestamp + appConfig.RESTORE_LIFETIME
 
         send_restore_code(data["code"], data["email"])
         rediska.json().delete("password_restore", request_id)
