@@ -4,8 +4,9 @@ from random import randint
 from ...config import appConfig
 from . import rediska
 from ...utils.generators import generate_id
-from ...mail.senders import send_register_code, send_restore_code
+# from ...mail.senders import send_register_code, send_restore_code
 
+from ...taskQueue.mail_tasks import send_register_code, send_restore_code
 from ...utils.cryptography import hash_password
 
 
@@ -24,7 +25,9 @@ class RediskaHandler:
         data["code"] = "".join([str(randint(0, 9)) for _ in range(6)])
         data["role"] = "user"
 
-        send_register_code(data["code"], data["email"])
+        send_register_code.apply_async(
+            args=(data["code"], data["email"])
+        )
 
         rediska.json().set("register", request_id, data, nx=True)
         return request_id
@@ -38,7 +41,10 @@ class RediskaHandler:
         data["accept_new_request"] = int(time()) + appConfig.MAIL_CODE_COOLDOWN
 
         data["code"] = "".join([str(randint(0, 9)) for _ in range(6)])
-        send_register_code(data["code"], data["email"])
+
+        send_register_code.apply_async(
+            args=(data["code"], data["email"])
+        )
 
         rediska.json().delete("register", request_id)
         rediska.json().set("register", request_id, data, nx=True)
@@ -68,7 +74,9 @@ class RediskaHandler:
         data["accept_new_request"] = timestamp + appConfig.MAIL_CODE_COOLDOWN
         data["code"] = "".join([str(randint(0, 9)) for _ in range(6)])
 
-        send_restore_code(data["code"], email)
+        send_restore_code.apply_async(
+            args=(data["code"], email)
+        )
 
         rediska.json().set("password_restore", request_id, data, nx=True)
         return request_id

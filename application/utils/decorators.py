@@ -5,7 +5,7 @@ from flask import request
 from werkzeug.exceptions import Unauthorized
 
 from .JWT import validate_token
-from ..mail.senders import send_scrf_attention
+from ..taskQueue.mail_tasks import send_scrf_attention
 
 
 def authorization_required(
@@ -38,10 +38,11 @@ def authorization_required(
                 raise Unauthorized
 
             if scrf_cookie != scrf_header or scrf_cookie != payload["scrf"]:
-                send_scrf_attention(
-                    recipient=payload["email"],
-                    origin=request.headers.get("Origin")
+
+                send_scrf_attention.apply_async(
+                    args=(payload["email"], request.headers.get("Origin"))
                 )
+
                 return {
                     "error": {
                         "code": "Forbidden",
