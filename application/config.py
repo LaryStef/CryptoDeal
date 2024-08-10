@@ -30,6 +30,9 @@ class AppConfig(Config):
     RESTORE_COOLDOWN: int = 2000
     REFRESH_TOKEN_LIFETIME: int = 12000
     JWT_ENCODING_ALGORITHM: str = "HS256"
+    CELERY: dict[str, str] = {
+        "broker_url": "redis://localhost:6379/0"
+    }
 
 
-appConfig: AppConfig = AppConfig()
+appConfig: AppConfig = AppConfig(root_path=os.path)
