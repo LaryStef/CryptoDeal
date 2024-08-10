@@ -4,10 +4,10 @@ from . import mail
 
 
 def send_register_code(code: str, recipient: str) -> None:
-    recipients: list[str] = ["timurkotov1999@gmail.com"]  # just for tests
+    recipient = "timurkotov1999@gmail.com"    # just for tests
 
     message: Message = Message("Registration on CryptoDeal",
-                               recipients=recipients)
+                               recipients=[recipient])
     message.html = f"""
         <h2>Secret code: {code}<h2>
         <p style="font-size: 12px; color: black">Don't reply to this email<p>
@@ -18,10 +18,10 @@ def send_register_code(code: str, recipient: str) -> None:
 
 
 def send_restore_code(code: str, recipient: str) -> None:
-    recipients: list[str] = ["timurkotov1999@gmail.com"]  # just for tests
+    recipient = "timurkotov1999@gmail.com"    # just for tests
 
     message: Message = Message("Password restore on CryptoDeal",
-                               recipients=recipients)
+                               recipients=[recipient])
     message.html = f"""
         <h2>Secret code: {code}<h2>
         <p style="font-size: 16px; color: black">Warning: If it isn't you,
@@ -34,9 +34,9 @@ def send_restore_code(code: str, recipient: str) -> None:
 
 
 def send_scrf_attention(recipient: str, origin: str | None) -> None:
-    recipients: list[str] = ["timurkotov1999@gmail.com"]  # just for tests
+    recipient: str = "timurkotov1999@gmail.com"    # just for tests
 
-    message: Message = Message("SCRF attack attention", recipients=recipients)
+    message: Message = Message("SCRF attack attention", recipients=[recipient])
     message.html = f"""
         <h2 style="color: black">Attention: your account is under attack!</h2>
         <p style="display: inline; font-size: 14px; color: black">    We are
