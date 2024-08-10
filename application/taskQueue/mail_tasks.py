@@ -6,17 +6,15 @@ from ..mail import mail
 
 # TODO config retry policy and time limits
 
-mail_tasks_config: dict[str, str | int | bool] = {
+tasks_config: dict[str, int | bool] = {
     "bind": True,
-    "name": "tasks.send_email",
     "default_retry_delay": 60,
     "max_retries": 3,
-    "soft_time_limit": 15,
-    "ignore_result": True
+    "task_time_limit": 15,
 }
 
 
-@shared_task(options=mail_tasks_config)
+@shared_task(options=tasks_config)
 def send_register_code(code: str, recipient: str) -> None:
     recipient = "timurkotov1999@gmail.com"    # just for tests
 
@@ -31,7 +29,7 @@ def send_register_code(code: str, recipient: str) -> None:
     mail.send(message)
 
 
-@shared_task(options=mail_tasks_config)
+@shared_task(options=tasks_config)
 def send_restore_code(code: str, recipient: str) -> None:
     recipient = "timurkotov1999@gmail.com"    # just for tests
 
@@ -48,7 +46,7 @@ def send_restore_code(code: str, recipient: str) -> None:
     mail.send(message)
 
 
-@shared_task(options=mail_tasks_config)
+@shared_task(options=tasks_config)
 def send_scrf_attention(recipient: str, origin: str | None) -> None:
     recipient: str = "timurkotov1999@gmail.com"    # just for tests
 
