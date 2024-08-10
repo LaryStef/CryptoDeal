@@ -21,7 +21,6 @@ def create_app() -> tuple[Flask, Celery]:
     rediska.init_app(app)
 
     celery: Celery = celery_init_app(app)
-    celery.set_default()
 
     app.extensions["mail"].debug = 0
 
