@@ -2,6 +2,7 @@ import os
 from dotenv import load_dotenv
 
 from flask import Config
+from kombu import Queue
 
 
 load_dotenv()
@@ -30,8 +31,28 @@ class AppConfig(Config):
     RESTORE_COOLDOWN: int = 2000
     REFRESH_TOKEN_LIFETIME: int = 12000
     JWT_ENCODING_ALGORITHM: str = "HS256"
-    CELERY: dict[str, str] = {
-        "broker_url": "redis://localhost:6379/0"
+    CELERY: dict[str, str | bool | dict[str, dict[str, str]] | tuple[Queue]] = {  # noqa F501
+        "broker_url": "redis://localhost:6379/0",
+        "task_ignore_result": True,
+        "task_time_limit": 10,
+        "task_default_queue": "normal",
+        "task_queues": (
+            Queue(name="normal", routing_key=".mail_tasks.#"),
+            Queue(name="low", routing_key=".postgre_tasks.#"),
+        ),
+        "task_routes": {
+            ".mail_tasks.#": {
+                "queue": "normal"
+            },
+            ".postgre_tasks.#": {
+                "queue": "low"
+            },
+            ".redis_tasks.#": {
+                "queue": "low"
+            }
+        },
+        "broker_connection_retry_on_startup": True,
+        "worker_max_memory_per_child": 50000
     }
 
 
