@@ -20,9 +20,9 @@ def create_app() -> tuple[Flask, Celery]:
     mail.init_app(app)
     rediska.init_app(app)
 
-    celery: Celery = celery_init_app(app)
-
     app.extensions["mail"].debug = 0
+
+    celery: Celery = celery_init_app(app)
 
     with app.app_context():
         from .database.postgre.models import User  # noqa: F401
