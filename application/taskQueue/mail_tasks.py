@@ -11,10 +11,11 @@ tasks_config: dict[str, int | bool] = {
     "default_retry_delay": 60,
     "max_retries": 3,
     "task_time_limit": 15,
+    "priority": 8
 }
 
 
-@shared_task(options=tasks_config)
+@shared_task(name="send_register_code", options=tasks_config)
 def send_register_code(code: str, recipient: str) -> None:
     recipient = "timurkotov1999@gmail.com"    # just for tests
 
@@ -29,7 +30,7 @@ def send_register_code(code: str, recipient: str) -> None:
     mail.send(message)
 
 
-@shared_task(options=tasks_config)
+@shared_task(name="send_restore_code", options=tasks_config)
 def send_restore_code(code: str, recipient: str) -> None:
     recipient = "timurkotov1999@gmail.com"    # just for tests
 
@@ -46,7 +47,7 @@ def send_restore_code(code: str, recipient: str) -> None:
     mail.send(message)
 
 
-@shared_task(options=tasks_config)
+@shared_task(name="send_scrf_attention", options=tasks_config)
 def send_scrf_attention(recipient: str, origin: str | None) -> None:
     recipient: str = "timurkotov1999@gmail.com"    # just for tests
 
