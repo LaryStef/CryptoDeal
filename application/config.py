@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 
 from flask import Config
 from kombu import Queue
-from celery.schedules import crontab, solar
+from celery.schedules import crontab
 
 
 load_dotenv()
@@ -73,11 +73,11 @@ class AppConfig(Config):
                 # TODO "beat_logfile"
                 "clear-postgre": {
                     "task": "delete_expired_sessions",
-                    "schedule": crontab()
+                    "schedule": crontab(minute=0, hour=0)
                 },
                 "clear-redis": {
                     "task": "delete_expired_applications",
-                    "schedule": crontab()
+                    "schedule": crontab(minute=0, hour=0)
                 }
         }
     }

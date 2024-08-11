@@ -369,7 +369,7 @@ class Restore(Resource):
 
             cooldown: int = int(datetime.now().timestamp()) \
                 - int(user.restore_date.timestamp()) \
-                + int(timedelta(hours=3.0).total_seconds())
+                + int(timedelta(hours=3.0).total_seconds())  # because of utc((
 
             if cooldown < appConfig.RESTORE_COOLDOWN:
                 return {
