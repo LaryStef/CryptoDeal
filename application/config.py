@@ -56,11 +56,11 @@ class AppConfig(Config):
             ".mail_tasks.#": {
                 "queue": "normal"
             },
-            ".postgre_tasks.#": {
-                "queue": "low"
+            "application.taskQueue.postgre_tasks.#": {
+                "queue": "low",
             },
-            ".redis_tasks.#": {
-                "queue": "low"
+            "application.taskQueue.redis_tasks.#": {
+                "queue": "low",
             }
         },
         "broker_connection_retry_on_startup": True,
@@ -73,11 +73,11 @@ class AppConfig(Config):
                 # TODO "beat_logfile"
                 "clear-postgre": {
                     "task": "delete_expired_sessions",
-                    "schedule": crontab(minute=0, hour=0)
+                    "schedule": crontab(minute="0", hour="*/12")
                 },
                 "clear-redis": {
                     "task": "delete_expired_applications",
-                    "schedule": crontab(minute=0, hour=0)
+                    "schedule": crontab(minute="0", hour="*/12")
                 }
         }
     }
