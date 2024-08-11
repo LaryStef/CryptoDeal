@@ -4,19 +4,25 @@ from celery import shared_task
 from ..mail import mail
 
 
-# TODO config retry policy and time limits
-
-tasks_config: dict[str, int | bool] = {
-    "bind": True,
-    "default_retry_delay": 60,
-    "max_retries": 3,
-    "task_time_limit": 15,
-    "priority": 8
-}
+class TaskConfig():
+    default_retry_delay: int = 60,
+    max_retries: int = 3,
+    task_time_limit: int = 20,
+    priority: int = 8
 
 
-@shared_task(name="send_register_code", options=tasks_config)
-def send_register_code(code: str, recipient: str) -> None:
+taskConfig: TaskConfig = TaskConfig()
+
+
+@shared_task(
+    name="send_register_code",
+    bind=True,
+    default_retry_delay=taskConfig.default_retry_delay,
+    max_retries=taskConfig.max_retries,
+    task_time_limit=taskConfig.task_time_limit,
+    priority=taskConfig.priority
+)
+def send_register_code(self, code: str, recipient: str) -> None:
     recipient = "timurkotov1999@gmail.com"    # just for tests
 
     message: Message = Message("Registration on CryptoDeal",
@@ -30,8 +36,15 @@ def send_register_code(code: str, recipient: str) -> None:
     mail.send(message)
 
 
-@shared_task(name="send_restore_code", options=tasks_config)
-def send_restore_code(code: str, recipient: str) -> None:
+@shared_task(
+    name="send_restore_code",
+    bind=True,
+    default_retry_delay=taskConfig.default_retry_delay,
+    max_retries=taskConfig.max_retries,
+    task_time_limit=taskConfig.task_time_limit,
+    priority=taskConfig.priority
+)
+def send_restore_code(self, code: str, recipient: str) -> None:
     recipient = "timurkotov1999@gmail.com"    # just for tests
 
     message: Message = Message("Password restore on CryptoDeal",
@@ -47,8 +60,15 @@ def send_restore_code(code: str, recipient: str) -> None:
     mail.send(message)
 
 
-@shared_task(name="send_scrf_attention", options=tasks_config)
-def send_scrf_attention(recipient: str, origin: str | None) -> None:
+@shared_task(
+    name="send_scrf_attention",
+    bind=True,
+    default_retry_delay=taskConfig.default_retry_delay,
+    max_retries=taskConfig.max_retries,
+    task_time_limit=taskConfig.task_time_limit,
+    priority=taskConfig.priority
+)
+def send_scrf_attention(self, recipient: str, origin: str | None) -> None:
     recipient: str = "timurkotov1999@gmail.com"    # just for tests
 
     message: Message = Message("SCRF attack attention", recipients=[recipient])

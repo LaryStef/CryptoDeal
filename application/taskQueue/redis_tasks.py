@@ -6,17 +6,23 @@ from celery import shared_task
 from ..database.redisdb import rediska
 
 
-tasks_config: dict[str, int | bool] = {
-    "bind": True,
-    "default_retry_delay": 60,
-    "max_retries": 3,
-    "task_time_limit": 15,
-    "priority": 8
-}
+class TaskConfig():
+    max_retries: int = 0,
+    task_time_limit: int = 10,
+    priority: int = 3
 
 
-@shared_task(name="delete_expired_applications", options=tasks_config)
-def delete_expired_applications():
+taskConfig: TaskConfig = TaskConfig()
+
+
+@shared_task(
+    name="delete_expired_applications",
+    bind=True,
+    max_retries=taskConfig.max_retries,
+    task_time_limit=taskConfig.task_time_limit,
+    priority=taskConfig.priority
+)
+def delete_expired_applications(self):
     register_applications: dict[str, t.Any] = rediska.json().get("register")
 
     for id_, data in register_applications.items():

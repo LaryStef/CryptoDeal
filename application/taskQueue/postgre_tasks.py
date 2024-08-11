@@ -8,17 +8,23 @@ from ..database.postgre import db
 from ..database.postgre.models import Session
 
 
-tasks_config: dict[str, int | bool] = {
-    "bind": True,
-    "default_retry_delay": 60,
-    "max_retries": 3,
-    "task_time_limit": 15,
-    "priority": 3
-}
+class TaskConfig():
+    max_retries: int = 0,
+    task_time_limit: int = 10,
+    priority: int = 3
 
 
-@shared_task(name="delete_expired_sessions", options=tasks_config)
-def delete_expired_sessions():
+taskConfig: TaskConfig = TaskConfig()
+
+
+@shared_task(
+    name="delete_expired_sessions",
+    bind=True,
+    max_retries=taskConfig.max_retries,
+    task_time_limit=taskConfig.task_time_limit,
+    priority=taskConfig.priority
+)
+def delete_expired_sessions(self):
     expire: datetime = datetime.now() \
         - timedelta(seconds=appConfig.REFRESH_TOKEN_LIFETIME) \
         - timedelta(hours=3)  # because of utc((
