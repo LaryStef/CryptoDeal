@@ -12,7 +12,7 @@ from ...utils.cryptography import hash_password
 
 
 def get(
-    table: db.Model = None,
+    table: Any = None,
     fields: list[Mapped] = [],
     many: bool = False,
     **kwargs: Any
@@ -34,7 +34,7 @@ def get(
     return result.fetchone()
 
 
-def remove(table: db.Model, **kwargs: Any):
+def remove(table: Any, **kwargs: Any):
     db.session.execute(
         delete(table).filter_by(**kwargs)
     )
@@ -42,7 +42,7 @@ def remove(table: db.Model, **kwargs: Any):
 
 
 def delete_exclude(
-    table: db.Model,
+    table: Any,
     column: Mapped[Any],
     exclude: list[Any],
     **kwargs: Any
