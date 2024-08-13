@@ -84,7 +84,9 @@ class AppConfig(Config):
                     "task": "delete_expired_applications",
                     "schedule": crontab(minute="0", hour="*/12")
                 }
-        }
+        },
+        "worker_hijack_root_logger": False,
+        "worker_redirect_stdouts": True
     }
 
     def __init__(self):
@@ -109,7 +111,7 @@ class AppConfig(Config):
                     "file": {
                         "class": "logging.handlers.RotatingFileHandler",
                         "formatter": "default",
-                        "level": "DEBUG",
+                        "level": "INFO",
                         "filename": "cryptodeal.log",
                         "mode": "a",
                         "maxBytes": 1000000,
@@ -117,7 +119,7 @@ class AppConfig(Config):
                     }
                 },
                 "root": {
-                    "level": "DEBUG",
+                    "level": "INFO",
                     "handlers": [
                         "stderr",
                         "file"
