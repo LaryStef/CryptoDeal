@@ -1,15 +1,15 @@
-from uuid import uuid4
-from typing import Any
 from random import randint
+from typing import Any
+from uuid import uuid4
 
+from sqlalchemy import Result, delete, select
 from sqlalchemy.orm import Mapped
-from sqlalchemy import select, Result, delete
 
-from . import db
-from .utc_time import utcnow
-from .models import User, Session
 from ...logger import logger
 from ...utils.cryptography import hash_password
+from . import db
+from .models import Session, User
+from .utc_time import utcnow
 
 
 def get(

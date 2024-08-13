@@ -2,24 +2,22 @@ from datetime import datetime, timedelta
 from time import time
 from typing import Any
 
-from flask_restx import Namespace, Resource
-from flask import request, make_response, Response
-from werkzeug.exceptions import BadRequest, Unauthorized
-from redis.exceptions import ResponseError
 from bcrypt import checkpw
+from flask import Response, make_response, request
+from flask_restx import Namespace, Resource
+from redis.exceptions import ResponseError
+from werkzeug.exceptions import BadRequest, Unauthorized
 
 from ..config import appConfig
-from ..utils.generators import generate_id
-from ..utils.decorators import authorization_required
-from ..utils.JWT import generate_tokens, validate_token
-from ..shemas import RegisterSchema, LoginSchema
 from ..database.postgre.models import User
+from ..database.postgre.services import (add_session, add_user, get,
+                                         update_password, update_session)
 from ..database.redisdb import rediska
 from ..database.redisdb.services import RediskaHandler
-from ..database.postgre.services import (
-    get, add_user, update_password, add_session, update_session
-)
-
+from ..shemas import LoginSchema, RegisterSchema
+from ..utils.decorators import authorization_required
+from ..utils.generators import generate_id
+from ..utils.JWT import generate_tokens, validate_token
 
 api = Namespace("auth", path="/auth/")
 

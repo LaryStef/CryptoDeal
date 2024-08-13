@@ -6,9 +6,8 @@ from werkzeug.exceptions import BadRequest
 
 from ..database.postgre import services
 from ..database.postgre.models import Session
-from ..utils.JWT import validate_token
 from ..utils.decorators import authorization_required
-
+from ..utils.JWT import validate_token
 
 api = Namespace("sessions", path="/sessions/")
 

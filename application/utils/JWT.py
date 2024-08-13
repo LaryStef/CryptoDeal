@@ -1,7 +1,7 @@
 from time import time
 from typing import Any, Literal
 
-from jwt import encode, decode, InvalidTokenError
+from jwt import InvalidTokenError, decode, encode
 
 from ..config import appConfig
 

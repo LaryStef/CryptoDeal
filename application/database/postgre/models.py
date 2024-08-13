@@ -1,7 +1,7 @@
 from datetime import datetime
 
-from sqlalchemy import Integer, String, TIMESTAMP, ForeignKey
-from sqlalchemy.orm import mapped_column, Mapped, relationship
+from sqlalchemy import TIMESTAMP, ForeignKey, Integer, String
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from . import db
 from .utc_time import utcnow

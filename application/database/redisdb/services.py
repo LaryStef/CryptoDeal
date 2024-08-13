@@ -1,13 +1,12 @@
-from time import time
 from random import randint
+from time import time
 
 from ...config import appConfig
-from . import rediska
-from ...utils.generators import generate_id
-
 from ...logger import logger
 from ...taskQueue.mail_tasks import send_register_code, send_restore_code
 from ...utils.cryptography import hash_password
+from ...utils.generators import generate_id
+from . import rediska
 
 
 class RediskaHandler:

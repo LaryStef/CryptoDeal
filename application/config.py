@@ -1,14 +1,13 @@
 # flake8: noqa
 
 import os
-from typing import TypeAlias
-from dotenv import load_dotenv
 from logging.config import dictConfig
+from typing import TypeAlias
 
+from celery.schedules import crontab
+from dotenv import load_dotenv
 from flask import Config
 from kombu import Queue
-from celery.schedules import crontab
-
 
 load_dotenv()
 celeryConf: TypeAlias = dict[str, str | bool | int | list[str] | dict[str, dict[str, str | crontab]] | dict[str, int] | tuple[Queue]]

@@ -1,11 +1,11 @@
-from typing import Callable, Literal, Any
 from functools import wraps
+from typing import Any, Callable, Literal
 
 from flask import request
 from werkzeug.exceptions import Unauthorized
 
-from .JWT import validate_token
 from ..taskQueue.mail_tasks import send_scrf_attention
+from .JWT import validate_token
 
 
 def authorization_required(

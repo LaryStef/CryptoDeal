@@ -1,5 +1,5 @@
-from string import ascii_letters, digits
 from random import randint
+from string import ascii_letters, digits
 
 
 def generate_id(length: int) -> str:

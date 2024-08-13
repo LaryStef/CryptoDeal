@@ -1,5 +1,5 @@
-from flask import Flask
 from celery import Celery
+from flask import Flask
 
 from application import create_app
 

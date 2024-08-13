@@ -1,7 +1,6 @@
 from flask import Blueprint, render_template
 from werkzeug.exceptions import NotFound, Unauthorized
 
-
 main: Blueprint = Blueprint("main", __name__)
 
 

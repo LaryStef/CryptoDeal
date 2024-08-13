@@ -1,13 +1,13 @@
-from flask import Flask
 from celery import Celery
+from flask import Flask
 
-from .routes import main
+from .apis import api
 from .config import appConfig
 from .database.postgre import db
-from .apis import api
-from .mail import mail
-from .taskQueue import celery_init_app
 from .database.redisdb import rediska
+from .mail import mail
+from .routes import main
+from .taskQueue import celery_init_app
 
 
 def create_app() -> tuple[Flask, Celery]:

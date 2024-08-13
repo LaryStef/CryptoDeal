@@ -1,8 +1,8 @@
-from flask_mail import Message
 from celery import shared_task
+from flask_mail import Message
 
-from ..mail import mail
 from ..logger import logger
+from ..mail import mail
 
 
 class TaskConfig():
