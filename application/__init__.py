@@ -1,3 +1,4 @@
+from logging import Logger, getLogger
 from flask import Flask
 from celery import Celery
 
@@ -8,6 +9,9 @@ from .apis import api
 from .mail import mail
 from .taskQueue import celery_init_app
 from .database.redisdb import rediska
+
+
+logger: Logger = getLogger("app")
 
 
 def create_app() -> tuple[Flask, Celery]:
