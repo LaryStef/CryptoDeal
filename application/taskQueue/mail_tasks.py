@@ -2,6 +2,7 @@ from flask_mail import Message
 from celery import shared_task
 
 from ..mail import mail
+from ..logger import logger
 
 
 class TaskConfig():
@@ -34,6 +35,7 @@ def send_register_code(self, code: str, recipient: str) -> None:
         Support@cryptodeal.com<p>
     """
     mail.send(message)
+    logger.info(msg=f"registaration code sent to {recipient}")
 
 
 @shared_task(
@@ -58,6 +60,7 @@ def send_restore_code(self, code: str, recipient: str) -> None:
         Support@cryptodeal.com<p>
     """
     mail.send(message)
+    logger.info(msg=f"password restore code sent to {recipient}")
 
 
 @shared_task(
@@ -102,3 +105,4 @@ def send_scrf_attention(self, recipient: str, origin: str | None) -> None:
         Support@cryptodeal.com<p>
     """
     mail.send(message)
+    logger.warning(msg=f"scrf attention sent to {recipient}")
