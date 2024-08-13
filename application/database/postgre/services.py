@@ -8,6 +8,7 @@ from sqlalchemy import select, Result, delete
 from . import db
 from .utc_time import utcnow
 from .models import User, Session
+from ...logger import logger
 from ...utils.cryptography import hash_password
 
 
@@ -39,6 +40,7 @@ def remove(table: Any, **kwargs: Any):
         delete(table).filter_by(**kwargs)
     )
     db.session.commit()
+    logger.info(msg=f"deleted raw/s with args: {kwargs} in {table}")
 
 
 def delete_exclude(
@@ -51,23 +53,28 @@ def delete_exclude(
         delete(table).where(column.not_in(exclude)).filter_by(**kwargs)
     )
     db.session.commit()
+    logger.info(msg=f"""
+        deleted all raw/s exclude raws: {kwargs} in {column} in {table}
+    """)
 
 
 def add_user(user_data: dict[str, str | int]) -> tuple[str, int]:
     id_: str = uuid4().__str__()
     alien_number: int = randint(1, 5)
+    role = "user"
 
     user: User = User(
         uuid=id_,
         name=user_data["username"],
         password_hash=user_data["password_hash"],
-        role="user",
+        role=role,
         email=user_data["email"],
         alien_number=alien_number
     )
 
     db.session.add(user)
     db.session.commit()
+    logger.info(msg=f"added {role} {user_data["username"]}")
     return id_, alien_number
 
 
@@ -75,6 +82,7 @@ def update_password(user: User, password: str) -> None:
     user.password_hash = hash_password(password)
     user.restore_date = utcnow()
     db.session.commit()
+    logger.info(msg=f"updated password {user.name}")
 
 
 def add_session(refresh_id: str, user_id: str, device: str) -> None:
@@ -85,6 +93,7 @@ def add_session(refresh_id: str, user_id: str, device: str) -> None:
     )
     db.session.add(session_raw)
     db.session.commit()
+    logger.info(msg=f"new session added {user_id} on {device}")
 
 
 def update_session(
@@ -103,3 +112,4 @@ def update_session(
     session_raw.session_id = new_refresh_id
     session_raw.device = device
     db.session.commit()
+    logger.info(msg=f"session refreshed {user_id}")

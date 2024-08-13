@@ -353,7 +353,7 @@ class Restore(Resource):
             if user_data is None:
                 raise BadRequest
 
-            email: str | None = user_data.get("email", "")
+            email: str | None = user_data.get("email")
             if email is None:
                 raise BadRequest
 
