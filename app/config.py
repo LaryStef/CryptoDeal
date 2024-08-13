@@ -47,9 +47,9 @@ class AppConfig(Config):
         "task_ignore_result": True,
         "task_time_limit": 10,
         "imports": [
-            "application.taskQueue.mail_tasks",
-            "application.taskQueue.postgre_tasks",
-            "application.taskQueue.redis_tasks"
+            "app.taskQueue.mail_tasks",
+            "app.taskQueue.postgre_tasks",
+            "app.taskQueue.redis_tasks"
         ],
         "task_default_queue": "normal",
         "task_queues": (
@@ -60,10 +60,10 @@ class AppConfig(Config):
             ".mail_tasks.#": {
                 "queue": "normal"
             },
-            "application.taskQueue.postgre_tasks.#": {
+            "app.taskQueue.postgre_tasks.#": {
                 "queue": "low",
             },
-            "application.taskQueue.redis_tasks.#": {
+            "app.taskQueue.redis_tasks.#": {
                 "queue": "low",
             }
         },
