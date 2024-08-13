@@ -1,6 +1,7 @@
 # flake8: noqa
 
-import os, posixpath
+import os
+from typing import TypeAlias
 from dotenv import load_dotenv
 from logging.config import dictConfig
 
@@ -10,6 +11,7 @@ from celery.schedules import crontab
 
 
 load_dotenv()
+celeryConf: TypeAlias = dict[str, str | bool | int | list[str] | dict[str, dict[str, str | crontab]] | dict[str, int] | tuple[Queue]]
 
 
 class AppConfig(Config):
@@ -41,7 +43,7 @@ class AppConfig(Config):
     JWT_ENCODING_ALGORITHM: str = "HS256"
 
     # celery
-    CELERY: dict[str, str | bool | dict[str, dict[str, str]] | dict[str, int] | tuple[Queue]] = {
+    CELERY: celeryConf = {
         "broker_url": "redis://localhost:6379/0",
         "task_ignore_result": True,
         "task_time_limit": 10,
