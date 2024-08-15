@@ -1081,7 +1081,7 @@ span {
     color: var(--text-color);
 }
 
-.settings-btn {
+.f-line-btn {
     justify-content: center;
     align-items: center;
     width: 100px;
@@ -1098,7 +1098,7 @@ span {
     transition: color var(--link-transition-duration) linear;
 }
 
-.settings-btn:hover {
+.f-line-btn:hover {
     color: var(--text-hover-color);
 }
 
