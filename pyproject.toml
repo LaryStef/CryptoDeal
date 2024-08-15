@@ -6,6 +6,7 @@ authors = ["LaryStef <timurkotov1999@gmail.com>"]
 maintainers = ["kramber1024 <kramber268@gmail.com>"]
 readme = "README.md"
 repository = "https://github.com/LaryStef/CryptoDeal"
+package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.11"
