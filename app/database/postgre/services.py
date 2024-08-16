@@ -74,7 +74,7 @@ def add_user(user_data: dict[str, str | int]) -> tuple[str, int]:
 
     db.session.add(user)
     db.session.commit()
-    logger.info(msg=f"added {role} {user_data["username"]}")
+    logger.info(msg=f"added {role} {user_data['username']}")
     return id_, alien_number
 
 

@@ -29,7 +29,7 @@ class RediskaHandler:
         )
 
         rediska.json().set("register", request_id, data, nx=True)
-        logger.info(msg=f"register request created for {data["username"]}")
+        logger.info(msg=f"register request created for {data['username']}")
         return request_id
 
     @staticmethod
@@ -48,7 +48,7 @@ class RediskaHandler:
 
         rediska.json().delete("register", request_id)
         rediska.json().set("register", request_id, data, nx=True)
-        logger.info(msg=f"created new code for {data["username"]}")
+        logger.info(msg=f"created new code for {data['username']}")
 
     @staticmethod
     def increase_verify_attempts(
@@ -80,7 +80,7 @@ class RediskaHandler:
         )
 
         rediska.json().set("password_restore", request_id, data, nx=True)
-        logger.info(msg=f"created restore request for {data["email"]}")
+        logger.info(msg=f"created restore request for {data['email']}")
         return request_id
 
     @staticmethod
@@ -98,4 +98,4 @@ class RediskaHandler:
         send_restore_code(data["code"], data["email"])
         rediska.json().delete("password_restore", request_id)
         rediska.json().set("password_restore", request_id, data, nx=True)
-        logger.info(msg=f"created new code for {data["email"]}")
+        logger.info(msg=f"created new code for {data['email']}")
