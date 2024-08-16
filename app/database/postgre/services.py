@@ -61,20 +61,19 @@ def delete_exclude(
 def add_user(user_data: dict[str, str | int]) -> tuple[str, int]:
     id_: str = uuid4().__str__()
     alien_number: int = randint(1, 5)
-    role = "user"
 
     user: User = User(
         uuid=id_,
         name=user_data["username"],
         password_hash=user_data["password_hash"],
-        role=role,
+        role=user_data["role"],
         email=user_data["email"],
         alien_number=alien_number
     )
 
     db.session.add(user)
     db.session.commit()
-    logger.info(msg=f"added {role} {user_data['username']}")
+    logger.info(msg=f"added {user_data['role']} {user_data['username']}")
     return id_, alien_number
 
 
