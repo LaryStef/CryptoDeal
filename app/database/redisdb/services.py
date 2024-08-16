@@ -23,6 +23,7 @@ class RediskaHandler:
         data["password_hash"] = hash_password(data["password"])
         data["code"] = "".join([str(randint(0, 9)) for _ in range(6)])
         data["role"] = "user"
+        data.pop("password")
 
         send_register_code.apply_async(
             args=(data["code"], data["email"])
