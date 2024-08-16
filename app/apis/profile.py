@@ -15,7 +15,7 @@ api = Namespace("profile", path="/profile/")
 @api.route("/")
 class Profile(Resource):
     @authorization_required("access")
-    def get(self):
+    def get(self) -> t.Any:
         try:
             # response example
             # {
