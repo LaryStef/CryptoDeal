@@ -245,6 +245,10 @@ document.getElementById("code-btn").onclick = sendNewCode;
 document.getElementById("code-btn-rec").onclick = sendNewCodeRec;
 
 document.getElementById("ses-table").addEventListener("click", (event) => {
+    if (isTokensRefreshRequired()) {
+        refreshTokens();
+    }
+
     if (event.target.classList.contains("term-btn")) {
         let sessionId = event.target.attributes.sessionid.value;
 
@@ -277,6 +281,10 @@ document.getElementById("ses-table").addEventListener("click", (event) => {
 document
     .getElementById("logout-btn")
     .addEventListener("click", () => {
+        if (isTokensRefreshRequired()) {
+            refreshTokens();
+        }
+
         fetch(sessionUrl + "/my", {
             method: "DELETE",
             credentials: "same-origin",
