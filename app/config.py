@@ -67,7 +67,6 @@ class AppConfig(Config):
                 "queue": "low",
             }
         },
-        "broker_connection_retry_on_startup": True,
         "worker_max_memory_per_child": 50000,
         "broker_transport_options": {
             "visibility_timeout": 43200
