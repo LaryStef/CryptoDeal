@@ -73,8 +73,8 @@ class AppConfig(Config):
             "visibility_timeout": 43200
         },
         "timezone": "UTC",
+        "worker_logfile": "cryptodeal.log",
         "beat_schedule": {
-                # TODO "beat_logfile"
                 "clear-postgre": {
                     "task": "delete_expired_sessions",
                     "schedule": crontab(minute="0", hour="*/12")
