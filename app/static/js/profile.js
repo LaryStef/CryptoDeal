@@ -95,7 +95,8 @@ function getDeviceData() {
 
         case "iOS":
             osVersion = /OS (\d+)_(\d+)_?(\d+)?/.exec(nVer);
-            osVersion = osVersion[1] + "." + osVersion[2] + "." + (osVersion[3] | 0);
+            osVersion =
+                osVersion[1] + "." + osVersion[2] + "." + (osVersion[3] | 0);
             break;
     }
 
@@ -112,7 +113,7 @@ async function refreshTokens() {
         credentials: "same-origin",
         headers: {
             "X-SCRF-TOKEN": getCookie("refresh_scrf_token"),
-            "Device": getDeviceData(),
+            Device: getDeviceData(),
         },
     });
 
@@ -180,13 +181,13 @@ function loadSessions(clearFirst) {
         method: "GET",
         credentials: "same-origin",
         headers: {
-            "X-SCRF-TOKEN": getCookie("access_scrf_token")
+            "X-SCRF-TOKEN": getCookie("access_scrf_token"),
         },
     })
         .then((response) => response.json())
         .then((data) => {
             const sessions = data.userData.sessions;
-            
+
             let table = document.getElementById("ses-table");
 
             if (clearFirst) {
@@ -198,27 +199,30 @@ function loadSessions(clearFirst) {
                         <th class="cell term-wrap">
                             <button class="term-all" id="term-all">terminate all</button>
                         </th>
-                    </tr>`
+                    </tr>`;
             }
 
-            sessions.forEach(session => {
+            sessions.forEach((session) => {
                 if (session.isCurrent) {
+                    document
+                        .getElementById("logout-btn")
+                        .setAttribute("sessionId", session.sessionId);
+
                     table.innerHTML += `<tr>
                         <td class="cell">${session.device}</td>
                         <td class="cell">${session.lastActivity}</td>
                         <td class="cell term-wrap cur-ses">Current</td>
-                    </tr>`
-                }
-                else {
+                    </tr>`;
+                } else {
                     table.innerHTML += `<tr>
                         <td class="cell">${session.device}</td>
                         <td class="cell">${session.lastActivity}</td>
                         <td class="cell term-wrap">
                             <button class="term-btn" sessionId=${session.sessionId}>terminate</button>
                         </td>
-                    </tr>`
+                    </tr>`;
                 }
-            })
+            });
         });
 }
 
@@ -241,6 +245,10 @@ document.getElementById("code-btn").onclick = sendNewCode;
 document.getElementById("code-btn-rec").onclick = sendNewCodeRec;
 
 document.getElementById("ses-table").addEventListener("click", (event) => {
+    if (isTokensRefreshRequired()) {
+        refreshTokens();
+    }
+
     if (event.target.classList.contains("term-btn")) {
         let sessionId = event.target.attributes.sessionid.value;
 
@@ -248,32 +256,47 @@ document.getElementById("ses-table").addEventListener("click", (event) => {
             method: "DELETE",
             credentials: "same-origin",
             headers: {
-                "X-SCRF-TOKEN": getCookie("access_scrf_token")
+                "X-SCRF-TOKEN": getCookie("access_scrf_token"),
+            },
+        }).then((response) => {
+            if (response.status === 200) {
+                loadSessions((clearFirst = true));
             }
-        }).then(
-            (response) => {
-                if (response.status === 200) {
-                    loadSessions(clearFirst=true);
-                }
-            }
-        )
-    }
-    else if (event.target.classList.contains("term-all")) {
+        });
+    } else if (event.target.classList.contains("term-all")) {
         fetch(sessionUrl + "/all", {
             method: "DELETE",
             credentials: "same-origin",
             headers: {
-                "X-SCRF-TOKEN": getCookie("access_scrf_token")
+                "X-SCRF-TOKEN": getCookie("access_scrf_token"),
+            },
+        }).then((response) => {
+            if (response.status === 200) {
+                loadSessions((clearFirst = true));
             }
-        }).then(
-            (response) => {
-                if (response.status === 200) {
-                    loadSessions(clearFirst=true);
-                }
-            }
-        )
+        });
     }
 });
+
+document
+    .getElementById("logout-btn")
+    .addEventListener("click", () => {
+        if (isTokensRefreshRequired()) {
+            refreshTokens();
+        }
+
+        fetch(sessionUrl + "/my", {
+            method: "DELETE",
+            credentials: "same-origin",
+            headers: {
+                "X-SCRF-TOKEN": getCookie("access_scrf_token"),
+            },
+        }).then((response) => {
+            if (response.status === 200) {
+                window.location.replace(origin);
+            }
+        });
+    });
 
 document
     .getElementById("login-form-id")
@@ -287,8 +310,8 @@ document
             credentials: "same-origin",
             body: formData,
             headers: {
-                "Device": getDeviceData()
-            }
+                Device: getDeviceData(),
+            },
         });
 
         if (response.status === 200) {
@@ -582,7 +605,7 @@ async function verifyCode() {
         headers: {
             "Content-Type": "application/json",
             "Request-Id": sessionStorage.getItem("request_id"),
-            "Device": getDeviceData()
+            Device: getDeviceData(),
         },
         body: JSON.stringify(Object.fromEntries(data)),
     });
@@ -793,12 +816,12 @@ document.getElementById("submit-rec").addEventListener("click", async (e) => {
         headers: {
             "Content-Type": "application/json",
             "Request-Id": sessionStorage.getItem("request_id"),
-            "Device": getDeviceData()
+            Device: getDeviceData(),
         },
         body: JSON.stringify({
             password: password,
-            code: document.getElementById("input-code-rec").value
-        })
+            code: document.getElementById("input-code-rec").value,
+        }),
     });
 
     if (response.status === 200) {
@@ -906,7 +929,7 @@ function closeSettingsWindow() {
 }
 
 // for (let i = 0; i < 10; i++) {
-    
+
 //     document.getElementsByClassName("term-btn")[i].addEventListener("click", () => {
 //         let btn = this.classList()
 //     })

@@ -22,7 +22,7 @@ taskConfig: TaskConfig = TaskConfig()
     task_time_limit=taskConfig.task_time_limit,
     priority=taskConfig.priority
 )
-def delete_expired_applications(self):
+def delete_expired_applications(self) -> None:
     register_applications: dict[str, t.Any] = rediska.json().get("register")
 
     for id_, data in register_applications.items():

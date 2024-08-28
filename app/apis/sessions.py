@@ -1,6 +1,6 @@
 import typing as t
 
-from flask import request
+from flask import request, Response, make_response
 from flask_restx import Namespace, Resource
 from werkzeug.exceptions import BadRequest
 
@@ -15,7 +15,9 @@ api = Namespace("sessions", path="/sessions/")
 @api.route("/<string:id_>")
 class Sessions(Resource):
     @authorization_required("access")
-    def delete(self, id_: str):
+    def delete(
+        self, id_: str
+    ) -> tuple[dict[str, dict[str, str]] | int] | Response:
         try:
             access_token: str = request.cookies.get("access_token", "")
             access_payload: t.Any = validate_token(token=access_token,
@@ -25,16 +27,20 @@ class Sessions(Resource):
                 raise BadRequest
             uuid: str | None = access_payload.get("uuid")
 
-            if (id_ == "all"):
-                refresh_token: str = request.cookies.get("refresh_token", "")
-                refresh_payload: t.Any = validate_token(token=refresh_token,
-                                                        type="refresh")
+            if id_ not in ["all", "my"]:
+                services.remove(Session, user_id=uuid, session_id=id_)
+                return "OK", 200
 
-                if refresh_payload is None:
-                    raise BadRequest
+            refresh_token: str = request.cookies.get("refresh_token", "")
+            refresh_payload: t.Any = validate_token(token=refresh_token,
+                                                    type="refresh")
 
-                session_id: str = refresh_payload.get("jti", "")
+            if refresh_payload is None:
+                raise BadRequest
 
+            session_id: str = refresh_payload.get("jti", "")
+
+            if id_ == "all":
                 services.delete_exclude(
                     table=Session,
                     column=Session.session_id,
@@ -43,8 +49,16 @@ class Sessions(Resource):
                 )
                 return "OK", 200
 
-            services.remove(Session, user_id=uuid, session_id=id_)
-            return "OK", 200
+            services.remove(Session, user_id=uuid, session_id=session_id)
+
+            response: Response = make_response("OK")
+            response.status_code = 200
+            response.set_cookie(key="access_token", value="")
+            response.set_cookie(key="access_scrf_token", value="")
+            response.set_cookie(key="refresh_token", value="")
+            response.set_cookie(key="refresh_scrf_token", value="")
+
+            return response
 
         except BadRequest:
             return {

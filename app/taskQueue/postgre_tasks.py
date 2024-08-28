@@ -24,7 +24,7 @@ taskConfig: TaskConfig = TaskConfig()
     task_time_limit=taskConfig.task_time_limit,
     priority=taskConfig.priority
 )
-def delete_expired_sessions(self):
+def delete_expired_sessions(self) -> None:
     expire: datetime = datetime.now() \
         - timedelta(seconds=appConfig.REFRESH_TOKEN_LIFETIME) \
         - timedelta(hours=3)  # because of utc((
