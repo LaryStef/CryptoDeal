@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import TIMESTAMP, ForeignKey, Integer, String
+from sqlalchemy import TIMESTAMP, ForeignKey, Integer, String, Float
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from . import db
@@ -54,3 +54,60 @@ class Session(db.Model):
         self.session_id: Mapped[str] = session_id,
         self.user_id: Mapped[str] = user_id,
         self.device: Mapped[str] = device
+
+
+class CryptoCurrency(db.Model):
+    __tablename__ = "cryptocurrency"
+
+    currency_id: Mapped[str] = mapped_column(String(16), primary_key=True)
+    name: Mapped[str] = mapped_column(String(32), unique=True)
+
+    # january_fst: Mapped[float] = mapped_column(Float, default=0)
+    # january_mid: Mapped[float] = mapped_column(Float, default=0)
+    # february_fst: Mapped[float] = mapped_column(Float, default=0)
+    # february_mid: Mapped[float] = mapped_column(Float, default=0)
+    # march_fst: Mapped[float] = mapped_column(Float, default=0)
+    # march_mid: Mapped[float] = mapped_column(Float, default=0)
+    # april_fst: Mapped[float] = mapped_column(Float, default=0)
+    # april_mid: Mapped[float] = mapped_column(Float, default=0)
+    # may_fst: Mapped[float] = mapped_column(Float, default=0)
+    # may_mid: Mapped[float] = mapped_column(Float, default=0)
+    # june_fst: Mapped[float] = mapped_column(Float, default=0)
+    # june_mid: Mapped[float] = mapped_column(Float, default=0)
+    # july_fst: Mapped[float] = mapped_column(Float, default=0)
+    # july_mid: Mapped[float] = mapped_column(Float, default=0)
+    # august_fst: Mapped[float] = mapped_column(Float, default=0)
+    # august_mid: Mapped[float] = mapped_column(Float, default=0)
+    # september_fst: Mapped[float] = mapped_column(Float, default=0)
+    # september_mid: Mapped[float] = mapped_column(Float, default=0)
+    # october_fst: Mapped[float] = mapped_column(Float, default=0)
+    # october_mid: Mapped[float] = mapped_column(Float, default=0)
+    # november_fst: Mapped[float] = mapped_column(Float, default=0)
+    # november_mid: Mapped[float] = mapped_column(Float, default=0)
+    # december_fst: Mapped[float] = mapped_column(Float, default=0)
+    # december_mid: Mapped[float] = mapped_column(Float, default=0)
+
+    hour0: Mapped[float] = mapped_column(Float, default=0)
+    hour1: Mapped[float] = mapped_column(Float, default=0)
+    hour2: Mapped[float] = mapped_column(Float, default=0)
+    hour3: Mapped[float] = mapped_column(Float, default=0)
+    hour4: Mapped[float] = mapped_column(Float, default=0)
+    hour5: Mapped[float] = mapped_column(Float, default=0)
+    hour6: Mapped[float] = mapped_column(Float, default=0)
+    hour7: Mapped[float] = mapped_column(Float, default=0)
+    hour8: Mapped[float] = mapped_column(Float, default=0)
+    hour9: Mapped[float] = mapped_column(Float, default=0)
+    hour10: Mapped[float] = mapped_column(Float, default=0)
+    hour11: Mapped[float] = mapped_column(Float, default=0)
+    hour12: Mapped[float] = mapped_column(Float, default=0)
+    hour13: Mapped[float] = mapped_column(Float, default=0)
+    hour14: Mapped[float] = mapped_column(Float, default=0)
+    hour15: Mapped[float] = mapped_column(Float, default=0)
+    hour16: Mapped[float] = mapped_column(Float, default=0)
+    hour17: Mapped[float] = mapped_column(Float, default=0)
+    hour18: Mapped[float] = mapped_column(Float, default=0)
+    hour19: Mapped[float] = mapped_column(Float, default=0)
+    hour20: Mapped[float] = mapped_column(Float, default=0)
+    hour21: Mapped[float] = mapped_column(Float, default=0)
+    hour22: Mapped[float] = mapped_column(Float, default=0)
+    hour23: Mapped[float] = mapped_column(Float, default=0)
