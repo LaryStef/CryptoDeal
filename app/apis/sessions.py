@@ -1,6 +1,6 @@
 import typing as t
 
-from flask import request, Response, make_response
+from flask import Response, make_response, request
 from flask_restx import Namespace, Resource
 from werkzeug.exceptions import BadRequest
 
