@@ -8,7 +8,7 @@ from .utc_time import utcnow
 
 
 class User(db.Model):
-    __tablename__ = "user"
+    __tablename__: str = "user"
 
     uuid: Mapped[str] = mapped_column(String(36), primary_key=True)
     name: Mapped[str] = mapped_column(String(30))
@@ -41,7 +41,7 @@ class User(db.Model):
 
 
 class Session(db.Model):
-    __tablename__ = "session"
+    __tablename__: str = "session"
 
     session_id: Mapped[str] = mapped_column(String(16), primary_key=True)
     user_id: Mapped[str] = mapped_column(ForeignKey("user.uuid"))
@@ -57,10 +57,19 @@ class Session(db.Model):
 
 
 class CryptoCurrency(db.Model):
-    __tablename__ = "cryptocurrency"
+    __tablename__: str = "cryptocurrency"
 
-    currency_id: Mapped[str] = mapped_column(String(16), primary_key=True)
+    ticker: Mapped[str] = mapped_column(String(8), primary_key=True)
     name: Mapped[str] = mapped_column(String(32))
-    ticker: Mapped[str] = mapped_column(String(8), unique=True)
+    description: Mapped[str] = mapped_column(String(4096))
+    volume: Mapped[float] = mapped_column(Float, default=0)
+    crypto_course: Mapped[list["CryptoCourse"]] = relationship()
+
+
+class CryptoCourse(db.Model):
+    __tablename__: str = "crypto_course"
+
+    ID: Mapped[str] = mapped_column(String(16), primary_key=True)
+    ticker: Mapped[str] = mapped_column(ForeignKey("cryptocurrency.ticker"))
     time_frame: Mapped[str] = mapped_column(String(16))
     price: Mapped[float] = mapped_column(Float, default=0)
