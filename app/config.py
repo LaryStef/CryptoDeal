@@ -46,11 +46,11 @@ class AppConfig(Config):
         "broker_url": "redis://localhost:6379/0",
         "task_ignore_result": True,
         "task_time_limit": 10,
-        "imports": [
+        "imports": (
             "app.taskQueue.mail_tasks",
             "app.taskQueue.postgre_tasks",
-            "app.taskQueue.redis_tasks"
-        ],
+            "app.taskQueue.redis_tasks",
+        ),
         "task_default_queue": "normal",
         "task_queues": (
             Queue(name="normal", routing_key=".mail_tasks.#"),
