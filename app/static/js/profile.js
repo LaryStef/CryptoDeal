@@ -105,6 +105,8 @@ function getDeviceData() {
 
 if (isTokensRefreshRequired()) {
     refreshTokens();
+} else {
+    loadProfile();
 }
 
 async function refreshTokens() {
@@ -130,7 +132,6 @@ function isTokensRefreshRequired() {
         Math.floor(Date.now() / 1000) <
             Number(JSON.parse(atob(access.split(".")[1])).exp) - 1
     ) {
-        loadProfile();
         return false;
     }
     return true;
@@ -150,7 +151,7 @@ function getCookie(cookie) {
 }
 
 function loadProfile() {
-    loadSessions();
+    loadSessions(false);
 
     let authClasses = document.getElementById("auth-button").classList;
     let profileClasses = document.getElementById("profile-button").classList;
@@ -201,7 +202,7 @@ function loadSessions(clearFirst) {
                         </th>
                     </tr>`;
             }
-
+            
             sessions.forEach((session) => {
                 if (session.isCurrent) {
                     document
@@ -248,8 +249,9 @@ document.getElementById("ses-table").addEventListener("click", (event) => {
     if (isTokensRefreshRequired()) {
         refreshTokens();
     }
-
+    console.log("term");
     if (event.target.classList.contains("term-btn")) {
+        
         let sessionId = event.target.attributes.sessionid.value;
 
         fetch(sessionUrl + "/" + sessionId, {
@@ -260,10 +262,11 @@ document.getElementById("ses-table").addEventListener("click", (event) => {
             },
         }).then((response) => {
             if (response.status === 200) {
-                loadSessions((clearFirst = true));
+                loadSessions(clearFirst = true);
             }
         });
     } else if (event.target.classList.contains("term-all")) {
+        
         fetch(sessionUrl + "/all", {
             method: "DELETE",
             credentials: "same-origin",
@@ -272,7 +275,7 @@ document.getElementById("ses-table").addEventListener("click", (event) => {
             },
         }).then((response) => {
             if (response.status === 200) {
-                loadSessions((clearFirst = true));
+                loadSessions(clearFirst = true);
             }
         });
     }
