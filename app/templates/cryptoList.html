@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/cryptoList.css') }}">
+{% endblock %}
+
+{% block main_container %}
+<div id="main">
+    <h1 class="header">Explore cryptocurrency</h1>
+    <div class="table-wrap">
+        <table class="table">
+            <tr class="head-row">
+                <th class="hc col1">#</th>
+                <th class="hc col2">name</th>
+                <th class="hc col3">ticker</th>
+                <th class="hc col4">price</th>
+                <th class="hc col5">change 24h</th>
+                <th class="hc col6">volume 24h</th>
+                <th class="hc col7"></th>
+            </tr>
+            <tr class="row">
+                <td class="tc col1">1</td>
+                <td class="tc col2">
+                    <div>
+                        <img src="" alt="">
+                        <span class="crypto-name">Bitcoin</span>
+                    </div>
+                </td>
+                <td class="tc col3">BTC</td>
+                <td class="tc col4">68812.031</td>
+                <td class="tc col5 change-pos">+22.047%</td>
+                <td class="tc col6">8.319B</td>
+                <td class="tc col7">
+                    <a class="buy-link" href="#">
+                        <div class="buy-btn">
+                            <span>buy/sell</span>
+                        </div>
+                    </a>
+                </td>
+            </tr>
+            <tr class="row">
+                <td class="tc col1">2</td>
+                <td class="tc col2">
+                    <div>
+                        <img src="" alt="">
+                        <span class="crypto-name">Ethereum</span>
+                    </div>
+                </td>
+                <td class="tc col3">ETH</td>
+                <td class="tc col4">2793.883</td>
+                <td class="tc col5 change-neg">-13.711%</td>
+                <td class="tc col6">2.901B</td>
+                <td class="tc col7">
+                    <a class="buy-link" href="#">
+                        <div class="buy-btn">
+                            <span>buy/sell</span>
+                        </div>
+                    </a>
+                </td>
+            </tr>
+            <tr class="row">
+                <td class="tc col1">3</td>
+                <td class="tc col2">
+                    <div>
+                        <img src="" alt="">
+                        <span class="crypto-name">Ripple</span>
+                    </div>
+                </td>
+                <td class="tc col3">XRP</td>
+                <td class="tc col4">0.563</td>
+                <td class="tc col5 change-pos">+0.143%</td>
+                <td class="tc col6">0.313B</td>
+                <td class="tc col7">
+                    <a class="buy-link" href="#">
+                        <div class="buy-btn">
+                            <span>buy/sell</span>
+                        </div>
+                    </a>
+                </td>
+            </tr>
+            <tr class="row">
+                <td class="tc col1">4</td>
+                <td class="tc col2">
+                    <div>
+                        <img src="" alt="">
+                        <span class="crypto-name">Tether</span>
+                    </div>
+                </td>
+                <td class="tc col3">USDT</td>
+                <td class="tc col4">1.000</td>
+                <td class="tc col5 change-neg">-0.012%</td>
+                <td class="tc col6">23.934B</td>
+                <td class="tc col7">
+                    <a class="buy-link" href="#">
+                        <div class="buy-btn">
+                            <span>buy/sell</span>
+                        </div>
+                    </a>
+                </td>
+            </tr>
+            <tr class="row">
+                <td class="tc col1">5</td>
+                <td class="tc col2">
+                    <div>
+                        <img src="" alt="">
+                        <span class="crypto-name">Solana</span>
+                    </div>
+                </td>
+                <td class="tc col3">SOL</td>
+                <td class="tc col4">132.165</td>
+                <td class="tc col5 change-neg">-2.931%</td>
+                <td class="tc col6">4.996B</td>
+                <td class="tc col7">
+                    <a class="buy-link" href="#">
+                        <div class="buy-btn">
+                            <span>buy/sell</span>
+                        </div>
+                    </a>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="{{ url_for('static', filename='js/cryptoList.js') }}"></script>
+{% endblock %}
