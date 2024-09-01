@@ -14,6 +14,11 @@ def profile() -> tuple[str | int]:
     return render_template("profile.html", title="Profile"), 200
 
 
+@main.route("/crypto/list")
+def crypto_list() -> tuple[str | int]:
+    return render_template("cryptoList.html", title="Cryptocurrency")
+
+
 # from .database.postgre import db
 # from .database.postgre.models import Session
 # from datetime import datetime, timedelta
