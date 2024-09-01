@@ -249,7 +249,6 @@ document.getElementById("ses-table").addEventListener("click", (event) => {
     if (isTokensRefreshRequired()) {
         refreshTokens();
     }
-    console.log("term");
     if (event.target.classList.contains("term-btn")) {
         
         let sessionId = event.target.attributes.sessionid.value;
