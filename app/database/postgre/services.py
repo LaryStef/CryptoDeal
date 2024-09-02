@@ -15,9 +15,10 @@ from .utc_time import utcnow
 def get(
     table: Any = None,
     fields: list[Mapped] = [],
+    *,
     many: bool = False,
     **kwargs: Any
-) -> Any | None:
+) -> Any:
     if table is not None:
         result: Result = db.session.execute(
             select(table).filter_by(**kwargs)

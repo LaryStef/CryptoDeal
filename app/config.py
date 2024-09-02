@@ -10,7 +10,7 @@ from flask import Config
 from kombu import Queue
 
 load_dotenv()
-celeryConf: TypeAlias = dict[str, str | bool | int | list[str] | dict[str, dict[str, str | crontab]] | dict[str, int] | tuple[Queue]]
+CeleryConf: TypeAlias = dict[str, str | bool | int | list[str] | dict[str, dict[str, str | crontab]] | dict[str, int] | tuple[Queue]]
 
 
 class AppConfig(Config):
@@ -42,7 +42,7 @@ class AppConfig(Config):
     JWT_ENCODING_ALGORITHM: str = "HS256"
 
     # celery
-    CELERY: celeryConf = {
+    CELERY: CeleryConf = {
         "broker_url": "redis://localhost:6379/0",
         "task_ignore_result": True,
         "task_time_limit": 10,
