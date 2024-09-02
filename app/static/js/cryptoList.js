@@ -8,9 +8,61 @@ const restoreUrl = new URL("api/auth/restore/apply", origin);
 const restoreNewCodeUrl = new URL("api/auth/restore/new-code", origin);
 const restoreVerifyUrl = new URL("api/auth/restore/verify", origin);
 const refreshTokensUrl = new URL("api/auth/refresh-tokens", origin);
+const tableDataUrl = new URL("api/crypto/list")
 
 const cooldown = 30;
 const cooldownRec = 30;
+
+
+function loadCryptoTable() {
+    const tableData = fetch(tableDataUrl, {
+        method: "GET",
+        credentials: "same-origin"
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            const currencyList = data.CryptoCurrencyList;
+            const table = document.getElementById("crypto-list");
+            
+            let num = 1;
+            currencyList.forEach((currency) => {
+                let changeClass;
+                if (currency.posTrend) {
+                    changeClass = "change-pos";
+                } else {
+                    changeClass = "change-neg";
+                }
+                
+                
+
+                table.innerHTML += `        
+                    <tr class="row">
+                        <td class="tc col1">${num}</td>
+                        <td class="tc col2">
+                            <div>
+                                <img src="" alt="">
+                                <span class="crypto-name">${currency.name}</span>
+                            </div>
+                        </td>
+                        <td class="tc col3">${currency.ticker}</td>
+                        <td class="tc col4">${Math.round(currency.price * 1000) / 1000}</td>
+                        <td class="tc col5 ${changeClass}">${Math.round(currency.change * 1000) / 1000}</td>
+                        <td class="tc col6">2.901B</td>
+                        <td class="tc col7">
+                            <a class="buy-link" href="#">
+                                <div class="buy-btn">
+                                    <span>buy/sell</span>
+                                </div>
+                            </a>
+                        </td>
+                    </tr>`
+                
+                    num += 1;
+            })
+        })
+
+
+}
 
 function getDeviceData() {
     let browser = "unknown browser";
