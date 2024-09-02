@@ -8,7 +8,7 @@ from .utc_time import utcnow
 
 
 class User(db.Model):
-    __tablename__: str = "user"
+    __tablename__: str = "User"
 
     uuid: Mapped[str] = mapped_column(String(36), primary_key=True)
     name: Mapped[str] = mapped_column(String(30))
@@ -41,23 +41,23 @@ class User(db.Model):
 
 
 class Session(db.Model):
-    __tablename__: str = "session"
+    __tablename__: str = "Session"
 
     session_id: Mapped[str] = mapped_column(String(16), primary_key=True)
-    user_id: Mapped[str] = mapped_column(ForeignKey("user.uuid"))
+    user_id: Mapped[str] = mapped_column(ForeignKey("User.uuid"))
     device: Mapped[str] = mapped_column(String(30), default="unknown device")
     last_activity: Mapped[datetime] = mapped_column(TIMESTAMP,
                                                     server_default=utcnow(),
                                                     onupdate=utcnow())
 
     def __init__(self, session_id: str, user_id: str, device: str):
-        self.session_id = session_id,
-        self.user_id = user_id,
+        self.session_id = session_id
+        self.user_id = user_id
         self.device = device
 
 
 class CryptoCurrency(db.Model):
-    __tablename__: str = "cryptocurrency"
+    __tablename__: str = "Cryptocurrency"
 
     ticker: Mapped[str] = mapped_column(String(8), primary_key=True)
     name: Mapped[str] = mapped_column(String(32))
@@ -67,9 +67,9 @@ class CryptoCurrency(db.Model):
 
 
 class CryptoCourse(db.Model):
-    __tablename__: str = "crypto_course"
+    __tablename__: str = "CryptoCourse"
 
     ID: Mapped[str] = mapped_column(String(16), primary_key=True)
-    ticker: Mapped[str] = mapped_column(ForeignKey("cryptocurrency.ticker"))
+    ticker: Mapped[str] = mapped_column(ForeignKey("Cryptocurrency.ticker"))
     time_frame: Mapped[str] = mapped_column(String(16))
     price: Mapped[float] = mapped_column(Float, default=0)
