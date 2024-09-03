@@ -24,6 +24,41 @@ from ..utils.aliases import RESTError
 api = Namespace("auth", path="/auth/")
 
 
+def set_auth_cookies(
+    response: Response,
+    access_scrf: str,
+    refresh_scrf: str,
+    access_token: str,
+    refresh_token: str
+) -> Response:
+    response.set_cookie(
+        key="access_token",
+        value=access_token,
+        max_age=appConfig.ACCESS_TOKEN_LIFETIME,
+        samesite="Strict"
+    )
+    response.set_cookie(
+        key="refresh_token",
+        value=refresh_token,
+        max_age=appConfig.REFRESH_TOKEN_LIFETIME,
+        httponly=True,
+        samesite="Strict"
+    )
+    response.set_cookie(
+        key="access_scrf_token",
+        value=access_scrf,
+        max_age=appConfig.ACCESS_TOKEN_LIFETIME,
+        samesite="Strict"
+    )
+    response.set_cookie(
+        key="refresh_scrf_token",
+        value=refresh_scrf,
+        max_age=appConfig.REFRESH_TOKEN_LIFETIME,
+        samesite="Strict"
+    )
+    return response
+
+
 @api.route("/sign-in")
 class SignIn(Resource):
     def post(self) -> RESTError | Response:
@@ -55,6 +90,7 @@ class SignIn(Resource):
                     user_id=user.uuid,
                     device=request.headers.get("Device", "unknown device")
                 )
+
                 access_token, refresh_token = generate_tokens(
                     payload={
                         "uuid": user.uuid,
@@ -68,33 +104,13 @@ class SignIn(Resource):
                     refresh_id=refresh_token_id
                 )
 
-                response.set_cookie(
-                    key="access_token",
-                    value=access_token,
-                    max_age=appConfig.ACCESS_TOKEN_LIFETIME,
-                    samesite="Strict"
+                return set_auth_cookies(
+                    response,
+                    access_scrf_token,
+                    refresh_scrf_token,
+                    access_token,
+                    refresh_token
                 )
-                response.set_cookie(
-                    key="refresh_token",
-                    value=refresh_token,
-                    max_age=appConfig.REFRESH_TOKEN_LIFETIME,
-                    httponly=True,
-                    samesite="Strict"
-                )
-                response.set_cookie(
-                    key="access_scrf_token",
-                    value=access_scrf_token,
-                    max_age=appConfig.ACCESS_TOKEN_LIFETIME,
-                    samesite="Strict"
-                )
-                response.set_cookie(
-                    key="refresh_scrf_token",
-                    value=refresh_scrf_token,
-                    max_age=appConfig.REFRESH_TOKEN_LIFETIME,
-                    samesite="Strict"
-                )
-
-                return response
 
             return {
                 "error": {
@@ -294,6 +310,7 @@ class VerifyCode(Resource):
                 user_id=id_,
                 device=request.headers.get("Device", "unknown device")
             )
+
             access_token, refresh_token = generate_tokens(
                 payload={
                     "uuid": id_,
@@ -307,33 +324,13 @@ class VerifyCode(Resource):
                 refresh_id=refresh_token_id
             )
 
-            response.set_cookie(
-                key="access_token",
-                value=access_token,
-                max_age=appConfig.ACCESS_TOKEN_LIFETIME,
-                samesite="Strict"
+            return set_auth_cookies(
+                response,
+                access_scrf_token,
+                refresh_scrf_token,
+                access_token,
+                refresh_token
             )
-            response.set_cookie(
-                key="refresh_token",
-                value=refresh_token,
-                max_age=appConfig.REFRESH_TOKEN_LIFETIME,
-                httponly=True,
-                samesite="Strict"
-            )
-            response.set_cookie(
-                key="access_scrf_token",
-                value=access_scrf_token,
-                max_age=appConfig.ACCESS_TOKEN_LIFETIME,
-                samesite="Strict"
-            )
-            response.set_cookie(
-                key="refresh_scrf_token",
-                value=refresh_scrf_token,
-                max_age=appConfig.REFRESH_TOKEN_LIFETIME,
-                samesite="Strict"
-            )
-
-            return response
 
         except (BadRequest, ResponseError):
             return {
@@ -525,6 +522,7 @@ class RestoreVerify(Resource):
                 user_id=user.uuid,
                 device=request.headers.get("Device", "unknown device")
             )
+
             access_token, refresh_token = generate_tokens(
                 payload={
                     "uuid": user.uuid,
@@ -538,33 +536,13 @@ class RestoreVerify(Resource):
                 refresh_id=refresh_token_id
             )
 
-            response.set_cookie(
-                key="access_token",
-                value=access_token,
-                max_age=appConfig.ACCESS_TOKEN_LIFETIME,
-                samesite="Strict"
+            return set_auth_cookies(
+                response,
+                access_scrf_token,
+                refresh_scrf_token,
+                access_token,
+                refresh_token
             )
-            response.set_cookie(
-                key="refresh_token",
-                value=refresh_token,
-                max_age=appConfig.REFRESH_TOKEN_LIFETIME,
-                httponly=True,
-                samesite="Strict"
-            )
-            response.set_cookie(
-                key="access_scrf_token",
-                value=access_scrf_token,
-                max_age=appConfig.ACCESS_TOKEN_LIFETIME,
-                samesite="Strict"
-            )
-            response.set_cookie(
-                key="refresh_scrf_token",
-                value=refresh_scrf_token,
-                max_age=appConfig.REFRESH_TOKEN_LIFETIME,
-                samesite="Strict"
-            )
-
-            return response
 
         except (BadRequest, ResponseError):
             return {
@@ -601,6 +579,7 @@ class RefreshAccess(Resource):
                 user_id=payload.get("uuid", ""),
                 device=request.headers.get("Device", "unknown device")
             )
+
             access_token, refresh_token = generate_tokens(
                 payload={
                     "uuid": user.uuid,
@@ -617,32 +596,13 @@ class RefreshAccess(Resource):
             response = make_response("OK")
             response.status_code = 200
 
-            response.set_cookie(
-                key="access_token",
-                value=access_token,
-                max_age=appConfig.ACCESS_TOKEN_LIFETIME,
-                samesite="Strict"
+            return set_auth_cookies(
+                response,
+                access_scrf_token,
+                refresh_scrf_token,
+                access_token,
+                refresh_token
             )
-            response.set_cookie(
-                key="refresh_token",
-                value=refresh_token,
-                max_age=appConfig.REFRESH_TOKEN_LIFETIME,
-                httponly=True,
-                samesite="Strict"
-            )
-            response.set_cookie(
-                key="access_scrf_token",
-                value=access_scrf_token,
-                max_age=appConfig.ACCESS_TOKEN_LIFETIME,
-                samesite="Strict"
-            )
-            response.set_cookie(
-                key="refresh_scrf_token",
-                value=refresh_scrf_token,
-                max_age=appConfig.REFRESH_TOKEN_LIFETIME,
-                samesite="Strict"
-            )
-            return response
 
         except (BadRequest, Unauthorized):
             return {
