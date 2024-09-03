@@ -59,7 +59,7 @@ function loadCryptoTable() {
                         <td class="tc col7">
                             <a class="buy-link" href="#">
                                 <div class="buy-btn">
-                                    <span>buy/sell</span>
+                                    <span>Buy/Sell</span>
                                 </div>
                             </a>
                         </td>

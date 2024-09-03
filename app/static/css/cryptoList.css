@@ -54,7 +54,7 @@ li {
     padding: 50px;
     border-radius: 50px;
     border-color: var(--background-button-color);
-    box-shadow: 0 0 10px var(--text-hover-color);
+    box-shadow: 0 0 10px var(--contrast-color);
     background-color: var(--background-button-color);
 }
 
