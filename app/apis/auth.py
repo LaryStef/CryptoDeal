@@ -18,13 +18,15 @@ from ..shemas import LoginSchema, RegisterSchema
 from ..utils.decorators import authorization_required
 from ..utils.generators import generate_id
 from ..utils.JWT import generate_tokens, validate_token
+from ..utils.aliases import RESTError
+
 
 api = Namespace("auth", path="/auth/")
 
 
 @api.route("/sign-in")
 class SignIn(Resource):
-    def post(self) -> tuple[dict[str, dict[str, str]] | int] | Response:
+    def post(self) -> RESTError | Response:
         try:
             data: dict[str, str] = request.form.to_dict()
 
@@ -114,7 +116,7 @@ class SignIn(Resource):
 
 @api.route("/register/apply")
 class SignUp(Resource):
-    def post(self) -> tuple[dict[str, dict[str, str]] | int] | Response:
+    def post(self) -> RESTError | Response:
         try:
             data: dict[str, str] = request.form.to_dict()
 
@@ -169,7 +171,7 @@ class SignUp(Resource):
 
 @api.route("/register/new-code")
 class RefreshCode(Resource):
-    def patch(self) -> tuple[dict[str, dict[str, str]] | int] | Response:
+    def patch(self) -> RESTError | Response:
         try:
             user_data: dict[str, str] | None = request.json
 
@@ -224,7 +226,7 @@ class RefreshCode(Resource):
 
 @api.route("/register/verify")
 class VerifyCode(Resource):
-    def post(self) -> tuple[dict[str, dict[str, str]] | int] | Response:
+    def post(self) -> RESTError | Response:
         try:
             user_data: dict[str, str] | None = request.json
             request_id: str | None = request.headers.get("Request-Id")
@@ -345,7 +347,7 @@ class VerifyCode(Resource):
 
 @api.route("/restore/apply")
 class Restore(Resource):
-    def post(self) -> tuple[dict[str, dict[str, str]] | int] | Response:
+    def post(self) -> RESTError | Response:
         try:
             user_data: dict[str, str] | None = request.json
             if user_data is None:
@@ -401,7 +403,7 @@ class Restore(Resource):
 
 @api.route("/restore/new-code")
 class RestoreNewCode(Resource):
-    def patch(self) -> tuple[dict[str, dict[str, str]] | int] | Response:
+    def patch(self) -> RESTError | Response:
         try:
             user_data: dict[str, str] | None = request.json
             request_id: str | None = request.headers.get("Request-Id")
@@ -455,7 +457,7 @@ class RestoreNewCode(Resource):
 
 @api.route("/restore/verify")
 class RestoreVerify(Resource):
-    def post(self) -> tuple[dict[str, dict[str, str]] | int] | Response:
+    def post(self) -> RESTError | Response:
         try:
             user_data: dict[str, str] | None = request.json
 
@@ -577,7 +579,7 @@ class RestoreVerify(Resource):
 @api.route("/refresh-tokens")
 class RefreshAccess(Resource):
     @authorization_required("refresh")
-    def post(self) -> tuple[dict[str, dict[str, str]] | int] | Response:
+    def post(self) -> RESTError | Response:
         try:
             refresh_token: str | None = request.cookies.get("refresh_token")
             payload: dict[str, Any] | None = validate_token(
