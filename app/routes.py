@@ -1,5 +1,10 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, abort
 from werkzeug.exceptions import NotFound, Unauthorized
+from sqlalchemy import ScalarResult
+
+from .database.postgre.services import get
+from .database.postgre.models import CryptoCurrency
+
 
 main: Blueprint = Blueprint("main", __name__)
 
@@ -17,6 +22,28 @@ def profile() -> tuple[str | int]:
 @main.route("/crypto/list")
 def crypto_list() -> tuple[str | int]:
     return render_template("cryptoList.html", title="Cryptocurrency")
+
+
+@main.route("/crypto/<string:ticker>")
+def currency(ticker: str) -> tuple[str | int]:
+    row: ScalarResult[CryptoCurrency] | None = get(
+        CryptoCurrency,
+        ticker=ticker
+    )
+    if row is None:
+        abort(404)
+    return render_template("cryptocurrency.html", title=ticker), 200
+
+
+@main.app_errorhandler(NotFound)
+def handle_not_found(e: NotFound) -> tuple[str | int]:
+    return render_template("notFound.html", title="Not Found"), 200
+
+
+@main.app_errorhandler(Unauthorized)
+def handle_unauthorized(e: Unauthorized) -> tuple[str | int]:
+    # TODO make unauthorized.html
+    return render_template("unauthorized.html", title="Unauthorized"), 200
 
 
 # from .database.postgre import db
@@ -42,13 +69,3 @@ def crypto_list() -> tuple[str | int]:
 #     for s in res.fetchall():
 #         pprint(s[0].__dict__)
 #     return render_template("test.html"), 200
-
-
-@main.app_errorhandler(NotFound)
-def handle_not_found(e: NotFound) -> tuple[str | int]:
-    return render_template("notFound.html", title="Not Found"), 200
-
-
-@main.app_errorhandler(Unauthorized)
-def handle_unauthorized(e: Unauthorized) -> tuple[str | int]:
-    return render_template("unauthorized.html", title="Unauthorized"), 200
