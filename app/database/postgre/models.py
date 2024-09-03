@@ -21,6 +21,7 @@ class User(db.Model):
                                                    server_default=utcnow())
     alien_number: Mapped[int] = mapped_column(Integer, default=0)
     session: Mapped[list["Session"]] = relationship()
+    wallet: Mapped["Wallet"] = relationship(back_populates="user")
 
     def __init__(
         self,
@@ -43,6 +44,7 @@ class User(db.Model):
 class Session(db.Model):
     __tablename__: str = "Session"
 
+    # TODO replace session_id UUID
     session_id: Mapped[str] = mapped_column(String(16), primary_key=True)
     user_id: Mapped[str] = mapped_column(ForeignKey("User.uuid"))
     device: Mapped[str] = mapped_column(String(30), default="unknown device")
@@ -73,3 +75,17 @@ class CryptoCourse(db.Model):
     ticker: Mapped[str] = mapped_column(ForeignKey("Cryptocurrency.ticker"))
     time_frame: Mapped[str] = mapped_column(String(16))
     price: Mapped[float] = mapped_column(Float, default=0)
+
+
+class Wallet(db.Model):
+    __tablename__: str = "Wallet"
+
+    ID: Mapped[str] = mapped_column(String(36), primary_key=True)
+    usd: Mapped[float] = mapped_column(Float, default=0)
+    rub: Mapped[float] = mapped_column(Float, default=0)
+    user_id: Mapped[str] = mapped_column(ForeignKey("User.uuid"))
+    user: Mapped["User"] = relationship(back_populates="wallet")
+
+    def __init__(self, ID: str, user_id: str):
+        self.ID = ID
+        self.user_id = user_id
