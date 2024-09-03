@@ -7,7 +7,7 @@ from sqlalchemy import ScalarResult
 
 from ..database.postgre.services import get
 from ..database.postgre.models import CryptoCurrency, CryptoCourse
-from ..utils.aliases import RESTError
+
 
 api: Namespace = Namespace("crypto", path="/crypto/")
 
@@ -16,7 +16,7 @@ _CurrencyData: t.TypeAlias = list[dict[str, str | int]]
 
 @api.route("/list")
 class List(Resource):
-    def get(self) -> tuple[int | dict[str, _CurrencyData]] | RESTError:
+    def get(self) -> tuple[int | dict[str, _CurrencyData]]:
         # response example
         # {
         #     "CryptoCurrencyList": [
@@ -68,12 +68,8 @@ class List(Resource):
 
             if course_day_ago is None or new_course is None:
                 return {
-                    "error": {
-                        "code": "Bad request",
-                        "message": "No data",
-                        "details": "No data found for crypto table"
-                    }
-                }, 500
+                    "CryptoCurrencyList": []
+                }, 200
 
             currency_list.append(
                 {
