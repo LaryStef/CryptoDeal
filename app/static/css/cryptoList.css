@@ -45,6 +45,7 @@ li {
 }
 
 .table-wrap {
+    padding: 15px;
     display: flex;
     justify-content: center;
 }
@@ -53,6 +54,7 @@ li {
     padding: 50px;
     border-radius: 50px;
     border-color: var(--background-button-color);
+    box-shadow: 0 0 10px var(--text-hover-color);
     background-color: var(--background-button-color);
 }
 
@@ -102,8 +104,20 @@ li {
     border-bottom: 1px solid black;
 }
 
+.crypto-name-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
 .crypto-name {
     font-size: 1.5rem;
+}
+
+.crypto-logo {
+    width: 30px;
+    height: 30px;
 }
 
 .change-pos {
@@ -126,7 +140,7 @@ li {
 
 .buy-btn {
     text-align: center;
-    width: 40%;
+    width: 100px;
     height: 80%;
     border-radius: 50px;
     border-style: solid;

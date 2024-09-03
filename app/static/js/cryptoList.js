@@ -47,8 +47,8 @@ function loadCryptoTable() {
                     <tr class="row">
                         <td class="tc col1">${num}</td>
                         <td class="tc col2">
-                            <div>
-                                <img src="" alt="">
+                            <div class="crypto-name-wrap">
+                                <img class="crypto-logo" src="${currency.logo_url}" alt="">
                                 <span class="crypto-name">${currency.name}</span>
                             </div>
                         </td>
