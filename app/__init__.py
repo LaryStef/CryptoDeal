@@ -8,6 +8,7 @@ from .database.redisdb import rediska
 from .mail import mail
 from .routes import main
 from .taskQueue import celery_init_app
+from .utils.push_test_data import push_cryptocurrencies
 
 
 def create_app() -> tuple[Flask | Celery]:
@@ -27,5 +28,6 @@ def create_app() -> tuple[Flask | Celery]:
     with app.app_context():
         from .database.postgre.models import User  # noqa: F401
         db.create_all()
+        push_cryptocurrencies()
 
     return app, celery
