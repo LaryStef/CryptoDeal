@@ -11,12 +11,12 @@ from ..database.postgre.models import CryptoCurrency, CryptoCourse
 
 api: Namespace = Namespace("crypto", path="/crypto/")
 
-CurrencyData: t.TypeAlias = list[dict[str, str | int]]
+_CurrencyData: t.TypeAlias = list[dict[str, str | int]]
 
 
 @api.route("/list")
 class List(Resource):
-    def get(self) -> tuple[int | dict[str, CurrencyData]]:
+    def get(self) -> tuple[int | dict[str, _CurrencyData]]:
         # response example
         # {
         #     "CryptoCurrencyList": [
@@ -52,7 +52,7 @@ class List(Resource):
             many=True
         )
         hour: int = datetime.now(UTC).hour
-        currency_list: CurrencyData = []
+        currency_list: _CurrencyData = []
 
         for currency in currencies:
             course_day_ago: ScalarResult[CryptoCourse] = get(
