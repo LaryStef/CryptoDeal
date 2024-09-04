@@ -5,14 +5,14 @@ from ..logger import logger
 from ..mail import mail
 
 
-class TaskConfig():
+class _TaskConfig():
     default_retry_delay: int = 60,
     max_retries: int = 3,
     task_time_limit: int = 20,
     priority: int = 8
 
 
-taskConfig: TaskConfig = TaskConfig()
+taskConfig: _TaskConfig = _TaskConfig()
 
 
 @shared_task(

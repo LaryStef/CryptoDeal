@@ -6,13 +6,13 @@ from celery import shared_task
 from ..database.redisdb import rediska
 
 
-class TaskConfig():
+class _TaskConfig():
     max_retries: int = 0,
     task_time_limit: int = 10,
     priority: int = 3
 
 
-taskConfig: TaskConfig = TaskConfig()
+taskConfig: _TaskConfig = _TaskConfig()
 
 
 @shared_task(

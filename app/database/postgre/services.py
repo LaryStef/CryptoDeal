@@ -8,7 +8,7 @@ from sqlalchemy.orm import Mapped
 from ...logger import logger
 from ...utils.cryptography import hash_password
 from . import db
-from .models import Session, User
+from .models import Session, User, Wallet
 from .utc_time import utcnow
 
 
@@ -71,8 +71,13 @@ def add_user(user_data: dict[str, str | int]) -> tuple[str, int]:
         email=user_data["email"],
         alien_number=alien_number
     )
+    wallet: Wallet = Wallet(
+        ID=uuid4().__str__(),
+        user_id=id_
+    )
 
     db.session.add(user)
+    db.session.add(wallet)
     db.session.commit()
     logger.info(msg=f"added {user_data['role']} {user_data['username']}")
     return id_, alien_number

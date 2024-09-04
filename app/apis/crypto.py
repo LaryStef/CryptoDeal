@@ -12,6 +12,7 @@ from ..database.postgre.models import CryptoCurrency, CryptoCourse
 api: Namespace = Namespace("crypto", path="/crypto/")
 
 _CurrencyData: t.TypeAlias = list[dict[str, str | int]]
+_CurrencyData: t.TypeAlias = list[dict[str, str | int]]
 
 
 @api.route("/list")
@@ -23,7 +24,7 @@ class List(Resource):
         #         {
         #             "name": "Ethereum",
         #             "ticker": "ETH",
-        #             "logo": "/static/png/cryptocurrency/Ethereum",
+        #             "logo_url": "/static/png/cryptocurrency/Ethereum",
         #             "price": 2682.823913,
         #             "volume": 7433271729.333189,
         #             "change": -6.240546710846617
@@ -31,7 +32,7 @@ class List(Resource):
         #         {
         #             "name": "Bitcoin",
         #             "ticker": "BTC",
-        #             "logo": "/static/png/cryptocurrency/Bitcoin",
+        #             "logo_url": "/static/png/cryptocurrency/Bitcoin",
         #             "price": 72916.728154,
         #             "volume": 28821829110.47828,
         #             "change": 8.263753024401588
@@ -39,7 +40,7 @@ class List(Resource):
         #         {
         #             "name": "Tether",
         #             "ticker": "USDT",
-        #             "logo": "/static/png/cryptocurrency/Tether",
+        #             "logo_url": "/static/png/cryptocurrency/Tether",
         #             "price": 1.000523,
         #             "volume": 91738219.0,
         #             "change": 0.014194591860516859
@@ -52,7 +53,7 @@ class List(Resource):
             many=True
         )
         hour: int = datetime.now(UTC).hour
-        currency_list: _CurrencyData = []
+        currency_list: CurrencyData = []
 
         for currency in currencies:
             course_day_ago: ScalarResult[CryptoCourse] = get(
@@ -66,13 +67,18 @@ class List(Resource):
                 time_frame="hour" + str(hour)
             )
 
+            if course_day_ago is None or new_course is None:
+                return {
+                    "CryptoCurrencyList": []
+                }, 200
+
             currency_list.append(
                 {
                     "name": currency.name,
                     "ticker": currency.ticker,
-                    "logo": url_for(
+                    "logo_url": url_for(
                         "static",
-                        filename=f"png/cryptocurrency/{currency.name}"
+                        filename=f"svg/cryptocurrency/{currency.ticker}.svg"
                     ),
                     "price": new_course.price,
                     "volume": currency.volume,

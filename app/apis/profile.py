@@ -8,19 +8,25 @@ from ..database.postgre import services
 from ..database.postgre.models import Session, User
 from ..utils.decorators import authorization_required
 from ..utils.JWT import validate_token
+from ..utils.aliases import RESTError
+
 
 api = Namespace("profile", path="/profile/")
+
+_UserData: t.TypeAlias = dict[
+    str, str | dict[str, str | int] | list[dict[str, str | bool]]
+]
 
 
 @api.route("/")
 class Profile(Resource):
     @authorization_required("access")
-    def get(self) -> t.Any:
+    def get(self) -> _UserData | RESTError:
         try:
             # response example
             # {
             #     "userData": {
-            #         "uuid": 123,
+            #         "uuid": "uuid",
             #         "profile": {
             #             "name": "Chirill",
             #             "alienNumber": 1,
@@ -71,8 +77,7 @@ class Profile(Resource):
                 Session.last_activity
             ], many=True, user_id=uuid)
 
-            user_data: dict[str, str | dict[str, str | int] |
-                            list[dict[str, str]]] = {
+            user_data: _UserData = {
                 "id": uuid,
                 "profile": {
                     "name": user.name,

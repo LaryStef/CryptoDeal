@@ -8,13 +8,13 @@ from ..database.postgre import db
 from ..database.postgre.models import Session
 
 
-class TaskConfig():
+class _TaskConfig():
     max_retries: int = 0,
     task_time_limit: int = 10,
     priority: int = 3
 
 
-taskConfig: TaskConfig = TaskConfig()
+taskConfig: _TaskConfig = _TaskConfig()
 
 
 @shared_task(

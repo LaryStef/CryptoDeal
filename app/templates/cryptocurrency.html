@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/cryptocurrency.css') }}">
+{% endblock %}
+
+{% block main_container %}
+<div id="main"></div>
+{% endblock %}
+
+{% block script %}
+<script src="{{ url_for('static', filename='js/cryptocurrency.js') }}"></script>
+{% endblock %}

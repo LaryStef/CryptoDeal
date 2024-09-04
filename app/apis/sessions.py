@@ -8,6 +8,8 @@ from ..database.postgre import services
 from ..database.postgre.models import Session
 from ..utils.decorators import authorization_required
 from ..utils.JWT import validate_token
+from ..utils.aliases import RESTError
+
 
 api = Namespace("sessions", path="/sessions/")
 
@@ -17,7 +19,7 @@ class Sessions(Resource):
     @authorization_required("access")
     def delete(
         self, id_: str
-    ) -> tuple[dict[str, dict[str, str]] | int] | Response:
+    ) -> RESTError | Response:
         try:
             access_token: str = request.cookies.get("access_token", "")
             access_payload: t.Any = validate_token(token=access_token,
