@@ -53,15 +53,15 @@ class List(Resource):
             many=True
         )
         hour: int = datetime.now(UTC).hour
-        currency_list: CurrencyData = []
+        currency_list: _CurrencyData = []
 
         for currency in currencies:
-            course_day_ago: ScalarResult[CryptoCourse] = get(
+            course_day_ago: ScalarResult[CryptoCourse] | None = get(
                 table=CryptoCourse,
                 ticker=currency.ticker,
                 time_frame="hour" + str(hour + 1)
             )
-            new_course: ScalarResult[CryptoCourse] = get(
+            new_course: ScalarResult[CryptoCourse] | None = get(
                 table=CryptoCourse,
                 ticker=currency.ticker,
                 time_frame="hour" + str(hour)
