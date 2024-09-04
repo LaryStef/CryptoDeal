@@ -67,6 +67,18 @@ class CryptoCurrency(db.Model):
     volume: Mapped[float] = mapped_column(Float, default=0)
     crypto_course: Mapped[list["CryptoCourse"]] = relationship()
 
+    def __init__(
+        self,
+        ticker: str,
+        name: str,
+        description: str,
+        volume: float,
+    ):
+        self.ticker = ticker
+        self.name = name
+        self.description = description
+        self.volume = volume
+
 
 class CryptoCourse(db.Model):
     __tablename__: str = "CryptoCourse"
@@ -75,6 +87,12 @@ class CryptoCourse(db.Model):
     ticker: Mapped[str] = mapped_column(ForeignKey("Cryptocurrency.ticker"))
     time_frame: Mapped[str] = mapped_column(String(16))
     price: Mapped[float] = mapped_column(Float, default=0)
+
+    def __init__(self, ID: str, ticker: str, time_frame: str, price: float):
+        self.ID = ID
+        self.ticker = ticker
+        self.time_frame = time_frame
+        self.price = price
 
 
 class Wallet(db.Model):
