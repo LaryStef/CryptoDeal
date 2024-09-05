@@ -8,7 +8,7 @@ from .database.redisdb import rediska
 from .mail import mail
 from .routes import main
 from .taskQueue import celery_init_app
-from .utils.push_test_data import push_cryptocurrencies
+from .utils.push_test_data import push_cryptocurrencies  # noqa F401
 
 
 def create_app() -> tuple[Flask | Celery]:
