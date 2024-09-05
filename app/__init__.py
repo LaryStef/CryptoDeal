@@ -28,6 +28,6 @@ def create_app() -> tuple[Flask | Celery]:
     with app.app_context():
         from .database.postgre.models import User  # noqa: F401
         db.create_all()
-        push_cryptocurrencies()
+        # push_cryptocurrencies()
 
     return app, celery
