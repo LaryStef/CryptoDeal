@@ -3,5 +3,8 @@
         "semi": true,
         "tabWidth": 4,
         "bracketSpacing": false
+    },
+    "devDependencies": {
+        "webpack": "^5.94.0"
     }
 }

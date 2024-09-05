@@ -79,3 +79,4 @@ dmypy.json
 cython_debug/
 *.db
 *.webp
+/node_modules
