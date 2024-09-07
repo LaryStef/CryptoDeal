@@ -1,0 +1,14 @@
+{
+  "editor.defaultFormatter": "ms-python.flake8",
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.flake8"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "files.exclude": {
+    "node_modules/": true,
+    "**/__pycache__/": true,
+    ".mypy_cache": true
+  }
+}
