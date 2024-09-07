@@ -9,6 +9,7 @@
   "files.exclude": {
     "node_modules/": true,
     "**/__pycache__/": true,
-    ".mypy_cache": true
+    ".mypy_cache": true,
+    "celerybeat-schedule": true,
   }
 }
