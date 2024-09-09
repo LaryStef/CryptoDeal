@@ -11,5 +11,6 @@
     "**/__pycache__/": true,
     ".mypy_cache": true,
     "celerybeat-schedule": true,
+    "cryptodeal.log": true
   }
 }
