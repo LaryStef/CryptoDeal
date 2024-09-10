@@ -102,6 +102,8 @@ function getDeviceData() {
 
 if (isTokensRefreshRequired()) {
     refreshTokens();
+}  else {
+    load_profile();
 }
 
 async function refreshTokens() {
@@ -147,8 +149,9 @@ function getCookie(cookie) {
 }
 
 function load_profile() {
-    authClasses = document.getElementById("auth-button").classList;
-    profileClasses = document.getElementById("profile-button").classList;
+    let authClasses = document.getElementById("auth-button").classList;
+    let profileClasses = document.getElementById("profile-button").classList;
+
     if (
         !authClasses.contains("display-off") &&
         profileClasses.contains("display-off")

@@ -1,3 +1,24 @@
+
+const profileDataUrl = new URL("api/profile", origin);
+const sessionUrl = new URL("api/sessions", origin);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 const origin = location.origin;
 
 const loginUrl = new URL("api/auth/sign-in", origin);
@@ -95,8 +116,7 @@ function getDeviceData() {
 
         case "iOS":
             osVersion = /OS (\d+)_(\d+)_?(\d+)?/.exec(nVer);
-            osVersion =
-                osVersion[1] + "." + osVersion[2] + "." + (osVersion[3] | 0);
+            osVersion = osVersion[1] + "." + osVersion[2] + "." + (osVersion[3] | 0);
             break;
     }
 
@@ -106,7 +126,7 @@ function getDeviceData() {
 if (isTokensRefreshRequired()) {
     refreshTokens();
 } else {
-    loadProfile();
+    load_profile();
 }
 
 async function refreshTokens() {
@@ -115,12 +135,12 @@ async function refreshTokens() {
         credentials: "same-origin",
         headers: {
             "X-SCRF-TOKEN": getCookie("refresh_scrf_token"),
-            Device: getDeviceData(),
+            "Device": getDeviceData(),
         },
     });
 
     if (response.status === 200) {
-        loadProfile();
+        load_profile();
     }
 }
 
@@ -150,7 +170,7 @@ function getCookie(cookie) {
     return token;
 }
 
-function loadProfile() {
+function load_profile() {
     loadSessions(false);
 
     let authClasses = document.getElementById("auth-button").classList;
@@ -318,7 +338,7 @@ document
 
         if (response.status === 200) {
             closeLoginWindow();
-            loadProfile();
+            load_profile();
         } else {
             let error = await response.json();
             document.getElementById("login-info").innerHTML =
@@ -614,7 +634,7 @@ async function verifyCode() {
 
     if (response.status == 200) {
         closeConfirmWindow();
-        loadProfile();
+        load_profile();
     } else {
         document.getElementById("input-code").style.backgroundColor = "#BF1A3E";
     }
@@ -828,7 +848,7 @@ document.getElementById("submit-rec").addEventListener("click", async (e) => {
 
     if (response.status === 200) {
         closePasswordWindow();
-        loadProfile();
+        load_profile();
     }
     if (response.status === 429 || response.status === 400) {
         error = await response.json();

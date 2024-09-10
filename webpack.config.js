@@ -6,8 +6,8 @@ const TerserPlugin = require("terser-webpack-plugin");
 module.exports = {
     watch: true,
     entry: {
-        main: "./app/static/js/index.js",
-        cryptoList0: "./app/static/js/cryptoList0.js",
+        index: "./app/static/js/index.js",
+        cryptoList0: "./app/static/js/cryptoList.js",
         profile: "./app/static/js/profile.js",
         cryptocurrency: "./app/static/js/cryptocurrency.js",
     },
