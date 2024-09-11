@@ -7,9 +7,9 @@ module.exports = {
     watch: true,
     entry: {
         index: "./app/static/js/index.js",
-        cryptoList0: "./app/static/js/cryptoList.js",
+        cryptoList: "./app/static/js/cryptoList.js",
         profile: "./app/static/js/profile.js",
-        cryptocurrency: "./app/static/js/cryptocurrency.js",
+        cryptocurrency: "./app/static/js/cryptocurrency.js"
     },
     output: {
         path: path.resolve(__dirname, "./app/static/js/"),
@@ -18,15 +18,6 @@ module.exports = {
     resolve: {
         extensions: [".js"],
     },
-    // module: {
-    //     rules: [
-    //         {
-    //             test: /\.ts$/,
-    //             use: "ts-loader",
-    //             exclude: /node_modules/,
-    //         },
-    //     ],
-    // },
     optimization: {
         minimize: false,
         minimizer: [new TerserPlugin()],
