@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block main_container %}
-<div id="main-wrap">
+<div id="main">
     <div class="first-line" id="first-line">
         <div class="user-info-wrapper">
             <img src="/static/png/Alien1.png" alt="your avatar" class="main-avatar" id="main-avatar" decoding="async">
@@ -45,5 +45,5 @@
 {% endblock %}
 
 {% block script %}
-<script src="{{ url_for('static', filename='js/profile.js') }}"></script>
+<script src="{{ url_for('static', filename='js/profile.min.js') }}"></script>
 {% endblock %}
