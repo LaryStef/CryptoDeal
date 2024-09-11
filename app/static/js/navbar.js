@@ -102,7 +102,7 @@ function getDeviceData() {
 
 if (isTokensRefreshRequired()) {
     refreshTokens();
-}  else {
+} else {
     load_profile();
 }
 
@@ -118,6 +118,7 @@ async function refreshTokens() {
 
     if (response.status === 200) {
         load_profile();
+        
     }
 }
 
@@ -129,7 +130,6 @@ function isTokensRefreshRequired() {
         Math.floor(Date.now() / 1000) <
             Number(JSON.parse(atob(access.split(".")[1])).exp) - 1
     ) {
-        load_profile();
         return false;
     }
     return true;
@@ -164,10 +164,18 @@ function load_profile() {
     let payload = JSON.parse(atob(access.split(".")[1]));
 
     document.getElementById("name").innerText = payload.name;
-    document.getElementById("avatar").src = new URL(
+    const avatarUrl = new URL(
         `/static/png/Alien${payload.alien_number}.png`,
         location.origin
     );
+
+    document.getElementById("avatar").src = avatarUrl;
+
+    if (document.location.pathname === "/profile") {
+        loadSessions(false);
+        document.getElementById("avatar").src = avatarUrl;
+        document.getElementById("main-avatar").src = avatarUrl;
+    }
 }
 
 document.getElementById("left-switch").onclick = leftSwitchTransform;
@@ -228,7 +236,7 @@ document
                 body: formData,
             });
 
-            if (response.status == 201) {
+            if (response.status === 201) {
                 if (isTimerGoing) {
                     disableTimer(timerId);
                 }
@@ -498,7 +506,7 @@ async function verifyCode() {
         body: JSON.stringify(Object.fromEntries(data)),
     });
 
-    if (response.status == 200) {
+    if (response.status === 200) {
         closeConfirmWindow();
         load_profile();
     } else {
@@ -520,7 +528,7 @@ async function sendNewCode() {
         body: JSON.stringify(Object.fromEntries(data)),
     });
 
-    if (response.status == 200) {
+    if (response.status === 200) {
         document
             .getElementById("get-code-wrapper")
             .classList.add("display-off");
