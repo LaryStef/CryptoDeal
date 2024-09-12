@@ -6,18 +6,6 @@ const sessionUrl = new URL("api/sessions", origin);
 document.getElementById("set-btn").onclick = openSettingsWindow;
 document.getElementById("cancel-set").onclick = closeSettingsWindow;
 
-function loadProfileHeader() {
-    document.getElementById("username").innerText = payload.name;
-
-    const avatarUrl = new URL(
-        `/static/png/Alien${payload.alien_number}.png`,
-        location.origin
-    );
-    
-    document.getElementById("avatar").src = avatarUrl;
-    document.getElementById("main-avatar").src = avatarUrl;
-}
-
 function loadSessions(clearFirst) {
     fetch(profileDataUrl, {
         method: "GET",
