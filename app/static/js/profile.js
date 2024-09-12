@@ -1,10 +1,16 @@
 import "./navbar.js";
+import { disableButtons, enableButtons } from "./navbar.js";
 
 
 const profileDataUrl = new URL("api/profile", origin);
 const sessionUrl = new URL("api/sessions", origin);
 document.getElementById("set-btn").onclick = openSettingsWindow;
 document.getElementById("cancel-set").onclick = closeSettingsWindow;
+
+document.addEventListener("profileLoaded", () => {
+    loadSessions(true);
+});
+
 
 function loadSessions(clearFirst) {
     fetch(profileDataUrl, {
@@ -114,7 +120,7 @@ document
 function openSettingsWindow() {
     let window = document.getElementById("set-win");
     window.style.transform = "translate(0%)";
-    document.getElementById("main-wrap").style.filter = "brightness(0.5)";
+    document.getElementById("main").style.filter = "brightness(0.5)";
     document.getElementById("navbar").style.filter = "brightness(0.5)";
     disableButtons();
 }
@@ -122,7 +128,7 @@ function openSettingsWindow() {
 function closeSettingsWindow() {
     let window = document.getElementById("set-win");
     window.style.transform = "translate(-150%)";
-    document.getElementById("main-wrap").style.filter = "brightness(1)";
+    document.getElementById("main").style.filter = "brightness(1)";
     document.getElementById("navbar").style.filter = "brightness(1)";
     enableButtons();
 }
