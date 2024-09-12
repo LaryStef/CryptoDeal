@@ -84,7 +84,8 @@ class AppConfig(Config):
                 }
         },
         "worker_hijack_root_logger": False,
-        "worker_redirect_stdouts": True
+        "worker_redirect_stdouts": True,
+        "broker_connection_retry_on_startup": True
     }
 
     def __init__(self) -> None:
