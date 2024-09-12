@@ -1,10 +1,9 @@
-const { watch } = require("fs");
 const path = require("path");
 const TerserPlugin = require("terser-webpack-plugin");
 
 
 module.exports = {
-    watch: true,
+    //watch: true,
     entry: {
         index: "./app/static/js/index.js",
         cryptoList: "./app/static/js/cryptoList.js",
@@ -13,13 +12,13 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, "./app/static/js/"),
-        filename: "[name].min.js",
+        filename: "[name].min.js"
     },
     resolve: {
         extensions: [".js"],
     },
     optimization: {
-        minimize: false,
+        minimize: true,
         minimizer: [new TerserPlugin()],
     },
     mode: "production",

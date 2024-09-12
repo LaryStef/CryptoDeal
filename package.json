@@ -4,10 +4,6 @@
         "tabWidth": 4,
         "bracketSpacing": false
     },
-    "devDependencies": {
-        "webpack": "^5.94.0",
-        "webpack-cli": "^5.1.4"
-    },
     "name": "cryptodeal",
     "version": "1.0.0",
     "description": "Soon(not sure)...",
@@ -20,5 +16,9 @@
     "license": "ISC",
     "dependencies": {
         "chart.js": "^4.4.4"
+    },
+    "devDependencies": {
+        "webpack": "^5.94.0",
+        "webpack-cli": "^5.1.4"
     }
 }
