@@ -12,8 +12,6 @@ const refreshTokensUrl = new URL("api/auth/refresh-tokens", origin);
 const cooldown = 30;
 const cooldownRec = 30;
 
-const profileLoaded = new CustomEvent("profileLoaded");
-
 function getDeviceData() {
     let browser = "unknown browser";
     let os = "unknown os";
@@ -104,9 +102,6 @@ function getDeviceData() {
 
 if (isTokensRefreshRequired()) {
     refreshTokens();
-} else {
-    load_profile();
-    document.dispatchEvent(profileLoaded);
 }
 
 async function refreshTokens() {
@@ -121,7 +116,6 @@ async function refreshTokens() {
 
     if (response.status === 200) {
         load_profile();
-        document.dispatchEvent(profileLoaded);
     }
 }
 
@@ -133,6 +127,7 @@ function isTokensRefreshRequired() {
         Math.floor(Date.now() / 1000) <
             Number(JSON.parse(atob(access.split(".")[1])).exp) - 1
     ) {
+        load_profile();
         return false;
     }
     return true;
@@ -152,9 +147,8 @@ function getCookie(cookie) {
 }
 
 function load_profile() {
-    let authClasses = document.getElementById("auth-button").classList;
-    let profileClasses = document.getElementById("profile-button").classList;
-
+    authClasses = document.getElementById("auth-button").classList;
+    profileClasses = document.getElementById("profile-button").classList;
     if (
         !authClasses.contains("display-off") &&
         profileClasses.contains("display-off")
@@ -167,18 +161,10 @@ function load_profile() {
     let payload = JSON.parse(atob(access.split(".")[1]));
 
     document.getElementById("name").innerText = payload.name;
-    const avatarUrl = new URL(
+    document.getElementById("avatar").src = new URL(
         `/static/png/Alien${payload.alien_number}.png`,
         location.origin
     );
-
-    document.getElementById("avatar").src = avatarUrl;
-
-    // if (document.location.pathname === "/profile") {
-    //     loadSessions(false);
-    //     document.getElementById("avatar").src = avatarUrl;
-    //     document.getElementById("main-avatar").src = avatarUrl;
-    // }
 }
 
 document.getElementById("left-switch").onclick = leftSwitchTransform;
@@ -216,7 +202,6 @@ document
         if (response.status == 200) {
             closeLoginWindow();
             load_profile();
-            document.dispatchEvent(profileLoaded);
         } else {
             let error = await response.json();
             document.getElementById("login-info").innerHTML =
@@ -240,7 +225,7 @@ document
                 body: formData,
             });
 
-            if (response.status === 201) {
+            if (response.status == 201) {
                 if (isTimerGoing) {
                     disableTimer(timerId);
                 }
@@ -510,10 +495,9 @@ async function verifyCode() {
         body: JSON.stringify(Object.fromEntries(data)),
     });
 
-    if (response.status === 200) {
+    if (response.status == 200) {
         closeConfirmWindow();
         load_profile();
-        document.dispatchEvent(profileLoaded);
     } else {
         document.getElementById("input-code").style.backgroundColor = "#BF1A3E";
     }
@@ -533,7 +517,7 @@ async function sendNewCode() {
         body: JSON.stringify(Object.fromEntries(data)),
     });
 
-    if (response.status === 200) {
+    if (response.status == 200) {
         document
             .getElementById("get-code-wrapper")
             .classList.add("display-off");
@@ -728,7 +712,6 @@ document.getElementById("submit-rec").addEventListener("click", async (e) => {
     if (response.status === 200) {
         closePasswordWindow();
         load_profile();
-        document.dispatchEvent(profileLoaded);
     }
     if (response.status === 429 || response.status === 400) {
         error = await response.json();

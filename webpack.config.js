@@ -5,10 +5,10 @@ const TerserPlugin = require("terser-webpack-plugin");
 module.exports = {
     //watch: true,
     entry: {
-        index: "./app/static/js/index.js",
-        cryptoList: "./app/static/js/cryptoList.js",
-        profile: "./app/static/js/profile.js",
-        cryptocurrency: "./app/static/js/cryptocurrency.js"
+        index: "./frontend/js/index.js",
+        cryptoList: "./frontend/js/cryptoList.js",
+        profile: "./frontend/js/profile.js",
+        cryptocurrency: "./frontend/js/cryptocurrency.js"
     },
     output: {
         path: path.resolve(__dirname, "./app/static/js/"),
