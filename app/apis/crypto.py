@@ -19,32 +19,35 @@ class List(Resource):
     def get(self) -> tuple[int | dict[str, _CurrencyData]]:
         # response example
         # {
-        #     "CryptoCurrencyList": [
-        #         {
-        #             "name": "Ethereum",
-        #             "ticker": "ETH",
-        #             "logo_url": "/static/png/cryptocurrency/ETH",
-        #             "price": 2682.823913,
-        #             "volume": 7433271729.333189,
-        #             "change": -6.240546710846617
-        #         },
-        #         {
-        #             "name": "Bitcoin",
-        #             "ticker": "BTC",
-        #             "logo_url": "/static/png/cryptocurrency/BTC",
-        #             "price": 72916.728154,
-        #             "volume": 28821829110.47828,
-        #             "change": 8.263753024401588
-        #         },
-        #         {
-        #             "name": "Tether",
-        #             "ticker": "USDT",
-        #             "logo_url": "/static/png/cryptocurrency/USDT",
-        #             "price": 1.000523,
-        #             "volume": 91738219.0,
-        #             "change": 0.014194591860516859
-        #         }
-        #     ]
+        # "CryptoCurrencyList": [
+        #     {
+        #     "name": "Bitcoin",
+        #     "ticker": "BTC",
+        #     "logoUrl": "/static/svg/cryptocurrency/BTC.svg",
+        #     "pageUrl": "/crypto/BTC",
+        #     "price": 65673.1535301987,
+        #     "volume": 28388811901.2917,
+        #     "change": 32.8637107645426
+        #     },
+        #     {
+        #     "name": "Ethereum",
+        #     "ticker": "ETH",
+        #     "logoUrl": "/static/svg/cryptocurrency/ETH.svg",
+        #     "pageUrl": "/crypto/ETH",
+        #     "price": 2387.54530484819,
+        #     "volume": 7865323997.26432,
+        #     "change": -1.78983414036351
+        #     },
+        #     {
+        #     "name": "Tether",
+        #     "ticker": "USDT",
+        #     "logoUrl": "/static/svg/cryptocurrency/USDT.svg",
+        #     "pageUrl": "/crypto/USDT",
+        #     "price": 1.02090749587501,
+        #     "volume": 42177103848.3768,
+        #     "change": -3.94483257123361
+        #     }
+        # ]
         # }
 
         currencies: ScalarResult[CryptoCurrency] = get(
@@ -75,9 +78,13 @@ class List(Resource):
                 {
                     "name": currency.name,
                     "ticker": currency.ticker,
-                    "logo_url": url_for(
+                    "logoUrl": url_for(
                         "static",
                         filename=f"svg/cryptocurrency/{currency.ticker}.svg"
+                    ),
+                    "pageUrl": url_for(
+                        "main.currency",
+                        ticker=currency.ticker
                     ),
                     "price": new_course.price,
                     "volume": currency.volume,
@@ -98,7 +105,7 @@ class CryptoCurrencyData(Resource):
         #     "ticker": "BTC",
         #     "name": "Bitcion",
         #     "descrption": "the best crypto ever",
-        #     "logo_url": "/static/png/cryptocurrency/BTC",
+        #     "logoUrl": "/static/png/cryptocurrency/BTC",
         #     "volume": 82838219.209291,
         #     "change": 3.014194591860516859,
         #     "chartData": {
