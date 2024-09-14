@@ -4,6 +4,7 @@
     --text-dark: #6637bd;
     --text-hover-color: #8935a2;
     --background-button-color: #251361;
+    --contrast-color: #8FFF06;
     --login-transition-duration: 400ms;
     --link-transition-duration: 200ms;
     --login-mode-transition-duration: 400ms;
@@ -36,7 +37,15 @@ li {
 
 /* main part */
 
-
+.chart-wrap {
+    margin: 5%;
+    padding: 2%;
+    width: 1000px;
+    height: 500px;
+    border-radius: 50px;
+    background-color: var(--background-button-color);
+    box-shadow: 0 0 10px var(--contrast-color);;
+}
 
 /* navigation bar */
 

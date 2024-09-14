@@ -1,5 +1,16 @@
-const origin = location.origin;
+import {
+    Chart,
+    LineController,
+    LineElement,
+    PointElement,
+    LinearScale,
+    Title,
+    CategoryScale,
+    elements,
+    Filler,
+} from "chart.js";
 
+const origin = location.origin;
 const loginUrl = new URL("api/auth/sign-in", origin);
 const registerUrl = new URL("api/auth/register/apply", origin);
 const newCodeUrl = new URL("api/auth/register/new-code", origin);
@@ -11,6 +22,83 @@ const refreshTokensUrl = new URL("api/auth/refresh-tokens", origin);
 
 const cooldown = 30;
 const cooldownRec = 30;
+
+drawChart();
+
+function drawChart() {
+    console.log(Chart.defaults);
+    Chart.register(
+        LineController,
+        LineElement,
+        PointElement,
+        LinearScale,
+        Title,
+        CategoryScale,
+        Filler
+    );
+    Chart.defaults.font.family = "Ubuntu Mono";
+    Chart.defaults.backgroundColor = "#FF6384";
+    Chart.defaults.borderColor = "#291F5D";
+    Chart.defaults.color = "#C5FFC3";
+
+    const chartCfg = {
+        type: "line",
+        data: {
+            labels: [19, 20, 21, 22, 23, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
+            datasets: [
+                {
+                    borderColor: '#FF6384',
+                    fill: {
+                        target: "origin",
+                        above: "#843072"
+                    },
+                    data: [
+                        2455.724673,
+                        2482.600027,
+                        2470.579307,
+                        2419.005645,
+                        2423.307852,
+                        2472.691506,
+                        2675.649755,
+                        2542.843266,
+                        2498.632522,
+                        2589.430657,
+                        2699.292851,
+                        2519.367414,
+                        2558.913914,
+                        2576.874516,
+                        2632.828609,
+                        2775.522117,
+                        2771.943085,
+                        2706.550265,
+                        2830.398057,
+                        2790.814923,
+                        2828.539856,
+                        2975.606936,
+                        2969.751264,
+                        2955.923484,
+                    ],
+                },
+            ],
+        },
+        options: {
+            elements: {
+                line: {
+                    tension: 0.3
+                },
+            },
+            layout: {
+                padding: 10
+            },
+            plugins: {
+                filler: {
+                    propogate: true
+                }
+            }
+        },
+    };
+    new Chart(document.getElementById("chart"), chartCfg);
+}
 
 function getDeviceData() {
     let browser = "unknown browser";
@@ -93,7 +181,8 @@ function getDeviceData() {
 
         case "iOS":
             osVersion = /OS (\d+)_(\d+)_?(\d+)?/.exec(nVer);
-            osVersion = osVersion[1] + "." + osVersion[2] + "." + (osVersion[3] | 0);
+            osVersion =
+                osVersion[1] + "." + osVersion[2] + "." + (osVersion[3] | 0);
             break;
     }
 
@@ -110,7 +199,7 @@ async function refreshTokens() {
         credentials: "same-origin",
         headers: {
             "X-SCRF-TOKEN": getCookie("refresh_scrf_token"),
-            "Device": getDeviceData(),
+            Device: getDeviceData(),
         },
     });
 
@@ -147,8 +236,8 @@ function getCookie(cookie) {
 }
 
 function load_profile() {
-    authClasses = document.getElementById("auth-button").classList;
-    profileClasses = document.getElementById("profile-button").classList;
+    let authClasses = document.getElementById("auth-button").classList;
+    let profileClasses = document.getElementById("profile-button").classList;
     if (
         !authClasses.contains("display-off") &&
         profileClasses.contains("display-off")
@@ -195,8 +284,8 @@ document
             credentials: "same-origin",
             body: formData,
             headers: {
-                "Device": getDeviceData()
-            }
+                Device: getDeviceData(),
+            },
         });
 
         if (response.status == 200) {
@@ -490,7 +579,7 @@ async function verifyCode() {
         headers: {
             "Content-Type": "application/json",
             "Request-Id": sessionStorage.getItem("request_id"),
-            "Device": getDeviceData()
+            Device: getDeviceData(),
         },
         body: JSON.stringify(Object.fromEntries(data)),
     });
@@ -701,12 +790,12 @@ document.getElementById("submit-rec").addEventListener("click", async (e) => {
         headers: {
             "Content-Type": "application/json",
             "Request-Id": sessionStorage.getItem("request_id"),
-            "Device": getDeviceData()
+            Device: getDeviceData(),
         },
         body: JSON.stringify({
             password: password,
-            code: document.getElementById("input-code-rec").value
-        })
+            code: document.getElementById("input-code-rec").value,
+        }),
     });
 
     if (response.status === 200) {
