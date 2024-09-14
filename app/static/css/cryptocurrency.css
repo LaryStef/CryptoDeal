@@ -39,12 +39,46 @@ li {
 
 .chart-wrap {
     margin: 5%;
+    margin-bottom: 1%;
     padding: 2%;
     width: 1000px;
     height: 500px;
     border-radius: 50px;
     background-color: var(--background-button-color);
     box-shadow: 0 0 10px var(--contrast-color);;
+}
+
+.chart-btn-wrap {
+    margin-left: 5%;
+    margin-right: 5%;
+    padding: 20px;
+    padding-left: 2%;
+    padding-right: 2%;
+    width: 1000px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6%;
+}
+
+.chart-btn {
+    padding: 1%;
+    width: 100px;
+    height: 40px;
+    border-radius: 50px;
+    border-style: none;
+    background-color: var(--background-button-color);
+    color: var(--text-color);
+    font-size: 1.125rem;
+    transition: all var(--link-transition-duration) linear;
+    -webkit-transition: all var(--link-transition-duration) linear;
+    -o-transition: all var(--link-transition-duration) linear;
+    -moz-transition: all var(--link-transition-duration) linear;
+}
+
+.chart-btn:hover {
+    color: var(--text-hover-color);
+    box-shadow: 0 0 5px var(--contrast-color);
 }
 
 /* navigation bar */
