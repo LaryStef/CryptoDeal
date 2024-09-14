@@ -42,13 +42,14 @@ function loadCryptoTable() {
                     change = (Math.round(currency.change * 1000) / 1000) + "%";
                     changeClass = "change-neg";
                 }
-
+                
+                console.log(currency.logoUrl);
                 table.innerHTML += `        
                     <tr class="row">
                         <td class="tc col1">${num}</td>
                         <td class="tc col2">
                             <div class="crypto-name-wrap">
-                                <img class="crypto-logo" src="${currency.logo_url}" alt="">
+                                <img class="crypto-logo" src="${currency.logoUrl}" alt="">
                                 <span class="crypto-name">${currency.name}</span>
                             </div>
                         </td>
@@ -57,7 +58,7 @@ function loadCryptoTable() {
                         <td class="tc col5 ${changeClass}">${change}</td>
                         <td class="tc col6">${volume}</td>
                         <td class="tc col7">
-                            <a class="buy-link" href="#">
+                            <a class="buy-link" href="${currency.pageUrl}">
                                 <div class="buy-btn">
                                     <span>Buy/Sell</span>
                                 </div>
