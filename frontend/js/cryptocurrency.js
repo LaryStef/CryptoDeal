@@ -23,10 +23,9 @@ const refreshTokensUrl = new URL("api/auth/refresh-tokens", origin);
 const cooldown = 30;
 const cooldownRec = 30;
 
-drawChart();
+const gloablChartObj = getChart();
 
-function drawChart() {
-    console.log(Chart.defaults);
+function getChart() {
     Chart.register(
         LineController,
         LineElement,
@@ -44,39 +43,61 @@ function drawChart() {
     const chartCfg = {
         type: "line",
         data: {
-            labels: [19, 20, 21, 22, 23, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
+            labels: [
+                19, 20, 21, 22, 23, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
+                13, 14, 15, 16, 17, 18,
+            ],
             datasets: [
                 {
-                    borderColor: '#FF6384',
+                    name: "day",
+                    borderColor: "#FF6384",
                     fill: {
                         target: "origin",
-                        above: "#843072"
+                        above: "#843072",
                     },
+                    hidden: false,
                     data: [
-                        2455.724673,
-                        2482.600027,
-                        2470.579307,
-                        2419.005645,
-                        2423.307852,
-                        2472.691506,
-                        2675.649755,
-                        2542.843266,
-                        2498.632522,
-                        2589.430657,
-                        2699.292851,
-                        2519.367414,
-                        2558.913914,
-                        2576.874516,
-                        2632.828609,
-                        2775.522117,
-                        2771.943085,
-                        2706.550265,
-                        2830.398057,
-                        2790.814923,
-                        2828.539856,
-                        2975.606936,
-                        2969.751264,
-                        2955.923484,
+                        2455.724673, 2482.600027, 2470.579307, 2419.005645,
+                        2423.307852, 2472.691506, 2675.649755, 2542.843266,
+                        2498.632522, 2589.430657, 2699.292851, 2519.367414,
+                        2558.913914, 2576.874516, 2632.828609, 2775.522117,
+                        2771.943085, 2706.550265, 2830.398057, 2790.814923,
+                        2828.539856, 2975.606936, 2969.751264, 2955.923484,
+                    ],
+                },
+                {
+                    name: "month",
+                    borderColor: "#FF6384",
+                    fill: {
+                        target: "origin",
+                        above: "#843072",
+                    },
+                    hidden: true,
+                    data: [
+                        2456.123789, 2434.456789, 2445.321654, 2478.654321,
+                        2398.654789, 2412.654321, 2467.123456, 2489.789456,
+                        2500.789456, 2490.987321, 2501.789123, 2423.123654,
+                        2887.456123, 2898.987654, 2523.654987, 2512.987456,
+                        2854.456789, 2865.123654, 2876.321987, 2534.987654,
+                        2956.789123, 2876.987654, 2843.321654, 2901.456123,
+                        2912.654987, 2945.321987, 2934.123456, 2960.987321,
+                        2923.987456, 2832.654321, 2801.738226
+                    ],
+                },
+                {
+                    name: "year",
+                    borderColor: "#FF6384",
+                    fill: {
+                        target: "origin",
+                        above: "#843072",
+                    },
+                    hidden: true,
+                    data: [
+                        2955.923484, 2969.751264, 2975.606936, 2828.539856, 2790.814923,
+                        2830.398057, 2706.550265, 2771.943085, 2775.522117, 2632.828609,
+                        2576.874516, 2558.913914, 2519.367414, 2699.292851, 2589.430657,
+                        2498.632522, 2542.843266, 2675.649755, 2472.691506, 2423.307852,
+                        2419.005645, 2470.579307, 2482.600027, 2455.724673,
                     ],
                 },
             ],
@@ -84,21 +105,84 @@ function drawChart() {
         options: {
             elements: {
                 line: {
-                    tension: 0.3
+                    tension: 0.3,
                 },
             },
             layout: {
-                padding: 10
+                padding: 10,
             },
             plugins: {
                 filler: {
-                    propogate: true
-                }
-            }
+                    propogate: true,
+                },
+            },
         },
     };
-    new Chart(document.getElementById("chart"), chartCfg);
+    return new Chart(document.getElementById("chart"), chartCfg);
 }
+
+function updateChart(chart, name, labels) {
+    chart.data.datasets.forEach((dataset) => {
+        if (dataset.name === name) {
+            chart.data.labels = labels;
+            dataset.hidden = false;
+        } else {
+            dataset.hidden = true;
+        }
+    });
+    chart.update();
+}
+
+document.getElementById("chart-btn-day").addEventListener("click", () => {
+    updateChart(
+        gloablChartObj,
+        "day",
+        [
+            19, 20, 21, 22, 23, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,
+            14, 15, 16, 17, 18,
+        ]
+    );
+});
+
+document.getElementById("chart-btn-month").addEventListener("click", () => {
+    updateChart(
+        gloablChartObj,
+        "month",
+        [
+            15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
+        ]
+    );
+});
+
+document.getElementById("chart-btn-year").addEventListener("click", () => {
+    updateChart(gloablChartObj, "year", [
+        "09.15",
+        "10.01",
+        "10.15",
+        "11.01",
+        "11.15",
+        "12.01",
+        "12.15",
+        "01.01",
+        "01.15",
+        "02.01",
+        "02.15",
+        "03.01",
+        "03.15",
+        "04.01",
+        "04.15",
+        "05.01",
+        "05.15",
+        "06.01",
+        "06.15",
+        "07.01",
+        "07.15",
+        "08.01",
+        "08.15",
+        "09.01",
+    ]);
+});
 
 function getDeviceData() {
     let browser = "unknown browser";
