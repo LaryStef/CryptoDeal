@@ -6,13 +6,64 @@
 
 {% block main_container %}
 <div id="main">
-    <div class="chart-wrap">
-        <canvas class="chart" id="chart" aria-label="Chart will be here" role="img"></canvas>
-    </div>
-    <div class="chart-btn-wrap">
-        <button class="chart-btn" id="chart-btn-day">daily</button>
-        <button class="chart-btn" id="chart-btn-month">monthly</button>
-        <button class="chart-btn" id="chart-btn-year">yearly</button>
+    <div class="content">
+        <div class="info-wrap">
+            <div class="name-wrap">
+                <img class="crypto-logo" src="/static/svg/cryptocurrency/ETH.svg" alt="">
+                <div class="short-inf">
+                    <span class="crypto-name">Ethereum(ETH)</span>
+                    <span class="crypto-price">69782.873$</span>
+                </div>
+            </div>
+            <div class="desc">
+                <h3 class="desc-header">Overview</h3>
+                <p class="desc-text">
+                    Ethereum is a decentralized, open-source blockchain platform established in 2013. Unlike Bitcoin, which focuses mainly on digital payments, Ethereum empowers developers to create decentralized applications (dApps) for diverse purposes, such as finance, gaming, and supply chain management. Smart contracts, which are self-executing programs containing the terms of agreements in code, underpin these applications. Ethereum was the first platform to introduce smart contract functionality. It operates using Ether (ETH), its native cryptocurrency, necessary for executing smart contracts and transactions on the network. Ether, the second largest cryptocurrency by market capitalization, can be traded on exchanges and serves as a store of value, akin to Bitcoin. Users of the Ethereum blockchain pay gas fees, denominated in ETH, for transaction validation.
+                </p>
+                <h3 class="desc-header">Creator</h3>
+                <p class="desc-text">
+                    Vitalik Buterin, a Russian-Canadian programmer, created Ethereum. At just 19, he recognized the limitations of centralized
+                    systems after a frustrating change to his favorite World of Warcraft character. This inspired his vision of a decentralized
+                    digital network enabling the development of applications interacting with digital currencies. Before Ethereum, Buterin
+                    co-founded Bitcoin Magazine, one of the earliest Bitcoin publications. He published the Ethereum white paper in 2014 and
+                    launched the project in 2015, mining the genesis block on July 30, 2015. Buterin’s vision attracted several passionate
+                    co-founders, including Gavin Wood, Joseph Lubin, Anthony Di Iorio, and Charles Hoskinson. Together, they founded the Ethereum
+                    Foundation, a non-profit organization aimed at supporting the platform's development and ecosystem. Notably, only Buterin
+                    remains with the project from the original co-founders.
+                </p>
+                <a href="https://www.youtube.com/shorts/LtrgP17dw_E">His best video ever.</a>
+            </div>
+            <div class="wtb-btn"></div>
+        </div>
+        <div class="chart-content">
+            <div class="review">
+                <div>
+                    <span>Low 24h: </span>
+                    <span>43271.721</span>
+                </div>
+                <div>
+                    <span>High 24h: </span>
+
+                    <span>73238.001</span>
+                </div>
+                <div>
+                    <span>Volume 24h: </span>
+                    <span>17.31B</span>
+                </div>
+                <div>
+                    <span>Change 24h: </span>
+                    <span class="change-pos">+4.287%</span>
+                </div>
+            </div>
+            <div class="chart-wrap">
+                <canvas class="chart" id="chart" aria-label="Chart will be here" role="img"></canvas>
+            </div>
+            <div class="chart-btn-wrap">
+                <button class="chart-btn" id="chart-btn-day">daily</button>
+                <button class="chart-btn" id="chart-btn-month">monthly</button>
+                <button class="chart-btn" id="chart-btn-year">yearly</button>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}
