@@ -148,15 +148,31 @@ li {
     outline: none;
     
     background-color: var(--text-color);
+
+    span {
+        color: var(--background-color);
+    }
+
+    transition: all var(--link-transition-duration) linear;
+    -webkit-transition: all var(--link-transition-duration) linear;
+    -o-transition: all var(--link-transition-duration) linear;
+    -moz-transition: all var(--link-transition-duration) linear;
 }
+
 
 .buy-btn:hover {
-    box-shadow: 0 0 10px var(--text-color);;
+    border-color: var(--background-button-color);
+    background-color: var(--background-button-color);
+    box-shadow: 0 0 10px var(--contrast-color);
+
+    span {
+        color: var(--text-color);
+    }
 }
 
-.buy-btn > span {
+/* .buy-btn > span {
     color: var(--background-color);
-}
+} */
 
 .split {
     width: 100%;
