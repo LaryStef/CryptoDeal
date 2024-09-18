@@ -17,6 +17,38 @@ def push_day_course(min_: float, max_: float, ticker: str):
         )
 
 
+def push_month_course(min_: float, max_: float, ticker: str):
+    for day in range(1, 32):
+        db.session.add(
+            CryptoCourse(
+                ID=generate_id(16),
+                ticker=ticker,
+                time_frame=f"day{day}",
+                price=uniform(min_, max_)
+            )
+        )
+
+
+def push_year_course(min_: float, max_: float, ticker: str):
+    for month in range(1, 13):
+        db.session.add(
+            CryptoCourse(
+                ID=generate_id(16),
+                ticker=ticker,
+                time_frame=f"month{month}fst",
+                price=uniform(min_, max_)
+            )
+        )
+        db.session.add(
+            CryptoCourse(
+                ID=generate_id(16),
+                ticker=ticker,
+                time_frame=f"month{month}mid",
+                price=uniform(min_, max_)
+            )
+        )
+
+
 def push_cryptocurrencies():
     db.session.add(
         CryptoCurrency(
@@ -27,6 +59,8 @@ def push_cryptocurrencies():
         )
     )
     push_day_course(38928.0, 82931.0, "BTC")
+    push_month_course(33928.0, 89931.0, "BTC")
+    push_year_course(27928.0, 101931.0, "BTC")
 
     db.session.add(
         CryptoCurrency(
@@ -37,6 +71,8 @@ def push_cryptocurrencies():
         )
     )
     push_day_course(2373.0, 2963.0, "ETH")
+    push_month_course(2173.0, 3263.0, "ETH")
+    push_year_course(1973.0, 3463.0, "ETH")
 
     db.session.add(
         CryptoCurrency(
@@ -47,5 +83,7 @@ def push_cryptocurrencies():
         )
     )
     push_day_course(0.993_813, 1.100_362, "USDT")
+    push_month_course(0.993_813, 1.100_362, "USDT")
+    push_year_course(0.993_813, 1.100_362, "USDT")
 
     db.session.commit()
