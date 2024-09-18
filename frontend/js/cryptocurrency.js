@@ -6,7 +6,6 @@ import {
     LinearScale,
     Title,
     CategoryScale,
-    elements,
     Filler,
 } from "chart.js";
 
