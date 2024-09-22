@@ -69,7 +69,7 @@ function getChart() {
 }
 
 function updateChart(chart, timeFrame) {
-    const chartDataUrl = new URL("api/crypto/ETH/" + timeFrame, origin);
+    const chartDataUrl = new URL(`api/crypto/${cryptocurrency}/${timeFrame}`, origin);
 
     fetch(chartDataUrl, {
         method: "GET",
