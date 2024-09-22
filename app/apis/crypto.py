@@ -8,6 +8,7 @@ from sqlalchemy import ScalarResult
 
 from ..database.postgre.services import get
 from ..database.postgre.models import CryptoCurrency, CryptoCourse
+from ..utils.aliases import RESTError
 
 
 api: Namespace = Namespace("crypto", path="/crypto/")
@@ -106,134 +107,126 @@ class List(Resource):
         }, 200
 
 
-@api.route("/<string:ticker>")
+@api.route("/<string:ticker>/<string:frame>")
 class CryptoCurrencyData(Resource):
-    def get(self, ticker: str):
+    def get(
+        self, ticker: str, frame: t.Literal["day", "month", "year"]
+    ) -> RESTError | dict[str, str | list[int | float]]:
         # response example
         # {
         #     "ticker": "BTC",
-        #     "name": "Bitcion",
-        #     "descrption": "the best crypto ever",
-        #     "logoUrl": "/static/png/cryptocurrency/BTC",
-        #     "volume": 82838219.209291,
-        #     "chartData": {
-        #         "start": 9,
-        #         "end": 8,
-        #         "min": 2419.005645,
-        #         "max": 2975.606936,
-        #         "change": 3.014194591860516859,
-        #         "prices": {
-        #             "hour0": 2632.828609,
-        #             "hour1": 2542.843266,
-        #             "hour2": 2576.874516,
-        #             "hour3": 2828.539856,
-        #             "hour4": 2830.398057,
-        #             "hour5": 2558.913914,
-        #             "hour6": 2790.814923,
-        #             "hour7": 2955.923484,
-        #             "hour8": 2675.649755,
-        #             "hour9": 2975.606936,
-        #             "hour10": 2589.430657,
-        #             "hour11": 2455.724670,
-        #             "hour12": 2482.600027,
-        #             "hour13": 2498.632520,
-        #             "hour14": 2775.522117,
-        #             "hour15": 2470.579307,
-        #             "hour16": 2969.751264,
-        #             "hour17": 2706.550265,
-        #             "hour18": 2423.307852,
-        #             "hour19": 2771.943085,
-        #             "hour20": 2472.691506,
-        #             "hour21": 2519.367414,
-        #             "hour22": 2699.292851,
-        #             "hour23": 2419.005645
-        #         }
-        #     }
+        #     "frame": "day",
+        #     "dataX": [
+        #         19,
+        #         20,
+        #         21,
+        #         22,
+        #         23,
+        #         0,
+        #         1,
+        #         2,
+        #         3,
+        #         4,
+        #         5,
+        #         6,
+        #         7,
+        #         8,
+        #         9,
+        #         10,
+        #         11,
+        #         12,
+        #         13,
+        #         14,
+        #         15,
+        #         16,
+        #         17,
+        #         18
+        #     ],
+        #     "dataY": [
+        #         2455.724673,
+        #         2482.600027,
+        #         2470.579307,
+        #         2419.005645,
+        #         2423.307852,
+        #         2472.691506,
+        #         2675.649755,
+        #         2542.843266,
+        #         2498.632522,
+        #         2589.430657,
+        #         2699.292851,
+        #         2519.367414,
+        #         2558.913914,
+        #         2576.874516,
+        #         2632.828609,
+        #         2775.522117,
+        #         2771.943085,
+        #         2706.550265,
+        #         2830.398057,
+        #         2790.814923,
+        #         2828.539856,
+        #         2975.606936,
+        #         2969.751264,
+        #         2955.923484
+        #     ]
         # }
 
-        # currency_data: ScalarResult[CryptoCurrency] = get(
-        #     CryptoCurrency,
-        #     ticker=ticker
-        # )
+        currency_data: ScalarResult[CryptoCurrency] = get(
+            CryptoCurrency,
+            ticker=ticker
+        )
 
-        # if currency_data is None:
-        #     # TODO change error in response
-        #     return {
-        #         "error": {
-        #             "code": "Bad request",
-        #             "message": "Invalid data",
-        #             "details": "Invalid token or invalid format of data"
-        #         }
-        #     }, 400
+        if currency_data is None:
+            return {
+                "error": {
+                    "code": "Not Found",
+                    "message": "CryptoCurrency not found",
+                    "details": "No such cryptocurrency in database"
+                }
+            }, 404
+        if frame not in ["hour", "day", "month"]:
+            return {
+                "error": {
+                    "code": "Bad request",
+                    "message": "Invalid frame",
+                    "details": "No such frame supported by server"
+                }
+            }, 400
 
-        # course_data: ScalarResult[CryptoCourse] = get(
-        #     CryptoCourse,
-        #     many=True,
-        #     ticker=ticker
-        # )
-        # hour: int = datetime.now(UTC).hour
-        # day: int = datetime.now(UTC).day
-        # month: int = datetime.now(UTC).month
-        # year: int = datetime.now(UTC).year
-        # previous_month: int = (month + 11) % 12 + 1
+        course_data: ScalarResult[CryptoCourse] = get(
+            CryptoCourse,
+            many=True,
+            ticker=ticker,
+            type_=frame
+        )
 
-        # last_month_days: int = monthrange(year, previous_month)[1]
+        date: datetime = datetime.now(UTC)
+        day: int = date.day
+        month: int = date.month
+        response: dict[str, str | list[int | float]] = {
+            "ticker": ticker,
+            "frame": frame,
+            "dataX": [],
+            "dataY": []
+        }
 
-        # max_hour: float = 0
-        # min_hour: float = float("inf")
-        # max_day: float = 0
-        # min_day: float = float("inf")
-        # max_month: float = 0
-        # min_month: float = float("inf")
+        if frame == "hour":
+            hour: int = date.hour
+            response["dataX"] = [(hour + i + 1) % 24 for i in range(24)]
+        elif frame == "day":
+            previous_month: int = month - 1 if month > 1 else 12
+            last_month_days: int = monthrange(date.year, previous_month)[1]
+            response["dataX"] = [
+                i for i in range(day + 1, last_month_days + 1)
+            ]
+            response["dataX"].extend(range(1, day + 1))
+        elif frame == "month":
+            mid_month: int = 1 if day >= 16 else 0
+            response["dataX"] = [i for i in range(month*2+mid_month, 25)]
+            response["dataX"].extend(range(1, month*2+mid_month))
 
-        # if day > 24:
-        #     month_start: int = day - 24
-        # else:
-        #     month_start: int = last_month_days + day - 24
+        prices: dict[int, float] = {
+            raw.number: raw.price for raw in course_data
+        }
+        response["dataY"] = [prices[num] for num in response["dataX"]]
 
-        # chartData: _ChartData = {
-        #     "day": {
-        #         "start": (hour + 1) % 24,
-        #         "end": hour,
-        #         "prices": {}
-        #     },
-        #     "month": {
-        #         "month_days": last_month_days,
-        #         "start": month_start,
-        #         "end": day,
-        #         "prices": {}
-        #     },
-        #     "year": {
-        #         "isMidOfMonth": True if day < 16 else False,
-        #         "start": previous_month,
-        #         "end": month,
-        #         "prices": {}
-        #     }
-        # }
-
-        # for row in course_data:
-        #     if row.time_frame.startswith("hour"):
-        #         chartData["day"]["prices"][row.time_frame[4:]] = row.price
-        #         min_hour = min(min_hour, row.price)
-        #         max_hour = max(max_hour, row.price)
-        #     elif row.time_frame.startswith("day"):
-        #         chartData["month"]["prices"][row.time_frame[3:]] = row.price
-        #         min_day = min(min_day, row.price)
-        #         max_day = max(max_day, row.price)
-        #     if row.time_frame.startswith("month"):
-        #         chartData["day"]["prices"][row.time_frame[4:5]] = row.price
-        #         min_hour = min(min_hour, row.price)
-        #         max_hour = max(max_hour, row.price)
-
-        # response: dict[str, str | float | _ChartData] = {
-        #     "ticker": ticker,
-        #     "name": currency_data.name,
-        #     "description": currency_data.description,
-        #     "logoUrl": url_for(
-        #         "static",
-        #         filename=f"svg/cryptocurrency/{ticker}.svg"
-        #     ),
-        #     "volume": currency_data.volume,
-        #     "chartData": chartData
-        # }
-        pass
+        return response, 200
