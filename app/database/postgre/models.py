@@ -25,6 +25,7 @@ class User(db.Model):
 
     def __init__(
         self,
+        *,
         uuid: str,
         name: str,
         password_hash: str,
@@ -52,7 +53,7 @@ class Session(db.Model):
                                                     server_default=utcnow(),
                                                     onupdate=utcnow())
 
-    def __init__(self, session_id: str, user_id: str, device: str):
+    def __init__(self, *, session_id: str, user_id: str, device: str) -> None:
         self.session_id = session_id
         self.user_id = user_id
         self.device = device
@@ -69,11 +70,12 @@ class CryptoCurrency(db.Model):
 
     def __init__(
         self,
+        *,
         ticker: str,
         name: str,
         description: str,
         volume: float,
-    ):
+    ) -> None:
         self.ticker = ticker
         self.name = name
         self.description = description
@@ -85,14 +87,27 @@ class CryptoCourse(db.Model):
 
     ID: Mapped[str] = mapped_column(String(16), primary_key=True)
     ticker: Mapped[str] = mapped_column(ForeignKey("Cryptocurrency.ticker"))
-    time_frame: Mapped[str] = mapped_column(String(16))
     price: Mapped[float] = mapped_column(Float, default=0)
+    type_: Mapped[str] = mapped_column("type", String(8))
+    number: Mapped[int] = mapped_column(Integer)
+    extra: Mapped[str] = mapped_column(String(16), nullable=True)
 
-    def __init__(self, ID: str, ticker: str, time_frame: str, price: float):
+    def __init__(
+        self,
+        *,
+        ID: str,
+        ticker: str,
+        price: float,
+        type_: str,
+        number: int,
+        extra: str = None
+    ) -> None:
         self.ID = ID
         self.ticker = ticker
-        self.time_frame = time_frame
         self.price = price
+        self.type_ = type_
+        self.number = number
+        self.extra = extra
 
 
 class Wallet(db.Model):
@@ -104,6 +119,6 @@ class Wallet(db.Model):
     user_id: Mapped[str] = mapped_column(ForeignKey("User.uuid"))
     user: Mapped["User"] = relationship(back_populates="wallet")
 
-    def __init__(self, ID: str, user_id: str):
+    def __init__(self, *, ID: str, user_id: str) -> None:
         self.ID = ID
         self.user_id = user_id
