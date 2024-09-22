@@ -9,6 +9,7 @@ import {
     Filler,
 } from "chart.js";
 
+const cryptocurrency = window.location.pathname.split("/")[2];
 const origin = location.origin;
 const loginUrl = new URL("api/auth/sign-in", origin);
 const registerUrl = new URL("api/auth/register/apply", origin);
@@ -18,11 +19,17 @@ const restoreUrl = new URL("api/auth/restore/apply", origin);
 const restoreNewCodeUrl = new URL("api/auth/restore/new-code", origin);
 const restoreVerifyUrl = new URL("api/auth/restore/verify", origin);
 const refreshTokensUrl = new URL("api/auth/refresh-tokens", origin);
+const chartDataUrl = new URL("api/crypto/", origin);
 
 const cooldown = 30;
 const cooldownRec = 30;
 
 const gloablChartObj = getChart();
+loadCryptocurrencyData();
+
+function loadCryptocurrencyData() {
+    updateChart(gloablChartObj, "day");
+}
 
 function getChart() {
     Chart.register(
@@ -41,67 +48,7 @@ function getChart() {
 
     const chartCfg = {
         type: "line",
-        data: {
-            labels: [
-                19, 20, 21, 22, 23, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
-                13, 14, 15, 16, 17, 18,
-            ],
-            datasets: [
-                {
-                    name: "day",
-                    borderColor: "#FF6384",
-                    fill: {
-                        target: "origin",
-                        above: "#843072",
-                    },
-                    hidden: false,
-                    data: [
-                        2455.724673, 2482.600027, 2470.579307, 2419.005645,
-                        2423.307852, 2472.691506, 2675.649755, 2542.843266,
-                        2498.632522, 2589.430657, 2699.292851, 2519.367414,
-                        2558.913914, 2576.874516, 2632.828609, 2775.522117,
-                        2771.943085, 2706.550265, 2830.398057, 2790.814923,
-                        2828.539856, 2975.606936, 2969.751264, 2955.923484,
-                    ],
-                },
-                {
-                    name: "month",
-                    borderColor: "#FF6384",
-                    fill: {
-                        target: "origin",
-                        above: "#843072",
-                    },
-                    hidden: true,
-                    data: [
-                        2456.123789, 2434.456789, 2445.321654, 2478.654321,
-                        2398.654789, 2412.654321, 2467.123456, 2489.789456,
-                        2500.789456, 2490.987321, 2501.789123, 2423.123654,
-                        2887.456123, 2898.987654, 2523.654987, 2512.987456,
-                        2854.456789, 2865.123654, 2876.321987, 2534.987654,
-                        2956.789123, 2876.987654, 2843.321654, 2901.456123,
-                        2912.654987, 2945.321987, 2934.123456, 2960.987321,
-                        2923.987456, 2832.654321, 2801.738226,
-                    ],
-                },
-                {
-                    name: "year",
-                    borderColor: "#FF6384",
-                    fill: {
-                        target: "origin",
-                        above: "#843072",
-                    },
-                    hidden: true,
-                    data: [
-                        2812.987654, 1987.321987, 2123.456789, 1324.456789,
-                        1456.123456, 1589.654321, 1856.789123, 1723.987654,
-                        2256.654321, 2534.123456, 2398.987654, 2678.654321,
-                        3234.987654, 3512.654321, 3934.654321, 4078.987654,
-                        4212.123456, 4356.654321, 4498.987654, 3378.123456,
-                        3798.123456, 3656.987654, 2956.123456, 3098.654321,
-                    ],
-                },
-            ],
-        },
+        data: {},
         options: {
             elements: {
                 line: {
@@ -121,67 +68,43 @@ function getChart() {
     return new Chart(document.getElementById("chart"), chartCfg);
 }
 
-function updateChart(chart, name, labels) {
-    chart.data.datasets.forEach((dataset) => {
-        if (dataset.name === name) {
-            chart.data.labels = labels;
-            dataset.hidden = false;
-        } else {
-            dataset.hidden = true;
-        }
-    });
-    chart.update();
+function updateChart(chart, timeFrame) {
+    const chartDataUrl = new URL("api/crypto/ETH/" + timeFrame, origin);
+
+    fetch(chartDataUrl, {
+        method: "GET",
+        credentials: "same-origin"
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            chart.data = {
+                labels: data["dataX"],
+                datasets: [
+                    {
+                        borderColor: "#FF6384",
+                        fill: {
+                            target: "origin",
+                            above: "#843072",
+                        },
+                        hidden: false,
+                        data: data["dataY"],
+                    }
+                ]
+            };
+            chart.update();
+        });
 }
 
 document.getElementById("chart-btn-day").addEventListener("click", () => {
-    updateChart(
-        gloablChartObj,
-        "day",
-        [
-            19, 20, 21, 22, 23, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,
-            14, 15, 16, 17, 18,
-        ]
-    );
+    updateChart(gloablChartObj, "hour");
 });
 
 document.getElementById("chart-btn-month").addEventListener("click", () => {
-    updateChart(
-        gloablChartObj,
-        "month",
-        [
-            15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
-            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
-        ]
-    );
+    updateChart(gloablChartObj, "day");
 });
 
 document.getElementById("chart-btn-year").addEventListener("click", () => {
-    updateChart(gloablChartObj, "year", [
-        "",
-        "oct",
-        "",
-        "nov",
-        "",
-        "dec",
-        "",
-        "jan",
-        "",
-        "feb",
-        "",
-        "mar",
-        "",
-        "apr",
-        "",
-        "may",
-        "",
-        "jun",
-        "",
-        "jul",
-        "",
-        "aug",
-        "",
-        "sep",
-    ]);
+    updateChart(gloablChartObj, "month");
 });
 
 function getDeviceData() {
