@@ -1,8 +1,9 @@
 from datetime import datetime
 
 from sqlalchemy import TIMESTAMP, Float, ForeignKey, Integer, String
-from sqlalchemy.orm import Mapped, mapped_column, relationship
-
+from sqlalchemy.orm import (
+    Mapped, mapped_column, relationship
+)
 from . import db
 from .utc_time import utcnow
 
@@ -90,7 +91,6 @@ class CryptoCourse(db.Model):
     price: Mapped[float] = mapped_column(Float, default=0)
     type_: Mapped[str] = mapped_column("type", String(8))
     number: Mapped[int] = mapped_column(Integer)
-    extra: Mapped[str] = mapped_column(String(16), nullable=True)
 
     def __init__(
         self,
@@ -100,14 +100,12 @@ class CryptoCourse(db.Model):
         price: float,
         type_: str,
         number: int,
-        extra: str = None
     ) -> None:
         self.ID = ID
         self.ticker = ticker
         self.price = price
         self.type_ = type_
         self.number = number
-        self.extra = extra
 
 
 class Wallet(db.Model):

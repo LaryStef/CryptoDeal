@@ -11,7 +11,8 @@ def push_day_course(min_: float, max_: float, ticker: str):
             CryptoCourse(
                 ID=generate_id(16),
                 ticker=ticker,
-                time_frame=f"hour{hour}",
+                type_="hour",
+                number=hour,
                 price=uniform(min_, max_)
             )
         )
@@ -23,7 +24,8 @@ def push_month_course(min_: float, max_: float, ticker: str):
             CryptoCourse(
                 ID=generate_id(16),
                 ticker=ticker,
-                time_frame=f"day{day}",
+                type_="day",
+                number=day,
                 price=uniform(min_, max_)
             )
         )
@@ -35,7 +37,8 @@ def push_year_course(min_: float, max_: float, ticker: str):
             CryptoCourse(
                 ID=generate_id(16),
                 ticker=ticker,
-                time_frame=f"month{month}fst",
+                type_="month",
+                number=month*2,
                 price=uniform(min_, max_)
             )
         )
@@ -43,7 +46,8 @@ def push_year_course(min_: float, max_: float, ticker: str):
             CryptoCourse(
                 ID=generate_id(16),
                 ticker=ticker,
-                time_frame=f"month{month}mid",
+                type_="month",
+                number=month*2-1,
                 price=uniform(min_, max_)
             )
         )
