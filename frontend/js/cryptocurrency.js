@@ -69,9 +69,7 @@ function getChart() {
 }
 
 function updateChart(chart, timeFrame) {
-    const chartDataUrl = new URL(`api/crypto/${cryptocurrency}/${timeFrame}`, origin);
-
-    fetch(chartDataUrl, {
+    fetch(chartDataUrl + cryptocurrency + "/" + timeFrame, {
         method: "GET",
         credentials: "same-origin"
     })
@@ -92,6 +90,41 @@ function updateChart(chart, timeFrame) {
                 ]
             };
             chart.update();
+
+            let volume;
+            if (currency.volume > 1_000_000_000) {
+                volume = (Math.round(data["volume"] / 1_000_000) / 1000).toString() + "B"
+            } else {
+                volume = (Math.round(data["volume"] / 1000) / 1000).toString() + "M"
+            }
+            document.getElementById("chart-vol").innerText = volume;
+
+            let changeElement = document.getElementById("chart-change-info");
+            if (currency.change >= 0) {
+                changeElement.innerText = "+" + (Math.round(currency.change * 1000) / 1000) + "%";
+                changeElement.classList.remove("change-neg");
+                changeElement.classList.add("change-pos");
+            } else {
+                changeElement.innerText = (Math.round(currency.change * 1000) / 1000) + "%";
+                changeElement.classList.remove("change-pos");
+                changeElement.classList.add("change-neg");
+            }
+
+            if (data["frame"] === "hour") {
+                document.getElementById("chart-change-text").innerText = "Change 24h: ";
+                document.getElementById("chart-low-text").innerText = "Low 24h: ";
+                document.getElementById("chart-high-text").innerText = "Low 24h: ";
+            } else if (data["frame"] === "day") {
+                document.getElementById("chart-change-text").innerText = "Change month: ";
+                document.getElementById("chart-low-text").innerText = "Low month: ";
+                document.getElementById("chart-high-text").innerText = "Low month: ";
+            } else if (data["frame"] === "month") {
+                document.getElementById("chart-change-text").innerText = "Change year: ";
+                document.getElementById("chart-low-text").innerText = "Low year: ";
+                document.getElementById("chart-high-text").innerText = "Low year: ";
+            }
+            document.getElementById("chart-low-info").innerText = Math.round(data["min"] * 1000) / 1000;
+            document.getElementById("chart-high-info").innerText = Math.round(data["max"] * 1000) / 1000;
         });
 }
 
