@@ -114,9 +114,18 @@ class CryptoCurrencyData(Resource):
     ) -> RESTError | dict[str, str | list[int | float]]:
         # response example
         # {
-        #     "ticker": "BTC",
-        #     "frame": "day",
+        #     "ticker": "ETH",
+        #     "frame": "hour",
+        #     "max": 2892.9433335510957,
+        #     "min": 2477.3488667840215,
+        #     "volume": 7865323997.264321,
+        #     "price": 2861.2769881816876,
+        #     "change": -0.8153106753556294,
         #     "dataX": [
+        #         15,
+        #         16,
+        #         17,
+        #         18,
         #         19,
         #         20,
         #         21,
@@ -136,37 +145,33 @@ class CryptoCurrencyData(Resource):
         #         11,
         #         12,
         #         13,
-        #         14,
-        #         15,
-        #         16,
-        #         17,
-        #         18
+        #         14
         #     ],
         #     "dataY": [
-        #         2455.724673,
-        #         2482.600027,
-        #         2470.579307,
-        #         2419.005645,
-        #         2423.307852,
-        #         2472.691506,
-        #         2675.649755,
-        #         2542.843266,
-        #         2498.632522,
-        #         2589.430657,
-        #         2699.292851,
-        #         2519.367414,
-        #         2558.913914,
-        #         2576.874516,
-        #         2632.828609,
-        #         2775.522117,
-        #         2771.943085,
-        #         2706.550265,
-        #         2830.398057,
-        #         2790.814923,
-        #         2828.539856,
-        #         2975.606936,
-        #         2969.751264,
-        #         2955.923484
+        #         2884.797046463851,
+        #         2581.449498144771,
+        #         2867.8517994678778,
+        #         2699.494455400336,
+        #         2667.566271434009,
+        #         2892.9433335510957,
+        #         2766.7457729336197,
+        #         2834.3491687349238,
+        #         2709.4299851672904,
+        #         2477.3488667840215,
+        #         2717.3481154746414,
+        #         2728.0222584743615,
+        #         2566.9691755553295,
+        #         2775.289778202109,
+        #         2792.550468955845,
+        #         2636.6031859943855,
+        #         2638.3849472857373,
+        #         2757.1562940694503,
+        #         2784.7968026536614,
+        #         2861.7701859540307,
+        #         2588.2405829723502,
+        #         2650.1253401490467,
+        #         2716.5367005266207,
+        #         2861.2769881816876
         #     ]
         # }
 
@@ -234,11 +239,16 @@ class CryptoCurrencyData(Resource):
         }
         response["dataY"] = [prices[num] for num in response["dataX"]]
 
-        response["price"] = response["dataY"][-1]
+        current_price: float = get(
+            CryptoCourse, ticker=ticker, type_="hour", number=date.hour
+        ).price
+
+        response["dataY"][-1] = current_price
+        response["price"] = current_price
         response["min"] = min(response["dataY"])
         response["max"] = max(response["dataY"])
         response["volume"] = currency_data.volume
         response["change"] = (
-            response["dataY"][-1] / response["dataY"][-1] - 1
+            current_price / response["dataY"][0] - 1
         )*100
         return response, 200
