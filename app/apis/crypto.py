@@ -65,7 +65,6 @@ class List(Resource):
         currency_list: _ListResponse = []
 
         for currency in currencies:
-            # change get for new table model
             course_day_ago: ScalarResult[CryptoCourse] | None = get(
                 table=CryptoCourse,
                 ticker=currency.ticker,
@@ -252,3 +251,31 @@ class CryptoCurrencyData(Resource):
             current_price / response["dataY"][0] - 1
         )*100
         return response, 200
+
+
+@api.route("/overview/<string:ticker>")
+class CryptoCurrencyOverview(Resource):
+    def get(self, ticker: str) -> RESTError:
+        currency: ScalarResult[CryptoCurrency] = get(
+            CryptoCurrency,
+            ticker=ticker
+        )
+
+        if currency is None:
+            return {
+                "error": {
+                    "code": "Not Found",
+                    "message": "CryptoCurrency not found",
+                    "details": "No such cryptocurrency in database"
+                }
+            }, 404
+
+        return {
+            "ticker": ticker,
+            "name": currency.name,
+            "description": currency.description,
+            "logoUrl": url_for(
+                "static",
+                filename=f"svg/cryptocurrency/{ticker}.svg"
+            ),
+        }, 200
