@@ -9,7 +9,7 @@ import {
     Filler,
 } from "chart.js";
 
-const cryptocurrency = window.location.pathname.split("/")[2];
+const ticker = window.location.pathname.split("/")[2];
 const origin = location.origin;
 const loginUrl = new URL("api/auth/sign-in", origin);
 const registerUrl = new URL("api/auth/register/apply", origin);
@@ -20,6 +20,7 @@ const restoreNewCodeUrl = new URL("api/auth/restore/new-code", origin);
 const restoreVerifyUrl = new URL("api/auth/restore/verify", origin);
 const refreshTokensUrl = new URL("api/auth/refresh-tokens", origin);
 const chartDataUrl = new URL("api/crypto/", origin);
+const currencyOverviewUrl = new URL("api/crypto/overview/", origin);
 
 const cooldown = 30;
 const cooldownRec = 30;
@@ -29,6 +30,17 @@ loadCryptocurrencyData();
 
 function loadCryptocurrencyData() {
     updateChart(gloablChartObj, "hour");
+
+    fetch(currencyOverviewUrl + ticker, {
+        method: "GET",
+        credentials: "same-origin"
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            document.getElementById("main-name").innerText = `${data["name"]}(${data["ticker"]})`;
+            document.getElementById("crypto-logo").src = data["logoUrl"];
+            document.getElementById("crypto-desc").innerHTML = data["description"];
+        })
 }
 
 function getChart() {
@@ -69,7 +81,7 @@ function getChart() {
 }
 
 function updateChart(chart, timeFrame) {
-    fetch(chartDataUrl + cryptocurrency + "/" + timeFrame, {
+    fetch(chartDataUrl + ticker + "/" + timeFrame, {
         method: "GET",
         credentials: "same-origin"
     })
