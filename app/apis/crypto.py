@@ -202,9 +202,14 @@ class CryptoCurrencyData(Resource):
         date: datetime = datetime.now(UTC)
         day: int = date.day
         month: int = date.month
-        response: dict[str, str | list[int | float]] = {
+        response: dict[str, str | int | float | list[int | float]] = {
             "ticker": ticker,
             "frame": frame,
+            "max": 0,
+            "min": 0,
+            "volume": 0,
+            "price": 0,
+            "change": 0,
             "dataX": [],
             "dataY": []
         }
@@ -229,4 +234,11 @@ class CryptoCurrencyData(Resource):
         }
         response["dataY"] = [prices[num] for num in response["dataX"]]
 
+        response["price"] = response["dataY"][-1]
+        response["min"] = min(response["dataY"])
+        response["max"] = max(response["dataY"])
+        response["volume"] = currency_data.volume
+        response["change"] = (
+            response["dataY"][-1] / response["dataY"][-1] - 1
+        )*100
         return response, 200
