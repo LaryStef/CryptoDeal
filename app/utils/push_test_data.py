@@ -86,8 +86,8 @@ def push_cryptocurrencies():
             volume=42_177_103_848.376_772
         )
     )
-    push_day_course(0.993_813, 1.100_362, "USDT")
-    push_month_course(0.993_813, 1.100_362, "USDT")
-    push_year_course(0.993_813, 1.100_362, "USDT")
+    push_day_course(0.983_813, 1.011_362, "USDT")
+    push_month_course(0.983_813, 1.011_362, "USDT")
+    push_year_course(0.983_813, 1.011_362, "USDT")
 
     db.session.commit()
