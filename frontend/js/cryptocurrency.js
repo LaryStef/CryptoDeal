@@ -87,6 +87,31 @@ function updateChart(chart, timeFrame) {
     })
         .then((response) => response.json())
         .then((data) => {
+            if (data["frame"] === "month") {
+                const numberToNameMonths = {
+                    1: "Jan",
+                    3: "Feb",
+                    5: "Mar",
+                    7: "Apr",
+                    9: "May",
+                    11: "Jun",
+                    13: "Jul",
+                    15: "Aug",
+                    17: "Sep",
+                    19: "Oct",
+                    21: "Nov",
+                    23: "Dec"
+                };
+    
+                data["dataX"].forEach((element, index) => {
+                    if (element % 2 === 0) {
+                        data["dataX"][index] = "";
+                    } else {
+                        data["dataX"][index] = numberToNameMonths[element];
+                    }
+                });
+            }
+
             chart.data = {
                 labels: data["dataX"],
                 datasets: [
