@@ -6,8 +6,8 @@ from flask import url_for
 from flask_restx import Namespace, Resource
 from sqlalchemy import ScalarResult
 
-from app.database.postgre.models import CryptoCourse, CryptoCurrency
 from app.database.postgre import PostgreHandler
+from app.database.postgre.models import CryptoCourse, CryptoCurrency
 from app.utils.aliases import RESTError
 
 
