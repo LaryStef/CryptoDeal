@@ -5,7 +5,7 @@ from flask_restx import Namespace, Resource
 from werkzeug.exceptions import BadRequest
 
 from app.database.postgre.models import Session, User
-from app.database.postgre import services
+from app.database.postgre import PostgreHandler
 from app.utils.aliases import RESTError
 from app.utils.decorators import authorization_required
 from app.utils.JWT import validate_token
@@ -64,14 +64,14 @@ class Profile(Resource):
             current_session_id: str = refresh_payload.get("jti", "")
             uuid: str = access_payload.get("uuid", "")
 
-            user: User = services.get(fields=[
+            user: User = PostgreHandler.get(fields=[
                 User.alien_number,
                 User.name,
                 User.email,
                 User.role,
                 User.register_date
             ], uuid=uuid)
-            sessions: list[Session] = services.get(Session, fields=[
+            sessions: list[Session] = PostgreHandler.get(Session, fields=[
                 Session.session_id,
                 Session.device,
                 Session.last_activity

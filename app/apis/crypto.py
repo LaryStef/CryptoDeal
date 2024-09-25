@@ -7,7 +7,7 @@ from flask_restx import Namespace, Resource
 from sqlalchemy import ScalarResult
 
 from app.database.postgre.models import CryptoCourse, CryptoCurrency
-from app.database.postgre.services import get
+from app.database.postgre import PostgreHandler
 from app.utils.aliases import RESTError
 
 
@@ -55,7 +55,7 @@ class List(Resource):
         #     ]
         # }
 
-        currencies: ScalarResult[CryptoCurrency] = get(
+        currencies: ScalarResult[CryptoCurrency] = PostgreHandler.get(
             table=CryptoCurrency,
             many=True
         )
@@ -63,13 +63,14 @@ class List(Resource):
         currency_list: _ListResponse = []
 
         for currency in currencies:
-            course_day_ago: ScalarResult[CryptoCourse] | None = get(
-                table=CryptoCourse,
-                ticker=currency.ticker,
-                type_="hour",
-                number=(hour + 1) % 24
-            )
-            new_course: ScalarResult[CryptoCourse] | None = get(
+            course_day_ago: ScalarResult[CryptoCourse] | None = \
+                PostgreHandler.get(
+                    table=CryptoCourse,
+                    ticker=currency.ticker,
+                    type_="hour",
+                    number=(hour + 1) % 24
+                )
+            new_course: ScalarResult[CryptoCourse] | None = PostgreHandler.get(
                 table=CryptoCourse,
                 ticker=currency.ticker,
                 type_="hour",
@@ -172,7 +173,7 @@ class CryptoCurrencyData(Resource):
         #     ]
         # }
 
-        currency_data: ScalarResult[CryptoCurrency] = get(
+        currency_data: ScalarResult[CryptoCurrency] = PostgreHandler.get(
             CryptoCurrency,
             ticker=ticker
         )
@@ -194,7 +195,7 @@ class CryptoCurrencyData(Resource):
                 }
             }, 400
 
-        course_data: ScalarResult[CryptoCourse] = get(
+        course_data: ScalarResult[CryptoCourse] = PostgreHandler.get(
             CryptoCourse,
             many=True,
             ticker=ticker,
@@ -236,7 +237,7 @@ class CryptoCurrencyData(Resource):
         }
         response["dataY"] = [prices[num] for num in response["dataX"]]
 
-        current_price: float = get(
+        current_price: float = PostgreHandler.get(
             CryptoCourse, ticker=ticker, type_="hour", number=date.hour
         ).price
 
@@ -254,7 +255,7 @@ class CryptoCurrencyData(Resource):
 @api.route("/overview/<string:ticker>")
 class CryptoCurrencyOverview(Resource):
     def get(self, ticker: str) -> RESTError:
-        currency: ScalarResult[CryptoCurrency] = get(
+        currency: ScalarResult[CryptoCurrency] = PostgreHandler.get(
             CryptoCurrency,
             ticker=ticker
         )

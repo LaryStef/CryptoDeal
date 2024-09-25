@@ -5,7 +5,7 @@ from flask_restx import Namespace, Resource
 from werkzeug.exceptions import BadRequest
 
 from app.database.postgre.models import Session
-from app.database.postgre import services
+from app.database.postgre import PostgreHandler
 from app.utils.aliases import RESTError
 from app.utils.decorators import authorization_required
 from app.utils.JWT import validate_token
@@ -30,7 +30,7 @@ class Sessions(Resource):
             uuid: str | None = access_payload.get("uuid")
 
             if id_ not in ["all", "my"]:
-                services.remove(Session, user_id=uuid, session_id=id_)
+                PostgreHandler.remove(Session, user_id=uuid, session_id=id_)
                 return "OK", 200
 
             refresh_token: str = request.cookies.get("refresh_token", "")
@@ -43,7 +43,7 @@ class Sessions(Resource):
             session_id: str = refresh_payload.get("jti", "")
 
             if id_ == "all":
-                services.delete_exclude(
+                PostgreHandler.delete_exclude(
                     table=Session,
                     column=Session.session_id,
                     exclude=[session_id],
@@ -51,7 +51,7 @@ class Sessions(Resource):
                 )
                 return "OK", 200
 
-            services.remove(Session, user_id=uuid, session_id=session_id)
+            PostgreHandler.remove(Session, user_id=uuid, session_id=session_id)
 
             response: Response = make_response("OK")
             response.status_code = 200

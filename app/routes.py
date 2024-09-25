@@ -3,7 +3,7 @@ from sqlalchemy import ScalarResult
 from werkzeug.exceptions import NotFound, Unauthorized
 
 from app.database.postgre.models import CryptoCurrency
-from app.database.postgre.services import get
+from app.database.postgre import PostgreHandler
 
 
 main: Blueprint = Blueprint("main", __name__)
@@ -26,7 +26,7 @@ def crypto_list() -> tuple[str | int]:
 
 @main.route("/crypto/<string:ticker>")
 def currency(ticker: str) -> tuple[str | int]:
-    row: ScalarResult[CryptoCurrency] | None = get(
+    row: ScalarResult[CryptoCurrency] | None = PostgreHandler.get(
         CryptoCurrency,
         ticker=ticker
     )
