@@ -1,21 +1,11 @@
 from flask_sqlalchemy import SQLAlchemy
 
-from .models.cryptocourse import CryptoCourse
-from .models.cryptocurrency import CryptoCurrency
-from .models.cryptocurrency_wallet import CryptocurrencyWallet
-from .models.fiat_wallet import FiatWallet
-from .models.session import Session
-from .models.user import User
+from app.database.postgre.utc_time import utcnow
 
 
 db: SQLAlchemy = SQLAlchemy()
 
-
 __all__ = [
-    "User",
-    "Session",
-    "CryptoCurrency",
-    "CryptoCourse",
-    "FiatWallet",
-    "CryptocurrencyWallet"
+    "db",
+    "utcnow",
 ]
