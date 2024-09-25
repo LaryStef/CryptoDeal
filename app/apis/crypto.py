@@ -14,10 +14,8 @@ from app.utils.aliases import RESTError
 api: Namespace = Namespace("crypto", path="/crypto/")
 
 _ListResponse: t.TypeAlias = list[dict[str, str | int]]
-_ChartData: t.TypeAlias = dict[
-    str, dict[
-        str, float | int | bool | dict[int, float]
-    ]
+_CurrencyResponse: t.TypeAlias = dict[
+    str, str | int | float | list[int | float]
 ]
 
 
@@ -206,7 +204,7 @@ class CryptoCurrencyData(Resource):
         date: datetime = datetime.now(UTC)
         day: int = date.day
         month: int = date.month
-        response: dict[str, str | int | float | list[int | float]] = {
+        response: _CurrencyResponse = {
             "ticker": ticker,
             "frame": frame,
             "max": 0,
