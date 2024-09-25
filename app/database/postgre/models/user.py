@@ -7,6 +7,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.postgre import db
 from app.database.postgre.utc_time import utcnow
 
+
 if TYPE_CHECKING:
     from .cryptocurrency_wallet import CryptocurrencyWallet
     from .fiat_wallet import FiatWallet

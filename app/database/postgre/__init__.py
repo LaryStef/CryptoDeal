@@ -7,6 +7,7 @@ from .models.fiat_wallet import FiatWallet
 from .models.session import Session
 from .models.user import User
 
+
 db: SQLAlchemy = SQLAlchemy()
 
 

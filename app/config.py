@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 from flask import Config
 from kombu import Queue
 
+
 load_dotenv()
 _CeleryConf: TypeAlias = dict[str, str | bool | int | list[str] | dict[str, dict[str, str | crontab]] | dict[str, int] | tuple[Queue]]
 
