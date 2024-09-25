@@ -10,9 +10,7 @@ from werkzeug.exceptions import BadRequest, Unauthorized
 
 from app.config import appConfig
 from app.database.postgre.models import User
-from app.database.postgre.services import (
-    add_session, add_user, get, update_password, update_session
-)
+from app.database.postgre import PostgreHandler
 from app.database.redisdb import rediska
 from app.database.redisdb.services import RediskaHandler
 from app.shemas import LoginSchema, RegisterSchema
@@ -73,7 +71,10 @@ class SignIn(Resource):
             if LoginSchema().validate(data):
                 raise BadRequest
 
-            user: User | None = get(User, name=data.get("username"))
+            user: User | None = PostgreHandler.get(
+                User,
+                name=data.get("username")
+            )
 
             if user is not None and checkpw(
                 data.get("password", "").encode("utf-8"),
@@ -86,7 +87,7 @@ class SignIn(Resource):
                 access_scrf_token: str = generate_id(32)
                 refresh_scrf_token: str = generate_id(32)
 
-                add_session(
+                PostgreHandler.add_session(
                     refresh_id=refresh_token_id,
                     user_id=user.uuid,
                     device=request.headers.get("Device", "unknown device")
@@ -143,9 +144,15 @@ class SignUp(Resource):
             if RegisterSchema().validate(data):
                 raise BadRequest
 
-            if data.get("email") in \
-                rediska.json().get("register", "$..email") \
-                    or get(User, email=data.get("email")):
+            is_email_in_redis: bool = data.get("email") in rediska.json().get(
+                "register",
+                "$..email"
+            )
+            is_email_in_postgre: bool = PostgreHandler.get(
+                User,
+                email=data.get("email")
+            )
+            if is_email_in_redis or is_email_in_postgre:
                 return {
                     "error": {
                         "code": "Conflict",
@@ -157,9 +164,16 @@ class SignUp(Resource):
                     }
                 }, 409
 
-            if data.get("username") in\
-                rediska.json().get("register", "$..username") \
-                    or get(User, name=data.get("username")):
+            usernames_in_redis: list[str] = rediska.json().get(
+                "register",
+                "$..username"
+            )
+            is_name_in_redis: bool = data.get("username") in usernames_in_redis
+            is_name_in_postgre: bool = PostgreHandler.get(
+                User,
+                name=data.get("username")
+            )
+            if is_name_in_redis or is_name_in_postgre:
                 return {
                     "error": {
                         "code": "Conflict",
@@ -197,8 +211,9 @@ class RefreshCode(Resource):
 
             email: str = user_data.get("email", "")
             request_id: str | None = request.headers.get("Request-Id")
-            register_data: dict[str, str | int] = \
-                rediska.json().get("register", request_id)
+            register_data: dict[str, str | int] = rediska.json().get(
+                "register", request_id
+            )
 
             if request_id is None or register_data.get("email") != email:
                 raise BadRequest
@@ -253,8 +268,9 @@ class VerifyCode(Resource):
 
             code: str | None = user_data.get("code")
 
-            register_data: dict[str, str | int] = \
-                rediska.json().get("register", request_id)
+            register_data: dict[str, str | int] = rediska.json().get(
+                "register", request_id
+            )
 
             if code is None or register_data is None:
                 raise BadRequest
@@ -296,7 +312,7 @@ class VerifyCode(Resource):
                     }
                 }, 400
 
-            id_, alien_number = add_user(register_data)
+            id_, alien_number = PostgreHandler.add_user(register_data)
             rediska.json().delete("register", request_id)
 
             response: Response = make_response("OK")
@@ -306,7 +322,7 @@ class VerifyCode(Resource):
             access_scrf_token: str = generate_id(32)
             refresh_scrf_token: str = generate_id(32)
 
-            add_session(
+            PostgreHandler.add_session(
                 refresh_id=refresh_token_id,
                 user_id=id_,
                 device=request.headers.get("Device", "unknown device")
@@ -355,7 +371,7 @@ class Restore(Resource):
             if email is None:
                 raise BadRequest
 
-            user: User | None = get(User, email=email)
+            user: User | None = PostgreHandler.get(User, email=email)
             if user is None:
                 return {
                     "error": {
@@ -411,8 +427,9 @@ class RestoreNewCode(Resource):
 
             email: str | None = user_data.get("email", "")
 
-            restore_data: dict[str, str | int] | None = \
-                rediska.json().get("password_restore", request_id)
+            restore_data: dict[str, str | int] | None = rediska.json().get(
+                "password_restore", request_id
+            )
 
             if restore_data is None or restore_data.get("email") != email:
                 raise BadRequest
@@ -471,8 +488,9 @@ class RestoreVerify(Resource):
                     or len(password) > 20:
                 raise BadRequest
 
-            request_data: dict[str, str | int] = \
-                rediska.json().get("password_restore", request_id)
+            request_data: dict[str, str | int] = rediska.json().get(
+                "password_restore", request_id
+            )
 
             if request_data is None:
                 raise BadRequest
@@ -503,12 +521,15 @@ class RestoreVerify(Resource):
                     }
                 }, 400
 
-            user: User | None = get(User, email=request_data.get("email"))
+            user: User | None = PostgreHandler.get(
+                User,
+                email=request_data.get("email")
+            )
 
             if user is None:
                 raise BadRequest
 
-            update_password(user, password)
+            PostgreHandler.update_password(user, password)
             rediska.json().delete("password_restore", request_id)
 
             response = make_response("OK")
@@ -518,7 +539,7 @@ class RestoreVerify(Resource):
             access_scrf_token: str = generate_id(32)
             refresh_scrf_token: str = generate_id(32)
 
-            add_session(
+            PostgreHandler.add_session(
                 refresh_id=refresh_token_id,
                 user_id=user.uuid,
                 device=request.headers.get("Device", "unknown device")
@@ -566,7 +587,10 @@ class RefreshAccess(Resource):
                 type="refresh"
             )
 
-            user: User | None = get(User, uuid=payload.get("uuid"))
+            user: User | None = PostgreHandler.get(
+                User,
+                uuid=payload.get("uuid")
+            )
             if user is None:
                 raise BadRequest
 
@@ -574,7 +598,7 @@ class RefreshAccess(Resource):
             access_scrf_token: str = generate_id(32)
             refresh_scrf_token: str = generate_id(32)
 
-            update_session(
+            PostgreHandler.update_session(
                 old_refresh_id=payload.get("jti", ""),
                 new_refresh_id=refresh_token_id,
                 user_id=payload.get("uuid", ""),
