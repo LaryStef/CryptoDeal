@@ -7,11 +7,11 @@ from sqlalchemy.orm import Mapped
 
 from app.logger import logger
 from app.utils.cryptography import hash_password
-from app.database.postgre import db
-from app.database.postgre import Session, User, Wallet
+from app.database.postgre import db, Session, User
 from app.database.postgre.utc_time import utcnow
 
 
+# TODO add postgre handler
 def get(
     table: Any = None,
     fields: list[Mapped] = [],
@@ -71,13 +71,13 @@ def add_user(user_data: dict[str, str | int]) -> tuple[str, int]:
         email=user_data["email"],
         alien_number=alien_number
     )
-    wallet: Wallet = Wallet(
-        ID=uuid4().__str__(),
-        user_id=id_
-    )
+    # wallet: Wallet = Wallet(
+    #     ID=uuid4().__str__(),
+    #     user_id=id_
+    # )
 
     db.session.add(user)
-    db.session.add(wallet)
+    # db.session.add(wallet)
     db.session.commit()
     logger.info(msg=f"added {user_data['role']} {user_data['username']}")
     return id_, alien_number
