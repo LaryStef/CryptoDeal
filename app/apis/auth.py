@@ -12,7 +12,7 @@ from app.config import appConfig
 from app.database.postgre.models import User
 from app.database.postgre import PostgreHandler
 from app.database.redisdb import rediska
-from app.database.redisdb.services import RediskaHandler
+from app.database.redisdb import RediskaHandler
 from app.shemas import LoginSchema, RegisterSchema
 from app.utils.aliases import RESTError
 from app.utils.decorators import authorization_required
