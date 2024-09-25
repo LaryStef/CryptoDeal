@@ -1,14 +1,14 @@
 from celery import Celery
 from flask import Flask
 
-from .apis import api
-from .config import appConfig
-from .database.postgre import db
-from .database.redisdb import rediska
-from .mail import mail
-from .routes import main
-from .taskQueue import celery_init_app
-from .utils.push_test_data import push_cryptocurrencies  # noqa F401
+from app.apis import api
+from app.config import appConfig
+from app.database.postgre import db
+from app.database.redisdb import rediska
+from app.mail import mail
+from app.routes import main
+from app.taskQueue import celery_init_app
+from app.utils.push_test_data import push_cryptocurrencies  # noqa F401
 
 
 def create_app() -> tuple[Flask | Celery]:

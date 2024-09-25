@@ -1,7 +1,7 @@
 from sqlalchemy import Float, Integer, String, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
 
-from ...postgre import db
+from app.database.postgre import db
 
 
 class CryptoCourse(db.Model):

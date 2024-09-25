@@ -4,8 +4,8 @@ from typing import Any, Callable, Literal
 from flask import request
 from werkzeug.exceptions import Unauthorized
 
-from ..taskQueue.mail_tasks import send_scrf_attention
-from .JWT import validate_token
+from app.taskQueue.mail_tasks import send_scrf_attention
+from utils.JWT import validate_token
 
 
 def authorization_required(

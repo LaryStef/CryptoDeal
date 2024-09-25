@@ -3,7 +3,7 @@ from typing import Any, Literal
 
 from jwt import InvalidTokenError, decode, encode
 
-from ..config import appConfig
+from app.config import appConfig
 
 
 def generate_tokens(

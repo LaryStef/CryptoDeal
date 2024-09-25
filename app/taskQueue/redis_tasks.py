@@ -3,7 +3,7 @@ from time import time
 
 from celery import shared_task
 
-from ..database.redisdb import rediska
+from app.database.redisdb import rediska
 
 
 class _TaskConfig():

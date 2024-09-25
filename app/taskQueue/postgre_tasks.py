@@ -3,9 +3,9 @@ from datetime import datetime, timedelta
 from celery import shared_task
 from sqlalchemy import delete
 
-from ..config import appConfig
-from ..database.postgre import db
-from ..database.postgre.models import Session
+from app.config import appConfig
+from app.database.postgre import db
+from app.database.postgre import Session
 
 
 class _TaskConfig():

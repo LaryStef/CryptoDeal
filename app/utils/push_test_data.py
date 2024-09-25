@@ -1,8 +1,8 @@
 from random import uniform
 
-from .generators import generate_id
-from ..database.postgre import db
-from ..database.postgre.models import CryptoCurrency, CryptoCourse
+from utils.generators import generate_id
+from app.database.postgre import db
+from app.database.postgre import CryptoCurrency, CryptoCourse
 
 
 def push_day_course(min_: float, max_: float, ticker: str):

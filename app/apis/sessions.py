@@ -4,11 +4,10 @@ from flask import Response, make_response, request
 from flask_restx import Namespace, Resource
 from werkzeug.exceptions import BadRequest
 
-from ..database.postgre import services
-from ..database.postgre.models import Session
-from ..utils.decorators import authorization_required
-from ..utils.JWT import validate_token
-from ..utils.aliases import RESTError
+from app.database.postgre import services, Session
+from app.utils.decorators import authorization_required
+from app.utils.JWT import validate_token
+from app.utils.aliases import RESTError
 
 
 api = Namespace("sessions", path="/sessions/")

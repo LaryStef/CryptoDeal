@@ -6,9 +6,9 @@ from flask import url_for
 from flask_restx import Namespace, Resource
 from sqlalchemy import ScalarResult
 
-from ..database.postgre.services import get
-from ..database.postgre.models import CryptoCurrency, CryptoCourse
-from ..utils.aliases import RESTError
+from app.database.postgre.services import get
+from app.database.postgre import CryptoCurrency, CryptoCourse
+from app.utils.aliases import RESTError
 
 
 api: Namespace = Namespace("crypto", path="/crypto/")

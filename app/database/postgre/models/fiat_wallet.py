@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING
 from sqlalchemy import String, Float, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from ...postgre import db
+from app.database.postgre import db
 
 
 if TYPE_CHECKING:

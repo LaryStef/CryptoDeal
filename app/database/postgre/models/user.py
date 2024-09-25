@@ -4,8 +4,8 @@ from datetime import datetime
 from sqlalchemy import String, Integer, TIMESTAMP
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from ...postgre import db
-from ..utc_time import utcnow
+from app.database.postgre import db
+from app.database.postgre.utc_time import utcnow
 
 
 if TYPE_CHECKING:

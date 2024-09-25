@@ -3,8 +3,8 @@ from datetime import datetime
 from sqlalchemy import TIMESTAMP, String, ForeignKey
 from sqlalchemy.orm import mapped_column, Mapped
 
-from ..utc_time import utcnow
-from ...postgre import db
+from app.database.postgre.utc_time import utcnow
+from app.database.postgre import db
 
 
 class Session(db.Model):

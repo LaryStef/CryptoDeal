@@ -5,11 +5,11 @@ from uuid import uuid4
 from sqlalchemy import Result, delete, select
 from sqlalchemy.orm import Mapped
 
-from ...logger import logger
-from ...utils.cryptography import hash_password
-from . import db
-from .models import Session, User, Wallet
-from .utc_time import utcnow
+from app.logger import logger
+from app.utils.cryptography import hash_password
+from app.database.postgre import db
+from app.database.postgre import Session, User, Wallet
+from app.database.postgre.utc_time import utcnow
 
 
 def get(
