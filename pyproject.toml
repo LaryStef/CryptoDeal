@@ -27,3 +27,6 @@ isort = "^5.13.2"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.isort]
+lines_after_imports = 2
