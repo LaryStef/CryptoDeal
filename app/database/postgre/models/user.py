@@ -1,17 +1,16 @@
-from typing import TYPE_CHECKING
 from datetime import datetime
+from typing import TYPE_CHECKING
 
-from sqlalchemy import String, Integer, TIMESTAMP
+from sqlalchemy import TIMESTAMP, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.postgre import db
 from app.database.postgre.utc_time import utcnow
 
-
 if TYPE_CHECKING:
-    from .session import Session
-    from .fiat_wallet import FiatWallet
     from .cryptocurrency_wallet import CryptocurrencyWallet
+    from .fiat_wallet import FiatWallet
+    from .session import Session
 
 
 class User(db.Model):

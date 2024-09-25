@@ -5,10 +5,10 @@ from uuid import uuid4
 from sqlalchemy import Result, delete, select
 from sqlalchemy.orm import Mapped
 
+from app.database.postgre import Session, User, db
+from app.database.postgre.utc_time import utcnow
 from app.logger import logger
 from app.utils.cryptography import hash_password
-from app.database.postgre import db, Session, User
-from app.database.postgre.utc_time import utcnow
 
 
 # TODO add postgre handler

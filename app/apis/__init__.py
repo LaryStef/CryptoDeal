@@ -1,9 +1,9 @@
 from flask_restx import Api
 
 from app.apis.auth import api as ns1
+from app.apis.crypto import api as ns4
 from app.apis.profile import api as ns2
 from app.apis.sessions import api as ns3
-from app.apis.crypto import api as ns4
 
 
 api: Api = Api(prefix="/api/")

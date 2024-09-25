@@ -2,11 +2,11 @@ from random import randint
 from time import time
 
 from app.config import appConfig
+from app.database.redisdb import rediska
 from app.logger import logger
 from app.taskQueue.mail_tasks import send_register_code, send_restore_code
 from app.utils.cryptography import hash_password
 from app.utils.generators import generate_id
-from app.database.redisdb import rediska
 
 
 class RediskaHandler:

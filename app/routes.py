@@ -1,9 +1,9 @@
-from flask import Blueprint, render_template, abort
-from werkzeug.exceptions import NotFound, Unauthorized
+from flask import Blueprint, abort, render_template
 from sqlalchemy import ScalarResult
+from werkzeug.exceptions import NotFound, Unauthorized
 
-from app.database.postgre.services import get
 from app.database.postgre.models import CryptoCurrency
+from app.database.postgre.services import get
 
 
 main: Blueprint = Blueprint("main", __name__)

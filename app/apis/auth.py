@@ -10,16 +10,15 @@ from werkzeug.exceptions import BadRequest, Unauthorized
 
 from app.config import appConfig
 from app.database.postgre import User
-from app.database.postgre.services import (
-    add_session, add_user, get, update_password, update_session
-)
+from app.database.postgre.services import (add_session, add_user, get,
+                                           update_password, update_session)
 from app.database.redisdb import rediska
 from app.database.redisdb.services import RediskaHandler
 from app.shemas import LoginSchema, RegisterSchema
+from app.utils.aliases import RESTError
 from app.utils.decorators import authorization_required
 from app.utils.generators import generate_id
 from app.utils.JWT import generate_tokens, validate_token
-from app.utils.aliases import RESTError
 
 
 api = Namespace("auth", path="/auth/")

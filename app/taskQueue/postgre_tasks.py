@@ -4,8 +4,7 @@ from celery import shared_task
 from sqlalchemy import delete
 
 from app.config import appConfig
-from app.database.postgre import db
-from app.database.postgre import Session
+from app.database.postgre import Session, db
 
 
 class _TaskConfig():

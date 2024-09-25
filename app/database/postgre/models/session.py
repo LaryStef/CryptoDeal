@@ -1,10 +1,10 @@
 from datetime import datetime
 
-from sqlalchemy import TIMESTAMP, String, ForeignKey
-from sqlalchemy.orm import mapped_column, Mapped
+from sqlalchemy import TIMESTAMP, ForeignKey, String
+from sqlalchemy.orm import Mapped, mapped_column
 
-from app.database.postgre.utc_time import utcnow
 from app.database.postgre import db
+from app.database.postgre.utc_time import utcnow
 
 
 class Session(db.Model):
