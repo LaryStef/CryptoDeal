@@ -27,7 +27,7 @@ class AppConfig(Config):
     MAIL_USE_SSL: bool = True
     MAIL_USERNAME: str | None = os.getenv("MAIL")
     MAIL_PASSWORD: str | None = os.getenv("MAIL_PASSWORD")
-    MAIL_DEFAULT_SENDER: tuple[str, str | None] = ("CryptoDeal", os.getenv("MAIL"))
+    MAIL_DEFAULT_SENDER: tuple[str, None] = ("CryptoDeal", os.getenv("MAIL"))
     # cooldown and cooldownRec in auth.js must be same or longer
     MAIL_CODE_COOLDOWN: int = 20
     MAIL_CODE_VERIFY_ATTEMPTS: int = 3

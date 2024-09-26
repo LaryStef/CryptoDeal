@@ -21,7 +21,7 @@ _CurrencyResponse: t.TypeAlias = dict[
 
 @api.route("/list")
 class List(Resource):
-    def get(self) -> tuple[int | dict[str, _ListResponse]]:
+    def get(self) -> tuple[int, dict[str, _ListResponse]]:
         # response example
         # {
         #     "CryptoCurrencyList": [

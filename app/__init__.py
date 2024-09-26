@@ -11,7 +11,7 @@ from app.taskQueue import celery_init_app
 from app.utils.push_test_data import push_cryptocurrencies  # noqa F401
 
 
-def create_app() -> tuple[Flask | Celery]:
+def create_app() -> tuple[Flask, Celery]:
     app: Flask = Flask(__name__)
     app.config.from_object(appConfig)
     app.register_blueprint(main)
