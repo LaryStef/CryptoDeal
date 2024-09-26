@@ -9,6 +9,7 @@ from app.database.postgre import db, utcnow
 from app.database.postgre.models import FiatWallet, Session, User
 from app.logger import logger
 from app.utils.cryptography import hash_password
+from app.config import appConfig
 
 
 class PostgreHandler:
@@ -74,13 +75,16 @@ class PostgreHandler:
         )
         fiat_wallet: FiatWallet = FiatWallet(
             ID=uuid4().__str__(),
-            user_id=id_
+            user_id=id_,
+            usd=appConfig.START_USD_BALANCE,
+            rub=appConfig.START_RUB_BALANCE
         )
 
         db.session.add(user)
         db.session.add(fiat_wallet)
         db.session.commit()
         logger.info(msg=f"added {user_data['role']} {user_data['username']}")
+
         return id_, alien_number
 
     @staticmethod
