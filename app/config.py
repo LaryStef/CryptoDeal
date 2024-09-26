@@ -33,6 +33,10 @@ class AppConfig(Config):
     MAIL_CODE_VERIFY_ATTEMPTS: int = 3
     MAIL_CODE_REFRESH_ATTEMTPTS: int = 3
 
+    # user
+    START_USD_BALANCE = 10000
+    START_RUB_BALANCE = 1000000
+
     # authentification and authorization
     REGISTER_LIFETIME: int = 1200
     RESTORE_LIFETIME: int = 1200
