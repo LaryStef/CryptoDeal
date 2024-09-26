@@ -19,6 +19,15 @@ class FiatWallet(db.Model):
     user_id: Mapped[str] = mapped_column(ForeignKey("User.uuid"))
     user: Mapped["User"] = relationship(back_populates="fiat_wallet")
 
-    def __init__(self, *, ID: str, user_id: str) -> None:
+    def __init__(
+        self,
+        *,
+        ID: str,
+        user_id: str,
+        usd: float,
+        rub: float
+    ) -> None:
         self.ID = ID
         self.user_id = user_id
+        self.usd = usd
+        self.rub = rub
