@@ -19,8 +19,8 @@ class CryptoCurrency(db.Model):
     description: Mapped[str] = mapped_column(String(4096))
     volume: Mapped[float] = mapped_column(Float, default=0)
     crypto_course: Mapped[list["CryptoCourse"]] = relationship()
-    crypto_wallet: Mapped["CryptocurrencyWallet"] = relationship(
-        back_populates="CryptocurrencyWallet.cryptocurrency"
+    curr_wallet: Mapped["CryptocurrencyWallet"] = relationship(
+        backref="CryptocurrencyWallet.cryptocurrency"
     )
 
     def __init__(
