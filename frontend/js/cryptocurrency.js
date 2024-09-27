@@ -648,11 +648,11 @@ function disableTimer(timerID) {
     isTimerGoing = false;
 }
 
-async function verifyCode() {
+function verifyCode() {
     let data = new Map();
     data.set("code", document.getElementById("input-code").value);
 
-    response = await fetch(verifyCodeUrl, {
+    response = fetch(verifyCodeUrl, {
         method: "POST",
         credentials: "same-origin",
         headers: {
