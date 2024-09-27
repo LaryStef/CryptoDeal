@@ -1,7 +1,6 @@
 from random import uniform
 
-from utils.generators import generate_id
-
+from app.utils.generators import generate_id
 from app.database.postgre import db
 from app.database.postgre.models import CryptoCourse, CryptoCurrency
 

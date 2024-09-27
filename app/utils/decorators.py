@@ -2,9 +2,9 @@ from functools import wraps
 from typing import Any, Callable, Literal
 
 from flask import request
-from utils.JWT import validate_token
 from werkzeug.exceptions import Unauthorized
 
+from app.utils.JWT import validate_token
 from app.taskQueue.mail_tasks import send_scrf_attention
 
 
