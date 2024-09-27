@@ -12,15 +12,15 @@ if TYPE_CHECKING:
 
 
 class CryptoCurrency(db.Model):
-    __tablename__: str = "Cryptocurrency"
+    __tablename__: str = "CryptoCurrency"
 
     ticker: Mapped[str] = mapped_column(String(8), primary_key=True)
     name: Mapped[str] = mapped_column(String(32))
     description: Mapped[str] = mapped_column(String(4096))
     volume: Mapped[float] = mapped_column(Float, default=0)
     crypto_course: Mapped[list["CryptoCourse"]] = relationship()
-    cryptocurrency_wallet: Mapped["CryptocurrencyWallet"] = relationship(
-        back_populates="CryptocurrencyWallet.cryptocurrency"
+    crypto_wallet: Mapped["CryptocurrencyWallet"] = relationship(
+        backref="CryptocurrencyWallet.cryptocurrency"
     )
 
     def __init__(

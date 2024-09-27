@@ -33,7 +33,7 @@ class User(db.Model):
     alien_number: Mapped[int] = mapped_column(Integer, default=0)
     session: Mapped[list["Session"]] = relationship()
     fiat_wallet: Mapped["FiatWallet"] = relationship(back_populates="user")
-    cryptocurrency_wallet: Mapped["CryptocurrencyWallet"] = relationship(
+    user_crypto_wallet: Mapped["CryptocurrencyWallet"] = relationship(
         back_populates="user"
     )
 

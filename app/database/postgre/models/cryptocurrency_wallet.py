@@ -15,9 +15,9 @@ class CryptocurrencyWallet(db.Model):
     __tablename__: str = "CryptocurrencyWallet"
 
     ID: Mapped[str] = mapped_column(String(36), primary_key=True)
-    ticker: Mapped[str] = mapped_column(ForeignKey("Cryptocurrency.ticker"))
+    ticker: Mapped[str] = mapped_column(ForeignKey("CryptoCurrency.ticker"))
     user_id: Mapped[str] = mapped_column(ForeignKey("User.uuid"))
-    user: Mapped["User"] = relationship(back_populates="cryptocurrency_wallet")
+    user: Mapped["User"] = relationship(back_populates="user_crypto_wallet")
     cryptocurrency: Mapped["CryptoCurrency"] = relationship(
-        back_populates="cryptocurrency_wallet"
+        back_populates="crypto_wallet"
     )
