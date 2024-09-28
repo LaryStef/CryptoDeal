@@ -255,6 +255,14 @@ class CryptoCurrencyData(Resource):
 @api.route("/overview/<string:ticker>")
 class CryptoCurrencyOverview(Resource):
     def get(self, ticker: str) -> RESTError:
+        # response example
+        # {
+        #     "ticker": "ETH",
+        #     "name": "Ethereum",
+        #     "description": "Ethereum is...",
+        #     "logoUrl": "/static/svg/cryptocurrency/ETH.svg"
+        # }
+
         currency: ScalarResult[CryptoCurrency] = PostgreHandler.get(
             CryptoCurrency,
             ticker=ticker
