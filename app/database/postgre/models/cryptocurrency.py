@@ -20,7 +20,7 @@ class CryptoCurrency(db.Model):
     volume: Mapped[float] = mapped_column(Float, default=0)
     crypto_course: Mapped[list["CryptoCourse"]] = relationship()
     curr_wallet: Mapped["CryptocurrencyWallet"] = relationship(
-        backref="cryptocurrency"
+        back_populates="cryptocurrency"
     )
 
     def __init__(

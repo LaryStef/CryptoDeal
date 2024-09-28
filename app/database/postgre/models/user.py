@@ -34,7 +34,7 @@ class User(db.Model):
     session: Mapped[list["Session"]] = relationship()
     fiat_wallet: Mapped["FiatWallet"] = relationship(back_populates="user")
     user_wallet: Mapped["CryptocurrencyWallet"] = relationship(
-        backref="user"
+        back_populates="user"
     )
 
     def __init__(
