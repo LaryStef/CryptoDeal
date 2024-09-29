@@ -15,8 +15,9 @@ def authorization_required(
         @wraps(func)
         def handler(*args: Any, **kwargs: Any) -> Any:
             scrf_header: str | None = request.headers.get("X-SCRF-TOKEN")
-            scrf_cookie: str | None = \
-                request.cookies.get(f"{token_type}_scrf_token")
+            scrf_cookie: str | None = request.cookies.get(
+                f"{token_type}_scrf_token"
+            )
             token: str | None = request.cookies.get(f"{token_type}_token")
 
             payload: dict[str, Any] | None = validate_token(

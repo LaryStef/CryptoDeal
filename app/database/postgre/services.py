@@ -73,15 +73,15 @@ class PostgreHandler:
             email=user_data["email"],
             alien_number=alien_number
         )
-        fiat_wallet: FiatWallet = FiatWallet(
-            ID=uuid4().__str__(),
-            user_id=id_,
-            usd=appConfig.START_USD_BALANCE,
-            rub=appConfig.START_RUB_BALANCE
-        )
+        # fiat_wallet: FiatWallet = FiatWallet(
+        #     ID=uuid4().__str__(),
+        #     user_id=id_,
+        #     usd=appConfig.START_USD_BALANCE,
+        #     rub=appConfig.START_RUB_BALANCE
+        # )
 
         db.session.add(user)
-        db.session.add(fiat_wallet)
+        # db.session.add(fiat_wallet)
         db.session.commit()
         logger.info(msg=f"added {user_data['role']} {user_data['username']}")
 
