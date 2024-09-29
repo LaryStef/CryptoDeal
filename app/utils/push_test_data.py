@@ -2,7 +2,10 @@ from random import uniform
 
 from app.utils.generators import generate_id
 from app.database.postgre import db
-from app.database.postgre.models import CryptoCourse, CryptoCurrency
+from app.database.postgre.models import (
+    CryptoCourse, CryptoCurrency, CryptocurrencyWallet, User, FiatWallet,
+    Fiat, CryptoTransaction, Session
+)
 
 
 def push_day_course(min_: float, max_: float, ticker: str):
@@ -196,5 +199,64 @@ def push_cryptocurrencies():
     push_day_course(0.983_813, 1.011_362, "USDT")
     push_month_course(0.983_813, 1.011_362, "USDT")
     push_year_course(0.983_813, 1.011_362, "USDT")
+
+    db.session.add(
+        User(
+            uuid="1e383b66-5612-4590-98b6-865967fc3f8f",
+            name="Chirill",
+            password_hash="8299823932",
+            role="admin",
+            email="37289dejk",
+            alien_number=2
+        )
+    )
+
+    db.session.add(
+        Session(
+            session_id=generate_id(16),
+            user_id="1e383b66-5612-4590-98b6-865967fc3f8f",
+            device="Linux, Chrome"
+        )
+    )
+
+    db.session.add(
+        CryptocurrencyWallet(
+            ID=generate_id(36),
+            ticker="BTC",
+            amount=12,
+            income=100000,
+            invested=100000,
+            user_id="1e383b66-5612-4590-98b6-865967fc3f8f"
+        )
+    )
+
+    db.session.add(
+        CryptoTransaction(
+            ID=generate_id(36),
+            ticker="BTC",
+            amount=12,
+            type_="buy",
+            price=100000,
+            user_id="1e383b66-5612-4590-98b6-865967fc3f8f"
+        )
+    )
+
+    db.session.add(
+        Fiat(
+            iso="USD",
+            name="United States Dollar",
+            description="dollar description",
+            volume=1_000_000.372832
+        )
+    )
+
+    db.session.add(
+        FiatWallet(
+            ID=generate_id(36),
+            iso="USD",
+            amount=1_000_000.372832,
+            user_id="1e383b66-5612-4590-98b6-865967fc3f8f"
+        )
+    )
 
     db.session.commit()
