@@ -9,6 +9,7 @@ from app.database.postgre import db, utcnow
 
 if TYPE_CHECKING:
     from .cryptocurrency_wallet import CryptocurrencyWallet
+    from .crypto_transaction import CryptoTransaction
     from .fiat_wallet import FiatWallet
     from .session import Session
 
@@ -31,11 +32,11 @@ class User(db.Model):
         server_default=utcnow()
     )
     alien_number: Mapped[int] = mapped_column(Integer, default=0)
+
     session: Mapped[list["Session"]] = relationship()
-    fiat_wallet: Mapped["FiatWallet"] = relationship(back_populates="user")
-    user_wallet: Mapped["CryptocurrencyWallet"] = relationship(
-        back_populates="user"
-    )
+    user_fiat_wallet: Mapped[list["FiatWallet"]] = relationship()
+    user_crypto_wallet: Mapped[list["CryptocurrencyWallet"]] = relationship()
+    crypto_transaction: Mapped[list["CryptoTransaction"]] = relationship()
 
     def __init__(
         self,

@@ -9,6 +9,7 @@ from app.database.postgre import db
 if TYPE_CHECKING:
     from .cryptocourse import CryptoCourse
     from .cryptocurrency_wallet import CryptocurrencyWallet
+from .crypto_transaction import CryptoTransaction
 
 
 class CryptoCurrency(db.Model):
@@ -19,9 +20,8 @@ class CryptoCurrency(db.Model):
     description: Mapped[str] = mapped_column(String(4096))
     volume: Mapped[float] = mapped_column(Float, default=0)
     crypto_course: Mapped[list["CryptoCourse"]] = relationship()
-    curr_wallet: Mapped["CryptocurrencyWallet"] = relationship(
-        back_populates="cryptocurrency"
-    )
+    crypto_wallet: Mapped[list["CryptocurrencyWallet"]] = relationship()
+    transaction: Mapped[list["CryptoTransaction"]] = relationship()
 
     def __init__(
         self,

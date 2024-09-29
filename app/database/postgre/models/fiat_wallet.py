@@ -1,33 +1,16 @@
-from typing import TYPE_CHECKING
-
 from sqlalchemy import Float, ForeignKey, String
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import Mapped, mapped_column
 
 from app.database.postgre import db
 
 
-if TYPE_CHECKING:
-    from .user import User
+from .fiat import Fiat  # type: ignore # noqa F401
 
 
 class FiatWallet(db.Model):
     __tablename__: str = "FiatWallet"
 
     ID: Mapped[str] = mapped_column(String(36), primary_key=True)
-    usd: Mapped[float] = mapped_column(Float, default=0)
-    rub: Mapped[float] = mapped_column(Float, default=0)
+    iso: Mapped[str] = mapped_column(ForeignKey("Fiat.iso"))
+    amount: Mapped[float] = mapped_column(Float, default=0)
     user_id: Mapped[str] = mapped_column(ForeignKey("User.uuid"))
-    user: Mapped["User"] = relationship(back_populates="fiat_wallet")
-
-    def __init__(
-        self,
-        *,
-        ID: str,
-        user_id: str,
-        usd: float,
-        rub: float
-    ) -> None:
-        self.ID = ID
-        self.user_id = user_id
-        self.usd = usd
-        self.rub = rub

@@ -1,14 +1,7 @@
-from typing import TYPE_CHECKING
-
-from sqlalchemy import ForeignKey, String
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy import ForeignKey, String, Integer, Float
+from sqlalchemy.orm import Mapped, mapped_column
 
 from app.database.postgre import db
-
-
-if TYPE_CHECKING:
-    from .cryptocurrency import CryptoCurrency
-    from .user import User
 
 
 class CryptocurrencyWallet(db.Model):
@@ -16,8 +9,23 @@ class CryptocurrencyWallet(db.Model):
 
     ID: Mapped[str] = mapped_column(String(36), primary_key=True)
     ticker: Mapped[str] = mapped_column(ForeignKey("CryptoCurrency.ticker"))
+    amount: Mapped[int] = mapped_column(Integer, default=0)
+    income: Mapped[float] = mapped_column(Float, default=0)
+    invested: Mapped[float] = mapped_column(Float, default=0)
     user_id: Mapped[str] = mapped_column(ForeignKey("User.uuid"))
-    user: Mapped["User"] = relationship(back_populates="user_wallet")
-    cryptocurrency: Mapped["CryptoCurrency"] = relationship(
-        back_populates="curr_wallet"
-    )
+
+    def __init__(
+        self,
+        ID: str,
+        ticker: str,
+        amount: int,
+        income: float,
+        invested: float,
+        user_id: str
+    ) -> None:
+        self.ID = ID
+        self.ticker = ticker
+        self.amount = amount
+        self.income = income
+        self.invested = invested
+        self.user_id = user_id
