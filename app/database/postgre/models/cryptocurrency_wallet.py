@@ -16,6 +16,7 @@ class CryptocurrencyWallet(db.Model):
 
     def __init__(
         self,
+        *,
         ID: str,
         ticker: str,
         amount: int,

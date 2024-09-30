@@ -21,6 +21,7 @@ class Fiat(db.Model):
 
     def __init__(
         self,
+        *,
         iso: str,
         name: str,
         description: str,
