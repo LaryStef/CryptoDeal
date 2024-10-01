@@ -19,9 +19,16 @@ class CryptoCurrency(db.Model):
     name: Mapped[str] = mapped_column(String(32))
     description: Mapped[str] = mapped_column(String(4096))
     volume: Mapped[float] = mapped_column(Float, default=0)
-    crypto_course: Mapped[list["CryptoCourse"]] = relationship()
-    crypto_wallet: Mapped[list["CryptocurrencyWallet"]] = relationship()
-    transaction: Mapped[list["CryptoTransaction"]] = relationship()
+
+    crypto_course: Mapped[list["CryptoCourse"]] = relationship(
+        cascade="save-update, merge, delete"
+    )
+    crypto_wallet: Mapped[list["CryptocurrencyWallet"]] = relationship(
+        cascade="save-update, merge, delete"
+    )
+    transaction: Mapped[list["CryptoTransaction"]] = relationship(
+        cascade="save-update, merge, delete"
+    )
 
     def __init__(
         self,
