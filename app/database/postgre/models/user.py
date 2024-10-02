@@ -33,15 +33,15 @@ class User(db.Model):
     )
     alien_number: Mapped[int] = mapped_column(Integer, default=0)
 
-    session: Mapped[list["Session"]] = relationship()
+    session: Mapped[list["Session"]] = relationship(cascade="all, delete")
     user_fiat_wallet: Mapped[list["FiatWallet"]] = relationship(
-        cascade="save-update, merge, delete"
+        cascade="all, delete"
     )
     user_crypto_wallet: Mapped[list["CryptocurrencyWallet"]] = relationship(
-        cascade="save-update, merge, delete"
+        cascade="all, delete"
     )
     crypto_transaction: Mapped[list["CryptoTransaction"]] = relationship(
-        cascade="save-update, merge, delete"
+        cascade="all, delete"
     )
 
     def __init__(

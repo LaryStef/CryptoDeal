@@ -4,16 +4,17 @@ from sqlalchemy.orm import Mapped, mapped_column
 from app.database.postgre import db
 
 
-from .fiat import Fiat  # type: ignore # noqa F401
-
-
 class FiatWallet(db.Model):
     __tablename__: str = "FiatWallet"
 
     ID: Mapped[str] = mapped_column(String(36), primary_key=True)
-    iso: Mapped[str] = mapped_column(ForeignKey("Fiat.iso"))
+    iso: Mapped[str] = mapped_column(
+        ForeignKey("Fiat.iso", ondelete="CASCADE")
+    )
     amount: Mapped[float] = mapped_column(Float, default=0)
-    user_id: Mapped[str] = mapped_column(ForeignKey("User.uuid"))
+    user_id: Mapped[str] = mapped_column(
+        ForeignKey("User.uuid", ondelete="CASCADE")
+    )
 
     def __init__(
         self,

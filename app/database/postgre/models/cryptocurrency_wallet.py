@@ -8,11 +8,15 @@ class CryptocurrencyWallet(db.Model):
     __tablename__: str = "CryptocurrencyWallet"
 
     ID: Mapped[str] = mapped_column(String(36), primary_key=True)
-    ticker: Mapped[str] = mapped_column(ForeignKey("CryptoCurrency.ticker"))
+    ticker: Mapped[str] = mapped_column(
+        ForeignKey("CryptoCurrency.ticker", ondelete="CASCADE")
+    )
     amount: Mapped[float] = mapped_column(Float, default=0)
     income: Mapped[float] = mapped_column(Float, default=0)
     invested: Mapped[float] = mapped_column(Float, default=0)
-    user_id: Mapped[str] = mapped_column(ForeignKey("User.uuid"))
+    user_id: Mapped[str] = mapped_column(
+        ForeignKey("User.uuid", ondelete="CASCADE")
+    )
 
     def __init__(
         self,

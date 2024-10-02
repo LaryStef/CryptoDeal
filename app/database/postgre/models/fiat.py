@@ -19,7 +19,7 @@ class Fiat(db.Model):
     volume: Mapped[float] = mapped_column(Float, default=0)
 
     fiat_wallet: Mapped[list["FiatWallet"]] = relationship(
-        cascade="save-update, merge, delete"
+        cascade="all, delete"
     )
 
     def __init__(

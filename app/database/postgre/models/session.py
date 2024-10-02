@@ -11,7 +11,9 @@ class Session(db.Model):
 
     # TODO replace session_id UUID
     session_id: Mapped[str] = mapped_column(String(16), primary_key=True)
-    user_id: Mapped[str] = mapped_column(ForeignKey("User.uuid"))
+    user_id: Mapped[str] = mapped_column(
+        ForeignKey("User.uuid", ondelete="CASCADE")
+    )
     device: Mapped[str] = mapped_column(String(30), default="unknown device")
     last_activity: Mapped[datetime] = mapped_column(
         TIMESTAMP,
