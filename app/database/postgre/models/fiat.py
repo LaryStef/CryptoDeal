@@ -17,6 +17,7 @@ class Fiat(db.Model):
     name: Mapped[str] = mapped_column(String(32))
     description: Mapped[str] = mapped_column(String(4096))
     volume: Mapped[float] = mapped_column(Float, default=0)
+
     fiat_wallet: Mapped[list["FiatWallet"]] = relationship(
         cascade="save-update, merge, delete"
     )
