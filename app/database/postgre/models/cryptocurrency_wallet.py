@@ -1,4 +1,4 @@
-from sqlalchemy import ForeignKey, String, Integer, Float
+from sqlalchemy import ForeignKey, String, Float
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.database.postgre import db
@@ -9,7 +9,7 @@ class CryptocurrencyWallet(db.Model):
 
     ID: Mapped[str] = mapped_column(String(36), primary_key=True)
     ticker: Mapped[str] = mapped_column(ForeignKey("CryptoCurrency.ticker"))
-    amount: Mapped[int] = mapped_column(Integer, default=0)
+    amount: Mapped[float] = mapped_column(Float, default=0)
     income: Mapped[float] = mapped_column(Float, default=0)
     invested: Mapped[float] = mapped_column(Float, default=0)
     user_id: Mapped[str] = mapped_column(ForeignKey("User.uuid"))
@@ -19,7 +19,7 @@ class CryptocurrencyWallet(db.Model):
         *,
         ID: str,
         ticker: str,
-        amount: int,
+        amount: float,
         income: float,
         invested: float,
         user_id: str
