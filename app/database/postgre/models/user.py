@@ -24,7 +24,6 @@ class User(db.Model):
     email: Mapped[str] = mapped_column(String(256), unique=True)
     register_date: Mapped[datetime] = mapped_column(
         TIMESTAMP,
-        nullable=True,
         server_default=utcnow()
     )
     restore_date: Mapped[datetime] = mapped_column(
