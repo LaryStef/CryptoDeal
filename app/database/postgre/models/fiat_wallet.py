@@ -5,7 +5,7 @@ from app.database.postgre import db
 
 
 class FiatWallet(db.Model):
-    __tablename__: str = "FiatWallet"
+    # __tablename__: str = "FiatWallet"
 
     ID: Mapped[str] = mapped_column(String(36), primary_key=True)
     iso: Mapped[str] = mapped_column(

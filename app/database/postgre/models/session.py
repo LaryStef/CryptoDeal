@@ -7,14 +7,14 @@ from app.database.postgre import db, utcnow
 
 
 class Session(db.Model):
-    __tablename__: str = "Session"
+    # __tablename__: str = "Session"
 
     # TODO replace session_id UUID
-    session_id: Mapped[str] = mapped_column(String(16), primary_key=True)
+    session_id: Mapped[str] = mapped_column(String(36), primary_key=True)
     user_id: Mapped[str] = mapped_column(
         ForeignKey("User.uuid", ondelete="CASCADE")
     )
-    device: Mapped[str] = mapped_column(String(30), default="unknown device")
+    device: Mapped[str] = mapped_column(String(32), default="unknown device")
     last_activity: Mapped[datetime] = mapped_column(
         TIMESTAMP,
         server_default=utcnow(),

@@ -11,7 +11,7 @@ if TYPE_CHECKING:
 
 
 class Fiat(db.Model):
-    __tablename__: str = "Fiat"
+    # __tablename__: str = "Fiat"
 
     iso: Mapped[str] = mapped_column(String(3), primary_key=True)
     name: Mapped[str] = mapped_column(String(32))

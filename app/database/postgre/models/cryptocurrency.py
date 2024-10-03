@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 
 
 class CryptoCurrency(db.Model):
-    __tablename__: str = "CryptoCurrency"
+    # __tablename__: str = "CryptoCurrency"
 
     ticker: Mapped[str] = mapped_column(String(8), primary_key=True)
     name: Mapped[str] = mapped_column(String(32))

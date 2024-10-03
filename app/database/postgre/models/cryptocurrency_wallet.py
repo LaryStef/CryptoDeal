@@ -5,7 +5,7 @@ from app.database.postgre import db
 
 
 class CryptocurrencyWallet(db.Model):
-    __tablename__: str = "CryptocurrencyWallet"
+    # __tablename__: str = "CryptocurrencyWallet"
 
     ID: Mapped[str] = mapped_column(String(36), primary_key=True)
     ticker: Mapped[str] = mapped_column(
