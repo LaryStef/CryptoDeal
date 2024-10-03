@@ -15,7 +15,7 @@ if TYPE_CHECKING:
 
 
 class User(db.Model):
-    __tablename__: str = "User"
+    # __tablename__: str = "User"
 
     uuid: Mapped[str] = mapped_column(String(36), primary_key=True)
     name: Mapped[str] = mapped_column(String(30))
