@@ -53,7 +53,6 @@ class User(db.Model):
         email: str,
         alien_number: int
     ) -> None:
-
         self.uuid = uuid
         self.name = name
         self.password_hash = password_hash

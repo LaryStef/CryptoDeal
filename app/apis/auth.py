@@ -23,7 +23,7 @@ from app.utils.JWT import generate_tokens, validate_token
 api = Namespace("auth", path="/auth/")
 
 
-def set_auth_cookies(
+def _set_auth_cookies(
     response: Response,
     access_scrf: str,
     refresh_scrf: str,
@@ -106,7 +106,7 @@ class SignIn(Resource):
                     refresh_id=refresh_token_id
                 )
 
-                return set_auth_cookies(
+                return _set_auth_cookies(
                     response,
                     access_scrf_token,
                     refresh_scrf_token,
@@ -341,7 +341,7 @@ class VerifyCode(Resource):
                 refresh_id=refresh_token_id
             )
 
-            return set_auth_cookies(
+            return _set_auth_cookies(
                 response,
                 access_scrf_token,
                 refresh_scrf_token,
@@ -558,7 +558,7 @@ class RestoreVerify(Resource):
                 refresh_id=refresh_token_id
             )
 
-            return set_auth_cookies(
+            return _set_auth_cookies(
                 response,
                 access_scrf_token,
                 refresh_scrf_token,
@@ -621,7 +621,7 @@ class RefreshAccess(Resource):
             response = make_response("OK")
             response.status_code = 200
 
-            return set_auth_cookies(
+            return _set_auth_cookies(
                 response,
                 access_scrf_token,
                 refresh_scrf_token,

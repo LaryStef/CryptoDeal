@@ -11,7 +11,7 @@ __all__ = [
 ]
 
 
-class Base(DeclarativeBase):
+class _Base(DeclarativeBase):
     __abstract__: bool = True
 
     @declared_attr
@@ -22,4 +22,4 @@ class Base(DeclarativeBase):
         return f"<{self.__class__.__name__}>"
 
 
-db: SQLAlchemy = SQLAlchemy(model_class=Base)
+db: SQLAlchemy = SQLAlchemy(model_class=_Base)
