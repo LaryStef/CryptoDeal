@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from time import time
 from typing import Any
+from uuid import uuid4
 
 from bcrypt import checkpw
 from flask import Response, make_response, request
@@ -82,7 +83,7 @@ class SignIn(Resource):
                 response: Response = make_response("OK")
                 response.status_code = 200
 
-                refresh_token_id: str = generate_id(16)
+                refresh_token_id: str = uuid4().__str__()
                 access_scrf_token: str = generate_id(32)
                 refresh_scrf_token: str = generate_id(32)
 
@@ -317,7 +318,7 @@ class VerifyCode(Resource):
             response: Response = make_response("OK")
             response.status_code = 200
 
-            refresh_token_id: str = generate_id(16)
+            refresh_token_id: str = uuid4().__str__()
             access_scrf_token: str = generate_id(32)
             refresh_scrf_token: str = generate_id(32)
 
@@ -534,7 +535,7 @@ class RestoreVerify(Resource):
             response = make_response("OK")
             response.status_code = 200
 
-            refresh_token_id: str = generate_id(16)
+            refresh_token_id: str = uuid4().__str__()
             access_scrf_token: str = generate_id(32)
             refresh_scrf_token: str = generate_id(32)
 
@@ -593,7 +594,7 @@ class RefreshAccess(Resource):
             if user is None:
                 raise BadRequest
 
-            refresh_token_id: str = generate_id(16)
+            refresh_token_id: str = uuid4().__str__()
             access_scrf_token: str = generate_id(32)
             refresh_scrf_token: str = generate_id(32)
 
