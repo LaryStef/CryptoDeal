@@ -22,8 +22,10 @@ class Sessions(Resource):
     ) -> RESTError | Response:
         try:
             access_token: str = request.cookies.get("access_token", "")
-            access_payload: t.Any = validate_token(token=access_token,
-                                                   type="access")
+            access_payload: t.Any = validate_token(
+                token=access_token,
+                type="access"
+            )
 
             if access_payload is None:
                 raise BadRequest
@@ -34,8 +36,10 @@ class Sessions(Resource):
                 return "OK", 200
 
             refresh_token: str = request.cookies.get("refresh_token", "")
-            refresh_payload: t.Any = validate_token(token=refresh_token,
-                                                    type="refresh")
+            refresh_payload: t.Any = validate_token(
+                token=refresh_token,
+                type="refresh"
+            )
 
             if refresh_payload is None:
                 raise BadRequest

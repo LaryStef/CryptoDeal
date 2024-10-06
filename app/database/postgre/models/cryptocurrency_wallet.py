@@ -30,7 +30,7 @@ class CryptocurrencyWallet(db.Model):
     ) -> None:
         self.ID = ID
         self.ticker = ticker
+        self.user_id = user_id
         self.amount = amount
         self.income = income
         self.invested = invested
-        self.user_id = user_id
