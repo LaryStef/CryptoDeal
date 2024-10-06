@@ -27,10 +27,10 @@ class LoginSchema(Schema):
 
 
 class TransactionSchema(Schema):
-    amount: Field = fields.Integer(
-        validate=validate.Range(min=0, max=4_294_967_296)
+    amount: Field = fields.Float(
+        validate=validate.Range(min=0, min_inclusive=False, max=4_294_967_296)
     )
-    type_: Field = fields.Str(validate=validate.OneOf(choices=["buy", "sell"]))
+    type: Field = fields.Str(validate=validate.OneOf(choices=["buy", "sell"]))
 
 
 class CryptoTransactionSchema(TransactionSchema):
