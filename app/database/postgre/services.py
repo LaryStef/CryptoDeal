@@ -1,12 +1,12 @@
 from random import randint
-from typing import Any
+from typing import Any, Literal
 from uuid import uuid4
 
 from sqlalchemy import Result, delete, select
 from sqlalchemy.orm import Mapped
 
 from app.database.postgre import db, utcnow
-from app.database.postgre.models import FiatWallet, Session, User
+from app.database.postgre.models import *
 from app.logger import logger
 from app.utils.cryptography import hash_password
 from app.config import appConfig
@@ -123,3 +123,23 @@ class PostgreHandler:
         session_raw.device = device
         db.session.commit()
         logger.info(msg=f"session refreshed {user_id}")
+
+    @classmethod
+    def provide_crypto_transaction(
+        cls,
+        user_id: str,
+        ticker: str,
+        amount: float,
+        type_: Literal["buy", "sell"]
+    ) -> str | None:
+        current_price: float | None = cls._get_crypto_price(ticker)
+
+        if current_price is None:
+            return "No such cryptocurrency"
+        
+        
+    
+    def _get_crypto_price(cls, ticker: str) -> float | None:
+        return db.session.execute(
+            select(CryptoCourse).where(ticker=ticker)
+        ).fetchone().price

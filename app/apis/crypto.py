@@ -2,13 +2,15 @@ import typing as t
 from calendar import monthrange
 from datetime import UTC, datetime
 
-from flask import url_for
+from flask import url_for, request
 from flask_restx import Namespace, Resource
 from sqlalchemy import ScalarResult
 
+from app.shemas import CryptoTransactionSchema
 from app.database.postgre.services import PostgreHandler
 from app.database.postgre.models import CryptoCourse, CryptoCurrency
 from app.utils.aliases import RESTError
+from app.utils.decorators import authorization_required
 
 
 api: Namespace = Namespace("crypto", path="/crypto/")
@@ -286,3 +288,19 @@ class CryptoCurrencyOverview(Resource):
                 filename=f"svg/cryptocurrency/{ticker}.svg"
             ),
         }, 200
+
+
+@api.route("/transaction")
+class Transaction(Resource):
+    @authorization_required
+    def post(self):
+        transaction_data: dict[str, str] = request.json
+
+        if CryptoTransactionSchema().validate(transaction_data):
+            return {
+                "error": {
+                    "code": "Bad request",
+                    "message": "Invalid data",
+                    "details": "Invalid format of data in payload"
+                }
+            }, 400
