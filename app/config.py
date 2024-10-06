@@ -62,13 +62,13 @@ class AppConfig(Config):
             Queue(name="low", routing_key=".db_tasks.#"),
         ),
         "task_routes": {
-            ".mail_tasks.#": {
+            "app.tasks.mail.#": {
                 "queue": "normal"
             },
-            "app.taskQueue.postgre_tasks.#": {
+            "app.tasks.postgre.#": {
                 "queue": "low",
             },
-            "app.taskQueue.redis_tasks.#": {
+            "app.tasks.redis.#": {
                 "queue": "low",
             }
         },
