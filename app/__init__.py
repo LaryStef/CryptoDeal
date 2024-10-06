@@ -7,7 +7,7 @@ from app.database.postgre import db
 from app.database.redisdb import rediska
 from app.mail import mail
 from app.routes import main
-from app.taskQueue import celery_init_app
+from app.tasks import celery_init_app
 from app.utils.push_test_data import push_cryptocurrencies  # noqa F401
 
 

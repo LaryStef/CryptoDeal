@@ -52,9 +52,9 @@ class AppConfig(Config):
         "task_ignore_result": True,
         "task_time_limit": 10,
         "imports": (
-            "app.taskQueue.mail_tasks",
-            "app.taskQueue.postgre_tasks",
-            "app.taskQueue.redis_tasks",
+            "app.tasks.mail",
+            "app.tasks.postgre",
+            "app.tasks.redis",
         ),
         "task_default_queue": "normal",
         "task_queues": (

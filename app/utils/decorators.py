@@ -5,7 +5,7 @@ from flask import request
 from werkzeug.exceptions import Unauthorized
 
 from app.utils.JWT import validate_token
-from app.taskQueue.mail_tasks import send_scrf_attention
+from app.tasks.mail import send_scrf_attention
 
 
 def authorization_required(
