@@ -98,6 +98,7 @@ class Profile(Resource):
                     {
                         "sessionId": session.session_id,
                         "device": session.device,
+                        # TODO: display last activity in user's timezone
                         "lastActivity": session.last_activity.strftime(
                             "%Y-%m-%d %H:%M"
                         ),
