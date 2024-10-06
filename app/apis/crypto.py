@@ -5,12 +5,14 @@ from datetime import UTC, datetime
 from flask import url_for, request
 from flask_restx import Namespace, Resource
 from sqlalchemy import ScalarResult
+from werkzeug.exceptions import BadRequest
 
 from app.shemas import CryptoTransactionSchema
 from app.database.postgre.services import PostgreHandler
 from app.database.postgre.models import CryptoCourse, CryptoCurrency
 from app.utils.aliases import RESTError
 from app.utils.decorators import authorization_required
+from app.utils.JWT import validate_token
 
 
 api: Namespace = Namespace("crypto", path="/crypto/")
@@ -292,15 +294,34 @@ class CryptoCurrencyOverview(Resource):
 
 @api.route("/transaction")
 class Transaction(Resource):
-    @authorization_required
+    @authorization_required("access")
     def post(self):
-        transaction_data: dict[str, str] = request.json
+        try:
+            transaction_data: dict[str, str] = request.json
 
-        if CryptoTransactionSchema().validate(transaction_data):
+            access_token: str | None = request.cookies.get("access_token")
+            access_payload: t.Any = validate_token(
+                token=access_token,
+                type="access"
+            )
+            user_id: str = access_payload.get("uuid", "")
+
+            if CryptoTransactionSchema().validate(transaction_data):
+                raise BadRequest(description="Invalid format of data")
+
+            PostgreHandler.provide_crypto_transaction(
+                user_id,
+                ticker=transaction_data["ticker"],
+                amount=float(transaction_data["amount"]),
+                type_=transaction_data["type"]
+            )
+            return "OK", 200
+
+        except BadRequest as error:
             return {
                 "error": {
                     "code": "Bad request",
-                    "message": "Invalid data",
-                    "details": "Invalid format of data in payload"
+                    "message": "Invalid request",
+                    "details": error.description
                 }
             }, 400
