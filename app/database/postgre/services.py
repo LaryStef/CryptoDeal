@@ -1,12 +1,17 @@
 from random import randint
 from typing import Any, Literal
+from datetime import datetime, UTC
 from uuid import uuid4
 
-from sqlalchemy import Result, delete, select
+from sqlalchemy import Result, delete, select, ScalarResult
 from sqlalchemy.orm import Mapped
+from werkzeug.exceptions import BadRequest
 
 from app.database.postgre import db, utcnow
-from app.database.postgre.models import *
+from app.database.postgre.models import (
+    CryptocurrencyWallet, CryptoCourse, FiatWallet, Session, User,
+    CryptoTransaction
+)
 from app.logger import logger
 from app.utils.cryptography import hash_password
 from app.config import appConfig
@@ -128,18 +133,99 @@ class PostgreHandler:
     def provide_crypto_transaction(
         cls,
         user_id: str,
+        *,
         ticker: str,
         amount: float,
         type_: Literal["buy", "sell"]
     ) -> str | None:
-        current_price: float | None = cls._get_crypto_price(ticker)
+        course_row: ScalarResult[CryptoCourse] | None = cls._get_crypto_price(
+            PostgreHandler, ticker
+        )
 
-        if current_price is None:
-            return "No such cryptocurrency"
-        
-        
-    
-    def _get_crypto_price(cls, ticker: str) -> float | None:
+        if course_row is None:
+            raise BadRequest(description=f"no such ticker: {ticker}")
+        current_price: float = course_row.price
+
+        user: User = db.session.execute(
+            select(User).filter_by(uuid=user_id)
+        ).scalar()
+
+        usd_balance: FiatWallet | None = None
+        for fiat in user.user_fiat_wallet:
+            if fiat.iso == "USD":
+                usd_balance = fiat
+                break
+
+        crypto_balance: CryptocurrencyWallet | None = None
+        for crypto in user.user_crypto_wallet:
+            if crypto.ticker == ticker:
+                crypto_balance = crypto
+                break
+
+        if type_ == "buy":
+            if usd_balance.amount < amount * current_price:
+                raise BadRequest(
+                    description=f"""
+                        you're short
+                        {current_price * amount - usd_balance.amount} USD
+                    """
+                )
+
+            if crypto_balance is None:
+                crypto_balance = CryptocurrencyWallet(
+                    ID=uuid4().__str__(),
+                    ticker=ticker,
+                    amount=0,
+                    income=0,
+                    invested=0,
+                    user_id=user_id
+                )
+                db.session.add(crypto_balance)
+
+            usd_balance.amount -= amount * current_price
+            crypto_balance.invested += amount * current_price
+            crypto_balance.amount += amount
+
+        elif type_ == "sell":
+            if crypto_balance is None:
+                raise BadRequest(description=f"you don't have any {ticker}")
+
+            if crypto_balance.amount < amount:
+                raise BadRequest(
+                    description=f"""
+                        you're short {amount - crypto_balance.amount} {ticker}
+                    """
+                )
+
+            usd_balance.amount += amount * current_price
+            crypto_balance.income += amount * current_price
+            crypto_balance.amount -= amount
+
+            if crypto_balance.amount == 0:
+                db.session.delete(crypto_balance)
+
+        db.session.add(
+            CryptoTransaction(
+                ID=uuid4().__str__(),
+                ticker=ticker,
+                amount=amount,
+                type_=type_,
+                price=current_price,
+                user_id=user_id
+            )
+        )
+        db.session.commit()
+        logger.info(
+            msg=f"transaction made {user_id} {type_} {ticker} {amount}"
+        )
+
+    def _get_crypto_price(
+        cls, ticker: str
+    ) -> ScalarResult[CryptoCourse] | None:
         return db.session.execute(
-            select(CryptoCourse).where(ticker=ticker)
-        ).fetchone().price
+            select(CryptoCourse).filter_by(
+                ticker=ticker).filter_by(
+                type_="hour").filter_by(
+                number=datetime.now(UTC).hour
+            )
+        ).scalar()
