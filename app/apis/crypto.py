@@ -9,7 +9,7 @@ from werkzeug.exceptions import BadRequest
 
 from app.shemas import CryptoTransactionSchema
 from app.database.postgre.services import PostgreHandler
-from app.database.postgre.models import CryptoCourse, CryptoCurrency
+from app.database.postgre.models import CryptoCourse, CryptoCurrency, CryptoTransaction
 from app.utils.aliases import RESTError
 from app.utils.decorators import authorization_required
 from app.utils.JWT import validate_token
@@ -295,7 +295,7 @@ class CryptoCurrencyOverview(Resource):
 @api.route("/transaction")
 class Transaction(Resource):
     @authorization_required("access")
-    def post(self):
+    def post(self) -> RESTError | tuple[str, int]:
         try:
             transaction_data: dict[str, str] = request.json
 
@@ -325,3 +325,20 @@ class Transaction(Resource):
                     "details": error.description
                 }
             }, 400
+
+
+@api.route("transaction/history")
+class Histoty(Resource):
+    @authorization_required("access")
+    def get(self):
+        access_token: str | None = request.cookies.get("access_token")
+        access_payload: t.Any = validate_token(
+            token=access_token,
+            type="access"
+        )
+        
+        return {
+            "history": PostgreHandler.get_crypto_history(
+                access_payload.get("uuid", "")
+            )
+        }, 200
