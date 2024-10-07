@@ -138,7 +138,7 @@ class PostgreHandler:
         amount: float,
         type_: Literal["buy", "sell"]
     ) -> str | None:
-        course_row: ScalarResult[CryptoCourse] | None = cls._get_crypto_price(
+        course_row: CryptoCourse | None = cls._get_crypto_price(
             PostgreHandler, ticker
         )
 
@@ -221,7 +221,7 @@ class PostgreHandler:
 
     def _get_crypto_price(
         cls, ticker: str
-    ) -> ScalarResult[CryptoCourse] | None:
+    ) -> CryptoCourse | None:
         return db.session.execute(
             select(CryptoCourse).filter_by(
                 ticker=ticker).filter_by(
@@ -229,3 +229,12 @@ class PostgreHandler:
                 number=datetime.now(UTC).hour
             )
         ).scalar()
+    
+    def get_crypto_history(user_id: str) -> list[CryptoCourse] | None:
+        transactions: list[CryptoTransaction] | None = db.session.execute(
+            select(CryptoTransaction).filter_by(user_id=user_id)
+        ).scalar()
+
+        if transactions is None:
+            return []
+        return transactions
