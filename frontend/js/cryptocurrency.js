@@ -179,6 +179,36 @@ document.getElementById("chart-btn-year").addEventListener("click", () => {
     updateChart(gloablChartObj, "month");
 });
 
+document.getElementById("wtb-btn").addEventListener("click", () => {
+    openTradeWindow();
+});
+
+document.getElementById("cancel-wtb").addEventListener("click", () => {
+    closeTradeWindow();
+});
+
+function openTradeWindow() {
+    let window = document.getElementById("wtb-window");
+    window.style.opacity = 1;
+    window.style.transform = "translate(0%)";
+    window.style.visibility = "visible";
+
+    document.getElementById("main").style.filter = "brightness(0.5)";
+    document.getElementById("navbar").style.filter = "brightness(0.5)";
+}
+
+function closeTradeWindow() {
+    let window = document.getElementById("wtb-window");
+    window.style.transform = "translate(-200%)";
+    document.getElementById("main").style.filter = "brightness(1)";
+    document.getElementById("navbar").style.filter = "brightness(1)";
+
+    setTimeout(() => {
+        window.style.visibility = "hidden";
+        window.style.opacity = 0;
+    }, 400);
+}
+
 function getDeviceData() {
     let browser = "unknown browser";
     let os = "unknown os";
