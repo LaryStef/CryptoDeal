@@ -5,6 +5,70 @@
 {% endblock %}
 
 {% block main_container %}
+<div class="wtb-window" id="wtb-window">
+    <div class="cancel-wrap">
+        <button class="cancel-btn" id="cancel-wtb">cancel</button>
+    </div>
+    <div class="trade-mode-wrap">
+        <div class="trade-switch">
+            <button class="trade-mode-btn" id="buy-mode">Buy</button>
+            <button class="trade-mode-btn" id="sell-mode">Sell</button>
+            <div class="trade-mode"></div>
+        </div>
+    </div>
+    <div class="buy-window">
+        <div class="buy-error">
+            <span></span>
+        </div>
+        <div class="buy-fields">
+            <input
+                class="trade-field"
+                type="text"
+                placeholder="amount of crypto"
+                autocomplete="off"
+                autofocus
+                required
+            >
+            <input
+                class="trade-field autofill"
+                type="number"
+                placeholder="price"
+                autocomplete="off"
+                readonly
+            >
+            <input class="trade-field trade-submit" type="button" value="purchase">
+        </div>
+        <div>
+            <span>current balance: 32893.36$</span>
+        </div>
+    </div>
+    <div class="sell-window">
+        <div class="sell-error">
+            <span></span>
+        </div>
+        <div class="buy-fields">
+            <input
+                class="trade-field"
+                type="text"
+                placeholder="amount of crypto"
+                autocomplete="off"
+                autofocus
+                required
+            >
+            <input
+                class="trade-field autofill"
+                type="number"
+                placeholder="income"
+                autocomplete="off"
+                readonly
+            >
+            <input class="trade-field trade-submit" type="button" value="purchase">
+        </div>
+        <div>
+            <span>crypto balance: 784.01</span>
+        </div>
+    </div>
+</div>
 <div id="main">
     <div class="content">
         <div class="info-wrap">
@@ -14,9 +78,9 @@
                     <span class="crypto-name" id="main-name">Ethereum(ETH)</span>
                     <span class="crypto-price" id="price-head">69782.873$</span>
                 </div>
+                <button class="wtb-btn" id="wtb-btn">Buy/Sell</button>
             </div>
             <div class="desc" id="crypto-desc"></div>
-        <!-- <div class="wtb-btn"></div> -->
         </div>
         <div class="chart-content">
             <div class="review">
@@ -38,7 +102,7 @@
                 </div>
             </div>
             <div class="chart-wrap">
-                <canvas class="chart" id="chart" aria-label="Chart will be here" role="img"></canvas>
+                <canvas class="chart" id="chart" aria-label="chart" role="img"></canvas>
             </div>
             <div class="chart-btn-wrap">
                 <button class="chart-btn" id="chart-btn-day">daily</button>
