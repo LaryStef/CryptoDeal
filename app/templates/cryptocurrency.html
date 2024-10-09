@@ -13,10 +13,10 @@
         <div class="trade-switch">
             <button class="trade-mode-btn" id="buy-mode">Buy</button>
             <button class="trade-mode-btn" id="sell-mode">Sell</button>
-            <div class="trade-mode"></div>
+            <div class="trade-mode" id="trade-mode"></div>
         </div>
     </div>
-    <div class="buy-window">
+    <div class="buy-window" id="buy-window">
         <div class="buy-error">
             <span></span>
         </div>
@@ -38,11 +38,17 @@
             >
             <input class="trade-field trade-submit" type="button" value="purchase">
         </div>
-        <div>
-            <span>current balance: 32893.36$</span>
+        <div class="trade-extra">
+            <div class="trade-price">
+                <button class="reload-btn">
+                    <img class="reload-logo" src="{{ url_for('static', filename='svg/Reload.svg') }}" alt="refresh">
+                </button>
+                <div>current price: 46347.721$</div>
+            </div>
+            <div>usd balance: 784.01</div>
         </div>
     </div>
-    <div class="sell-window">
+    <div class="sell-window" id="sell-window">
         <div class="sell-error">
             <span></span>
         </div>
@@ -64,8 +70,14 @@
             >
             <input class="trade-field trade-submit" type="button" value="purchase">
         </div>
-        <div>
-            <span>crypto balance: 784.01</span>
+        <div class="trade-extra">
+            <div class="trade-price">
+                <button class="reload-btn">
+                    <img class="reload-logo" src="{{ url_for('static', filename='svg/Reload.svg') }}" alt="refresh">
+                </button>
+                <div>current price: 46347.721$</div>
+            </div>
+            <div>crypto balance: 784.01</div>
         </div>
     </div>
 </div>
