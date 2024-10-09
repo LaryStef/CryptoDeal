@@ -180,6 +180,13 @@ document.getElementById("chart-btn-year").addEventListener("click", () => {
 });
 
 document.getElementById("wtb-btn").addEventListener("click", () => {
+    if (isTokensRefreshRequired()) {
+        refreshTokens();
+    }
+    if (isTokensRefreshRequired()) {
+        openSignInWindow();
+        return;
+    }
     openTradeWindow();
 });
 
@@ -207,6 +214,25 @@ function closeTradeWindow() {
         window.style.visibility = "hidden";
         window.style.opacity = 0;
     }, 400);
+}
+
+document.getElementById("buy-mode").onclick = () => {
+    openBuyMode();
+}
+document.getElementById("sell-mode").onclick = () => {
+    openSellMode();
+}
+
+function openBuyMode() {
+    document.getElementById("buy-window").style.transform = "translate(0%)";
+    document.getElementById("sell-window").style.transform = "translate(-100%, -100%)";
+    document.getElementById("trade-mode").style.transform = "translate(0%)";
+}
+
+function openSellMode() {
+    document.getElementById("buy-window").style.transform = "translate(100%)";
+    document.getElementById("sell-window").style.transform = "translate(0%, -100%)";
+    document.getElementById("trade-mode").style.transform = "translate(100%)";
 }
 
 function getDeviceData() {
