@@ -8,7 +8,7 @@ const restoreUrl = new URL("api/auth/restore/apply", origin);
 const restoreNewCodeUrl = new URL("api/auth/restore/new-code", origin);
 const restoreVerifyUrl = new URL("api/auth/restore/verify", origin);
 const refreshTokensUrl = new URL("api/auth/refresh-tokens", origin);
-const profileDataUrl = new URL("api/profile", origin);
+const profileDataUrl = new URL("api/user", origin);
 const sessionUrl = new URL("api/sessions", origin);
 
 const cooldown = 30;

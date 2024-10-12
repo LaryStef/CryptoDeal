@@ -11,7 +11,7 @@ from app.utils.decorators import authorization_required
 from app.utils.JWT import validate_token
 
 
-api = Namespace("profile", path="/profile/")
+api = Namespace("user", path="/user/")
 
 _UserData: t.TypeAlias = dict[
     str, str | dict[str, str | int] | list[dict[str, str | bool]]
