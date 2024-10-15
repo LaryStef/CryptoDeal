@@ -5,8 +5,6 @@ from app.database.postgre import db
 
 
 class CryptoCourse(db.Model):
-    # __tablename__: str = "CryptoCourse"
-
     ID: Mapped[str] = mapped_column(String(36), primary_key=True)
     ticker: Mapped[str] = mapped_column(
         ForeignKey("CryptoCurrency.ticker", ondelete="CASCADE")

@@ -7,9 +7,6 @@ from app.database.postgre import db, utcnow
 
 
 class Session(db.Model):
-    # __tablename__: str = "Session"
-
-    # TODO replace session_id UUID
     session_id: Mapped[str] = mapped_column(String(36), primary_key=True)
     user_id: Mapped[str] = mapped_column(
         ForeignKey("User.uuid", ondelete="CASCADE")
