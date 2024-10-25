@@ -9,7 +9,7 @@ from werkzeug.exceptions import BadRequest
 
 from app.shemas import CryptoTransactionSchema
 from app.database.postgre.services import PostgreHandler
-from app.database.postgre.models import CryptoCourse, CryptoCurrency, CryptoTransaction
+from app.database.postgre.models import CryptoCourse, CryptoCurrency
 from app.utils.aliases import RESTError
 from app.utils.decorators import authorization_required
 from app.utils.JWT import validate_token
@@ -336,7 +336,7 @@ class Histoty(Resource):
             token=access_token,
             type="access"
         )
-        
+
         return {
             "history": PostgreHandler.get_crypto_history(
                 access_payload.get("uuid", "")
