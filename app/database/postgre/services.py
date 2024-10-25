@@ -1,9 +1,9 @@
 from random import randint
-from typing import Any, Literal
+from typing import Any, Literal, TypeAlias
 from datetime import datetime, UTC
 from uuid import uuid4
 
-from sqlalchemy import Result, delete, select, ScalarResult
+from sqlalchemy import Result, delete, select
 from sqlalchemy.orm import Mapped
 from werkzeug.exceptions import BadRequest
 
@@ -15,6 +15,9 @@ from app.database.postgre.models import (
 from app.logger import logger
 from app.utils.cryptography import hash_password
 from app.config import appConfig
+
+
+_BalanceList: TypeAlias = list[CryptocurrencyWallet | FiatWallet] | None
 
 
 class PostgreHandler:
@@ -229,7 +232,7 @@ class PostgreHandler:
                 number=datetime.now(UTC).hour
             )
         ).scalar()
-    
+
     def get_crypto_history(user_id: str) -> list[CryptoCourse] | None:
         transactions: list[CryptoTransaction] | None = db.session.execute(
             select(CryptoTransaction).filter_by(user_id=user_id)
@@ -238,3 +241,20 @@ class PostgreHandler:
         if transactions is None:
             return []
         return transactions
+
+    @staticmethod
+    def get_balance(
+        ids: list[str],
+        *,
+        table: CryptocurrencyWallet | FiatWallet,
+        user_id: str,
+    ) -> list[CryptocurrencyWallet] | list[FiatWallet]:
+
+        if table == CryptocurrencyWallet:
+            in_condition: str = CryptocurrencyWallet.ticker.in_(ids)
+        elif table == FiatWallet:
+            in_condition: str = FiatWallet.iso.in_(ids)
+
+        return db.session.execute(
+            select(table).filter(in_condition).filter_by(user_id=user_id)
+        ).all()

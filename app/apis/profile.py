@@ -2,10 +2,13 @@ import typing as t
 
 from flask import request
 from flask_restx import Namespace, Resource
+from werkzeug.datastructures import ImmutableMultiDict
 from werkzeug.exceptions import BadRequest
 
 from app.database.postgre.services import PostgreHandler
-from app.database.postgre.models import Session, User
+from app.database.postgre.models import (
+    Session, User, CryptocurrencyWallet, FiatWallet
+)
 from app.utils.aliases import RESTError
 from app.utils.decorators import authorization_required
 from app.utils.JWT import validate_token
@@ -116,5 +119,71 @@ class Profile(Resource):
                     "code": "Bad request",
                     "message": "Invalid data",
                     "details": "Invalid format of data"
+                }
+            }, 400
+
+
+@api.route("/balance/<string:asset>/ids")
+class Balance(Resource):
+    @authorization_required("access")
+    def get(self, asset: str):
+        # request /api/profile/balance/jcurrency/ids?id=USD&id=RUR
+        # response example
+        # {
+        #     "type": "currency",
+        #     "balance": {
+        #         "USD": 20.383631,
+        #         "RUR": 38381.389311
+        #     }
+        # }
+
+        availible_assets: list[str] = ["cryptocurrency", "currency"]
+
+        try:
+            if asset not in availible_assets:
+                raise BadRequest(description=f"Type not in {availible_assets}")
+
+            ids: ImmutableMultiDict[str, str] = request.args.getlist("id")
+            access_token: str | None = request.cookies.get("access_token")
+            access_payload: t.Any = validate_token(
+                token=access_token,
+                type="access"
+            )
+
+            if access_payload is None:
+                raise BadRequest("Access token is not valid")
+            user_id: str = access_payload.get("uuid", "")
+            balance: dict[str, int] = {}
+
+            if asset == "cryptocurrency":
+                wallet: list[CryptocurrencyWallet] = \
+                    PostgreHandler.get_balance(
+                        ids,
+                        table=CryptocurrencyWallet,
+                        user_id=user_id,
+                    )
+                for crypto in wallet:
+                    balance[crypto[0].ticker] = crypto[0].amount
+
+            elif asset == "currency":
+                wallet: list[FiatWallet] = PostgreHandler.get_balance(
+                    ids,
+                    table=FiatWallet,
+                    user_id=user_id,
+                )
+                for currency in wallet:
+                    balance[currency[0].iso] = currency[0].amount
+
+            return {
+                "type": asset,
+                "balance": balance
+            }, 200
+
+        except BadRequest as error:
+            return {
+                "error": {
+                    "code": "Bad request",
+                    "message": "Can't recognize request",
+                    "details": error.description
                 }
             }, 400
