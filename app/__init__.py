@@ -26,10 +26,12 @@ def create_app() -> tuple[Flask, Celery]:
     celery: Celery = celery_init_app(app)
 
     with app.app_context():
-        from .database.postgre.models import User  # noqa: F401
         db.create_all()
 
-        # TODO add creating redis jsons
+        if rediska.json().get("register") is None:
+            rediska.json().set(name="register", path=".", obj={})
+        if rediska.json().get("password_restore") is None:
+            rediska.json().set(name="password_restore", path=".", obj={})
         # push_cryptocurrencies()
 
     return app, celery
