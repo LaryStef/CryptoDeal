@@ -204,7 +204,9 @@ def push_cryptocurrencies():
         User(
             uuid="1e383b66-5612-4590-98b6-865967fc3f8f",
             name="Chirill",
-            password_hash="8299823932",
+            password_hash=(
+                "$2b$12$pFGpw0EWOBUQpQSps4ozgeanaMu7YmfYf/hKerT87pOzZOYSabkBy"
+            ),
             role="admin",
             email="37289dejk",
             alien_number=2
