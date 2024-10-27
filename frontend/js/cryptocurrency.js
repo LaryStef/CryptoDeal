@@ -11,8 +11,13 @@ import {
 
 const cooldown = 30;
 const cooldownRec = 30;
+const textColor = "#7d42e7";
 
 const ticker = window.location.pathname.split("/")[2];
+let currentCryptoPrice = 0;
+let userUSDBalance = 0;
+let userCryptoBalance = 0;
+
 const origin = location.origin;
 const loginUrl = new URL("api/auth/sign-in", origin);
 const registerUrl = new URL("api/auth/register/apply", origin);
@@ -24,6 +29,7 @@ const restoreVerifyUrl = new URL("api/auth/restore/verify", origin);
 const refreshTokensUrl = new URL("api/auth/refresh-tokens", origin);
 const chartDataUrl = new URL("api/crypto/", origin);
 const currencyOverviewUrl = new URL("api/crypto/overview/", origin);
+const cryptoPriceUrl = new URL("api/crypto/price/", origin);
 
 class BalanceUrl {
     constructor(origin, type, ids) {
@@ -210,18 +216,9 @@ document.getElementById("cancel-wtb").addEventListener("click", () => {
     closeTradeWindow();
 });
 
-function openTradeWindow() {
-    let window = document.getElementById("wtb-window");
-    window.style.opacity = 1;
-    window.style.transform = "translate(0%)";
-    window.style.visibility = "visible";
-
-    document.getElementById("main").style.filter = "brightness(0.5)";
-    document.getElementById("navbar").style.filter = "brightness(0.5)";
-
+function updateTradeWindowInfo() {
     let cryptoBalanceUrl = new BalanceUrl(origin, "cryptocurrency", [ticker]);
     let usdBalanceUrl = new BalanceUrl(origin, "currency", ["USD"]);
-    console.log(cryptoBalanceUrl.get(), usdBalanceUrl.get());
 
     fetch(cryptoBalanceUrl.get(), {
         method: "GET",
@@ -232,12 +229,12 @@ function openTradeWindow() {
     })
         .then((response) => response.json())
         .then((data) => {
-            let balance = data["balance"][ticker];
-            if (balance === undefined) {
-                balance = 0;
+            userCryptoBalance = data["balance"][ticker];
+            if (userCryptoBalance === undefined) {
+                userCryptoBalance = 0;
             }
 
-            const balanceRounded = Math.round(balance * 100) / 100;
+            const balanceRounded = Math.round(userCryptoBalance * 100) / 100;
             document.getElementById("crypto-balance").innerText = ticker + " balance: " + balanceRounded;
         });
     fetch(usdBalanceUrl.get(), {
@@ -249,14 +246,39 @@ function openTradeWindow() {
     })
         .then((response) => response.json())
         .then((data) => {
-            let balance = data["balance"]["USD"];
-            if (balance === undefined) {
-                balance = 0;
+            userUSDBalance = data["balance"]["USD"];
+            if (userUSDBalance === undefined) {
+                userUSDBalance = 0;
             }
 
-            const balanceRounded = Math.round(balance * 100) / 100;
+            const balanceRounded = Math.round(userUSDBalance * 100) / 100;
             document.getElementById("usd-balance").innerText = "USD balance: " + balanceRounded + "$";
         });
+    fetch(cryptoPriceUrl + ticker, {
+        method: "GET",
+        credentials: "same-origin",
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            currentCryptoPrice = Math.round(data["price"] * 1000) / 1000;
+            document.getElementById("crypto-trade-price-buy").innerText = ticker + " price: " + currentCryptoPrice + "$";
+            document.getElementById("crypto-trade-price-sell").innerText = ticker + " price: " + currentCryptoPrice + "$";
+        });
+}
+
+document.getElementById("update-crypto-price-btn").addEventListener("click", () => {
+    updateTradeWindowInfo();
+});
+
+function openTradeWindow() {
+    let window = document.getElementById("wtb-window");
+    window.style.opacity = 1;
+    window.style.transform = "translate(0%)";
+    window.style.visibility = "visible";
+
+    document.getElementById("main").style.filter = "brightness(0.5)";
+    document.getElementById("navbar").style.filter = "brightness(0.5)";
+    updateTradeWindowInfo();
 }
 
 function closeTradeWindow() {
@@ -264,6 +286,14 @@ function closeTradeWindow() {
     window.style.transform = "translate(-200%)";
     document.getElementById("main").style.filter = "brightness(1)";
     document.getElementById("navbar").style.filter = "brightness(1)";
+    document.getElementById("crypto-amount-buy").value = "";
+    document.getElementById("crypto-price-buy").value = "";
+    document.getElementById("crypto-amount-sell").value = "";
+    document.getElementById("crypto-income-sell").value = "";
+    document.getElementById("buy-error-message").innerText = "";
+    document.getElementById("sell-error-message").innerText = "";
+    colorPriceField("crypto-price-buy");
+    colorPriceField("crypto-income-sell");
 
     setTimeout(() => {
         window.style.visibility = "hidden";
@@ -288,6 +318,58 @@ function openSellMode() {
     document.getElementById("buy-window").style.transform = "translate(100%)";
     document.getElementById("sell-window").style.transform = "translate(0%, -100%)";
     document.getElementById("trade-mode").style.transform = "translate(100%)";
+}
+
+document.getElementById("crypto-amount-buy").addEventListener("input", () => {
+    const priceFieldId = "crypto-price-buy";
+    const userFieldValue = document.getElementById("crypto-amount-buy").value;
+    let priceField = document.getElementById(priceFieldId);
+    if (userFieldValue === "") {
+        colorPriceField(priceFieldId);
+        priceField.value = "";
+        return;
+    }
+    let amount = parseFloat(userFieldValue);
+    if (amount === NaN || amount < 0) {
+        colorPriceField(priceFieldId, false);
+        priceField.value = "Invalid value";
+        return;
+    }
+    const maxAmount = userUSDBalance / currentCryptoPrice;
+    priceField.value = Math.round(amount * currentCryptoPrice * 100) / 100;
+    if (amount > maxAmount) {
+        colorPriceField(priceFieldId, false);
+        return;
+    }
+    colorPriceField(priceFieldId);
+});
+
+document.getElementById("crypto-amount-sell").addEventListener("input", () => {
+    const priceFieldId = "crypto-income-sell";
+    const userFieldValue = document.getElementById("crypto-amount-sell").value;
+    let priceField = document.getElementById(priceFieldId);
+    if (userFieldValue === "") {
+        colorPriceField(priceFieldId);
+        priceField.value = "";
+        return;
+    }
+    let amount = parseFloat(userFieldValue);
+    if (amount === NaN || amount < 0) {
+        colorPriceField(priceFieldId, false);
+        priceField.value = "Invalid value";
+        return;
+    }
+    priceField.value = Math.round(amount * currentCryptoPrice * 100) / 100;
+    if (amount > userCryptoBalance) {
+        colorPriceField(priceFieldId, false);
+        return;
+    }
+    colorPriceField(priceFieldId);
+});
+
+function colorPriceField(id, defaultColor=true) {
+    const color = defaultColor ? textColor : "red";
+    document.getElementById(id).style.backgroundColor = color;
 }
 
 function getDeviceData() {

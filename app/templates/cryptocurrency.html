@@ -18,12 +18,13 @@
     </div>
     <div class="buy-window" id="buy-window">
         <div class="buy-error">
-            <span></span>
+            <span id="buy-error-message"></span>
         </div>
         <div class="buy-fields">
             <input
                 class="trade-field"
-                type="text"
+                id="crypto-amount-buy"
+                type="number"
                 placeholder="amount of crypto"
                 autocomplete="off"
                 autofocus
@@ -31,7 +32,9 @@
             >
             <input
                 class="trade-field autofill"
-                type="number"
+                id="crypto-price-buy"
+                type="text"
+                value=""
                 placeholder="price"
                 autocomplete="off"
                 readonly
@@ -43,19 +46,20 @@
                 <button class="reload-btn">
                     <img class="reload-logo" src="{{ url_for('static', filename='svg/Reload.svg') }}" alt="refresh">
                 </button>
-                <div>current price: 46347.721$</div>
+                <div id="crypto-trade-price-buy">current price: 46347.721$</div>
             </div>
-            <div id="usd-balance">usd balance: 784.01</div>
+            <div id="usd-balance">USD balance: 784.01</div>
         </div>
     </div>
     <div class="sell-window" id="sell-window">
         <div class="sell-error">
-            <span></span>
+            <span id="sell-error-message"></span>
         </div>
         <div class="buy-fields">
             <input
                 class="trade-field"
-                type="text"
+                id="crypto-amount-sell"
+                type="number"
                 placeholder="amount of crypto"
                 autocomplete="off"
                 autofocus
@@ -63,7 +67,8 @@
             >
             <input
                 class="trade-field autofill"
-                type="number"
+                id="crypto-income-sell"
+                type="text"
                 placeholder="income"
                 autocomplete="off"
                 readonly
@@ -72,10 +77,10 @@
         </div>
         <div class="trade-extra">
             <div class="trade-price">
-                <button class="reload-btn">
+                <button class="reload-btn" id="update-crypto-price-btn">
                     <img class="reload-logo" src="{{ url_for('static', filename='svg/Reload.svg') }}" alt="refresh">
                 </button>
-                <div>current price: 46347.721$</div>
+                <div id="crypto-trade-price-sell">current price: 46347.721$</div>
             </div>
             <div id="crypto-balance">crypto balance: 784.01</div>
         </div>

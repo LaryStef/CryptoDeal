@@ -264,7 +264,7 @@ li {
     border-radius: 50px;
     border-style: none;
     background-color: var(--text-color);
-    color: var(--background-color);
+    /* color: var(--background-color); */
     font-size: 1.125rem;
     transition: box-shadow 0.2s linear;
     -webkit-transition: box-shadow 0.2s linear;
