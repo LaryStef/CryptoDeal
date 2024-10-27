@@ -127,7 +127,7 @@ class Profile(Resource):
 class Balance(Resource):
     @authorization_required("access")
     def get(self, asset: str):
-        # request /api/profile/balance/jcurrency/ids?id=USD&id=RUR
+        # request /api/user/balance/currency/ids?id=USD&id=RUR
         # response example
         # {
         #     "type": "currency",

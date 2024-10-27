@@ -9,6 +9,9 @@ import {
     Filler,
 } from "chart.js";
 
+const cooldown = 30;
+const cooldownRec = 30;
+
 const ticker = window.location.pathname.split("/")[2];
 const origin = location.origin;
 const loginUrl = new URL("api/auth/sign-in", origin);
@@ -22,10 +25,23 @@ const refreshTokensUrl = new URL("api/auth/refresh-tokens", origin);
 const chartDataUrl = new URL("api/crypto/", origin);
 const currencyOverviewUrl = new URL("api/crypto/overview/", origin);
 
-const cooldown = 30;
-const cooldownRec = 30;
+class BalanceUrl {
+    constructor(origin, type, ids) {
+        let urlConstructor = new URL(`api/user/balance/${type}/ids`, origin);
+        for (let id of ids) {
+            urlConstructor.searchParams.append("id", id);
+        }
+
+        this.url = urlConstructor;
+    }
+
+    get() {
+        return this.url;
+    }
+}
 
 const gloablChartObj = getChart();
+
 loadCryptocurrencyData();
 
 function loadCryptocurrencyData() {
@@ -202,6 +218,45 @@ function openTradeWindow() {
 
     document.getElementById("main").style.filter = "brightness(0.5)";
     document.getElementById("navbar").style.filter = "brightness(0.5)";
+
+    let cryptoBalanceUrl = new BalanceUrl(origin, "cryptocurrency", [ticker]);
+    let usdBalanceUrl = new BalanceUrl(origin, "currency", ["USD"]);
+    console.log(cryptoBalanceUrl.get(), usdBalanceUrl.get());
+
+    fetch(cryptoBalanceUrl.get(), {
+        method: "GET",
+        credentials: "same-origin",
+        headers: {
+            "X-SCRF-TOKEN": getCookie("access_scrf_token"),
+        },
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            let balance = data["balance"][ticker];
+            if (balance === undefined) {
+                balance = 0;
+            }
+
+            const balanceRounded = Math.round(balance * 100) / 100;
+            document.getElementById("crypto-balance").innerText = ticker + " balance: " + balanceRounded;
+        });
+    fetch(usdBalanceUrl.get(), {
+        method: "GET",
+        credentials: "same-origin",
+        headers: {
+            "X-SCRF-TOKEN": getCookie("access_scrf_token"),
+        },
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            let balance = data["balance"]["USD"];
+            if (balance === undefined) {
+                balance = 0;
+            }
+
+            const balanceRounded = Math.round(balance * 100) / 100;
+            document.getElementById("usd-balance").innerText = "USD balance: " + balanceRounded + "$";
+        });
 }
 
 function closeTradeWindow() {
