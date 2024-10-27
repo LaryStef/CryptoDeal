@@ -1236,6 +1236,18 @@ span {
     color: var(--text-hover-color);
 }
 
+.settings-note {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 5%;
+    height: 20%;
+    gap: 10%;
+    color: var(--text-color);
+    font-size: 1.125rem;
+}
+
 .display-off {
     display: none;
 }
