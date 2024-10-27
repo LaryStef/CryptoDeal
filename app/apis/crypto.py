@@ -256,6 +256,42 @@ class CryptoCurrencyData(Resource):
         return response, 200
 
 
+@api.route("/price/<string:ticker>")
+class CryptoCurrencyPrice(Resource):
+    def get(self, ticker: str) -> RESTError | dict[str, float | str]:
+        # response example
+        # {
+        #     "ticker": "ETH",
+        #     "price": 2861.2769881816876
+        # }
+
+        currency: ScalarResult[CryptoCurrency] = PostgreHandler.get(
+            CryptoCurrency,
+            ticker=ticker
+        )
+
+        if currency is None:
+            return {
+                "error": {
+                    "code": "Not Found",
+                    "message": "CryptoCurrency not found",
+                    "details": "No such cryptocurrency in database"
+                }
+            }, 404
+
+        price: float = PostgreHandler.get(
+            CryptoCourse,
+            ticker=ticker,
+            type_="hour",
+            number=datetime.now(UTC).hour
+        ).price
+
+        return {
+            "ticker": ticker,
+            "price": price
+        }, 200
+
+
 @api.route("/overview/<string:ticker>")
 class CryptoCurrencyOverview(Resource):
     def get(self, ticker: str) -> RESTError:
