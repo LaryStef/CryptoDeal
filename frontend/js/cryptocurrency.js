@@ -321,6 +321,45 @@ function openSellMode() {
     document.getElementById("trade-mode").style.transform = "translate(100%)";
 }
 
+document.getElementById("close-success").addEventListener("click", () => {
+    closeSuccessWindow();
+})
+
+function openSuccessWindow() {
+    let window = document.getElementById("success-window");
+    window.style.transform = "translate(0%)";
+
+    document.getElementById("main").style.filter = "brightness(0.5)";
+    document.getElementById("navbar").style.filter = "brightness(0.5)";
+}
+
+function closeSuccessWindow() {
+    let window = document.getElementById("success-window");
+    window.style.transform = "translate(250%)";
+
+    document.getElementById("main").style.filter = "brightness(1)";
+    document.getElementById("navbar").style.filter = "brightness(1)";
+}
+
+function updateSuccessWindow(
+    transactionType,
+    amountCrypto,
+    amountUSD,
+) {
+    const transactionInfoEl = document.getElementById("transaction-info");
+    if (transactionType === "buy"){
+        transactionInfoEl.innerText = `You bought ${amountCrypto} ${ticker} for ${amountUSD}$`;        
+    }
+    else if (transactionType === "sell"){
+        transactionInfoEl.innerText = `You sold ${amountCrypto} ${ticker} for ${amountUSD}$`;
+    }
+    
+    const roundedCryptoBalance = Math.round(userCryptoBalance * 100) / 100;
+    const roundedUSDBalance = Math.round(userUSDBalance * 100) / 100;
+    document.getElementById("crypto-success-balance").innerText = `Your ${ticker} balance: ${roundedCryptoBalance}`;
+    document.getElementById("usd-success-balance").innerText = `Your USD balance: ${roundedUSDBalance}`;
+}
+
 document.getElementById("crypto-amount-buy").addEventListener("input", () => {
     const priceFieldId = "crypto-price-buy";
     const userFieldValue = document.getElementById("crypto-amount-buy").value;
@@ -398,7 +437,22 @@ function provideTransaction(valueFieldId, errorFieldId, type) {
     })
         .then((response) => {
             if (response.status === 200) {
+                if (type === "buy") {
+                    userCryptoBalance += parseFloat(amount);
+                    userUSDBalance -= parseFloat(amount) * currentCryptoPrice;
+                }
+                else if (type === "sell") {
+                    userCryptoBalance -= amount;
+                    userUSDBalance += amount * currentCryptoPrice;
+                }
+
                 closeTradeWindow();
+                updateSuccessWindow(
+                    type,
+                    amount,
+                    Math.round(amount * currentCryptoPrice * 100) / 100,
+                );
+                openSuccessWindow();
             } else {
                 response.json().then((data) => {
                     document.getElementById(errorFieldId).innerText = data["error"]["details"];

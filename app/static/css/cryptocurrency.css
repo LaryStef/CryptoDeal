@@ -1473,11 +1473,10 @@ span {
     background-color: var(--background-button-color);
     border-radius: 50px;
     border-style: none;
-    opacity: 0;
     z-index: 1;
     overflow: hidden;
     visibility: visible;
-    transform: translate(200%);
+    transform: translate(250%);
     transition: transform var(--login-transition-duration) ease-out;
     -webkit-transition: transform var(--login-transition-duration) ease-out;
     -o-transition: transform var(--login-transition-duration) ease-out;
