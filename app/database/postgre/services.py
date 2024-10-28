@@ -1,4 +1,5 @@
 from random import randint
+import math
 from typing import Any, Literal, TypeAlias
 from datetime import datetime, UTC
 from uuid import uuid4
@@ -167,11 +168,11 @@ class PostgreHandler:
 
         if type_ == "buy":
             if usd_balance.amount < amount * current_price:
+                shortage: float = math.ceil(
+                    (current_price * amount - usd_balance.amount) * 100
+                ) / 100
                 raise BadRequest(
-                    description=f"""
-                        you're short
-                        {current_price * amount - usd_balance.amount} USD
-                    """
+                    description=(f"you're short of {shortage} USD")
                 )
 
             if crypto_balance is None:
@@ -194,10 +195,11 @@ class PostgreHandler:
                 raise BadRequest(description=f"you don't have any {ticker}")
 
             if crypto_balance.amount < amount:
+                shortage: float = math.ceil(
+                    (amount - crypto_balance.amount) * 100
+                ) / 100
                 raise BadRequest(
-                    description=f"""
-                        you're short {amount - crypto_balance.amount} {ticker}
-                    """
+                    description=f"you're short of {shortage} {ticker}"
                 )
 
             usd_balance.amount += amount * current_price
