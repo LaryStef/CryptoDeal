@@ -30,6 +30,7 @@ const refreshTokensUrl = new URL("api/auth/refresh-tokens", origin);
 const chartDataUrl = new URL("api/crypto/", origin);
 const currencyOverviewUrl = new URL("api/crypto/overview/", origin);
 const cryptoPriceUrl = new URL("api/crypto/price/", origin);
+const transactionUrl = new URL("api/crypto/transaction", origin);
 
 class BalanceUrl {
     constructor(origin, type, ids) {
@@ -370,6 +371,41 @@ document.getElementById("crypto-amount-sell").addEventListener("input", () => {
 function colorPriceField(id, defaultColor=true) {
     const color = defaultColor ? textColor : "red";
     document.getElementById(id).style.backgroundColor = color;
+}
+
+document.getElementById("buy-purchase").addEventListener("click", () => {
+    provideTransaction("crypto-amount-buy", "buy-error-message", "buy");
+});
+
+document.getElementById("sell-purchase").addEventListener("click", () => {
+    provideTransaction("crypto-amount-sell", "sell-error-message", "sell");
+});
+
+function provideTransaction(valueFieldId, errorFieldId, type) {
+    const amount = document.getElementById(valueFieldId).value;
+    fetch(transactionUrl, {
+        method: "POST",
+        credentials: "same-origin",
+        headers: {
+            "X-SCRF-TOKEN": getCookie("access_scrf_token"),
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            "ticker": ticker,
+            "amount": amount,
+            "type": type
+        })
+    })
+        .then((response) => {
+            if (response.status === 200) {
+                closeTradeWindow();
+            } else {
+                response.json().then((data) => {
+                    document.getElementById(errorFieldId).innerText = data["error"]["details"];
+                });
+            }
+        }
+    );
 }
 
 function getDeviceData() {
