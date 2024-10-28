@@ -1464,6 +1464,86 @@ span {
     box-shadow: 0 0 5px var(--text-hover-color);
 }
 
+.success-window {
+    position: absolute;
+    margin-left: 35vw;
+    margin-top: 35vh;
+    height: 30vh;
+    width: 30vw;
+    background-color: var(--background-button-color);
+    border-radius: 50px;
+    border-style: none;
+    opacity: 0;
+    z-index: 1;
+    overflow: hidden;
+    visibility: visible;
+    transform: translate(200%);
+    transition: transform var(--login-transition-duration) ease-out;
+    -webkit-transition: transform var(--login-transition-duration) ease-out;
+    -o-transition: transform var(--login-transition-duration) ease-out;
+    -moz-transition: transform var(--login-transition-duration) ease-out;
+}
+
+.success-info-wrap {
+    display: flex;
+    width: 100%;
+    height: 85%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5%;
+    color: var(--text-color);
+}
+
+.grat-block {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    font-size: 1.125rem;
+}
+
+.cancel-success-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 5%;
+}
+
+.cancel-success-btn {
+    width: 100px;
+    height: 40px;
+    color: var(--text-color);
+    background-color: var(--background-button-color);
+    font-size: 1.125rem;
+    border-radius: 50px;
+    border-style: none;
+    transition: color var(--link-transition-duration) linear;
+    -webkit-transition: color var(--link-transition-duration) linear;
+    -o-transition: color var(--link-transition-duration) linear;
+    -moz-transition: color var(--link-transition-duration) linear;
+
+    &:hover {
+        color: var(--text-hover-color);
+        cursor: pointer;
+    }
+}
+
+.grat-logo {
+    width: 20px;
+    height: 20px;
+}
+
+.transaction-info {
+    font-size: 1.125rem;
+}
+
+.success-balance {
+    font-size: 1rem;
+}
+
 .display-off {
     display: none;
 }
