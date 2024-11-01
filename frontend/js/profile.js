@@ -14,6 +14,21 @@ const sessionUrl = new URL("api/sessions", origin);
 const cooldown = 30;
 const cooldownRec = 30;
 
+class BalanceUrl {
+    constructor(origin, type, ids) {
+        let urlConstructor = new URL(`api/user/balance/${type}/ids`, origin);
+        for (let id of ids) {
+            urlConstructor.searchParams.append("id", id);
+        }
+
+        this.url = urlConstructor;
+    }
+
+    get() {
+        return this.url;
+    }
+}
+
 function getDeviceData() {
     let browser = "unknown browser";
     let os = "unknown os";
@@ -162,7 +177,10 @@ function loadProfile() {
         authClasses.add("display-off");
         profileClasses.remove("display-off");
     }
+    loadMainInfo();
+}
 
+function loadMainInfo() {
     let access = getCookie("access_token");
     let payload = JSON.parse(atob(access.split(".")[1]));
 
@@ -175,6 +193,28 @@ function loadProfile() {
     );
     document.getElementById("avatar").src = avatarUrl;
     document.getElementById("main-avatar").src = avatarUrl;
+
+    const balanceUrl = new BalanceUrl(origin, "currency", ["USD"]);
+    fetch(balanceUrl.get(), {
+        method: "GET",
+        credentials: "same-origin",
+        headers: {
+            "X-SCRF-TOKEN": getCookie("access_scrf_token"),
+        },
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            const balance = data["balance"]["USD"];
+            let parsedBalance = balance;
+            if (balance > 1_000_000) {
+                parsedBalance = (Math.round(balance / 10_000) / 100).toString() + "M";
+            } else if (balance > 1000) {
+                parsedBalance = (Math.round(balance / 10) / 100).toString() + "K";
+            } else {
+                parsedBalance = (Math.round(balance * 100) / 100).toString();
+            }
+            document.getElementById("usd-balance").innerText = "Balance: " + parsedBalance + "$";
+        })
 }
 
 function loadSessions(clearFirst) {
