@@ -12,5 +12,8 @@
     ".mypy_cache": true,
     "celerybeat-schedule": true,
     "cryptodeal.log": true
+  },
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
 }
