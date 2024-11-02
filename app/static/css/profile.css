@@ -4,6 +4,7 @@
     --text-dark: #6637bd;
     --text-hover-color: #8935a2;
     --background-button-color: #251361;
+    --contrast-color: #8FFF06;
     --login-transition-duration: 400ms;
     --link-transition-duration: 200ms;
     --login-mode-transition-duration: 400ms;
@@ -1061,6 +1062,10 @@ span {
     align-items: center;
     padding: 3%;
     padding-right: 5%;
+    margin: 3%;
+    border: 3px solid var(--text-hover-color);
+    border-radius: 50px;
+    box-shadow: 0 0 5px var(--text-hover-color);
 }
 
 .user-info-wrapper {
@@ -1068,7 +1073,7 @@ span {
     justify-content: start;
     align-items: center;
     width: 50%;
-    gap: 20%;
+    gap: 10%;
 }
 
 .main-avatar {
@@ -1146,16 +1151,55 @@ span {
     color: var(--text-hover-color);
 }
 
-.st-block {
-    border: 3px solid var(--text-hover-color);
-    border-radius: 16px;
+.head-line {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    padding-left: 10%;
 }
 
-.st-header {
-    padding: 3%;
+.block-header {
+    color: var(--contrast-color);
+    font-size: 2rem;
+}
+
+/* .block-content {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    padding: 5%;
+    gap: 10%;
+} */
+
+.main-stat {
+    display: flex;
+    padding: 30px;
+    justify-content: start;
+    align-items: center;
+    gap: 10%;
+}
+
+.usd-stat {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40%;
+}
+
+.pie-chart {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40%;
+}
+
+.block-content {
+    margin: 3%;
+    padding: 30px;
     padding-left: 5%;
-    font-size: 1.5rem;
-    color: var(--text-color);
+    border: 3px solid var(--text-hover-color);
+    border-radius: 50px;
+    box-shadow: 0 0 5px var(--text-hover-color);
 }
 
 .sessions-cap {
