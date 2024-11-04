@@ -1163,14 +1163,6 @@ span {
     font-size: 2rem;
 }
 
-/* .block-content {
-    display: flex;
-    justify-content: start;
-    align-items: center;
-    padding: 5%;
-    gap: 10%;
-} */
-
 .main-stat {
     display: flex;
     padding: 30px;
@@ -1183,7 +1175,23 @@ span {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 40%;
+    width: 50%;
+
+    p {
+        font-size: 1rem;
+        color: var(--text-hover-color);
+    }
+
+    span {
+        color: var(--text-color);
+        font-size: 1.125rem;
+    }
+}
+
+.usd-stat-block {
+    display: flex;
+    flex-direction: column;
+    width: 30%;
 }
 
 .pie-chart {
