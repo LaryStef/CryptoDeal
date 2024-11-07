@@ -1065,7 +1065,7 @@ span {
     margin: 3%;
     border: 3px solid var(--text-hover-color);
     border-radius: 50px;
-    box-shadow: 0 0 5px var(--text-hover-color);
+    box-shadow: 0 0 10px var(--text-hover-color);
 }
 
 .user-info-wrapper {
@@ -1165,7 +1165,8 @@ span {
 
 .main-stat {
     display: flex;
-    padding: 30px;
+    padding-left: 3%;
+    height: 100%;
     justify-content: start;
     align-items: center;
     gap: 3%;
@@ -1175,8 +1176,10 @@ span {
     display: flex;
     justify-content: start;
     align-items: center;
-    width: 50%;
-    gap: 5%;
+    flex-direction: column;
+    width: 20%;
+    height: 100%;
+    gap: 40px;
 
     p {
         font-size: 1rem;
@@ -1192,7 +1195,8 @@ span {
 .usd-stat-block {
     display: flex;
     flex-direction: column;
-    width: 30%;
+    width: 100%;
+    gap: 10px;
 }
 
 .worth-info {
@@ -1218,7 +1222,7 @@ span {
     padding-left: 5%;
     border: 3px solid var(--text-hover-color);
     border-radius: 50px;
-    box-shadow: 0 0 5px var(--text-hover-color);
+    box-shadow: 0 0 10px var(--text-hover-color);
 }
 
 .sessions-cap {

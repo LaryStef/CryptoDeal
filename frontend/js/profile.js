@@ -144,8 +144,8 @@ function getChart() {
                     color: '#FF6384', // Default is #000000
                     fontStyle: 'Arial', // Default is Arial
                     sidePadding: 20,     // Default is 20 (as a percentage)
-                    minFontSize: 25, // Default is 20 (in px), set to false and text will not wrap.
-                    lineHeight: 25 // Default is 25 (in px), used for when text wraps
+                    minFontSize: 20, // Default is 20 (in px), set to false and text will not wrap.
+                    lineHeight: 20 // Default is 25 (in px), used for when text wraps
                 }
             }
         }
@@ -170,7 +170,7 @@ function getDoughnutData() {
                 'rgb(255, 205, 86)',
                 'rgb(112, 38, 227)',
             ],
-            hoverOffset: 10,
+            hoverOffset: 15,
         }]
     }
 }
