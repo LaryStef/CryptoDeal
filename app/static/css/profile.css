@@ -1202,7 +1202,7 @@ span {
     gap: 15px;
 }
 
-.pie-wrap {
+.doughnut-wrap {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -1210,10 +1210,6 @@ span {
     width: 300px;
     height: 350px;
     overflow: visible;
-}
-
-.pie {
-    padding: 10px;
 }
 
 .block-content {

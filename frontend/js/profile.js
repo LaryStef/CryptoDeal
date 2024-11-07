@@ -1,8 +1,8 @@
 import {
     Chart,
-    PieController,
+    DoughnutController,
     ArcElement,
-    layouts
+    pluginService
 } from "chart.js";
 
 const origin = location.origin;
@@ -21,7 +21,7 @@ const sessionUrl = new URL("api/sessions", origin);
 const cooldown = 30;
 const cooldownRec = 30;
 
-const gloablChartObj = getChart();
+getChart();
 
 class BalanceUrl {
     constructor(origin, type, ids) {
@@ -40,51 +40,56 @@ class BalanceUrl {
 
 function getChart() {
     Chart.register(
-        PieController,
+        DoughnutController,
         ArcElement
     );
+
     Chart.defaults.font.family = "Ubuntu Mono";
 
     const config = {
-        type: 'pie',
-        data: getPieData(),
+        type: 'doughnut',
+        data: getDoughnutData(),
         options: {
             layout: {
                 padding: 10,
             },
-            hoverOffset: 15,
             responsive: true,
             maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'top',
-                },
-                title: {
-                    display: true,
-                    text: 'Chart.js Pie Chart'
+        },
+        options: {
+            elements: {
+                center: {
+                    text: '2.32K$ +27.21%',
+                    color: '#FF6384', // Default is #000000
+                    fontStyle: 'Arial', // Default is Arial
+                    sidePadding: 20,     // Default is 20 (as a percentage)
+                    minFontSize: 25, // Default is 20 (in px), set to false and text will not wrap.
+                    lineHeight: 25 // Default is 25 (in px), used for when text wraps
                 }
             }
-        },
-      };
-    return new Chart(document.getElementById("pie"), config);
+        }
+    };
+    return new Chart(document.getElementById("doughnut").getContext('2d'), config);
 }
 
-function getPieData() {
+function getDoughnutData() {
     return {
         labels: [
             'Red',
             'Blue',
-            'Yellow'
+            'Yellow',
+            "HEZE"
         ],
         datasets: [{
             label: 'My First Dataset',
-            data: [300, 50, 100],
+            data: [300, 50, 100, 170],
             backgroundColor: [
                 'rgb(255, 99, 132)',
                 'rgb(54, 162, 235)',
-                'rgb(255, 205, 86)'
+                'rgb(255, 205, 86)',
+                'rgb(112, 38, 227)',
             ],
-            hoverOffset: 4
+            hoverOffset: 10,
         }]
     }
 }
