@@ -1,7 +1,8 @@
 import {
     Chart,
     PieController,
-    ArcElement
+    ArcElement,
+    layouts
 } from "chart.js";
 
 const origin = location.origin;
@@ -43,47 +44,49 @@ function getChart() {
         ArcElement
     );
     Chart.defaults.font.family = "Ubuntu Mono";
-    Chart.defaults.backgroundColor = "#FF6384";
-    Chart.defaults.borderColor = "#291F5D";
-    Chart.defaults.color = "#C5FFC3";
 
     const config = {
         type: 'pie',
-        data: {
-            labels: [
-                'Red',
-                'Blue',
-                'Yellow'
-            ],
-            datasets: [{
-                label: 'My First Dataset',
-                data: [300, 50, 100],
-                backgroundColor: [
-                    'rgb(255, 99, 132)',
-                    'rgb(54, 162, 235)',
-                    'rgb(255, 205, 86)'
-                ],
-                hoverOffset: 4
-            }]
+        data: getPieData(),
+        options: {
+            layout: {
+                padding: 10,
+            },
+            hoverOffset: 15,
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Chart.js Pie Chart'
+                }
+            }
         },
-        // options: {
-        //   responsive: true,
-        //   plugins: {
-        //     legend: {
-        //       position: 'top',
-        //     },
-        //     title: {
-        //       display: true,
-        //       text: 'Chart.js Pie Chart'
-        //     }
-        //   }
-        // },
       };
     return new Chart(document.getElementById("pie"), config);
 }
 
 function getPieData() {
-    return;
+    return {
+        labels: [
+            'Red',
+            'Blue',
+            'Yellow'
+        ],
+        datasets: [{
+            label: 'My First Dataset',
+            data: [300, 50, 100],
+            backgroundColor: [
+                'rgb(255, 99, 132)',
+                'rgb(54, 162, 235)',
+                'rgb(255, 205, 86)'
+            ],
+            hoverOffset: 4
+        }]
+    }
 }
 
 function getDeviceData() {

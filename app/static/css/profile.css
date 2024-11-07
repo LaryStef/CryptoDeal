@@ -1206,8 +1206,14 @@ span {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 250px;
-    height: 250px;
+    padding: 5px;
+    width: 300px;
+    height: 350px;
+    overflow: visible;
+}
+
+.pie {
+    padding: 10px;
 }
 
 .block-content {
