@@ -138,8 +138,6 @@ function getChart() {
             },
             responsive: true,
             maintainAspectRatio: false,
-        },
-        options: {
             elements: {
                 center: {
                     text: '2.32K$ +27.21%',
