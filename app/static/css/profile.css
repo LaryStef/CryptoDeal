@@ -1206,6 +1206,12 @@ span {
     gap: 15px;
 }
 
+.doughnut-content {
+    display: flex;
+    justify-content: start;
+    gap: 10%;
+}
+
 .doughnut-wrap {
     display: flex;
     justify-content: center;
@@ -1223,6 +1229,53 @@ span {
     border: 3px solid var(--text-hover-color);
     border-radius: 50px;
     box-shadow: 0 0 10px var(--text-hover-color);
+}
+
+.legend-list {
+    padding-top: 20%;
+    padding-bottom: 20%;
+    display: flex;
+    flex-basis: 10%;
+    align-items: start;
+    justify-content: center;
+    flex-direction: column;
+    height: 90%;
+    gap: 5%;
+}
+
+.legend-el {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    height: 5%;
+    gap: 8px;
+}
+
+.color-rect {
+    display: flex;
+    width: 30px;
+    height: 16px;
+    border: 1px solid white;
+    border-radius: 5px;
+}
+
+.legend-img {
+    width: 20px;
+    height: 20px;
+}
+
+/* !temporary! */
+
+#1 > .color-rect {
+    background-color: #FF6384;
+}
+
+#2 {
+    background-color: #36A2EB;
+}
+
+#3 {
+    background-color: #FFCE56;
 }
 
 .sessions-cap {

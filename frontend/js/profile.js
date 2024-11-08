@@ -21,7 +21,7 @@ const sessionUrl = new URL("api/sessions", origin);
 const cooldown = 30;
 const cooldownRec = 30;
 
-getChart();
+loadChart();
 
 class BalanceUrl {
     constructor(origin, type, ids) {
@@ -38,7 +38,7 @@ class BalanceUrl {
     }
 }
 
-function getChart() {
+function loadChart() {
     Chart.register(
         DoughnutController,
         ArcElement
@@ -140,12 +140,12 @@ function getChart() {
             maintainAspectRatio: false,
             elements: {
                 center: {
-                    text: '2.32K$ +27.21%',
-                    color: '#FF6384', // Default is #000000
+                    text: '131.87K$',
+                    color: '#8FFF06', // Default is #000000
                     fontStyle: 'Arial', // Default is Arial
-                    sidePadding: 20,     // Default is 20 (as a percentage)
-                    minFontSize: 20, // Default is 20 (in px), set to false and text will not wrap.
-                    lineHeight: 20 // Default is 25 (in px), used for when text wraps
+                    sidePadding: 40,     // Default is 20 (as a percentage)
+                    minFontSize: 15, // Default is 20 (in px), set to false and text will not wrap.
+                    lineHeight: 15  , // Default is 25 (in px), used for when text wraps
                 }
             }
         }
@@ -163,14 +163,13 @@ function getDoughnutData() {
         ],
         datasets: [{
             label: 'My First Dataset',
-            data: [300, 50, 100, 170],
+            data: [130, 60, 100],
             backgroundColor: [
                 'rgb(255, 99, 132)',
                 'rgb(54, 162, 235)',
                 'rgb(255, 205, 86)',
-                'rgb(112, 38, 227)',
             ],
-            hoverOffset: 15,
+            hoverOffset: 20,
         }]
     }
 }
