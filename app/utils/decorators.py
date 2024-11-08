@@ -9,7 +9,8 @@ from app.tasks.mail import send_scrf_attention
 
 
 def authorization_required(
-    token_type: Literal["access", "refresh"]
+    token_type: Literal["access", "refresh"],
+    scrf_header_requied: bool = True
 ) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
     def wrap(func: Callable[..., Any]) -> Callable[..., Any]:
         @wraps(func)
@@ -24,6 +25,8 @@ def authorization_required(
                 token=token,
                 type=token_type
             )
+            if not scrf_header_requied:
+                scrf_header = scrf_cookie
 
             if None in [scrf_header, scrf_cookie, payload]:
                 if token_type == "refresh":

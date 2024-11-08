@@ -4,6 +4,7 @@ from werkzeug.exceptions import NotFound, Unauthorized
 
 from app.database.postgre.services import PostgreHandler
 from app.database.postgre.models import CryptoCurrency
+from app.utils.decorators import authorization_required
 
 
 main: Blueprint = Blueprint("main", __name__)
@@ -15,6 +16,7 @@ def index() -> tuple[str, int]:
 
 
 @main.route("/profile")
+@authorization_required("access", scrf_header_requied=False)
 def profile() -> tuple[str, int]:
     return render_template("profile.html", title="Profile"), 200
 
