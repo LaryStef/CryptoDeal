@@ -311,7 +311,7 @@ function getCookie(cookie) {
 }
 
 function loadProfile() {
-    loadSessions(false);
+    loadSessions();
 
     let authClasses = document.getElementById("auth-button").classList;
     let profileClasses = document.getElementById("profile-button").classList;
@@ -362,7 +362,7 @@ function loadMainInfo() {
         })
 }
 
-function loadSessions(clearFirst) {
+function loadSessions(clearFirst = false) {
     fetch(profileDataUrl, {
         method: "GET",
         credentials: "same-origin",
@@ -446,7 +446,7 @@ document.getElementById("ses-table").addEventListener("click", (event) => {
             },
         }).then((response) => {
             if (response.status === 200) {
-                loadSessions(clearFirst = true);
+                loadSessions(true);
             }
         });
     } else if (event.target.classList.contains("term-all")) {
@@ -459,7 +459,7 @@ document.getElementById("ses-table").addEventListener("click", (event) => {
             },
         }).then((response) => {
             if (response.status === 200) {
-                loadSessions(clearFirst = true);
+                loadSessions(true);
             }
         });
     }

@@ -46,28 +46,3 @@ def handle_not_found(e: NotFound) -> tuple[str, int]:
 def handle_unauthorized(e: Unauthorized) -> tuple[str, int]:
     # TODO make unauthorized.html
     return render_template("unauthorized.html", title="Unauthorized"), 200
-
-
-# from .database.postgre import db
-# from .database.postgre.models import Session
-# from datetime import datetime, timedelta
-# from .config import appConfig
-# from sqlalchemy import delete, select
-# from pprint import pprint
-# @main.route("/test")
-# def test() -> tuple[str, int]:
-
-#     print(expire)
-
-#     res = db.session.execute(
-#         select(Session).filter(Session.last_activity < expire)
-#     )
-
-#     db.session.execute(
-#         delete(Session).filter(Session.last_activity < expire)
-#     )
-#     db.session.commit()
-
-#     for s in res.fetchall():
-#         pprint(s[0].__dict__)
-#     return render_template("test.html"), 200

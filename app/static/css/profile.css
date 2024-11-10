@@ -1264,20 +1264,6 @@ span {
     height: 20px;
 }
 
-/* !temporary! */
-
-#1 > .color-rect {
-    background-color: #FF6384;
-}
-
-#2 {
-    background-color: #36A2EB;
-}
-
-#3 {
-    background-color: #FFCE56;
-}
-
 .sessions-cap {
     padding-bottom: 10px;
     color: var(--text-color);
