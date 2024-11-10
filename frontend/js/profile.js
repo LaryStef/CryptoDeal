@@ -2,7 +2,9 @@ import {
     Chart,
     DoughnutController,
     ArcElement,
-    pluginService
+    pluginService,
+    plugins,
+    Legend
 } from "chart.js";
 
 const origin = location.origin;
@@ -47,34 +49,28 @@ function loadChart() {
     	id: 'doughnut-centertext',
         beforeDraw: function(chart) {
             if (chart.config.options.elements.center) {
-                // Get ctx from string
-                var ctx = chart.ctx;
+                const ctx = chart.ctx;
 
-                // Get options from the center object in options
-                var centerConfig = chart.config.options.elements.center;
-                var fontStyle = centerConfig.fontStyle || 'Arial';
-                var txt = centerConfig.text;
-                var color = centerConfig.color || '#000';
-                var maxFontSize = centerConfig.maxFontSize || 75;
-                var sidePadding = centerConfig.sidePadding || 20;
-                var sidePaddingCalculated = (sidePadding / 100) * (chart._metasets[chart._metasets.length-1].data[0].innerRadius * 2)
-                // Start with a base font of 30px
+                const centerConfig = chart.config.options.elements.center;
+                const fontStyle = centerConfig.fontStyle || 'Arial';
+                const txt = centerConfig.text;
+                const color = centerConfig.color || '#000';
+                const maxFontSize = centerConfig.maxFontSize || 75;
+                const sidePadding = centerConfig.sidePadding || 20;
+                const sidePaddingCalculated = (sidePadding / 100) * (chart._metasets[chart._metasets.length-1].data[0].innerRadius * 2)
                 ctx.font = "30px " + fontStyle;
 
-                // Get the width of the string and also the width of the element minus 10 to give it 5px side padding
-                var stringWidth = ctx.measureText(txt).width;
-                var elementWidth = (chart._metasets[chart._metasets.length-1].data[0].innerRadius * 2) - sidePaddingCalculated;            
+                const stringWidth = ctx.measureText(txt).width;
+                const elementWidth = (chart._metasets[chart._metasets.length-1].data[0].innerRadius * 2) - sidePaddingCalculated;            
 
-                // Find out how much the font can grow in width.
-                var widthRatio = elementWidth / stringWidth;
-                var newFontSize = Math.floor(30 * widthRatio);
-                var elementHeight = (chart._metasets[chart._metasets.length-1].data[0].innerRadius * 2);
+                const widthRatio = elementWidth / stringWidth;
+                const newFontSize = Math.floor(30 * widthRatio);
+                const elementHeight = (chart._metasets[chart._metasets.length-1].data[0].innerRadius * 2);
 
-                // Pick a new font size so it will not be larger than the height of label.
-                var fontSizeToUse = Math.min(newFontSize, elementHeight, maxFontSize);
-                var minFontSize = centerConfig.minFontSize;
-                var lineHeight = centerConfig.lineHeight || 25;
-                var wrapText = false;
+                let fontSizeToUse = Math.min(newFontSize, elementHeight, maxFontSize);
+                let minFontSize = centerConfig.minFontSize;
+                const lineHeight = centerConfig.lineHeight || 25;
+                let wrapText = false;
 
                 if (minFontSize === undefined) {
                     minFontSize = 20;
@@ -85,11 +81,10 @@ function loadChart() {
                     wrapText = true;
                 }
 
-                // Set font settings to draw it correctly.
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
-                var centerX = ((chart.chartArea.left + chart.chartArea.right) / 2);
-                var centerY = ((chart.chartArea.top + chart.chartArea.bottom) / 2);
+                const centerX = ((chart.chartArea.left + chart.chartArea.right) / 2);
+                let centerY = ((chart.chartArea.top + chart.chartArea.bottom) / 2);
                 ctx.font = fontSizeToUse + "px " + fontStyle;
                 ctx.fillStyle = color;
 
@@ -98,15 +93,14 @@ function loadChart() {
                     return;
                 }
 
-                var words = txt.split(' ');
-                var line = '';
-                var lines = [];
+                const words = txt.split(' ');
+                let line = '';
+                let lines = [];
 
-                // Break words up into multiple lines if necessary
-                for (var n = 0; n < words.length; n++) {
-                    var testLine = line + words[n] + ' ';
-                    var metrics = ctx.measureText(testLine);
-                    var testWidth = metrics.width;
+                for (let n = 0; n < words.length; n++) {
+                    const testLine = line + words[n] + ' ';
+                    const metrics = ctx.measureText(testLine);
+                    const testWidth = metrics.width;
                     if (testWidth > elementWidth && n > 0) {
                         lines.push(line);
                         line = words[n] + ' ';
@@ -115,14 +109,12 @@ function loadChart() {
                     }
                 }
 
-                // Move the center up depending on line height and number of lines
                 centerY -= (lines.length / 2) * lineHeight;
 
-                for (var n = 0; n < lines.length; n++) {
+                for (let n = 0; n < lines.length; n++) {
                     ctx.fillText(lines[n], centerX, centerY);
                     centerY += lineHeight;
                 }
-                //Draw text in center
                 ctx.fillText(line, centerX, centerY);
             }
         }
@@ -135,6 +127,11 @@ function loadChart() {
         options: {
             layout: {
                 padding: 10,
+            },
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                }
             },
             responsive: true,
             maintainAspectRatio: false,
@@ -158,8 +155,7 @@ function getDoughnutData() {
         labels: [
             'Red',
             'Blue',
-            'Yellow',
-            "HEZE"
+            'Yellow'
         ],
         datasets: [{
             label: 'My First Dataset',
