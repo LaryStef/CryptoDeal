@@ -10,7 +10,7 @@
         <div class="user-info-wrapper">
             <img src="/static/png/Alien1.png" alt="your avatar" class="main-avatar" id="main-avatar" decoding="async">
             <h2 class="main-name" id="username">Your username</h2>
-            <span class="usd-balance" id="usd-balance">Balance: 0.00$</span>
+            <span class="usd-balance" id="usd-balance">USD balance: 0.00$</span>
                        
         </div>
         <div>
@@ -74,6 +74,71 @@
                         </ul>
                     </div>
                 </div>
+            </div>
+            <!-- <div class="split-line"></div> -->
+            <div class="table-block">
+                <!-- <div class="crypto-table-wrap"></div> -->
+                <table class="crypto-table" id="crypto-list">
+                    <tr>
+                        <th class="hc col1">#</th>
+                        <th class="hc col2">name</th>
+                        <th class="hc col3">ticker</th>
+                        <th class="hc col4">price, $</th>
+                        <th class="hc col5">amount</th>
+                        <th class="hc col6">worth, $</th>
+                        <th class="hc col7">your income</th>
+                        <th class="hc col8">change 24h</th>
+                        <th class="hc col9">volume 24h, $</th>
+                    </tr>
+                    <tr class="row">
+                        <td class="tc col1">1</td>
+                        <td class="tc col2">
+                            <div class="crypto-name-wrap">
+                                <img class="crypto-logo" src="/static/svg/cryptocurrency/BTC.svg" alt="">
+                                <span class="crypto-name">Bitcoin</span>
+                            </div>
+                        </td>
+                        <td class="tc col3">BTC</td>
+                        <td class="tc col4">18.001K</td>
+                        <td class="tc col5">0.00347</td>
+                        <td class="tc col6">1.729K</td>
+                        <td class="tc col7 change-pos">+17.58%</td>
+                        <td class="tc col8 change-neg">-10.36%</td>
+                        <td class="tc col9">3.235B</td>
+                    </tr>
+                    <tr class="row">
+                        <td class="tc col1">2</td>
+                        <td class="tc col2">
+                            <div class="crypto-name-wrap">
+                                <img class="crypto-logo" src="/static/svg/cryptocurrency/ETH.svg" alt="">
+                                <span class="crypto-name">Ethereum</span>
+                            </div>
+                        </td>
+                        <td class="tc col3">ETH</td>
+                        <td class="tc col4">2.392K</td>
+                        <td class="tc col5">73.474</td>
+                        <td class="tc col6">164.66K</td>
+                        <td class="tc col7 change-neg">-43.07%</td>
+                        <td class="tc col8 change-pos">+3.75%</td>
+                        <td class="tc col9">8.235B</td>
+                    </tr>
+                    <tr class="row">
+                        <td class="tc col1">3</td>
+                        <td class="tc col2">
+                            <div class="crypto-name-wrap">
+                                <img class="crypto-logo" src="/static/svg/cryptocurrency/USDT.svg" alt="">
+                                <span class="crypto-name">Tether</span>
+                            </div>
+                        </td>
+                        <td class="tc col3">USDT</td>
+                        <td class="tc col4">1</td>
+                        <td class="tc col5">87.326K</td>
+                        <td class="tc col6">87.345K</td>
+                        <td class="tc col7 change-pos">+0.01%</td>
+                        <td class="tc col8 change-pos">+0%</td>
+                        <td class="tc col9">22.288B</td>
+                    </tr>
+                </table>
             </div>
         </div>
     </div>

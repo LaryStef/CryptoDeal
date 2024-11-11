@@ -1165,11 +1165,18 @@ span {
 
 .main-stat {
     display: flex;
-    padding-left: 3%;
     height: 100%;
-    justify-content: start;
+    justify-content: center;
     align-items: center;
     gap: 3%;
+}
+
+.split-line::after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 3px;
+    background-color: var(--text-hover-color);  
 }
 
 .usd-stat {
@@ -1225,7 +1232,6 @@ span {
 .block-content {
     margin: 3%;
     padding: 30px;
-    padding-left: 5%;
     border: 3px solid var(--text-hover-color);
     border-radius: 50px;
     box-shadow: 0 0 10px var(--text-hover-color);
@@ -1284,6 +1290,96 @@ span {
     padding: 20px;
     padding-top: 15px;
     color: var(--text-color);
+}
+
+.table-block {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3%;
+    gap: 5%;
+}
+
+.crypto-table {
+    padding: 50px;
+    border-radius: 50px;
+    border-color: var(--background-button-color);
+    box-shadow: 0 0 10px var(--contrast-color);
+    background-color: var(--background-button-color);
+}
+
+.hc {
+    padding-left: 15px;
+    padding-bottom: 12px;
+    font-size: 1.5rem;
+    color: var(--text-hover-color);
+    border-bottom: 1px solid black;
+}
+
+.tc {
+    text-align: center;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    padding-left: 15px;
+    font-size: 1.5rem;
+    color: var(--text-color);
+    border-bottom: 1px solid black;
+}
+
+.col1 {
+    width: 40px;
+}
+
+.col2 {
+    width: 200px;
+}
+
+.col3 {
+    width: 150px;
+}
+
+.col4 {
+    width: 200px;
+}
+
+.col5 {
+    width: 200px;
+}
+
+.col6 {
+    width: 200px;
+}
+
+.col7 {
+    width: 150px;
+}
+
+.col8 {
+    width: 150px;
+}
+
+.col9 {
+    width: 20   0px;
+}
+
+.row:hover {
+    background-color: var(--background-color);
+}
+
+.crypto-name-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.crypto-name {
+    font-size: 1.5rem;
+}
+
+.crypto-logo {
+    width: 30px;
+    height: 30px;
 }
 
 .table-wrap {
