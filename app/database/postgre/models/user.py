@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import TYPE_CHECKING
 
-from sqlalchemy import TIMESTAMP, Integer, String
+from sqlalchemy import TIMESTAMP, Integer, String, Float
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.postgre import db, utcnow
@@ -29,6 +29,8 @@ class User(db.Model):
         server_default=utcnow()
     )
     alien_number: Mapped[int] = mapped_column(Integer, default=0)
+    crypto_spent: Mapped[float] = mapped_column(Float, default=0)
+    crypto_gain: Mapped[float] = mapped_column(Float, default=0)
 
     session: Mapped[list["Session"]] = relationship(cascade="all, delete")
     user_fiat_wallet: Mapped[list["FiatWallet"]] = relationship(
