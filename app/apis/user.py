@@ -1,13 +1,13 @@
 import typing as t
 
-from flask import request
+from flask import request, url_for
 from flask_restx import Namespace, Resource
 from werkzeug.datastructures import ImmutableMultiDict
 from werkzeug.exceptions import BadRequest
 
 from app.database.postgre.services import PostgreHandler
 from app.database.postgre.models import (
-    Session, User, CryptocurrencyWallet, FiatWallet
+    Session, User, CryptocurrencyWallet, FiatWallet, CryptoCurrency
 )
 from app.utils.aliases import RESTError
 from app.utils.decorators import authorization_required
@@ -178,6 +178,132 @@ class Balance(Resource):
                 "type": asset,
                 "balance": balance
             }, 200
+
+        except BadRequest as error:
+            return {
+                "error": {
+                    "code": "Bad request",
+                    "message": "Can't recognize request",
+                    "details": error.description
+                }
+            }, 400
+
+
+@api.route("/statistics/<string:asset>")
+class Statistics(Resource):
+    @authorization_required("access")
+    def get(self, asset: str):
+        def _calculate_profit(
+            invested: float,
+            income: float,
+            worth: float
+        ) -> float:
+            return (worth - invested + income) / invested * 100
+
+        # request /api/user/statistics/cryptocurrency
+        # response example
+        {
+            "type": "cryptocurrency",
+            "spent": 238392.392,
+            "derived": 2999990.281,
+            "cryptocurrencies": [
+                {
+                    "place": 1,
+                    "ticker": "BTC",
+                    "name": "Bitcoin",
+                    "logoUrl": "/static/svg/cryptocurrency/BTC.svg",
+                    "amount": 0.839832,
+                    "price": 238392.392,
+                    "volume": 5848323932.888,
+                    "profit": -84.21,
+                    "change": 10.04
+                },
+                {
+                    "place": 2,
+                    "ticker": "ETH",
+                    "name": "Ethereum",
+                    "logoUrl": "/static/svg/cryptocurrency/ETH.svg",
+                    "amount": 46.438,
+                    "price": 2849.442,
+                    "volume": 1882351134.882,
+                    "profit": 20.78,
+                    "change": -4.91
+                }
+            ]
+        }
+
+        availible_assets: list[str] = ["cryptocurrency"]
+
+        try:
+            if asset not in availible_assets:
+                raise BadRequest(description=f"Type not in {availible_assets}")
+
+            access_token: str | None = request.cookies.get("access_token")
+            access_payload: t.Any = validate_token(
+                token=access_token,
+                type="access"
+            )
+
+            if access_payload is None:
+                raise BadRequest("Access token is not valid")
+            user_id: str = access_payload.get("uuid", "")
+            cryptocurrencies: list[dict[str, str | int]] = []
+
+            if asset == "cryptocurrency":
+
+                total_invested: float = 0
+                total_derived: float = 0
+                total_worth: float = 0
+                wallet: list[FiatWallet] = PostgreHandler.get_ordered_wallet(
+                    user_id=user_id,
+                )
+
+                for index, currency in enumerate(wallet):
+                    ticker: str = currency[0].ticker
+                    price: float = PostgreHandler.get_crypto_price(
+                        PostgreHandler,
+                        ticker
+                    ).price
+                    general_currency_info: CryptoCurrency = PostgreHandler.get(
+                        CryptoCurrency, ticker=ticker
+                    )
+
+                    cryptocurrencies.append(
+                        {
+                            "place": index + 1,
+                            "ticker": ticker,
+                            "name": general_currency_info.name,
+                            "logoUrl": url_for(
+                                "static",
+                                filename=f"/svg/cryptocurrency/{ticker}.svg"
+                            ),
+                            "amount": currency[0].amount,
+                            "price": price,
+                            "volume": general_currency_info.volume,
+                            "profit": _calculate_profit(
+                                invested=currency[0].invested,
+                                income=currency[0].income,
+                                worth=currency[0].amount * price
+                            ),
+                            "change": PostgreHandler.calculate_daily_change(
+                                ticker=ticker
+                            )
+                        }
+                    )
+                    total_invested += currency[0].invested
+                    total_derived += currency[0].income
+                    total_worth += currency[0].amount * price
+
+                return {
+                    "type": asset,
+                    "worth": total_worth,
+                    "change": (
+                        total_worth - total_invested + total_derived
+                    ) / total_invested * 100,
+                    "spent": "no support currenly",
+                    "derived": "no support currenly",
+                    "cryptocurrencies": cryptocurrencies
+                }
 
         except BadRequest as error:
             return {
