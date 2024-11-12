@@ -300,8 +300,14 @@ class Statistics(Resource):
                     "change": (
                         total_worth - total_invested + total_derived
                     ) / total_invested * 100,
-                    "spent": "no support currenly",
-                    "derived": "no support currenly",
+                    "spent": PostgreHandler.get(
+                        User,
+                        uuid=user_id
+                    ).crypto_spent,
+                    "derived": PostgreHandler.get(
+                        User,
+                        uuid=user_id
+                    ).crypto_derived,
                     "cryptocurrencies": cryptocurrencies
                 }
 
