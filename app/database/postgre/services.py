@@ -187,8 +187,9 @@ class PostgreHandler:
                 db.session.add(crypto_balance)
 
             usd_balance.amount -= amount * current_price
-            crypto_balance.invested += amount * current_price
             crypto_balance.amount += amount
+            crypto_balance.invested += amount * current_price
+            user.crypto_spent += amount * current_price
 
         elif type_ == "sell":
             if crypto_balance is None:
@@ -203,8 +204,9 @@ class PostgreHandler:
                 )
 
             usd_balance.amount += amount * current_price
-            crypto_balance.income += amount * current_price
             crypto_balance.amount -= amount
+            crypto_balance.income += amount * current_price
+            user.crypto_derived += amount * current_price
 
             if crypto_balance.amount == 0:
                 db.session.delete(crypto_balance)

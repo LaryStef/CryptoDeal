@@ -30,7 +30,7 @@ class User(db.Model):
     )
     alien_number: Mapped[int] = mapped_column(Integer, default=0)
     crypto_spent: Mapped[float] = mapped_column(Float, default=0)
-    crypto_gain: Mapped[float] = mapped_column(Float, default=0)
+    crypto_derived: Mapped[float] = mapped_column(Float, default=0)
 
     session: Mapped[list["Session"]] = relationship(cascade="all, delete")
     user_fiat_wallet: Mapped[list["FiatWallet"]] = relationship(
