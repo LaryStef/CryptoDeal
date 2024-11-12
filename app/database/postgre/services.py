@@ -4,7 +4,7 @@ from typing import Any, Literal, TypeAlias
 from datetime import datetime, UTC
 from uuid import uuid4
 
-from sqlalchemy import Result, delete, select
+from sqlalchemy import Result, delete, select, desc
 from sqlalchemy.orm import Mapped
 from werkzeug.exceptions import BadRequest
 
@@ -142,7 +142,7 @@ class PostgreHandler:
         amount: float,
         type_: Literal["buy", "sell"]
     ) -> str | None:
-        course_row: CryptoCourse | None = cls._get_crypto_price(
+        course_row: CryptoCourse | None = cls.get_crypto_price(
             PostgreHandler, ticker
         )
 
@@ -224,7 +224,7 @@ class PostgreHandler:
             msg=f"transaction made {user_id} {type_} {ticker} {amount}"
         )
 
-    def _get_crypto_price(
+    def get_crypto_price(
         cls, ticker: str
     ) -> CryptoCourse | None:
         return db.session.execute(
@@ -235,7 +235,7 @@ class PostgreHandler:
             )
         ).scalar()
 
-    def get_crypto_history(user_id: str) -> list[CryptoCourse] | None:
+    def get_crypto_history(user_id: str) -> list[CryptoCourse]:
         transactions: list[CryptoTransaction] | None = db.session.execute(
             select(CryptoTransaction).filter_by(user_id=user_id)
         ).scalar()
@@ -260,3 +260,45 @@ class PostgreHandler:
         return db.session.execute(
             select(table).filter(in_condition).filter_by(user_id=user_id)
         ).all()
+
+    @staticmethod
+    def get_ordered_wallet(user_id: str) -> list[CryptocurrencyWallet]:
+        wallet: list[CryptocurrencyWallet] | None = db.session.execute(
+            select(CryptocurrencyWallet).filter_by(user_id=user_id).order_by(
+                desc(CryptocurrencyWallet.amount)
+            )
+        )
+        if wallet is None:
+            return []
+        return wallet
+
+    @staticmethod
+    def calculate_daily_change(ticker: str):
+        hour: int = datetime.now(UTC).hour
+
+        course_day_ago: CryptoCourse = db.session.execute(
+            select(
+                CryptoCourse
+            ).filter_by(
+                ticker=ticker
+            ).filter_by(
+                type_="hour"
+            ).filter_by(
+                number=(hour + 1) % 24
+            )
+        ).scalar_one()
+        new_course: CryptoCourse = db.session.execute(
+            select(
+                CryptoCourse
+            ).filter_by(
+                ticker=ticker
+            ).filter_by(
+                type_="hour"
+            ).filter_by(
+                number=hour
+            )
+        ).scalar_one()
+
+        if course_day_ago is None or new_course is None:
+            return 0
+        return (new_course.price / course_day_ago.price - 1) * 100
