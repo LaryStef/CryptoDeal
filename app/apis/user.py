@@ -294,20 +294,15 @@ class Statistics(Resource):
                     total_derived += currency[0].income
                     total_worth += currency[0].amount * price
 
+                user: User = PostgreHandler.get(User, uuid=user_id)
                 return {
                     "type": asset,
                     "worth": total_worth,
                     "change": (
                         total_worth - total_invested + total_derived
                     ) / total_invested * 100,
-                    "spent": PostgreHandler.get(
-                        User,
-                        uuid=user_id
-                    ).crypto_spent,
-                    "derived": PostgreHandler.get(
-                        User,
-                        uuid=user_id
-                    ).crypto_derived,
+                    "spent": user.crypto_spent,
+                    "derived": user.crypto_derived,
                     "cryptocurrencies": cryptocurrencies
                 }
 
