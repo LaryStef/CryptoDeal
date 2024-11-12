@@ -63,29 +63,9 @@ class List(Resource):
             table=CryptoCurrency,
             many=True
         )
-        hour: int = datetime.now(UTC).hour
         currency_list: _ListResponse = []
 
         for currency in currencies:
-            course_day_ago: ScalarResult[CryptoCourse] | None = \
-                PostgreHandler.get(
-                    table=CryptoCourse,
-                    ticker=currency.ticker,
-                    type_="hour",
-                    number=(hour + 1) % 24
-                )
-            new_course: ScalarResult[CryptoCourse] | None = PostgreHandler.get(
-                table=CryptoCourse,
-                ticker=currency.ticker,
-                type_="hour",
-                number=hour
-            )
-
-            if course_day_ago is None or new_course is None:
-                return {
-                    "CryptoCurrencyList": []
-                }, 200
-
             currency_list.append(
                 {
                     "name": currency.name,
@@ -98,9 +78,14 @@ class List(Resource):
                         "main.currency",
                         ticker=currency.ticker
                     ),
-                    "price": new_course.price,
+                    "price": PostgreHandler.get_crypto_price(
+                        PostgreHandler,
+                        ticker=currency.ticker
+                    ).price,
                     "volume": currency.volume,
-                    "change": (new_course.price / course_day_ago.price - 1)*100
+                    "change": PostgreHandler.calculate_daily_change(
+                        ticker=currency.ticker
+                    )
                 }
             )
 
