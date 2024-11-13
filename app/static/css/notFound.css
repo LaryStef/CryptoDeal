@@ -27,25 +27,25 @@ a {
 .error-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 5px;
   justify-content: center;
   align-items: end;
+  gap: 5px;
   width: 55vw;
   height: 40vh;
 }
 
 .error {
-  font-size: 48px;
   color: var(--text-color);
+  font-size: 48px;
 }
 
 .index-url {
-  font-size: 18px;
-  color: var(--text-color);
-  transition: color var(--link-transition-duration) linear;
   -webkit-transition: color var(--link-transition-duration) linear;
   -o-transition: color var(--link-transition-duration) linear;
   -moz-transition: color var(--link-transition-duration) linear;
+  transition: color var(--link-transition-duration) linear;
+  color: var(--text-color);
+  font-size: 18px;
 }
 
 .index-url:hover {

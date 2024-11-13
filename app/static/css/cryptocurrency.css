@@ -36,27 +36,27 @@ li {
 }
 
 .wtb-window {
-    position: absolute;
-    margin-left: 30vw;
-    margin-top: 20vh;
-    height: 40vh;
-    width: 40vw;
-    background-color: var(--background-button-color);
-    border-radius: 50px;
-    border-style: none;
-    opacity: 0;
-    z-index: 1;
-    overflow: hidden;
-    visibility: hidden;
-    transform: translate(-200%);
     -ms-transform: translate(-200%);
     -webkit-transform: translate(-200%);
     -o-transform: translate(-200%);
     -moz-transform: translate(-200%);
-    transition: transform var(--login-transition-duration) ease-out;
     -webkit-transition: transform var(--login-transition-duration) ease-out;
     -o-transition: transform var(--login-transition-duration) ease-out;
     -moz-transition: transform var(--login-transition-duration) ease-out;
+    position: absolute;
+    transform: translate(-200%);
+    visibility: hidden;
+    opacity: 0;
+    z-index: 1;
+    transition: transform var(--login-transition-duration) ease-out;
+    margin-top: 20vh;
+    margin-left: 30vw;
+    border-style: none;
+    border-radius: 50px;
+    background-color: var(--background-button-color);
+    width: 40vw;
+    height: 40vh;
+    overflow: hidden;
 }
 
 .cancel-wrap {
@@ -67,21 +67,21 @@ li {
 }
 
 .cancel-btn {
-    width: 100px;
-    height: 40px;
-    color: var(--text-color);
-    background-color: var(--background-button-color);
-    font-size: 1.125rem;
-    border-radius: 50px;
-    border-style: none;
-    transition: color var(--link-transition-duration) linear;
     -webkit-transition: color var(--link-transition-duration) linear;
     -o-transition: color var(--link-transition-duration) linear;
     -moz-transition: color var(--link-transition-duration) linear;
+    transition: color var(--link-transition-duration) linear;
+    border-style: none;
+    border-radius: 50px;
+    background-color: var(--background-button-color);
+    width: 100px;
+    height: 40px;
+    color: var(--text-color);
+    font-size: 1.125rem;
 
     &:hover {
-        color: var(--text-hover-color);
         cursor: pointer;
+        color: var(--text-hover-color);
     }
 }
 
@@ -96,20 +96,20 @@ li {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 50px;
-    width: 140px;
-    border-radius: 50px;
     box-shadow: 0 0 5px var(--text-hover-color);
+    border-radius: 50px;
     background-color: var(--text-color);
+    width: 140px;
+    height: 50px;
 }
 
 .trade-mode-btn {
-    width: 70px;
-    height: 50px;
-    border-radius: 50px;
-    border-style: none;
     opacity: 0;
     z-index: 2;
+    border-style: none;
+    border-radius: 50px;
+    width: 70px;
+    height: 50px;
 }
 
 .trade-mode-btn:hover {
@@ -117,49 +117,49 @@ li {
 }
 
 .trade-switch::before {
-    content: "Buy";
-    position: absolute;
     display: flex;
+    position: absolute;
     justify-content: center;
     align-items: center;
+    z-index: 1;
     width: 70px;
     height: 50px;
-    z-index: 1;
+    content: "Buy";
     color: var(--background-color);
     font-size: 1.125rem; 
 }
 
 .trade-switch::after {
-    content: "Sell";
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 70px;
-    height: 50px;
-    z-index: 1;
-    color: var(--background-color);
-    font-size: 1.125rem;
-    transform: translate(100%);
     -ms-transform: translate(100%);
     -webkit-transform: translate(100%);
     -o-transform: translate(100%);
     -moz-transform: translate(100%);
+    display: flex;
+    position: absolute;
+    justify-content: center;
+    align-items: center;
+    transform: translate(100%);
+    z-index: 1;
+    width: 70px;
+    height: 50px;
+    content: "Sell";
+    color: var(--background-color);
+    font-size: 1.125rem;
 }
 
 .trade-mode {
-    position: absolute;
-    height: 50px;
-    width: 70px;
-    border-style: none;
-    border-radius: 50px;
-    z-index: 0;
-    background-color: var(--text-hover-color);
-    transform: translate(0%);
-    transition: transform var(--login-mode-transition-duration) ease-out;
     -webkit-transition: transform var(--login-mode-transition-duration) ease-out;
     -o-transition: transform var(--login-mode-transition-duration) ease-out;
     -moz-transition: transform var(--login-mode-transition-duration) ease-out;
+    position: absolute;
+    transform: translate(0%);
+    z-index: 0;
+    transition: transform var(--login-mode-transition-duration) ease-out;
+    border-style: none;
+    border-radius: 50px;
+    background-color: var(--text-hover-color);
+    width: 70px;
+    height: 50px;
 }
 
 .buy-error {
@@ -179,33 +179,33 @@ li {
 }
 
 .trade-extra {
-    padding-right: 10%;
     display: flex;
     justify-content: space-around;
     align-items: center;
-    height: 50px;
-    width: 100%;
     gap: 3%;
+    padding-right: 10%;
+    width: 100%;
+    height: 50px;
     color: var(--text-color);
     font-size: 1rem;
 }
 
 .trade-price {
     display: flex;
-    width: 40%;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     gap: 5%;
+    width: 40%;
 }
 
 .reload-btn {
-    background-color: var(--background-button-color);
-    width: 30px;
-    height: 30px;
     outline: none;
     border-style: none;
     border-radius: 50%;
+    background-color: var(--background-button-color);
+    width: 30px;
+    height: 30px;
 
     &:hover {
         cursor: pointer;
@@ -214,62 +214,62 @@ li {
 }
 
 .reload-logo {
+    background-color: var(--background-button-color);
     width: 20px;
     height: 20px;
-    background-color: var(--background-button-color);
 }
 
 .buy-window {
+    -webkit-transition: transform var(--login-mode-transition-duration) ease-out;
+    -o-transition: transform var(--login-mode-transition-duration) ease-out;
+    -moz-transition: transform var(--login-mode-transition-duration) ease-out;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 100%;
-    height: 40%;
     gap: 10%;
     transform: translate(0%);
     transition: transform var(--login-mode-transition-duration) ease-out;
-    -webkit-transition: transform var(--login-mode-transition-duration) ease-out;
-    -o-transition: transform var(--login-mode-transition-duration) ease-out;
-    -moz-transition: transform var(--login-mode-transition-duration) ease-out;
+    width: 100%;
+    height: 40%;
 }
 
 .sell-window {
+    -webkit-transition: transform var(--login-mode-transition-duration) ease-out;
+    -o-transition: transform var(--login-mode-transition-duration) ease-out;
+    -moz-transition: transform var(--login-mode-transition-duration) ease-out;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 100%;
-    height: 40%;
     gap: 10%;
     transform: translate(-100%, -100%);
     transition: transform var(--login-mode-transition-duration) ease-out;
-    -webkit-transition: transform var(--login-mode-transition-duration) ease-out;
-    -o-transition: transform var(--login-mode-transition-duration) ease-out;
-    -moz-transition: transform var(--login-mode-transition-duration) ease-out;
+    width: 100%;
+    height: 40%;
 }
 
 .buy-fields {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%;
     gap: 5%;
+    width: 100%;
 }
 
 .trade-field {
-    padding-left: 2%;
-    width: 20%;
-    height: 40px;
-    border-radius: 50px;
-    border-style: none;
-    background-color: var(--text-color);
-    /* color: var(--background-color); */
-    font-size: 1.125rem;
-    transition: box-shadow 0.2s linear;
     -webkit-transition: box-shadow 0.2s linear;
     -o-transition: box-shadow 0.2s linear;
     -moz-transition: box-shadow 0.2s linear;
+    transition: box-shadow 0.2s linear;
+    border-style: none;
+    border-radius: 50px;
+    background-color: var(--text-color);
+    padding-left: 2%;
+    width: 20%;
+    height: 40px;
+    /* color: var(--background-color); */
+    font-size: 1.125rem;
 }
 
 input::-webkit-outer-spin-button,
@@ -279,13 +279,13 @@ input::-webkit-inner-spin-button {
 }
 
 input[type=number] {
-    appearance: none;
     -moz-appearance: textfield;
+    appearance: none;
 }
 
 .trade-field::placeholder {
-    color: var(--background-button-color);
     opacity: 0.6;
+    color: var(--background-button-color);
 }
 
 .trade-field:focus {
@@ -294,17 +294,17 @@ input[type=number] {
 }
 
 .trade-submit {
-    padding: 0;
-    width: 15%;
-    transition: background-color 0.2s linear;
     -webkit-transition: background-color 0.2s linear;
     -o-transition: background-color 0.2s linear;
     -moz-transition: background-color 0.2s linear;
+    transition: background-color 0.2s linear;
+    padding: 0;
+    width: 15%;
 }
 
 .trade-submit:hover {
-    box-shadow: 0 0 5px var(--text-hover-color);
     cursor: pointer;
+    box-shadow: 0 0 5px var(--text-hover-color);
 }
 
 .autofill {
@@ -312,18 +312,18 @@ input[type=number] {
 }
 
 .wtb-btn {
-    padding: 14px;
-    background-color: var(--background-button-color);
-    color: var(--text-color);
-    border-style: solid;
-    border-radius: 50px;
-    border-width: 1px;
-    border-style: none;
-    font-size: 1.0rem;
-    transition: all var(--link-transition-duration) linear;
     -webkit-transition: all var(--link-transition-duration) linear;
     -o-transition: all var(--link-transition-duration) linear;
     -moz-transition: all var(--link-transition-duration) linear;
+    transition: all var(--link-transition-duration) linear;
+    border-width: 1px;
+    border-style: solid;
+    border-style: none;
+    border-radius: 50px;
+    background-color: var(--background-button-color);
+    padding: 14px;
+    color: var(--text-color);
+    font-size: 1.0rem;
 
     &:hover {
         color: var(--text-hover-color);
@@ -331,8 +331,8 @@ input[type=number] {
 }
 
 .wtb-btn:hover {
-    background-color: var(--background-button-color);
     box-shadow: 0 0 10px var(--contrast-color);
+    background-color: var(--background-button-color);
 }
 
 .content {
@@ -347,12 +347,12 @@ input[type=number] {
 }
 
 .info-wrap {
-    margin-top: 1%;
     display: flex;
     flex-direction: column;
     justify-content: start;
     align-items: center;
     gap: 5%;
+    margin-top: 1%;
     height: 80vh;
 }
 
@@ -369,12 +369,12 @@ input[type=number] {
     h3 {
         padding-bottom: 10px;
         padding-left: 10px;
-        font-size: 1.5rem;
         color: var(--text-color);
+        font-size: 1.5rem;
     }
     a {
-        font-size: 1.125rem;
         color: var(--text-color);
+        font-size: 1.125rem;
     }
     a:hover {
         color: var(--text-hover-color);
@@ -391,14 +391,14 @@ input[type=number] {
 
 .crypto-name {
     color: var(--text-hover-color);
-    font-size: 3rem;
     font-weight: 500;
+    font-size: 3rem;
     text-shadow: 1px 1px 2px var(--background-button-color);
 }
 
 .crypto-price {
-    color: var(--contrast-color);
     padding-left: 20px;
+    color: var(--contrast-color);
     font-size: 1.7rem;
 }
 
@@ -408,12 +408,12 @@ input[type=number] {
 }
 
 .chart-content {
-    margin-top: 5%;
     display: flex;
     flex-direction: column;
     justify-content: start;
     align-items: center;
     gap: 2%;
+    margin-top: 5%;
     height: 80vh;
 }
 
@@ -427,55 +427,55 @@ input[type=number] {
 
 .chart-wrap {
     margin: 5%;
-    margin-bottom: 1%;
     margin-top: 1%;
-    padding: 2%;
-    width: 1000px;
-    height: 500px;
+    margin-bottom: 1%;
+    box-shadow: 0 0 10px var(--contrast-color);
     border-radius: 50px;
     background-color: var(--background-button-color);
-    box-shadow: 0 0 10px var(--contrast-color);;
+    padding: 2%;
+    width: 1000px;
+    height: 500px;;
 }
 
 .chart-btn-wrap {
-    margin-left: 5%;
-    margin-right: 5%;
-    padding-left: 2%;
-    padding-right: 2%;
-    width: 1000px;
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 6%;
+    margin-right: 5%;
+    margin-left: 5%;
+    padding-right: 2%;
+    padding-left: 2%;
+    width: 1000px;
 }
 
 .chart-btn {
-    padding: 1%;
-    width: 100px;
-    height: 40px;
-    border-radius: 50px;
-    border-style: none;
-    background-color: var(--background-button-color);
-    color: var(--text-color);
-    font-size: 1.125rem;
-    transition: all var(--link-transition-duration) linear;
     -webkit-transition: all var(--link-transition-duration) linear;
     -o-transition: all var(--link-transition-duration) linear;
     -moz-transition: all var(--link-transition-duration) linear;
+    transition: all var(--link-transition-duration) linear;
+    border-style: none;
+    border-radius: 50px;
+    background-color: var(--background-button-color);
+    padding: 1%;
+    width: 100px;
+    height: 40px;
+    color: var(--text-color);
+    font-size: 1.125rem;
 }
 
 .chart-btn:hover {
-    color: var(--text-hover-color);
     box-shadow: 0 0 5px var(--contrast-color);
+    color: var(--text-hover-color);
 }
 
 /* navigation bar */
 
 .navbar {
     padding-top: 24px;
+    padding-right: 32px;
     padding-bottom: 24px;
     padding-left: 32px;
-    padding-right: 32px;
 }
 
 .navbar-items {
@@ -487,18 +487,18 @@ input[type=number] {
 
 .navbar-links {
     display: flex;
-    justify-content: space-between;
     flex-direction: row;
+    justify-content: space-between;
     width: 40%;
 }
 
 .navbar-link {
-    color: var(--text-color);
-    font-size: 1.125rem;
-    transition: color var(--link-transition-duration) linear;
     -webkit-transition: color var(--link-transition-duration) linear;
     -o-transition: color var(--link-transition-duration) linear;
     -moz-transition: color var(--link-transition-duration) linear;
+    transition: color var(--link-transition-duration) linear;
+    color: var(--text-color);
+    font-size: 1.125rem;
 }
 
 .navbar-link:hover {
@@ -517,8 +517,8 @@ input[type=number] {
 }
 
 .logo {
-    height: 40px;
     width: 40px;
+    height: 40px;
 }
 
 .logo:hover {
@@ -528,23 +528,23 @@ input[type=number] {
 
 .auth-container {
     display: flex;
-    width: 16%;
-    justify-content: space-between;
     flex-basis: 170px;
+    justify-content: space-between;
+    width: 16%;
 }
 
 .auth-link {
-    width: 49%;
-    height: 40px;
-    border-style: none;
-    background-color: var(--background-button-color);
-    color: var(--text-color);
-    font-size: 1.125rem;
-    outline: none;
-    transition: color var(--link-transition-duration) linear;
     -webkit-transition: color var(--link-transition-duration) linear;
     -o-transition: color var(--link-transition-duration) linear;
     -moz-transition: color var(--link-transition-duration) linear;
+    transition: color var(--link-transition-duration) linear;
+    outline: none;
+    border-style: none;
+    background-color: var(--background-button-color);
+    width: 49%;
+    height: 40px;
+    color: var(--text-color);
+    font-size: 1.125rem;
 }
 
 .left-link {
@@ -562,27 +562,27 @@ input[type=number] {
 }
 
 #sign-in-link {
-    border-right-style: solid;
     border-width: 2px;
+    border-right-style: solid;
     border-color: var(--background-color);
 }
 
 .profile {
-    display: flex;
-    padding-left: 15px;
-    padding-right: 20px;
-    align-items: center;
-    gap: 10px;
-    height: 40px;
-    border-radius: 50px;
-    border-style: none;
-    font-size: 1.125rem;
-    background-color: var(--background-button-color);
-    color: var(--text-color);
-    transition: color var(--link-transition-duration) linear;
     -webkit-transition: color var(--link-transition-duration) linear;
     -o-transition: color var(--link-transition-duration) linear;
     -moz-transition: color var(--link-transition-duration) linear;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: color var(--link-transition-duration) linear;
+    border-style: none;
+    border-radius: 50px;
+    background-color: var(--background-button-color);
+    padding-right: 20px;
+    padding-left: 15px;
+    height: 40px;
+    color: var(--text-color);
+    font-size: 1.125rem;
 }
 
 .profile:hover {
@@ -590,9 +590,9 @@ input[type=number] {
 }
 
 .avatar {
-    height: 30px;
-    width: 30px;
     border-radius: 8px;
+    width: 30px;
+    height: 30px;
 }
 
 /* dropdown menu */
@@ -618,47 +618,47 @@ input[type=number] {
     display: none;
     justify-content: center;
     align-items: center;
-    width: 80px;
-    height: 32px;
-    padding: 3px;
-    padding-left: 5px;
-    padding-right: 5px;
+    transition: color var(--link-transition-duration) linear;
     border-radius: 50px;
     background-color: var(--background-button-color);
-    font-size: 1.125rem;
+    padding: 3px;
+    padding-right: 5px;
+    padding-left: 5px;
+    width: 80px;
+    height: 32px;
     color: var(--text-color);
-    transition: color var(--link-transition-duration) linear;
+    font-size: 1.125rem;
 }
 
 .dropdown-content {
-    position: absolute;
-    transform: translate(-25%);
     -ms-transform: translate(-25%);
     -webkit-transform: translate(-25%);
     -o-transform: translate(-25%);
     -moz-transform: translate(-25%);
+    position: absolute;
+    transform: translate(-25%);
 }
 
 .dropdown-content > li {
-    margin-top: 5px;
-    padding: 8px;
-    padding-left: 12px;
-    padding-right: 12px;
     display: none;
-    width: 130px;
+    opacity: 0;
+    margin-top: 5px;
     border-style: none;
     border-radius: 50px;
-    opacity: 0;
     background-color: var(--background-button-color);
+    padding: 8px;
+    padding-right: 12px;
+    padding-left: 12px;
+    width: 130px;
 }
 
 .dropdown-content > li > a {
-    color: var(--text-color);
-    font-size: 1.125rem;
-    transition: color var(--link-transition-duration) linear;
     -webkit-transition: color var(--link-transition-duration) linear;
     -o-transition: color var(--link-transition-duration) linear;
     -moz-transition: color var(--link-transition-duration) linear;
+    transition: color var(--link-transition-duration) linear;
+    color: var(--text-color);
+    font-size: 1.125rem;
 }
 
 .dropdown-content li:hover a {
@@ -666,14 +666,14 @@ input[type=number] {
 }
 
 .dropdown-content > li > button {
-    color: var(--text-color);
-    font-size: 1.125rem;
-    border-style: none;
-    background-color: var(--background-button-color);
-    transition: color var(--link-transition-duration) linear;
     -webkit-transition: color var(--link-transition-duration) linear;
     -o-transition: color var(--link-transition-duration) linear;
     -moz-transition: color var(--link-transition-duration) linear;
+    transition: color var(--link-transition-duration) linear;
+    border-style: none;
+    background-color: var(--background-button-color);
+    color: var(--text-color);
+    font-size: 1.125rem;
 }
 
 .dropdown-content li:hover button {
@@ -681,128 +681,128 @@ input[type=number] {
 }
 
 .drop-1 {
-    animation: translateDrops 360ms 60ms ease-in-out forwards;
     -webkit-animation: translateDrops 360ms 60ms ease-in-out forwards;
     -o-animation: translateDrops 360ms 60ms ease-in-out forwards;
     -moz-animation: translateDrops 360ms 60ms ease-in-out forwards;
+    animation: translateDrops 360ms 60ms ease-in-out forwards;
 }
 
 .drop-2 {
-    animation: translateDrops 360ms 120ms ease-in-out forwards;
     -webkit-animation: translateDrops 360ms 120ms ease-in-out forwards;
     -o-animation: translateDrops 360ms 120ms ease-in-out forwards;
     -moz-animation: translateDrops 360ms 120ms ease-in-out forwards;
+    animation: translateDrops 360ms 120ms ease-in-out forwards;
 }
 
 .drop-3 {
-    animation: translateDrops 360ms 180ms ease-in-out forwards;
     -webkit-animation: translateDrops 360ms 180ms ease-in-out forwards;
     -o-animation: translateDrops 360ms 180ms ease-in-out forwards;
     -moz-animation: translateDrops 360ms 180ms ease-in-out forwards;
+    animation: translateDrops 360ms 180ms ease-in-out forwards;
 }
 
 .drop-4 {
-    animation: translateDrops 360ms 240ms ease-in-out forwards;
     -webkit-animation: translateDrops 360ms 240ms ease-in-out forwards;
     -o-animation: translateDrops 360ms 240ms ease-in-out forwards;
     -moz-animation: translateDrops 360ms 240ms ease-in-out forwards;
+    animation: translateDrops 360ms 240ms ease-in-out forwards;
 }
 
 .drop-5 {
-    animation: translateDrops 360ms 300ms ease-in-out forwards;
     -webkit-animation: translateDrops 360ms 300ms ease-in-out forwards;
     -o-animation: translateDrops 360ms 300ms ease-in-out forwards;
     -moz-animation: translateDrops 360ms 300ms ease-in-out forwards;
+    animation: translateDrops 360ms 300ms ease-in-out forwards;
 }
 
 .drop-6 {
-    animation: translateDrops 360ms 360ms ease-in-out forwards;
     -webkit-animation: translateDrops 360ms 360ms ease-in-out forwards;
     -o-animation: translateDrops 360ms 360ms ease-in-out forwards;
     -moz-animation: translateDrops 360ms 360ms ease-in-out forwards;
+    animation: translateDrops 360ms 360ms ease-in-out forwards;
 }
 
 @keyframes translateDrops {
     0% {
-        opacity: 0;
-        transform: translate(100%);
         -ms-transform: translate(100%);
         -webkit-transform: translate(100%);
         -o-transform: translate(100%);
         -moz-transform: translate(100%);
+        transform: translate(100%);
+        opacity: 0;
     }
 
     80% {
-        transform: translate(-5%);
         -ms-transform: translate(-5%);
         -webkit-transform: translate(-5%);
         -o-transform: translate(-5%);
         -moz-transform: translate(-5%);
+        transform: translate(-5%);
     }
 
     100% {
-        opacity: 1;
-        transform: translate(0%);
         -ms-transform: translate(0%);
         -webkit-transform: translate(0%);
         -o-transform: translate(0%);
         -moz-transform: translate(0%);
+        transform: translate(0%);
+        opacity: 1;
     }
 }
 
 @-webkit-keyframes translateDrops {
     0% {
-        opacity: 0;
-        transform: translate(100%);
         -ms-transform: translate(100%);
         -webkit-transform: translate(100%);
         -o-transform: translate(100%);
         -moz-transform: translate(100%);
+        transform: translate(100%);
+        opacity: 0;
     }
 
     80% {
-        transform: translate(-5%);
         -ms-transform: translate(-5%);
         -webkit-transform: translate(-5%);
         -o-transform: translate(-5%);
         -moz-transform: translate(-5%);
+        transform: translate(-5%);
     }
 
     100% {
-        opacity: 1;
-        transform: translate(0%);
         -ms-transform: translate(0%);
         -webkit-transform: translate(0%);
         -o-transform: translate(0%);
         -moz-transform: translate(0%);
+        transform: translate(0%);
+        opacity: 1;
     }
 }
 
 @-moz-keyframes translateDrops {
     0% {
-        opacity: 0;
-        transform: translate(100%);
         -ms-transform: translate(100%);
         -webkit-transform: translate(100%);
         -o-transform: translate(100%);
         -moz-transform: translate(100%);
+        transform: translate(100%);
+        opacity: 0;
     }
 
     80% {
-        transform: translate(-5%);
         -ms-transform: translate(-5%);
         -webkit-transform: translate(-5%);
         -o-transform: translate(-5%);
         -moz-transform: translate(-5%);
+        transform: translate(-5%);
     }
 
     100% {
-        opacity: 1;
-        transform: translate(0%);
         -ms-transform: translate(0%);
         -webkit-transform: translate(0%);
         -o-transform: translate(0%);
         -moz-transform: translate(0%);
+        transform: translate(0%);
+        opacity: 1;
     }
 }
 
@@ -823,29 +823,29 @@ input[type=number] {
 /* login popup */
 
 .auth-window {
-    position: absolute;
-    padding-top: 5vh;
-    padding-bottom: 2vh;
-    width: 50vw;
-    height: 55vh;
-    max-height: 500px;
-    border-radius: 50px;
-    opacity: 0;
-    z-index: 1;
-    background-color: var(--background-button-color);
-    transform: translate(-100%, 30%);
     -ms-transform: translate(-100%, 30%);
     -webkit-transform: translate(-100%, 30%);
     -o-transform: translate(-100%, 30%);
     -moz-transform: translate(-100%, 30%);
-    transition: opacity var(--login-transition-duration) ease-out,
-        transform var(--login-transition-duration) ease-out;
     -webkit-transition: opacity var(--login-transition-duration) ease-out,
         transform var(--login-transition-duration) ease-out;
     -o-transition: opacity var(--login-transition-duration) ease-out,
         transform var(--login-transition-duration) ease-out;
     -moz-transition: opacity var(--login-transition-duration) ease-out,
         transform var(--login-transition-duration) ease-out;
+    position: absolute;
+    transform: translate(-100%, 30%);
+    opacity: 0;
+    z-index: 1;
+    transition: opacity var(--login-transition-duration) ease-out,
+        transform var(--login-transition-duration) ease-out;
+    border-radius: 50px;
+    background-color: var(--background-button-color);
+    padding-top: 5vh;
+    padding-bottom: 2vh;
+    width: 50vw;
+    height: 55vh;
+    max-height: 500px;
 }
 
 .cancel-container {
@@ -856,20 +856,20 @@ input[type=number] {
 }
 
 .cancel {
-    width: 10%;
-    border-style: none;
-    background-color: var(--background-button-color);
-    color: var(--text-color);
-    font-size: 1.125rem;
-    transition: color var(--link-transition-duration) linear;
     -webkit-transition: color var(--link-transition-duration) linear;
     -o-transition: color var(--link-transition-duration) linear;
     -moz-transition: color var(--link-transition-duration) linear;
+    transition: color var(--link-transition-duration) linear;
+    border-style: none;
+    background-color: var(--background-button-color);
+    width: 10%;
+    color: var(--text-color);
+    font-size: 1.125rem;
 }
 
 .cancel:hover {
-    color: var(--text-hover-color);
     cursor: pointer;
+    color: var(--text-hover-color);
 }
 
 .form-container {
@@ -890,20 +890,20 @@ input[type=number] {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 50px;
-    width: 140px;
-    border-radius: 50px;
     box-shadow: 0 0 5px var(--text-hover-color);
+    border-radius: 50px;
     background-color: var(--text-color);
+    width: 140px;
+    height: 50px;
 }
 
 .switch-button {
-    width: 70px;
-    height: 50px;
-    border-radius: 50px;
-    border-style: none;
     opacity: 0;
     z-index: 2;
+    border-style: none;
+    border-radius: 50px;
+    width: 70px;
+    height: 50px;
 }
 
 .switch-button:hover {
@@ -911,97 +911,97 @@ input[type=number] {
 }
 
 .switch-window::before {
-    content: "sign in";
-    position: absolute;
     display: flex;
+    position: absolute;
     justify-content: center;
     align-items: center;
+    z-index: 1;
     width: 70px;
     height: 50px;
-    z-index: 1;
+    content: "sign in";
     color: var(--background-color);
     font-size: 1.125rem; 
 }
 
 .switch-window::after {
-    content: "sign up";
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 70px;
-    height: 50px;
-    z-index: 1;
-    color: var(--background-color);
-    font-size: 1.125rem;
-    transform: translate(100%);
     -ms-transform: translate(100%);
     -webkit-transform: translate(100%);
     -o-transform: translate(100%);
     -moz-transform: translate(100%);
+    display: flex;
+    position: absolute;
+    justify-content: center;
+    align-items: center;
+    transform: translate(100%);
+    z-index: 1;
+    width: 70px;
+    height: 50px;
+    content: "sign up";
+    color: var(--background-color);
+    font-size: 1.125rem;
 }
 
 .mode {
-    position: absolute;
-    height: 50px;
-    width: 70px;
-    border-style: none;
-    border-radius: 50px;
-    z-index: 0;
-    background-color: var(--text-hover-color);
-    transform: translate(0%);
     -ms-transform: translate(0%);
     -webkit-transform: translate(0%);
     -o-transform: translate(0%);
     -moz-transform: translate(0%);
-    transition: transform var(--login-mode-transition-duration) ease-out;
     -webkit-transition: transform var(--login-mode-transition-duration) ease-out;
     -o-transition: transform var(--login-mode-transition-duration) ease-out;
     -moz-transition: transform var(--login-mode-transition-duration) ease-out;
+    position: absolute;
+    transform: translate(0%);
+    z-index: 0;
+    transition: transform var(--login-mode-transition-duration) ease-out;
+    border-style: none;
+    border-radius: 50px;
+    background-color: var(--text-hover-color);
+    width: 70px;
+    height: 50px;
 }
 
 .register-fields {
-    width: 50%;
-    height: 100%;
-    opacity: 0.7;
-    transform: translate(-100%);
     -ms-transform: translate(-100%);
     -webkit-transform: translate(-100%);
     -o-transform: translate(-100%);
     -moz-transform: translate(-100%);
-    transition: transform var(--login-mode-transition-duration) ease-out;
     -webkit-transition: transform var(--login-mode-transition-duration) ease-out;
     -o-transition: transform var(--login-mode-transition-duration) ease-out;
     -moz-transition: transform var(--login-mode-transition-duration) ease-out;
+    transform: translate(-100%);
+    opacity: 0.7;
+    transition: transform var(--login-mode-transition-duration) ease-out;
+    width: 50%;
+    height: 100%;
 }
 
 .login-form {
-    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 10px;
+    width: 100%;
 }
 
 .sign-input {
-    padding-left: 5%;
-    width: 95%;
-    height: 40px;
-    border-radius: 50px;
-    border-style: none;
-    background-color: var(--text-color);
-    color: var(--background-color);
-    font-size: 1.125rem;
-    transition: box-shadow 0.2s linear;
     -webkit-transition: box-shadow 0.2s linear;
     -o-transition: box-shadow 0.2s linear;
     -moz-transition: box-shadow 0.2s linear;
+    transition: box-shadow 0.2s linear;
+    border-style: none;
+    border-radius: 50px;
+    background-color: var(--text-color);
+    padding-left: 5%;
+    width: 95%;
+    height: 40px;
+    color: var(--background-color);
+    font-size: 1.125rem;
 }
 
 .sign-input::placeholder {
-    color: var(--background-button-color);
     opacity: 0.6;
+    color: var(--background-button-color);
 }
 
 .sign-input:focus {
@@ -1010,26 +1010,26 @@ input[type=number] {
 }
 
 .submit {
-    padding: 0;
-    width: 30%;
-    transition: background-color 0.2s linear;
     -webkit-transition: background-color 0.2s linear;
     -o-transition: background-color 0.2s linear;
     -moz-transition: background-color 0.2s linear;
+    transition: background-color 0.2s linear;
+    padding: 0;
+    width: 30%;
 }
 
 .submit:hover {
-    box-shadow: 0 0 5px var(--text-hover-color);
     cursor: pointer;
+    box-shadow: 0 0 5px var(--text-hover-color);
 }
 
 .login-with {
-    padding: 5%;
-    padding-bottom: 3%;
-    width: 40%;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 5%;
+    padding-bottom: 3%;
+    width: 40%;
 }
 
 .login-with > span {
@@ -1038,19 +1038,19 @@ input[type=number] {
 }
 
 .login-link {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-left: 10px;
-    padding-right: 10px;
-    height: 32px;
-    border-radius: 50px;
-    background-color: var(--text-color);
-    color: var(--background-color);
-    transition: background-color 0.2s linear;
     -webkit-transition: background-color 0.2s linear;
     -o-transition: background-color 0.2s linear;
     -moz-transition: background-color 0.2s linear;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.2s linear;
+    border-radius: 50px;
+    background-color: var(--text-color);
+    padding-right: 10px;
+    padding-left: 10px;
+    height: 32px;
+    color: var(--background-color);
 }
 
 .login-link:hover {
@@ -1058,22 +1058,22 @@ input[type=number] {
 }
 
 .recovery-container {
-    padding: 5%;
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 5%;
 }
 
 .password-recovery {
-    color: var(--text-color);
-    font-size: 1rem;
-    outline: none;
-    border: none;
-    background-color: var(--background-button-color);
-    transition: color var(--link-transition-duration) linear;
     -webkit-transition: color var(--link-transition-duration) linear;
     -o-transition: color var(--link-transition-duration) linear;
     -moz-transition: color var(--link-transition-duration) linear;
+    transition: color var(--link-transition-duration) linear;
+    outline: none;
+    border: none;
+    background-color: var(--background-button-color);
+    color: var(--text-color);
+    font-size: 1rem;
 }
 
 .password-recovery:hover {
@@ -1081,29 +1081,29 @@ input[type=number] {
 }
 
 .login-fields {
-    width: 50%;
-    height: 100%;
-    opacity: 0.7;
-    transform: translate(50%, -100%);
     -ms-transform: translate(50%, -100%);
     -webkit-transform: translate(50%, -100%);
     -o-transform: translate(50%, -100%);
     -moz-transform: translate(50%, -100%);
-    transition: transform var(--login-mode-transition-duration) ease-out;
     -webkit-transition: transform var(--login-mode-transition-duration) ease-out;
     -o-transition: transform var(--login-mode-transition-duration) ease-out;
     -moz-transition: transform var(--login-mode-transition-duration) ease-out;
+    transform: translate(50%, -100%);
+    opacity: 0.7;
+    transition: transform var(--login-mode-transition-duration) ease-out;
+    width: 50%;
+    height: 100%;
 }
 
 .error-text {
-    padding: 3%;
-    height: 5%;
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 3%;
+    height: 5%;
     color: var(--text-color);
-    font-size: 1.125rem;
     font-weight: bold;
+    font-size: 1.125rem;
 }
 
 @media (max-width: 1500px) {
@@ -1143,37 +1143,37 @@ input[type=number] {
 /* email confirm window */
 
 .confirm-window {
-    position: absolute;
-    margin-left: 30vw;
-    margin-top: 35vh;
-    width: 40vw;
-    height: 40vh;
-    z-index: 1;
-    opacity: 0;
-    visibility: hidden;
-    border-radius: 50px;
-    filter: brightness(1);
-    background-color: var(--background-button-color);
-    transform: translate(200%);
     -ms-transform: translate(200%);
     -webkit-transform: translate(200%);
     -o-transform: translate(200%);
     -moz-transform: translate(200%);
-    transition: all var(--login-transition-duration) ease-out;
     -webkit-transition: all var(--login-transition-duration) ease-out;
     -o-transition: all var(--login-transition-duration) ease-out;
     -moz-transition: all var(--login-transition-duration) ease-out;
+    position: absolute;
+    transform: translate(200%);
+    visibility: hidden;
+    opacity: 0;
+    z-index: 1;
+    filter: brightness(1);
+    transition: all var(--login-transition-duration) ease-out;
+    margin-top: 35vh;
+    margin-left: 30vw;
+    border-radius: 50px;
+    background-color: var(--background-button-color);
+    width: 40vw;
+    height: 40vh;
 }
 
 .email-confirm {
     display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5%;
     padding-top: 5%;
     width: 100%;
     height: 100%;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    gap: 5%;
 }
 
 .code-message > p,
@@ -1189,24 +1189,24 @@ span {
 }
 
 .input-code {
-    text-align: center;
-    padding-left: 5%;
-    height: 40px;
-    border-radius: 50px;
-    border-style: none;
-    outline: none;
-    background-color: var(--text-color);
-    color: var(--background-color);
-    font-size: 1.125rem;
-    transition: box-shadow 0.2s linear;
     -webkit-transition: box-shadow 0.2s linear;
     -o-transition: box-shadow 0.2s linear;
     -moz-transition: box-shadow 0.2s linear;
+    transition: box-shadow 0.2s linear;
+    outline: none;
+    border-style: none;
+    border-radius: 50px;
+    background-color: var(--text-color);
+    padding-left: 5%;
+    height: 40px;
+    color: var(--background-color);
+    font-size: 1.125rem;
+    text-align: center;
 }
 
 .input-code::placeholder {
-    color: var(--background-button-color);
     opacity: 0.6;
+    color: var(--background-button-color);
 }
 
 .input-code:focus {
@@ -1230,19 +1230,19 @@ span {
 }
 
 .get-code {
-    padding-left: 8px;
-    padding-right: 8px;
-    text-align: center;
-    height: 30px;
-    border-radius: 50px;
-    border-style: none;
-    outline: none;
-    cursor: pointer;
-    background-color: var(--text-color);
-    transition: box-shadow 0.2s linear;
     -webkit-transition: box-shadow 0.2s linear;
     -o-transition: box-shadow 0.2s linear;
     -moz-transition: box-shadow 0.2s linear;
+    transition: box-shadow 0.2s linear;
+    cursor: pointer;
+    outline: none;
+    border-style: none;
+    border-radius: 50px;
+    background-color: var(--text-color);
+    padding-right: 8px;
+    padding-left: 8px;
+    height: 30px;
+    text-align: center;
 }
 
 .get-code:hover {
@@ -1254,58 +1254,58 @@ span {
 }
 
 .mail-cancel {
-    width: 50px;
-    border-style: none;
-    background-color: var(--background-button-color);
-    color: var(--text-color);
-    font-size: 1.125rem;
-    transition: color var(--link-transition-duration) linear;
     -webkit-transition: color var(--link-transition-duration) linear;
     -o-transition: color var(--link-transition-duration) linear;
     -moz-transition: color var(--link-transition-duration) linear;
+    transition: color var(--link-transition-duration) linear;
+    border-style: none;
+    background-color: var(--background-button-color);
+    width: 50px;
+    color: var(--text-color);
+    font-size: 1.125rem;
 }
 
 .mail-cancel:hover {
-    color: var(--text-hover-color);
     cursor: pointer;
+    color: var(--text-hover-color);
 }
 
 .transition-off {
-    transition: none;
     -webkit-transition: none;
     -o-transition: none;
     -moz-transition: none;
+    transition: none;
 }
 
 .email-recover-window {
-    position: absolute;
-    margin-left: 30vw;
-    margin-top: 35vh;
-    width: 40vw;
-    height: 35vh;
-    z-index: 1;
-    opacity: 0;
-    visibility: hidden;
-    border-radius: 50px;
-    filter: brightness(1);
-    background-color: var(--background-button-color);
-    transform: translate(200%);
     -ms-transform: translate(200%);
     -webkit-transform: translate(200%);
     -o-transform: translate(200%);
     -moz-transform: translate(200%);
+    position: absolute;
+    transform: translate(200%);
+    visibility: hidden;
+    opacity: 0;
+    z-index: 1;
+    filter: brightness(1);
     transition: all var(--login-transition-duration) ease-out;
+    margin-top: 35vh;
+    margin-left: 30vw;
+    border-radius: 50px;
+    background-color: var(--background-button-color);
+    width: 40vw;
+    height: 35vh;
 }
 
 .email-wrapper {
     display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10%;
     padding-top: 4%;
     width: 100%;
     height: 100%;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    gap: 10%;
 }
 
 .pass-info {
@@ -1321,27 +1321,27 @@ span {
 .email-form {
     display: flex;
     flex-direction: row;
-    justify-content: center;
     flex-wrap: nowrap;
-    width: 90%;
+    justify-content: center;
     gap: 8px;
+    width: 90%;
 }
 
 .email-input-recovery {
+    outline: none;
+    border-style: none;
+    border-radius: 50px;
+    background-color: var(--text-color);
     padding-left: 3%;
     width: 60%;
     height: 40px;
-    border-radius: 50px;
-    border-style: none;
-    outline: none;
-    background-color: var(--text-color);
     color: var(--background-color);
     font-size: 1.125rem;
 }
 
 .email-input-recovery::placeholder {
-    color: var(--background-button-color);
     opacity: 0.6;
+    color: var(--background-button-color);
 }
 
 .email-input-recovery:focus {
@@ -1350,19 +1350,19 @@ span {
 }
 
 .email-submit {
-    text-align: center;
-    width: 20%;
-    height: 40px;
-    border-radius: 50px;
-    border-style: none;
-    outline: none;
-    background-color: var(--text-color);
-    color: var(--background-color);
-    font-size: 1.125rem;
-    transition: box-shadow var(--link-transition-duration) linear;
     -webkit-transition: box-shadow var(--link-transition-duration) linear;
     -o-transition: box-shadow var(--link-transition-duration) linear;
     -moz-transition: box-shadow var(--link-transition-duration) linear;
+    transition: box-shadow var(--link-transition-duration) linear;
+    outline: none;
+    border-style: none;
+    border-radius: 50px;
+    background-color: var(--text-color);
+    width: 20%;
+    height: 40px;
+    color: var(--background-color);
+    font-size: 1.125rem;
+    text-align: center;
 }
 
 .email-submit:hover {
@@ -1374,31 +1374,31 @@ span {
 }
 
 .email-cancel {
-    width: 10%;
-    border-style: none;
-    background-color: var(--background-button-color);
-    color: var(--text-color);
-    font-size: 1.125rem;
-    transition: color var(--link-transition-duration) linear;
     -webkit-transition: color var(--link-transition-duration) linear;
     -o-transition: color var(--link-transition-duration) linear;
     -moz-transition: color var(--link-transition-duration) linear;
+    transition: color var(--link-transition-duration) linear;
+    border-style: none;
+    background-color: var(--background-button-color);
+    width: 10%;
+    color: var(--text-color);
+    font-size: 1.125rem;
 }
 
 .email-cancel:hover {
-    color: var(--text-hover-color);
     cursor: pointer;
+    color: var(--text-hover-color);
 }
 
 .email-confirm-rec {
     display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 4%;
     padding-top: 3%;
     width: 100%;
     height: 100%;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    gap: 4%;
 }
 
 .pass-info-wrapper {
@@ -1406,57 +1406,57 @@ span {
 }
 
 .confirm-window-rec {
-    position: absolute;
-    margin-left: 30vw;
-    margin-top: 25vh;
-    width: 40vw;
-    height: 60vh;
-    z-index: 1;
-    opacity: 0;
-    visibility: hidden;
-    border-radius: 50px;
-    filter: brightness(1);
-    background-color: var(--background-button-color);
-    transform: translate(200%);
     -ms-transform: translate(200%);
     -webkit-transform: translate(200%);
     -o-transform: translate(200%);
     -moz-transform: translate(200%);
-    transition: all var(--login-transition-duration) ease-out;
     -webkit-transition: all var(--login-transition-duration) ease-out;
     -o-transition: all var(--login-transition-duration) ease-out;
     -moz-transition: all var(--login-transition-duration) ease-out;
+    position: absolute;
+    transform: translate(200%);
+    visibility: hidden;
+    opacity: 0;
+    z-index: 1;
+    filter: brightness(1);
+    transition: all var(--login-transition-duration) ease-out;
+    margin-top: 25vh;
+    margin-left: 30vw;
+    border-radius: 50px;
+    background-color: var(--background-button-color);
+    width: 40vw;
+    height: 60vh;
 }
 
 .email-form-rec {
     display: flex;
     flex-direction: column;
+    flex-wrap: nowrap;
     justify-content: center;
     align-items: center;
-    flex-wrap: nowrap;
-    width: 90%;
     gap: 8px;
+    width: 90%;
 }
 
 .input-code-rec {
-    text-align: center;
-    width: 40%;
-    height: 40px;
-    border-radius: 50px;
-    border-style: none;
-    outline: none;
-    background-color: var(--text-color);
-    color: var(--background-color);
-    font-size: 1.125rem;
-    transition: box-shadow 0.2s linear;
     -webkit-transition: box-shadow 0.2s linear;
     -o-transition: box-shadow 0.2s linear;
     -moz-transition: box-shadow 0.2s linear;
+    transition: box-shadow 0.2s linear;
+    outline: none;
+    border-style: none;
+    border-radius: 50px;
+    background-color: var(--text-color);
+    width: 40%;
+    height: 40px;
+    color: var(--background-color);
+    font-size: 1.125rem;
+    text-align: center;
 }
 
 .input-code-rec::placeholder {
-    color: var(--background-button-color);
     opacity: 0.6;
+    color: var(--background-button-color);
 }
 
 .input-code-rec:focus {
@@ -1465,39 +1465,39 @@ span {
 }
 
 .success-window {
-    position: absolute;
-    margin-left: 35vw;
-    margin-top: 35vh;
-    height: 30vh;
-    width: 30vw;
-    background-color: var(--background-button-color);
-    border-radius: 50px;
-    border-style: none;
-    z-index: 1;
-    overflow: hidden;
-    visibility: visible;
-    transform: translate(250%);
-    transition: transform var(--login-transition-duration) ease-out;
     -webkit-transition: transform var(--login-transition-duration) ease-out;
     -o-transition: transform var(--login-transition-duration) ease-out;
     -moz-transition: transform var(--login-transition-duration) ease-out;
+    position: absolute;
+    transform: translate(250%);
+    visibility: visible;
+    z-index: 1;
+    transition: transform var(--login-transition-duration) ease-out;
+    margin-top: 35vh;
+    margin-left: 35vw;
+    border-style: none;
+    border-radius: 50px;
+    background-color: var(--background-button-color);
+    width: 30vw;
+    height: 30vh;
+    overflow: hidden;
 }
 
 .success-info-wrap {
     display: flex;
-    width: 100%;
-    height: 85%;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 5%;
+    width: 100%;
+    height: 85%;
     color: var(--text-color);
 }
 
 .grat-block {
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
     gap: 10px;
     width: 100%;
     font-size: 1.125rem;
@@ -1512,21 +1512,21 @@ span {
 }
 
 .cancel-success-btn {
-    width: 100px;
-    height: 40px;
-    color: var(--text-color);
-    background-color: var(--background-button-color);
-    font-size: 1.125rem;
-    border-radius: 50px;
-    border-style: none;
-    transition: color var(--link-transition-duration) linear;
     -webkit-transition: color var(--link-transition-duration) linear;
     -o-transition: color var(--link-transition-duration) linear;
     -moz-transition: color var(--link-transition-duration) linear;
+    transition: color var(--link-transition-duration) linear;
+    border-style: none;
+    border-radius: 50px;
+    background-color: var(--background-button-color);
+    width: 100px;
+    height: 40px;
+    color: var(--text-color);
+    font-size: 1.125rem;
 
     &:hover {
-        color: var(--text-hover-color);
         cursor: pointer;
+        color: var(--text-hover-color);
     }
 }
 
