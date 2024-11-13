@@ -2,14 +2,14 @@ import typing as t
 from calendar import monthrange
 from datetime import UTC, datetime
 
-from flask import url_for, request
+from flask import request, url_for
 from flask_restx import Namespace, Resource
 from sqlalchemy import ScalarResult
 from werkzeug.exceptions import BadRequest
 
-from app.shemas import CryptoTransactionSchema
-from app.database.postgre.services import PostgreHandler
 from app.database.postgre.models import CryptoCourse, CryptoCurrency
+from app.database.postgre.services import PostgreHandler
+from app.shemas import CryptoTransactionSchema
 from app.utils.aliases import RESTError
 from app.utils.decorators import authorization_required
 from app.utils.JWT import validate_token

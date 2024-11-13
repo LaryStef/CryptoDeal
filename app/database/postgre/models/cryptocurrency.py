@@ -7,9 +7,9 @@ from app.database.postgre import db
 
 
 if TYPE_CHECKING:
+    from .crypto_transaction import CryptoTransaction
     from .cryptocourse import CryptoCourse
     from .cryptocurrency_wallet import CryptocurrencyWallet
-    from .crypto_transaction import CryptoTransaction
 
 
 class CryptoCurrency(db.Model):

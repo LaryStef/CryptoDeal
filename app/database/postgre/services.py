@@ -1,21 +1,21 @@
-from random import randint
 import math
+from datetime import UTC, datetime
+from random import randint
 from typing import Any, Literal, TypeAlias
-from datetime import datetime, UTC
 from uuid import uuid4
 
-from sqlalchemy import Result, delete, select, desc
+from sqlalchemy import Result, delete, desc, select
 from sqlalchemy.orm import Mapped
 from werkzeug.exceptions import BadRequest
 
+from app.config import appConfig
 from app.database.postgre import db, utcnow
 from app.database.postgre.models import (
-    CryptocurrencyWallet, CryptoCourse, FiatWallet, Session, User,
-    CryptoTransaction
+    CryptoCourse, CryptocurrencyWallet, CryptoTransaction, FiatWallet, Session,
+    User
 )
 from app.logger import logger
 from app.utils.cryptography import hash_password
-from app.config import appConfig
 
 
 _BalanceList: TypeAlias = list[CryptocurrencyWallet | FiatWallet] | None

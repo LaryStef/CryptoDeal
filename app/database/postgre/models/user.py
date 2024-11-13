@@ -1,15 +1,15 @@
 from datetime import datetime
 from typing import TYPE_CHECKING
 
-from sqlalchemy import TIMESTAMP, Integer, String, Float
+from sqlalchemy import TIMESTAMP, Float, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.postgre import db, utcnow
 
 
 if TYPE_CHECKING:
-    from .cryptocurrency_wallet import CryptocurrencyWallet
     from .crypto_transaction import CryptoTransaction
+    from .cryptocurrency_wallet import CryptocurrencyWallet
     from .fiat_wallet import FiatWallet
     from .session import Session
 

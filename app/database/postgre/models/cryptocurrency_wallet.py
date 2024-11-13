@@ -1,4 +1,4 @@
-from sqlalchemy import ForeignKey, String, Float
+from sqlalchemy import Float, ForeignKey, String
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.database.postgre import db

@@ -5,10 +5,10 @@ from flask_restx import Namespace, Resource
 from werkzeug.datastructures import ImmutableMultiDict
 from werkzeug.exceptions import BadRequest
 
-from app.database.postgre.services import PostgreHandler
 from app.database.postgre.models import (
-    Session, User, CryptocurrencyWallet, FiatWallet, CryptoCurrency
+    CryptoCurrency, CryptocurrencyWallet, FiatWallet, Session, User
 )
+from app.database.postgre.services import PostgreHandler
 from app.utils.aliases import RESTError
 from app.utils.decorators import authorization_required
 from app.utils.JWT import validate_token

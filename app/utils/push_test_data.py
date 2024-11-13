@@ -1,11 +1,11 @@
 from random import uniform
 
-from app.utils.generators import generate_id
 from app.database.postgre import db
 from app.database.postgre.models import (
-    CryptoCourse, CryptoCurrency, CryptocurrencyWallet, User, FiatWallet,
-    Fiat, CryptoTransaction, Session
+    CryptoCourse, CryptoCurrency, CryptocurrencyWallet, CryptoTransaction,
+    Fiat, FiatWallet, Session, User
 )
+from app.utils.generators import generate_id
 
 
 def push_day_course(min_: float, max_: float, ticker: str):

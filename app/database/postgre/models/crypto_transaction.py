@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import ForeignKey, String, Float, TIMESTAMP
+from sqlalchemy import TIMESTAMP, Float, ForeignKey, String
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.database.postgre import db, utcnow
