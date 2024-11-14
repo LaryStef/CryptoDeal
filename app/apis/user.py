@@ -191,46 +191,47 @@ class Balance(Resource):
 
 @api.route("/statistics/<string:asset>")
 class Statistics(Resource):
+    @staticmethod
+    def _calculate_profit(
+        invested: float,
+        income: float,
+        worth: float
+    ) -> float:
+        return (worth - invested + income) / invested * 100
+
     @authorization_required("access")
     def get(self, asset: str):
-        def _calculate_profit(
-            invested: float,
-            income: float,
-            worth: float
-        ) -> float:
-            return (worth - invested + income) / invested * 100
-
         # request /api/user/statistics/cryptocurrency
         # response example
-        {
-            "type": "cryptocurrency",
-            "spent": 238392.392,
-            "derived": 2999990.281,
-            "cryptocurrencies": [
-                {
-                    "place": 1,
-                    "ticker": "BTC",
-                    "name": "Bitcoin",
-                    "logoUrl": "/static/svg/cryptocurrency/BTC.svg",
-                    "amount": 0.839832,
-                    "price": 238392.392,
-                    "volume": 5848323932.888,
-                    "profit": -84.21,
-                    "change": 10.04
-                },
-                {
-                    "place": 2,
-                    "ticker": "ETH",
-                    "name": "Ethereum",
-                    "logoUrl": "/static/svg/cryptocurrency/ETH.svg",
-                    "amount": 46.438,
-                    "price": 2849.442,
-                    "volume": 1882351134.882,
-                    "profit": 20.78,
-                    "change": -4.91
-                }
-            ]
-        }
+        # {
+        #     "type": "cryptocurrency",
+        #     "spent": 238392.392,
+        #     "derived": 2999990.281,
+        #     "cryptocurrencies": [
+        #         {
+        #             "place": 1,
+        #             "ticker": "BTC",
+        #             "name": "Bitcoin",
+        #             "logoUrl": "/static/svg/cryptocurrency/BTC.svg",
+        #             "amount": 0.839832,
+        #             "price": 238392.392,
+        #             "volume": 5848323932.888,
+        #             "profit": -84.21,
+        #             "change": 10.04
+        #         },
+        #         {
+        #             "place": 2,
+        #             "ticker": "ETH",
+        #             "name": "Ethereum",
+        #             "logoUrl": "/static/svg/cryptocurrency/ETH.svg",
+        #             "amount": 46.438,
+        #             "price": 2849.442,
+        #             "volume": 1882351134.882,
+        #             "profit": 20.78,
+        #             "change": -4.91
+        #         }
+        #     ]
+        # }
 
         availible_assets: list[str] = ["cryptocurrency"]
 
@@ -280,7 +281,7 @@ class Statistics(Resource):
                             "amount": currency[0].amount,
                             "price": price,
                             "volume": general_currency_info.volume,
-                            "profit": _calculate_profit(
+                            "profit": self._calculate_profit(
                                 invested=currency[0].invested,
                                 income=currency[0].income,
                                 worth=currency[0].amount * price
