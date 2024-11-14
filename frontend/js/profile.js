@@ -1,10 +1,7 @@
 import {
     Chart,
     DoughnutController,
-    ArcElement,
-    pluginService,
-    plugins,
-    Legend
+    ArcElement
 } from "chart.js";
 
 const origin = location.origin;
@@ -19,11 +16,10 @@ const restoreVerifyUrl = new URL("api/auth/restore/verify", origin);
 const refreshTokensUrl = new URL("api/auth/refresh-tokens", origin);
 const profileDataUrl = new URL("api/user", origin);
 const sessionUrl = new URL("api/sessions", origin);
+const cryptoStatisticsUrl = new URL("api/user/statistics/cryptocurrency", origin);
 
 const cooldown = 30;
 const cooldownRec = 30;
-
-loadChart();
 
 class BalanceUrl {
     constructor(origin, type, ids) {
@@ -40,7 +36,14 @@ class BalanceUrl {
     }
 }
 
-function loadChart() {
+function convertNumberForUser(number) {
+    if (number > 1_000_000_000) return (Math.round(number / 10_000_000) / 100).toString() + "B";
+    if (number > 1_000_000) return (Math.round(number / 10_000) / 100).toString() + "M";
+    if (number > 1000) return (Math.round(number / 10) / 100).toString() + "K";
+    return (Math.round(number * 100) / 100).toString();
+}
+
+function loadChart(doughnutData, walletWorth) {
     Chart.register(
         DoughnutController,
         ArcElement
@@ -123,7 +126,7 @@ function loadChart() {
 
     const config = {
         type: 'doughnut',
-        data: getDoughnutData(),
+        data: doughnutData,
         options: {
             layout: {
                 padding: 10,
@@ -137,12 +140,13 @@ function loadChart() {
             maintainAspectRatio: false,
             elements: {
                 center: {
-                    text: '131.87K$',
-                    color: '#8FFF06', // Default is #000000
-                    fontStyle: 'Arial', // Default is Arial
-                    sidePadding: 40,     // Default is 20 (as a percentage)
-                    minFontSize: 15, // Default is 20 (in px), set to false and text will not wrap.
-                    lineHeight: 15  , // Default is 25 (in px), used for when text wraps
+                    text: walletWorth,
+                    color: '#8FFF06',
+                    fontStyle: 'Arial',
+                    sidePadding: 40,
+                    minFontSize: 15,
+                    maxFontSize: 20,
+                    lineHeight: 15,
                 }
             }
         }
@@ -150,21 +154,37 @@ function loadChart() {
     return new Chart(document.getElementById("doughnut").getContext('2d'), config);
 }
 
-function getDoughnutData() {
+function loadCryptoStatistics(data) {
+    document.getElementById("spent-value").innerText = convertNumberForUser(data["spent"]) + "$";
+    document.getElementById("derived-value").innerText = convertNumberForUser(data["derived"]) + "$";
+    let cryptocurrencies = data["cryptocurrencies"].sort((a, b) => b.amount * b.price - a.amount * a.price);
+    const walletWorth = convertNumberForUser(
+        cryptocurrencies.reduce((acc, cryptocurrency) => acc + cryptocurrency.amount * cryptocurrency.price, 0)
+    );
+    //update worth
+    
+    if (cryptocurrencies.length == 0) {
+        // TODO show empty message
+        return;
+    }
+    loadChart(formDoughnutData(cryptocurrencies), walletWorth);
+}
+
+function formDoughnutData(cryptocurrencies) {
+    let doughnutData = []
+    cryptocurrencies.forEach((cryptocurrency) => {
+        doughnutData.push(cryptocurrency.amount * cryptocurrency.price);
+    });
+    const colors = [
+        'rgb(255, 99, 132)',
+        'rgb(54, 162, 235)',
+        'rgb(255, 205, 86)',
+    ];
+
     return {
-        labels: [
-            'Red',
-            'Blue',
-            'Yellow'
-        ],
         datasets: [{
-            label: 'My First Dataset',
-            data: [130, 60, 100],
-            backgroundColor: [
-                'rgb(255, 99, 132)',
-                'rgb(54, 162, 235)',
-                'rgb(255, 205, 86)',
-            ],
+            data: doughnutData,
+            backgroundColor: colors.slice(0, cryptocurrencies.length),
             hoverOffset: 20,
         }]
     }
@@ -346,16 +366,19 @@ function loadMainInfo() {
         .then((response) => response.json())
         .then((data) => {
             const balance = data["balance"]["USD"];
-            let parsedBalance = balance;
-            if (balance > 1_000_000) {
-                parsedBalance = (Math.round(balance / 10_000) / 100).toString() + "M";
-            } else if (balance > 1000) {
-                parsedBalance = (Math.round(balance / 10) / 100).toString() + "K";
-            } else {
-                parsedBalance = (Math.round(balance * 100) / 100).toString();
-            }
-            document.getElementById("usd-balance").innerText = "Balance: " + parsedBalance + "$";
+            document.getElementById("usd-balance")
+                .innerText = "Balance: " + convertNumberForUser(balance) + "$";
         })
+    
+    fetch(cryptoStatisticsUrl, {
+        method: "GET",
+        credentials: "same-origin",
+        headers: {
+            "X-SCRF-TOKEN": getCookie("access_scrf_token"),
+        },
+    })
+        .then((response) => response.json())
+        .then((data) => loadCryptoStatistics(data));
 }
 
 function loadSessions(clearFirst = false) {
