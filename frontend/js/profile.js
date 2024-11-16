@@ -237,7 +237,7 @@ function loadCrytoTable(cryptocurrencies) {
         }
         table.innerHTML += `
                 <tr class="row">
-                <td class="tc col1">${i}</td>
+                <td class="tc col1">${i+1}</td>
                 <td class="tc col2">
                     <div class="crypto-name-wrap">
                         <img class="crypto-logo" src="${cryptocurrencies[i].logoUrl}" alt="">
