@@ -162,7 +162,7 @@ function loadCryptoStatistics(data) {
         cryptocurrencies.reduce((acc, cryptocurrency) => acc + cryptocurrency.amount * cryptocurrency.price, 0)
     );
     document.getElementById("worth-value").innerText = walletWorth + "$";
-    if (data["change"] >= 0) {
+    if (Math.round(data["change"] * 100) / 100 >= 0) {
         document.getElementById("worth-change").innerText = "+" + Math.round(data["change"] * 100) / 100 + "%";
         document.getElementById("worth-change").classList.add("change-pos");
     } else {

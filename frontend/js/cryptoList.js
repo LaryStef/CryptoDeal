@@ -43,7 +43,6 @@ function loadCryptoTable() {
                     changeClass = "change-neg";
                 }
                 
-                console.log(currency.logoUrl);
                 table.innerHTML += `        
                     <tr class="row">
                         <td class="tc col1">${num}</td>
