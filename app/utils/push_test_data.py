@@ -16,7 +16,7 @@ def push_day_course(min_: float, max_: float, ticker: str):
                 ticker=ticker,
                 type_="hour",
                 number=hour,
-                price=uniform(min_, max_)
+                price=round(uniform(min_, max_), ndigits=2)
             )
         )
 
@@ -29,7 +29,7 @@ def push_month_course(min_: float, max_: float, ticker: str):
                 ticker=ticker,
                 type_="day",
                 number=day,
-                price=uniform(min_, max_)
+                price=round(uniform(min_, max_), ndigits=2)
             )
         )
 
@@ -42,7 +42,7 @@ def push_year_course(min_: float, max_: float, ticker: str):
                 ticker=ticker,
                 type_="month",
                 number=month*2,
-                price=uniform(min_, max_)
+                price=round(uniform(min_, max_), ndigits=2)
             )
         )
         db.session.add(
@@ -51,7 +51,7 @@ def push_year_course(min_: float, max_: float, ticker: str):
                 ticker=ticker,
                 type_="month",
                 number=month*2-1,
-                price=uniform(min_, max_)
+                price=round(uniform(min_, max_), ndigits=2)
             )
         )
 
@@ -93,7 +93,7 @@ def push_cryptocurrencies():
                     programmers Nick Szabo and the late Hal Finney. Miners
                     created the Bitcoin genesis block on January 3, 2009.
                 </p>""",
-            volume=28_388_811_901.291_736
+            volume=28_388_811_901.29
         )
     )
     push_day_course(38928.0, 82931.0, "BTC")
@@ -147,7 +147,7 @@ def push_cryptocurrencies():
                 <a href="https://www.youtube.com/shorts/LtrgP17dw_E">
                     His best video ever.
                 </a>""",
-            volume=7_865_323_997.264_321
+            volume=7_865_323_997.26
         )
     )
     push_day_course(2373.0, 2963.0, "ETH")
@@ -193,12 +193,12 @@ def push_cryptocurrencies():
                     greater than the number of Tether in circulation. This can
                     be verified via their website.
                 </p>""",
-            volume=42_177_103_848.376_772
+            volume=42_177_103_848.39
         )
     )
-    push_day_course(0.983_813, 1.011_362, "USDT")
-    push_month_course(0.983_813, 1.011_362, "USDT")
-    push_year_course(0.983_813, 1.011_362, "USDT")
+    push_day_course(0.985, 1.015, "USDT")
+    push_month_course(0.985, 1.015, "USDT")
+    push_year_course(0.985, 1.015, "USDT")
 
     db.session.add(
         User(
@@ -248,7 +248,7 @@ def push_cryptocurrencies():
             iso="USD",
             name="United States Dollar",
             description="dollar description",
-            volume=1_000_000.372832
+            volume=1_000_000.37
         )
     )
 
@@ -256,7 +256,7 @@ def push_cryptocurrencies():
         FiatWallet(
             ID=generate_id(36),
             iso="USD",
-            amount=1_000_000.372832,
+            amount=1_000_000.82,
             user_id="1e383b66-5612-4590-98b6-865967fc3f8f"
         )
     )
