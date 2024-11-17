@@ -296,12 +296,14 @@ class Statistics(Resource):
                     total_worth += currency[0].amount * price
 
                 user: User = PostgreHandler.get(User, uuid=user_id)
+                change = 0 if total_invested == 0 else (
+                    total_worth - total_invested + total_derived
+                ) / total_invested * 100
+
                 return {
                     "type": asset,
                     "worth": total_worth,
-                    "change": (
-                        total_worth - total_invested + total_derived
-                    ) / total_invested * 100,
+                    "change": change,
                     "spent": user.crypto_spent,
                     "derived": user.crypto_derived,
                     "cryptocurrencies": cryptocurrencies
