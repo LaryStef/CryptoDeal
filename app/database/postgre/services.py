@@ -1,4 +1,3 @@
-import math
 from datetime import UTC, datetime
 from random import randint
 from typing import Any, Literal, TypeAlias
@@ -168,9 +167,10 @@ class PostgreHandler:
 
         if type_ == "buy":
             if usd_balance.amount < amount * current_price:
-                shortage: float = math.ceil(
-                    (current_price * amount - usd_balance.amount) * 100
-                ) / 100
+                shortage: float = round(
+                    current_price * amount - usd_balance.amount,
+                    ndigits=2
+                )
                 raise BadRequest(
                     description=(f"you're short of {shortage} USD")
                 )
@@ -186,27 +186,28 @@ class PostgreHandler:
                 )
                 db.session.add(crypto_balance)
 
-            usd_balance.amount -= amount * current_price
+            usd_balance.amount -= round(amount * current_price, ndigits=2)
             crypto_balance.amount += amount
-            crypto_balance.invested += amount * current_price
-            user.crypto_spent += amount * current_price
+            crypto_balance.invested += round(amount * current_price, ndigits=2)
+            user.crypto_spent += round(amount * current_price, ndigits=2)
 
         elif type_ == "sell":
             if crypto_balance is None:
                 raise BadRequest(description=f"you don't have any {ticker}")
 
             if crypto_balance.amount < amount:
-                shortage: float = math.ceil(
-                    (amount - crypto_balance.amount) * 100
-                ) / 100
+                shortage: float = round(
+                    amount - crypto_balance.amount,
+                    ndigits=2
+                )
                 raise BadRequest(
                     description=f"you're short of {shortage} {ticker}"
                 )
 
-            usd_balance.amount += amount * current_price
+            usd_balance.amount += round(amount * current_price, ndigits=2)
             crypto_balance.amount -= amount
-            crypto_balance.income += amount * current_price
-            user.crypto_derived += amount * current_price
+            crypto_balance.income += round(amount * current_price, ndigits=2)
+            user.crypto_derived += round(amount * current_price, ndigits=2)
 
             if crypto_balance.amount == 0:
                 db.session.delete(crypto_balance)
