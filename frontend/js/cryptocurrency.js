@@ -230,7 +230,12 @@ function updateTradeWindowInfo() {
     })
         .then((response) => response.json())
         .then((data) => {
-            userCryptoBalance = Math.round(data["balance"][ticker] * 100) / 100;
+            if (data["balance"][ticker] === undefined) {
+                userCryptoBalance = 0;
+            } else {
+                userCryptoBalance = Math.round(data["balance"][ticker] * 100) / 100;
+            }
+
             document.getElementById("crypto-balance").innerText = ticker + " balance: " + userCryptoBalance;
         });
     fetch(usdBalanceUrl.get(), {
@@ -242,7 +247,12 @@ function updateTradeWindowInfo() {
     })
         .then((response) => response.json())
         .then((data) => {
-            userUSDBalance = Math.round(data["balance"]["USD"] * 100) / 100;
+            if (data["balance"]["USD"] === undefined) {
+                userUSDBalance = 0;
+            } else {
+                userUSDBalance = Math.round(data["balance"]["USD"] * 100) / 100;
+            }
+
             document.getElementById("usd-balance").innerText = "USD balance: " + convertNumberForUser(data["balance"]["USD"]) + "$";
         });
     fetch(cryptoPriceUrl + ticker, {
