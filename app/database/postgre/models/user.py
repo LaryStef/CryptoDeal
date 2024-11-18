@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Literal
 
 from sqlalchemy import TIMESTAMP, Float, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -31,6 +31,11 @@ class User(db.Model):
     alien_number: Mapped[int] = mapped_column(Integer, default=0)
     crypto_spent: Mapped[float] = mapped_column(Float, default=0)
     crypto_derived: Mapped[float] = mapped_column(Float, default=0)
+    login_attempts: Mapped[int] = mapped_column(Integer, default=0)
+    login_status: Mapped[Literal["disabled", "active"]] = mapped_column(
+        String(8),
+        default="active"
+    )
 
     session: Mapped[list["Session"]] = relationship(cascade="all, delete")
     user_fiat_wallet: Mapped[list["FiatWallet"]] = relationship(
