@@ -15,7 +15,6 @@ __all__ = [
     "CryptoCourse",
     "FiatWallet",
     "CryptocurrencyWallet",
-    "Crypto",
     "Fiat",
     "CryptoTransaction"
 ]
