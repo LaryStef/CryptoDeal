@@ -5,6 +5,9 @@ from sqlalchemy import pool
 from alembic import context
 
 from app.config import appConfig
+from app.database.postgre import db
+from app.database.postgre.models import *  # noqa F401
+
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -21,7 +24,7 @@ config.set_main_option("sqlalchemy.url", appConfig.SQLALCHEMY_DATABASE_URI)
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-target_metadata = None
+target_metadata = db.Model.metadata
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
