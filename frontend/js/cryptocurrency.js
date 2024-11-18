@@ -51,6 +51,13 @@ const gloablChartObj = getChart();
 
 loadCryptocurrencyData();
 
+function convertNumberForUser(number) {
+    if (number > 1_000_000_000) return (Math.round(number / 10_000_000) / 100).toString() + "B";
+    if (number > 1_000_000) return (Math.round(number / 10_000) / 100).toString() + "M";
+    if (number > 1000) return (Math.round(number / 10) / 100).toString() + "K";
+    return (Math.round(number * 100) / 100).toString();
+}
+
 function loadCryptocurrencyData() {
     updateChart(gloablChartObj, "hour");
 
@@ -152,14 +159,7 @@ function updateChart(chart, timeFrame) {
             chart.update();
             
             document.getElementById("price-head").innerText = Math.round(data["price"] * 1000) / 1000 + "$";
-
-            let volume;
-            if (data["volume"] > 1_000_000_000) {
-                volume = (Math.round(data["volume"] / 1_000_000) / 1000).toString() + "B"
-            } else {
-                volume = (Math.round(data["volume"] / 1000) / 1000).toString() + "M"
-            }
-            document.getElementById("chart-vol").innerText = volume;
+            document.getElementById("chart-vol").innerText = convertNumberForUser(data["volume"]);
 
             let changeElement = document.getElementById("chart-change-info");
             if (data["change"] >= 0) {
@@ -230,13 +230,13 @@ function updateTradeWindowInfo() {
     })
         .then((response) => response.json())
         .then((data) => {
-            userCryptoBalance = data["balance"][ticker];
-            if (userCryptoBalance === undefined) {
+            if (data["balance"][ticker] === undefined) {
                 userCryptoBalance = 0;
+            } else {
+                userCryptoBalance = Math.round(data["balance"][ticker] * 100) / 100;
             }
 
-            const balanceRounded = Math.round(userCryptoBalance * 100) / 100;
-            document.getElementById("crypto-balance").innerText = ticker + " balance: " + balanceRounded;
+            document.getElementById("crypto-balance").innerText = ticker + " balance: " + userCryptoBalance;
         });
     fetch(usdBalanceUrl.get(), {
         method: "GET",
@@ -247,13 +247,13 @@ function updateTradeWindowInfo() {
     })
         .then((response) => response.json())
         .then((data) => {
-            userUSDBalance = data["balance"]["USD"];
-            if (userUSDBalance === undefined) {
+            if (data["balance"]["USD"] === undefined) {
                 userUSDBalance = 0;
+            } else {
+                userUSDBalance = Math.round(data["balance"]["USD"] * 100) / 100;
             }
 
-            const balanceRounded = Math.round(userUSDBalance * 100) / 100;
-            document.getElementById("usd-balance").innerText = "USD balance: " + balanceRounded + "$";
+            document.getElementById("usd-balance").innerText = "USD balance: " + convertNumberForUser(data["balance"]["USD"]) + "$";
         });
     fetch(cryptoPriceUrl + ticker, {
         method: "GET",
@@ -261,7 +261,7 @@ function updateTradeWindowInfo() {
     })
         .then((response) => response.json())
         .then((data) => {
-            currentCryptoPrice = Math.round(data["price"] * 1000) / 1000;
+            currentCryptoPrice = Math.round(data["price"] * 100) / 100;
             document.getElementById("crypto-trade-price-buy").innerText = ticker + " price: " + currentCryptoPrice + "$";
             document.getElementById("crypto-trade-price-sell").innerText = ticker + " price: " + currentCryptoPrice + "$";
         });
@@ -354,16 +354,20 @@ function updateSuccessWindow(
         transactionInfoEl.innerText = `You sold ${amountCrypto} ${ticker} for ${amountUSD}$`;
     }
     
-    const roundedCryptoBalance = Math.round(userCryptoBalance * 100) / 100;
-    const roundedUSDBalance = Math.round(userUSDBalance * 100) / 100;
-    document.getElementById("crypto-success-balance").innerText = `Your ${ticker} balance: ${roundedCryptoBalance}`;
-    document.getElementById("usd-success-balance").innerText = `Your USD balance: ${roundedUSDBalance}`;
+    document.getElementById("crypto-success-balance").innerText = `Your ${ticker} balance: ${userCryptoBalance}`;
+    document.getElementById("usd-success-balance").innerText = `Your USD balance: ${convertNumberForUser(userUSDBalance)}`;
 }
 
 document.getElementById("crypto-amount-buy").addEventListener("input", () => {
     const priceFieldId = "crypto-price-buy";
-    const userFieldValue = document.getElementById("crypto-amount-buy").value;
     let priceField = document.getElementById(priceFieldId);
+    const userField = document.getElementById("crypto-amount-buy");
+
+    if (userField.value.split(".").length > 1 && userField.value.split(".")[1].length > 2) {
+        userField.value = userField.value.split(".")[0] + "." + userField.value.split(".")[1].slice(0, 2);
+    }
+    let userFieldValue = document.getElementById("crypto-amount-buy").value;
+
     if (userFieldValue === "") {
         colorPriceField(priceFieldId);
         priceField.value = "";
@@ -375,8 +379,9 @@ document.getElementById("crypto-amount-buy").addEventListener("input", () => {
         priceField.value = "Invalid value";
         return;
     }
-    const maxAmount = userUSDBalance / currentCryptoPrice;
-    priceField.value = Math.round(amount * currentCryptoPrice * 100) / 100;
+
+    const maxAmount = Math.round(userUSDBalance / currentCryptoPrice * 100) / 100;
+    priceField.value = Math.round(currentCryptoPrice * amount * 100) / 100;
     if (amount > maxAmount) {
         colorPriceField(priceFieldId, false);
         return;
@@ -386,8 +391,13 @@ document.getElementById("crypto-amount-buy").addEventListener("input", () => {
 
 document.getElementById("crypto-amount-sell").addEventListener("input", () => {
     const priceFieldId = "crypto-income-sell";
-    const userFieldValue = document.getElementById("crypto-amount-sell").value;
     let priceField = document.getElementById(priceFieldId);
+    const userField = document.getElementById("crypto-amount-sell");
+
+    if (userField.value.split(".").length > 1 && userField.value.split(".")[1].length > 2) {
+        userField.value = userField.value.split(".")[0] + "." + userField.value.split(".")[1].slice(0, 2);
+    }
+    let userFieldValue = document.getElementById("crypto-amount-sell").value;
     if (userFieldValue === "") {
         colorPriceField(priceFieldId);
         priceField.value = "";
@@ -399,6 +409,7 @@ document.getElementById("crypto-amount-sell").addEventListener("input", () => {
         priceField.value = "Invalid value";
         return;
     }
+
     priceField.value = Math.round(amount * currentCryptoPrice * 100) / 100;
     if (amount > userCryptoBalance) {
         colorPriceField(priceFieldId, false);
@@ -421,7 +432,7 @@ document.getElementById("sell-purchase").addEventListener("click", () => {
 });
 
 function provideTransaction(valueFieldId, errorFieldId, type) {
-    const amount = document.getElementById(valueFieldId).value;
+    const amount = Math.round(parseFloat(document.getElementById(valueFieldId).value) * 100) / 100;
     fetch(transactionUrl, {
         method: "POST",
         credentials: "same-origin",
@@ -438,12 +449,12 @@ function provideTransaction(valueFieldId, errorFieldId, type) {
         .then((response) => {
             if (response.status === 200) {
                 if (type === "buy") {
-                    userCryptoBalance += parseFloat(amount);
-                    userUSDBalance -= parseFloat(amount) * currentCryptoPrice;
+                    userCryptoBalance += Math.round(parseFloat(amount) * 100) / 100;
+                    userUSDBalance -= Math.round(parseFloat(amount) * currentCryptoPrice * 100) / 100;
                 }
                 else if (type === "sell") {
-                    userCryptoBalance -= amount;
-                    userUSDBalance += amount * currentCryptoPrice;
+                    userCryptoBalance -= Math.round(parseFloat(amount) * 100) / 100;
+                    userUSDBalance += Math.round(amount * currentCryptoPrice * 100) / 100;
                 }
 
                 closeTradeWindow();

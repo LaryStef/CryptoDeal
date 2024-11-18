@@ -18,7 +18,7 @@
             <button class="f-line-btn" id="set-btn">settings</button>
         </div>
     </div>
-    <div class="st-block">
+    <div class="st-block" id="st-block-1">
         <div class="head-line">
             <h3 class="block-header">Cryptocurrency statistics</h3>
         </div>
@@ -28,17 +28,17 @@
                     <div class="usd-stat-block">
                         <p>Total worth: </p>
                         <div class="worth-info">
-                            <span>131.87K$</span>
-                            <span class="change-pos">+37.83%</span>
+                            <span id="worth-value">0$</span>
+                            <span id="worth-change" class="change-pos">+0%</span>
                         </div>
                     </div>
                     <div class="usd-stat-block">
                         <p>Spent all the time: </p>
-                        <span id="spent-value">19.2M$</span>
+                        <span id="spent-value">0$</span>
                     </div>
                     <div class="usd-stat-block">
                         <p>Sold all the time: </p>
-                        <span id="derived-value">34.52M$</span>
+                        <span id="derived-value">0$</span>
                     </div>
                 </div>
                 <div class="doughnut-content">
@@ -46,32 +46,7 @@
                         <canvas class="doughnut" id="doughnut" aria-label="chart" role="img"></canvas>
                     </div>
                     <div class="legend">
-                        <ul class="legend-list">
-                            <li class="legend-el" id="1">
-                                <div class="color-rect" style="background-color: #FF6384;"></div>
-                                <span>Bitcoin</span><img class="legend-img" src="/static/svg/cryptocurrency/BTC.svg" alt=""></li>
-                            <li class="legend-el" id="2">
-                                <div class="color-rect" style="background-color: #36A2EB;"></div>
-                                <span>Ethereum</span><img class="legend-img" src="/static/svg/cryptocurrency/ETH.svg" alt=""></li>
-                            <li class="legend-el" id="3">
-                                <div class="color-rect" style="background-color: #FFCE56;"></div>
-                                <span>Tether</span><img class="legend-img" src="/static/svg/cryptocurrency/USDT.svg" alt=""></li>
-                            <!-- <li class="legend-el">
-                                <div>color</div>
-                                <span> name</span><img src="" alt=""></li>
-                            <li class="legend-el">
-                                <div>color</div>
-                                <span> name</span><img src="" alt=""></li>
-                            <li class="legend-el">
-                                <div>color</div>
-                                <span> name</span><img src="" alt=""></li>
-                            <li class="legend-el">
-                                <div>color</div>
-                                <span> name</span><img src="" alt=""></li>
-                            <li class="legend-el">
-                                <div>color</div>
-                                <span> name</span><img src="" alt=""></li> -->
-                        </ul>
+                        <ul class="legend-list" id="legend-list"></ul>
                     </div>
                 </div>
             </div>
@@ -87,54 +62,6 @@
                         <th class="hc col7">your income</th>
                         <th class="hc col8">change 24h</th>
                         <th class="hc col9">volume 24h, $</th>
-                    </tr>
-                    <tr class="row">
-                        <td class="tc col1">1</td>
-                        <td class="tc col2">
-                            <div class="crypto-name-wrap">
-                                <img class="crypto-logo" src="/static/svg/cryptocurrency/BTC.svg" alt="">
-                                <span class="crypto-name">Bitcoin</span>
-                            </div>
-                        </td>
-                        <td class="tc col3">BTC</td>
-                        <td class="tc col4">18.001K</td>
-                        <td class="tc col5">0.00347</td>
-                        <td class="tc col6">1.729K</td>
-                        <td class="tc col7 change-pos">+17.58%</td>
-                        <td class="tc col8 change-neg">-10.36%</td>
-                        <td class="tc col9">3.235B</td>
-                    </tr>
-                    <tr class="row">
-                        <td class="tc col1">2</td>
-                        <td class="tc col2">
-                            <div class="crypto-name-wrap">
-                                <img class="crypto-logo" src="/static/svg/cryptocurrency/ETH.svg" alt="">
-                                <span class="crypto-name">Ethereum</span>
-                            </div>
-                        </td>
-                        <td class="tc col3">ETH</td>
-                        <td class="tc col4">2.392K</td>
-                        <td class="tc col5">73.474</td>
-                        <td class="tc col6">164.66K</td>
-                        <td class="tc col7 change-neg">-43.07%</td>
-                        <td class="tc col8 change-pos">+3.75%</td>
-                        <td class="tc col9">8.235B</td>
-                    </tr>
-                    <tr class="row">
-                        <td class="tc col1">3</td>
-                        <td class="tc col2">
-                            <div class="crypto-name-wrap">
-                                <img class="crypto-logo" src="/static/svg/cryptocurrency/USDT.svg" alt="">
-                                <span class="crypto-name">Tether</span>
-                            </div>
-                        </td>
-                        <td class="tc col3">USDT</td>
-                        <td class="tc col4">1</td>
-                        <td class="tc col5">87.326K</td>
-                        <td class="tc col6">87.345K</td>
-                        <td class="tc col7 change-pos">+0.01%</td>
-                        <td class="tc col8 change-pos">+0%</td>
-                        <td class="tc col9">22.288B</td>
                     </tr>
                 </table>
             </div>

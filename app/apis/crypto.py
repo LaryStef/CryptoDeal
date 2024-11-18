@@ -333,7 +333,7 @@ class Transaction(Resource):
             PostgreHandler.provide_crypto_transaction(
                 user_id,
                 ticker=transaction_data["ticker"],
-                amount=float(transaction_data["amount"]),
+                amount=round(float(transaction_data["amount"]), ndigits=2),
                 type_=transaction_data["type"]
             )
             return "OK", 200
@@ -348,7 +348,7 @@ class Transaction(Resource):
             }, 400
 
 
-@api.route("transaction/history")
+@api.route("/transaction/history")
 class Histoty(Resource):
     @authorization_required("access")
     def get(self):

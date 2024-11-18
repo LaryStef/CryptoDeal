@@ -1156,6 +1156,12 @@ span {
     justify-content: start;
     align-items: center;
     padding-left: 10%;
+    gap: 3%;
+
+    p {
+        color: var(--text-color);
+        font-size: 1.5rem;
+    }
 }
 
 .block-header {

@@ -161,25 +161,55 @@ function loadCryptoStatistics(data) {
     const walletWorth = convertNumberForUser(
         cryptocurrencies.reduce((acc, cryptocurrency) => acc + cryptocurrency.amount * cryptocurrency.price, 0)
     );
-    //update worth
-    
+    document.getElementById("worth-value").innerText = walletWorth + "$";
+    if (Math.round(data["change"] * 100) / 100 >= 0) {
+        document.getElementById("worth-change").innerText = "+" + Math.round(data["change"] * 100) / 100 + "%";
+        document.getElementById("worth-change").classList.add("change-pos");
+    } else {
+        document.getElementById("worth-change").innerText = Math.round(data["change"] * 100) / 100 + "%";
+        document.getElementById("worth-change").classList.add("change-neg");
+    }
+
     if (cryptocurrencies.length == 0) {
-        // TODO show empty message
+        document.getElementById("st-block-1").innerHTML = `
+            <div class="head-line">
+                <h3 class="block-header">Cryptocurrency statistics</h3>
+                <p>(Buy any cryptocurrency to see statistics)</p>
+            </div>`
         return;
     }
+    loadCrytoTable(cryptocurrencies);
     loadChart(formDoughnutData(cryptocurrencies), walletWorth);
 }
 
 function formDoughnutData(cryptocurrencies) {
-    let doughnutData = []
-    cryptocurrencies.forEach((cryptocurrency) => {
-        doughnutData.push(cryptocurrency.amount * cryptocurrency.price);
-    });
     const colors = [
-        'rgb(255, 99, 132)',
-        'rgb(54, 162, 235)',
-        'rgb(255, 205, 86)',
+        "#f4e500",
+        "#f18e1c",
+        "#e32322",
+        "#6d398b",
+        "#2a71b0",
+        "#008e5b",
     ];
+
+    const legend = document.getElementById("legend-list");
+    let doughnutData = []
+    for (let i = 0; i < cryptocurrencies.length ; i++) {
+        if (i == 5) {
+            legend.innerHTML += `<li class="legend-el" id="legend-${i + 1}">
+                <div class="color-rect" style="background-color: ${colors[i]};"></div>
+                <span>Other</span></li>`
+            doughnutData[i] = 0;
+            for (let j = i; j < cryptocurrencies.length; j++) {
+                doughnutData[i] += cryptocurrencies[j].amount * cryptocurrencies[j].price;
+            }
+            break;
+        }
+        doughnutData.push(cryptocurrencies[i].amount * cryptocurrencies[i].price);
+        legend.innerHTML += `<li class="legend-el" id="legend-${i+1}">
+            <div class="color-rect" style="background-color: ${colors[i]};"></div>
+            <span>${cryptocurrencies[i].name}</span><img class="legend-img" src="${cryptocurrencies[i].logoUrl}" alt=""></li>`
+    }
 
     return {
         datasets: [{
@@ -187,6 +217,41 @@ function formDoughnutData(cryptocurrencies) {
             backgroundColor: colors.slice(0, cryptocurrencies.length),
             hoverOffset: 20,
         }]
+    }
+}
+
+function loadCrytoTable(cryptocurrencies) {
+    let table = document.getElementById("crypto-list");
+    for (let i = 0; i < cryptocurrencies.length; i++) {
+        let profitCell = "";
+        if (cryptocurrencies[i].profit >= 0) {
+            profitCell = `<td class="tc col7 change-pos">+${Math.round(cryptocurrencies[i].profit * 100) / 100}%</td>`;
+        } else {
+            profitCell = `<td class="tc col8 change-neg">${Math.round(cryptocurrencies[i].profit * 100) / 100}%</td>`;
+        }
+        let changeCell = "";
+        if (cryptocurrencies[i].change >= 0) {
+            changeCell = `<td class="tc col8 change-pos">+${Math.round(cryptocurrencies[i].change * 100) / 100}%</td>`;
+        } else {
+            changeCell = `<td class="tc col8 change-neg">${Math.round(cryptocurrencies[i].change * 100) / 100}%</td>`;
+        }
+        table.innerHTML += `
+                <tr class="row">
+                <td class="tc col1">${i+1}</td>
+                <td class="tc col2">
+                    <div class="crypto-name-wrap">
+                        <img class="crypto-logo" src="${cryptocurrencies[i].logoUrl}" alt="">
+                        <span class="crypto-name">${cryptocurrencies[i].name}</span>
+                    </div>
+                </td>
+                <td class="tc col3">${cryptocurrencies[i].ticker}</td>
+                <td class="tc col4">${convertNumberForUser(cryptocurrencies[i].price)}</td>
+                <td class="tc col5">${Math.round(cryptocurrencies[i].amount * 1000) / 1000}</td>
+                <td class="tc col6">${convertNumberForUser(cryptocurrencies[i].amount * cryptocurrencies[i].price)}</td>
+                ${profitCell}
+                ${changeCell}
+                <td class="tc col9">${convertNumberForUser(cryptocurrencies[i].volume)}</td>
+            </tr>`;
     }
 }
 
