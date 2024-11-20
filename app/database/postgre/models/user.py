@@ -31,10 +31,14 @@ class User(db.Model):
     alien_number: Mapped[int] = mapped_column(Integer, default=0)
     crypto_spent: Mapped[float] = mapped_column(Float, default=0)
     crypto_derived: Mapped[float] = mapped_column(Float, default=0)
+    login_cooldown_end: Mapped[datetime] = mapped_column(
+        TIMESTAMP,
+        server_default=utcnow()
+    )
     login_attempts: Mapped[int] = mapped_column(Integer, default=0)
-    login_status: Mapped[Literal["disabled", "active"]] = mapped_column(
-        String(8),
-        default="active"
+    login_mode: Mapped[Literal["fast", "slow"]] = mapped_column(
+        String(4),
+        default="fast"
     )
 
     session: Mapped[list["Session"]] = relationship(cascade="all, delete")
