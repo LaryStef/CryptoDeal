@@ -3,9 +3,7 @@ from random import randint
 from typing import Any, Literal, TypeAlias
 from uuid import uuid4
 
-from sqlalchemy import (
-    Result, delete, desc, select, BinaryExpression, Sequence
-)
+from sqlalchemy import BinaryExpression, Result, Sequence, delete, desc, select
 from sqlalchemy.orm import Mapped
 from werkzeug.exceptions import BadRequest, NotFound
 

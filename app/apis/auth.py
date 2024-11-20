@@ -7,7 +7,7 @@ from bcrypt import checkpw
 from flask import Response, make_response, request
 from flask_restx import Namespace, Resource
 from redis.exceptions import ResponseError
-from werkzeug.exceptions import BadRequest, Unauthorized, NotFound
+from werkzeug.exceptions import BadRequest, NotFound, Unauthorized
 
 from app.config import appConfig
 from app.database.postgre.models import User

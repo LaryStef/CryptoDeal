@@ -2,7 +2,7 @@
 
 import os
 from logging.config import dictConfig
-from typing import TypeAlias, Any
+from typing import Any, TypeAlias
 
 from celery.schedules import crontab
 from dotenv import load_dotenv

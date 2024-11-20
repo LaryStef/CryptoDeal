@@ -2,8 +2,8 @@ import typing as t
 
 from flask import request, url_for
 from flask_restx import Namespace, Resource
-from werkzeug.exceptions import BadRequest
 from sqlalchemy import Sequence
+from werkzeug.exceptions import BadRequest
 
 from app.database.postgre.models import (
     CryptoCurrency, CryptocurrencyWallet, FiatWallet, Session, User
