@@ -265,7 +265,9 @@ class PostgreHandler:
     ) -> Sequence:
 
         if table == CryptocurrencyWallet:
-            in_cond: BinaryExpression[bool] = CryptocurrencyWallet.ticker.in_(ids)
+            in_cond: BinaryExpression[bool] = CryptocurrencyWallet.ticker.in_(
+                ids
+            )
         elif table == FiatWallet:
             in_cond: BinaryExpression[bool] = FiatWallet.iso.in_(ids)
 

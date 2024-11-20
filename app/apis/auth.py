@@ -148,8 +148,8 @@ class SignIn(Resource):
             return {
                 "error": {
                     "code": "Not found",
-                    "message": "User not found",
-                    "details": "No user with this username"
+                    "message": error.description,
+                    "details": ""
                 }
             }, 404
 
