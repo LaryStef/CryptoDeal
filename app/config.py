@@ -46,6 +46,8 @@ class AppConfig(Config):
     RESTORE_COOLDOWN: int = 20000
     REFRESH_TOKEN_LIFETIME: int = 12000
     JWT_ENCODING_ALGORITHM: str = "HS256"
+    LOGIN_COOLDOWN: int = 2
+    LOGIN_FAST_ATTEMPTS: int = 10
 
     # celery
     CELERY: _CeleryConf = {
