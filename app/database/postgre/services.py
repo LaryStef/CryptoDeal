@@ -1,4 +1,4 @@
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from random import randint
 from typing import Any, Literal, TypeAlias
 from uuid import uuid4
@@ -104,6 +104,12 @@ class PostgreHandler:
 
     @staticmethod
     def add_session(refresh_id: str, user_id: str, device: str) -> None:
+        user: User = db.session.execute(
+            select(User).filter_by(uuid=user_id)
+        ).scalar()
+        user.login_attempts = 0
+        user.login_mode = "fast"
+
         session_raw: Session = Session(
             session_id=refresh_id,
             user_id=user_id,
@@ -305,3 +311,13 @@ class PostgreHandler:
         if course_day_ago is None or new_course is None:
             return 0
         return (new_course.price / course_day_ago.price - 1) * 100
+
+    @staticmethod
+    def increase_login_attempts(user: User) -> None:
+        user.login_attempts += 1
+        if user.login_attempts >= appConfig.LOGIN_FAST_ATTEMPTS:
+            user.login_mode = "slow"
+            user.login_cooldown_end = datetime.now() + timedelta(
+                seconds=appConfig.LOGIN_COOLDOWN
+            )
+        db.session.commit()

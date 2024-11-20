@@ -75,6 +75,16 @@ class SignIn(Resource):
                 User,
                 name=data.get("username")
             )
+            if (user.login_mode == "slow" and
+                    user.login_cooldown_end > datetime.now()):
+                return {
+                    "error": {
+                        "code": "Too many requests",
+                        "message": "Too many login attempts",
+                        "details": """Account in slow login mode, try again in
+                            a few seconds or restore passowrd"""
+                    }
+                }, 429
 
             if user is not None and checkpw(
                 data.get("password", "").encode("utf-8"),
@@ -86,12 +96,6 @@ class SignIn(Resource):
                 refresh_token_id: str = uuid4().__str__()
                 access_scrf_token: str = generate_id(32)
                 refresh_scrf_token: str = generate_id(32)
-
-                PostgreHandler.add_session(
-                    refresh_id=refresh_token_id,
-                    user_id=user.uuid,
-                    device=request.headers.get("Device", "unknown device")
-                )
 
                 access_token, refresh_token = generate_tokens(
                     payload={
@@ -106,6 +110,12 @@ class SignIn(Resource):
                     refresh_id=refresh_token_id
                 )
 
+                PostgreHandler.add_session(
+                    refresh_id=refresh_token_id,
+                    user_id=user.uuid,
+                    device=request.headers.get("Device", "unknown device")
+                )
+
                 return _set_auth_cookies(
                     response,
                     access_scrf_token,
@@ -114,6 +124,8 @@ class SignIn(Resource):
                     refresh_token
                 )
 
+            if user is not None:
+                PostgreHandler.increase_login_attempts(user)
             return {
                 "error": {
                     "code": "Unauthorized",
