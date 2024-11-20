@@ -15,5 +15,11 @@
   },
   "[css]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
+},
+"flake8.interpreter": [
+    ".\\.venv\\Scripts\\python.exe"
+],
+"[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+}
 }
