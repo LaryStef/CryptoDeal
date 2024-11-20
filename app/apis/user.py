@@ -2,8 +2,8 @@ import typing as t
 
 from flask import request, url_for
 from flask_restx import Namespace, Resource
-from werkzeug.datastructures import ImmutableMultiDict
 from werkzeug.exceptions import BadRequest
+from sqlalchemy import Sequence
 
 from app.database.postgre.models import (
     CryptoCurrency, CryptocurrencyWallet, FiatWallet, Session, User
@@ -24,7 +24,7 @@ _UserData: t.TypeAlias = dict[
 @api.route("/")
 class Profile(Resource):
     @authorization_required("access")
-    def get(self) -> _UserData | RESTError:
+    def get(self) -> tuple[dict[str, _UserData] | RESTError, int]:
         try:
             # response example
             # {
@@ -126,7 +126,9 @@ class Profile(Resource):
 @api.route("/balance/<string:asset>/ids")
 class Balance(Resource):
     @authorization_required("access")
-    def get(self, asset: str):
+    def get(
+        self, asset: str
+    ) -> tuple[dict[str, dict[str, float]], int] | RESTError:
         # request /api/user/balance/currency/ids?id=USD&id=RUR
         # response example
         # {
@@ -143,7 +145,7 @@ class Balance(Resource):
             if asset not in availible_assets:
                 raise BadRequest(description=f"Type not in {availible_assets}")
 
-            ids: ImmutableMultiDict[str, str] = request.args.getlist("id")
+            ids: list[str] = request.args.getlist("id")
             access_token: str | None = request.cookies.get("access_token")
             access_payload: t.Any = validate_token(
                 token=access_token,
@@ -153,15 +155,14 @@ class Balance(Resource):
             if access_payload is None:
                 raise BadRequest("Access token is not valid")
             user_id: str = access_payload.get("uuid", "")
-            balance: dict[str, int] = {}
+            balance: dict[str, float] = {}
 
             if asset == "cryptocurrency":
-                wallet: list[CryptocurrencyWallet] = \
-                    PostgreHandler.get_balance(
-                        ids,
-                        table=CryptocurrencyWallet,
-                        user_id=user_id,
-                    )
+                wallet: Sequence = PostgreHandler.get_balance(
+                    ids,
+                    table=CryptocurrencyWallet,
+                    user_id=user_id,
+                )
                 for crypto in wallet:
                     balance[crypto[0].ticker] = crypto[0].amount
 
@@ -200,7 +201,7 @@ class Statistics(Resource):
         return (worth - invested + income) / invested * 100
 
     @authorization_required("access")
-    def get(self, asset: str):
+    def get(self, asset: str) -> tuple[dict[str, t.Any], int] | RESTError:
         # request /api/user/statistics/cryptocurrency
         # response example
         # {

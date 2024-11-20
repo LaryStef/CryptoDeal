@@ -3,9 +3,11 @@ from random import randint
 from typing import Any, Literal, TypeAlias
 from uuid import uuid4
 
-from sqlalchemy import Result, delete, desc, select
+from sqlalchemy import (
+    Result, delete, desc, select, BinaryExpression, Sequence
+)
 from sqlalchemy.orm import Mapped
-from werkzeug.exceptions import BadRequest
+from werkzeug.exceptions import BadRequest, NotFound
 
 from app.config import appConfig
 from app.database.postgre import db, utcnow
@@ -46,7 +48,7 @@ class PostgreHandler:
         return result.fetchone()
 
     @staticmethod
-    def remove(table: Any, **kwargs: Any):
+    def remove(table: Any, **kwargs: Any) -> None:
         db.session.execute(
             delete(table).filter_by(**kwargs)
         )
@@ -59,7 +61,7 @@ class PostgreHandler:
         column: Mapped[Any],
         exclude: list[Any],
         **kwargs: Any
-    ):
+    ) -> None:
         db.session.execute(
             delete(table).where(column.not_in(exclude)).filter_by(**kwargs)
         )
@@ -146,7 +148,7 @@ class PostgreHandler:
         ticker: str,
         amount: float,
         type_: Literal["buy", "sell"]
-    ) -> str | None:
+    ) -> None:
         course_row: CryptoCourse | None = cls.get_crypto_price(
             PostgreHandler, ticker
         )
@@ -155,9 +157,12 @@ class PostgreHandler:
             raise BadRequest(description=f"no such ticker: {ticker}")
         current_price: float = course_row.price
 
-        user: User = db.session.execute(
+        user: User | None = db.session.execute(
             select(User).filter_by(uuid=user_id)
         ).scalar()
+
+        if user is None:
+            raise NotFound(description=f"no such ticker: {ticker}")
 
         usd_balance: FiatWallet | None = None
         for fiat in user.user_fiat_wallet:
@@ -202,7 +207,7 @@ class PostgreHandler:
                 raise BadRequest(description=f"you don't have any {ticker}")
 
             if crypto_balance.amount < amount:
-                shortage: float = round(
+                shortage = round(
                     amount - crypto_balance.amount,
                     ndigits=2
                 )
@@ -244,7 +249,7 @@ class PostgreHandler:
             )
         ).scalar()
 
-    def get_crypto_history(user_id: str) -> list[CryptoCourse]:
+    def get_crypto_history(self, user_id: str) -> list[CryptoCourse]:
         transactions: list[CryptoTransaction] | None = db.session.execute(
             select(CryptoTransaction).filter_by(user_id=user_id)
         ).scalar()
@@ -259,20 +264,22 @@ class PostgreHandler:
         *,
         table: CryptocurrencyWallet | FiatWallet,
         user_id: str,
-    ) -> list[CryptocurrencyWallet] | list[FiatWallet]:
+    ) -> Sequence:
 
         if table == CryptocurrencyWallet:
-            in_condition: str = CryptocurrencyWallet.ticker.in_(ids)
+            in_cond: BinaryExpression[bool] = CryptocurrencyWallet.ticker.in_(ids)
         elif table == FiatWallet:
-            in_condition: str = FiatWallet.iso.in_(ids)
+            in_cond: BinaryExpression[bool] = FiatWallet.iso.in_(ids)
 
         return db.session.execute(
-            select(table).filter(in_condition).filter_by(user_id=user_id)
+            select(table).filter(in_cond).filter_by(user_id=user_id)
         ).all()
 
     @staticmethod
-    def get_ordered_wallet(user_id: str) -> list[CryptocurrencyWallet]:
-        wallet: list[CryptocurrencyWallet] | None = db.session.execute(
+    def get_ordered_wallet(
+        user_id: str
+    ) -> Result[tuple[CryptocurrencyWallet]]:
+        wallet: Result[tuple[CryptocurrencyWallet]] = db.session.execute(
             select(CryptocurrencyWallet).filter_by(user_id=user_id).order_by(
                 desc(CryptocurrencyWallet.amount)
             )
@@ -282,7 +289,7 @@ class PostgreHandler:
         return wallet
 
     @staticmethod
-    def calculate_daily_change(ticker: str):
+    def calculate_daily_change(ticker: str) -> float:
         hour: int = datetime.now(UTC).hour
 
         course_day_ago: CryptoCourse = db.session.execute(

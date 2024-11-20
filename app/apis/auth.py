@@ -7,7 +7,7 @@ from bcrypt import checkpw
 from flask import Response, make_response, request
 from flask_restx import Namespace, Resource
 from redis.exceptions import ResponseError
-from werkzeug.exceptions import BadRequest, Unauthorized
+from werkzeug.exceptions import BadRequest, Unauthorized, NotFound
 
 from app.config import appConfig
 from app.database.postgre.models import User
@@ -75,6 +75,9 @@ class SignIn(Resource):
                 User,
                 name=data.get("username")
             )
+            if user is None:
+                raise NotFound(description="User not found")
+
             if (user.login_mode == "slow" and
                     user.login_cooldown_end > datetime.now()):
                 return {
@@ -86,7 +89,7 @@ class SignIn(Resource):
                     }
                 }, 429
 
-            if user is not None and checkpw(
+            if checkpw(
                 data.get("password", "").encode("utf-8"),
                 user.password_hash.encode("utf-8")
             ):
@@ -124,8 +127,7 @@ class SignIn(Resource):
                     refresh_token
                 )
 
-            if user is not None:
-                PostgreHandler.increase_login_attempts(user)
+            PostgreHandler.increase_login_attempts(user)
             return {
                 "error": {
                     "code": "Unauthorized",
@@ -142,6 +144,14 @@ class SignIn(Resource):
                     "details": "Invalid format of data"
                 }
             }, 400
+        except NotFound as error:
+            return {
+                "error": {
+                    "code": "Not found",
+                    "message": "User not found",
+                    "details": "No user with this username"
+                }
+            }, 404
 
 
 @api.route("/register/apply")

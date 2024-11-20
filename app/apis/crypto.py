@@ -5,7 +5,7 @@ from datetime import UTC, datetime
 from flask import request, url_for
 from flask_restx import Namespace, Resource
 from sqlalchemy import ScalarResult
-from werkzeug.exceptions import BadRequest
+from werkzeug.exceptions import BadRequest, NotFound
 
 from app.database.postgre.models import CryptoCourse, CryptoCurrency
 from app.database.postgre.services import PostgreHandler
@@ -338,7 +338,7 @@ class Transaction(Resource):
             )
             return "OK", 200
 
-        except BadRequest as error:
+        except (BadRequest, NotFound) as error:
             return {
                 "error": {
                     "code": "Bad request",
@@ -351,7 +351,7 @@ class Transaction(Resource):
 @api.route("/transaction/history")
 class Histoty(Resource):
     @authorization_required("access")
-    def get(self):
+    def get(self) -> RESTError | dict[str, list[dict[str, str | int]]]:
         access_token: str | None = request.cookies.get("access_token")
         access_payload: t.Any = validate_token(
             token=access_token,

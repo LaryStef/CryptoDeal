@@ -2,7 +2,7 @@
 
 import os
 from logging.config import dictConfig
-from typing import TypeAlias
+from typing import TypeAlias, Any
 
 from celery.schedules import crontab
 from dotenv import load_dotenv
@@ -11,7 +11,7 @@ from kombu import Queue
 
 
 load_dotenv()
-_CeleryConf: TypeAlias = dict[str, str | bool | int | list[str] | dict[str, dict[str, str | crontab]] | dict[str, int] | tuple[Queue]]
+_CeleryConf: TypeAlias = dict[str, str | int | list[str] | dict[str, dict[str, str | Any]] | dict[str, int] | tuple[str, ...]]
 
 
 class AppConfig(Config):
@@ -27,7 +27,7 @@ class AppConfig(Config):
     MAIL_USE_SSL: bool = True
     MAIL_USERNAME: str | None = os.getenv("MAIL")
     MAIL_PASSWORD: str | None = os.getenv("MAIL_PASSWORD")
-    MAIL_DEFAULT_SENDER: tuple[str, None] = ("CryptoDeal", os.getenv("MAIL"))
+    MAIL_DEFAULT_SENDER: tuple[str, str | None] = ("CryptoDeal", os.getenv("MAIL"))
 
     # cooldown and cooldownRec in js files must be same or longer
     MAIL_CODE_COOLDOWN: int = 20

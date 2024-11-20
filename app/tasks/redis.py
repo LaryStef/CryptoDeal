@@ -7,8 +7,8 @@ from app.database.redisdb import rediska
 
 
 class _TaskConfig():
-    max_retries: int = 0,
-    task_time_limit: int = 10,
+    max_retries: int = 0
+    task_time_limit: int = 10
     priority: int = 3
 
 
@@ -22,7 +22,7 @@ taskConfig: _TaskConfig = _TaskConfig()
     task_time_limit=taskConfig.task_time_limit,
     priority=taskConfig.priority
 )
-def delete_expired_applications(self) -> None:
+def delete_expired_applications() -> None:
     register_applications: dict[str, t.Any] = rediska.json().get("register")
 
     for id_, data in register_applications.items():

@@ -23,7 +23,7 @@ def profile() -> tuple[str, int]:
 
 @main.route("/crypto/list")
 def crypto_list() -> tuple[str, int]:
-    return render_template("cryptoList.html", title="Cryptocurrency")
+    return render_template("cryptoList.html", title="Cryptocurrency"), 200
 
 
 @main.route("/crypto/<string:ticker>")
@@ -44,5 +44,4 @@ def handle_not_found(e: NotFound) -> tuple[str, int]:
 
 @main.app_errorhandler(Unauthorized)
 def handle_unauthorized(e: Unauthorized) -> tuple[str, int]:
-    # TODO make unauthorized.html
     return render_template("unauthorized.html", title="Unauthorized"), 200
