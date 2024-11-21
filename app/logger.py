@@ -1,12 +1,16 @@
 import os
+from typing import TypeAlias, Literal
 from logging import (
-    DEBUG, ERROR, INFO, WARNING, Formatter, Logger, StreamHandler, getLogger
+    DEBUG, ERROR, INFO, Formatter, Logger, StreamHandler, getLogger, Handler
 )
 from logging.handlers import RotatingFileHandler
 
 from flask import Flask
 
 from app.config import appConfig
+
+
+_Levels: TypeAlias = Literal[10, 20, 30, 40, 50]
 
 
 def setup_logging(app: Flask) -> None:
@@ -21,59 +25,88 @@ def setup_logging(app: Flask) -> None:
         datefmt="%Y-%m-%d %H:%M:%S"
     )
 
-    file_general_handler: RotatingFileHandler = RotatingFileHandler(
-        filename=general_log_file,
+    file_general_handler: RotatingFileHandler = setup_file_handler(
+        log_file=general_log_file,
+        level=INFO,
+        formatter=formatter
+    )
+    file_error_handler: RotatingFileHandler = setup_file_handler(
+        log_file=error_log_file,
+        level=ERROR,
+        formatter=formatter
+    )
+    file_celery_handler: RotatingFileHandler = setup_file_handler(
+        log_file=celery_log_file,
+        level=INFO,
+        formatter=formatter
+    )
+    console_handler: StreamHandler = setup_console_handler(
+        level=INFO,
+        formatter=formatter
+    )
+
+    setup_logger(
+        app.logger,
+        level=INFO,
+        handlers=[console_handler, file_error_handler, file_general_handler]
+    )
+    setup_logger(
+        getLogger("werkzeug"),
+        level=INFO,
+        handlers=[console_handler, file_error_handler, file_general_handler]
+    )
+    setup_logger(
+        getLogger("celery"),
+        level=INFO,
+        handlers=[file_celery_handler]
+    )
+    setup_logger(
+        getLogger("celery.task"),
+        level=INFO,
+        handlers=[file_celery_handler]
+    )
+    setup_logger(
+        getLogger(),
+        level=DEBUG,
+        handlers=[file_error_handler]
+    )
+
+
+def setup_file_handler(
+    *,
+    log_file: str,
+    level: int,
+    formatter: Formatter
+) -> RotatingFileHandler:
+    file_handler: RotatingFileHandler = RotatingFileHandler(
+        filename=log_file,
         mode="a",
         maxBytes=appConfig.MAX_BYTES_PER_FILE,
         backupCount=appConfig.BACKUP_COUNT
     )
-    file_general_handler.setLevel(INFO)
-    file_general_handler.setFormatter(formatter)
+    file_handler.setLevel(level)
+    file_handler.setFormatter(formatter)
+    return file_handler
 
-    file_error_handler: RotatingFileHandler = RotatingFileHandler(
-        filename=error_log_file,
-        mode="a",
-        maxBytes=appConfig.MAX_BYTES_PER_FILE,
-        backupCount=appConfig.BACKUP_COUNT
-    )
-    file_error_handler.setLevel(ERROR)
-    file_error_handler.setFormatter(formatter)
 
-    file_celery_handler: RotatingFileHandler = RotatingFileHandler(
-        filename=celery_log_file,
-        mode="a",
-        maxBytes=appConfig.MAX_BYTES_PER_FILE,
-        backupCount=appConfig.BACKUP_COUNT
-    )
-    file_celery_handler.setLevel(INFO)
-    file_celery_handler.setFormatter(formatter)
-
+def setup_console_handler(
+    *,
+    level: int,
+    formatter: Formatter
+) -> StreamHandler:
     console_handler: StreamHandler = StreamHandler()
-    console_handler.setLevel(WARNING)
+    console_handler.setLevel(level)
     console_handler.setFormatter(formatter)
+    return console_handler
 
-    app.logger.setLevel(INFO)
-    app.logger.handlers = []
-    app.logger.addHandler(file_error_handler)
-    app.logger.addHandler(file_general_handler)
-    app.logger.addHandler(console_handler)
 
-    werkzeug_logger: Logger = getLogger("werkzeug")
-    werkzeug_logger.setLevel(INFO)
-    werkzeug_logger.handlers = []
-    werkzeug_logger.addHandler(console_handler)
-    werkzeug_logger.addHandler(file_error_handler)
-    werkzeug_logger.addHandler(file_general_handler)
-
-    celery_logger: Logger = getLogger("celery")
-    celery_logger.setLevel(INFO)
-    celery_logger.handlers = []
-    celery_logger.addHandler(file_celery_handler)
-    celery_logger: Logger = getLogger("celery.task")
-    celery_logger.setLevel(INFO)
-    celery_logger.handlers = []
-    celery_logger.addHandler(file_celery_handler)
-
-    root_logger: Logger = getLogger()
-    root_logger.setLevel(DEBUG)
-    root_logger.addHandler(file_error_handler)
+def setup_logger(
+    logger: Logger,
+    *,
+    level: _Levels,
+    handlers: list[Handler]
+) -> None:
+    logger.setLevel(level)
+    logger.handlers = []
+    for handler in handlers:
+        logger.addHandler(handler)
