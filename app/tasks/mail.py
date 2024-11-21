@@ -3,16 +3,15 @@ from flask_mail import Message
 from logging import Logger, getLogger
 
 from app.mail import mail
+from app.tasks import TaskConfig
 
 
-class _TaskConfig():
-    default_retry_delay: int = 60
-    max_retries: int = 3
-    task_time_limit: int = 20
-    priority: int = 8
-
-
-taskConfig: _TaskConfig = _TaskConfig()
+taskConfig: TaskConfig = TaskConfig(
+    default_retry_delay=60,
+    max_retries=3,
+    task_time_limit=20,
+    priority=8
+)
 logger: Logger = getLogger("celery")
 
 

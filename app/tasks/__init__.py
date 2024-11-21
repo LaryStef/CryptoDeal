@@ -36,3 +36,17 @@ def setup_celery_task_logger(logger, *args, **kwargs):
     )
     for handler in logger.handlers:
         handler.setFormatter(formatter)
+
+
+class TaskConfig():
+    def __init__(
+        self,
+        default_retry_delay: int = 0,
+        max_retries: int = 0,
+        task_time_limit: int = 10,
+        priority: int = 3
+    ) -> None:
+        self.default_retry_delay = default_retry_delay
+        self.max_retries = max_retries
+        self.task_time_limit = task_time_limit
+        self.priority = priority

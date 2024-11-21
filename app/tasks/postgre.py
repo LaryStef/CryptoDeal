@@ -7,15 +7,10 @@ from sqlalchemy import delete
 from app.config import appConfig
 from app.database.postgre import db
 from app.database.postgre.models import Session
+from app.tasks import TaskConfig
 
 
-class _TaskConfig():
-    max_retries: int = 0
-    task_time_limit: int = 10
-    priority: int = 3
-
-
-taskConfig: _TaskConfig = _TaskConfig()
+taskConfig: TaskConfig = TaskConfig()
 logger: Logger = getLogger("celery")
 
 
