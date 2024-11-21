@@ -21,6 +21,10 @@ class AppConfig(Config):
     REDIS_URL: str = "redis://localhost:6379/0"
     SECRET_KEY: str | None = os.getenv("SECRET_KEY")
 
+    # logging
+    BACKUP_COUNT: int = 3
+    MAX_BYTES_PER_FILE: int = 4 * 1024 * 1024
+
     # mail
     MAIL_SERVER: str = "smtp.gmail.com"
     MAIL_PORT: int = 465
@@ -80,7 +84,6 @@ class AppConfig(Config):
             "visibility_timeout": 43200
         },
         "timezone": "UTC",
-        "worker_logfile": "cryptodeal.log",
         "beat_schedule": {
                 "clear-postgre": {
                     "task": "delete_expired_sessions",
@@ -96,43 +99,4 @@ class AppConfig(Config):
         "broker_connection_retry_on_startup": True
     }
 
-    def __init__(self) -> None:
-        super().__init__(root_path=os.path)
-
-        dictConfig(
-            {
-                "version": 1,
-                "disable_existing_loggers": False,
-                "formatters": {
-                    "default": {
-                        "format": "%(asctime)s %(levelname)s in %(module)s at %(lineno)d line: %(message)s"
-                    }
-                },
-                "handlers": {
-                    "stderr": {
-                        "class": "logging.StreamHandler",
-                        "formatter": "default",
-                        "level": "WARNING",
-                        "stream": "ext://sys.stderr"
-                    },
-                    "file": {
-                        "class": "logging.handlers.RotatingFileHandler",
-                        "formatter": "default",
-                        "level": "INFO",
-                        "filename": "cryptodeal.log",
-                        "mode": "a",
-                        "maxBytes": 1000000,
-                        "backupCount": 3
-                    }
-                },
-                "root": {
-                    "level": "INFO",
-                    "handlers": [
-                        "stderr",
-                        "file"
-                    ]
-                }
-            }
-        )
-
-appConfig: AppConfig = AppConfig()
+appConfig: AppConfig = AppConfig(os.path.dirname(__file__))
