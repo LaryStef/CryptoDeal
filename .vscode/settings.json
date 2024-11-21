@@ -1,25 +1,22 @@
 {
-  "editor.defaultFormatter": "ms-python.flake8",
-  "[python]": {
-    "editor.defaultFormatter": "ms-python.flake8"
-  },
-  "[javascript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "files.exclude": {
-    "node_modules/": true,
-    "**/__pycache__/": true,
-    ".mypy_cache": true,
-    "celerybeat-schedule": true,
-    "cryptodeal.log": true
-  },
-  "[css]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-},
-"flake8.interpreter": [
-    ".\\.venv\\Scripts\\python.exe"
-],
-"[jsonc]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-}
+    "editor.defaultFormatter": "ms-python.flake8",
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.flake8"
+    },
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "files.exclude": {
+        "node_modules/": true,
+        "**/__pycache__/": true,
+        ".mypy_cache": true,
+        "celerybeat-schedule": true,
+    },
+    "[css]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[jsonc]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "flake8.interpreter": ["./.venv/bin/python"]
 }

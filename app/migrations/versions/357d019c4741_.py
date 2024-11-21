@@ -37,19 +37,11 @@ def upgrade() -> None:
     )
     op.add_column(
         table_name,
-        sa.Column(
-            attempts_column,
-            sa.Integer(),
-            nullable=True,
-        )
+        sa.Column(attempts_column, sa.Integer(), nullable=True)
     )
     op.add_column(
         table_name,
-        sa.Column(
-            mode_column,
-            sa.String(length=8),
-            nullable=True,
-        )
+        sa.Column(mode_column, sa.String(length=8), nullable=True)
     )
 
     op.execute(
