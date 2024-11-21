@@ -1,8 +1,6 @@
-# flake8: noqa
 
 import os
-from logging.config import dictConfig
-from typing import Any, TypeAlias
+from typing import TypeAlias
 
 from celery.schedules import crontab
 from dotenv import load_dotenv
@@ -11,13 +9,17 @@ from kombu import Queue
 
 
 load_dotenv()
-_CeleryConf: TypeAlias = dict[str, str | int | list[str] | dict[str, dict[str, str | Any]] | dict[str, int] | tuple[str, ...]]
+_CeleryConf: TypeAlias = dict[
+    str, str | int | bool | tuple[Queue] | tuple[str] | dict[str, int] | dict[
+        str, dict[str, str | crontab]
+    ]
+]
 
 
 class AppConfig(Config):
     # app
     DEBUG: bool = True
-    SQLALCHEMY_DATABASE_URI: str = f"postgresql://postgres:{os.getenv('DATABASE_PASSWORD')}@localhost:5432/postgres"
+    SQLALCHEMY_DATABASE_URI: str = f"postgresql://postgres:{os.getenv('DATABASE_PASSWORD')}@localhost:5432/postgres"  # noqa: E501
     REDIS_URL: str = "redis://localhost:6379/0"
     SECRET_KEY: str | None = os.getenv("SECRET_KEY")
 
@@ -31,7 +33,9 @@ class AppConfig(Config):
     MAIL_USE_SSL: bool = True
     MAIL_USERNAME: str | None = os.getenv("MAIL")
     MAIL_PASSWORD: str | None = os.getenv("MAIL_PASSWORD")
-    MAIL_DEFAULT_SENDER: tuple[str, str | None] = ("CryptoDeal", os.getenv("MAIL"))
+    MAIL_DEFAULT_SENDER: tuple[str, str | None] = (
+        "CryptoDeal", os.getenv("MAIL")
+    )
 
     # cooldown and cooldownRec in js files must be same or longer
     MAIL_CODE_COOLDOWN: int = 20
@@ -85,18 +89,19 @@ class AppConfig(Config):
         },
         "timezone": "UTC",
         "beat_schedule": {
-                "clear-postgre": {
-                    "task": "delete_expired_sessions",
-                    "schedule": crontab(minute="0", hour="*/12")
-                },
-                "clear-redis": {
-                    "task": "delete_expired_applications",
-                    "schedule": crontab(minute="0", hour="*/12")
-                }
+            "clear-postgre": {
+                "task": "delete_expired_sessions",
+                "schedule": crontab(minute="0", hour="*/12")
+            },
+            "clear-redis": {
+                "task": "delete_expired_applications",
+                "schedule": crontab(minute="0", hour="*/12")
+            },
         },
         "worker_hijack_root_logger": False,
         "worker_redirect_stdouts": True,
         "broker_connection_retry_on_startup": True
     }
+
 
 appConfig: AppConfig = AppConfig(os.path.dirname(__file__))
