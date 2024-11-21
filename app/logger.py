@@ -1,7 +1,8 @@
 import os
 from typing import TypeAlias, Literal
 from logging import (
-    DEBUG, ERROR, INFO, Formatter, Logger, StreamHandler, getLogger, Handler
+    DEBUG, INFO, WARNING, ERROR, Formatter, Logger, StreamHandler, getLogger,
+    Handler
 )
 from logging.handlers import RotatingFileHandler
 
@@ -41,7 +42,7 @@ def setup_logging(app: Flask) -> None:
         formatter=formatter
     )
     console_handler: StreamHandler = setup_console_handler(
-        level=INFO,
+        level=WARNING,
         formatter=formatter
     )
 
