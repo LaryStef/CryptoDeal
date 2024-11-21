@@ -65,8 +65,8 @@ class AppConfig(Config):
         ),
         "task_default_queue": "normal",
         "task_queues": (
-            Queue(name="normal", routing_key=".mail_tasks.#"),
-            Queue(name="low", routing_key=".db_tasks.#"),
+            Queue(name="normal"),
+            Queue(name="low"),
         ),
         "task_routes": {
             "app.tasks.mail.#": {
@@ -77,7 +77,7 @@ class AppConfig(Config):
             },
             "app.tasks.redis.#": {
                 "queue": "low",
-            }
+            },
         },
         "worker_max_memory_per_child": 50000,
         "broker_transport_options": {

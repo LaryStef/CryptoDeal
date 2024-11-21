@@ -26,8 +26,9 @@ def delete_expired_applications(self) -> None:
         if data.get("deactivation_time") < int(time()):
             rediska.json().delete("register", id_)
 
-    restore_applications: dict[str, t.Any] = \
-        rediska.json().get("password_restore")
+    restore_applications: dict[str, t.Any] = rediska.json().get(
+        "password_restore"
+    )
 
     for id_, data in restore_applications.items():
         if data.get("deactivation_time") < int(time()):
