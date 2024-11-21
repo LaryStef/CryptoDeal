@@ -1,9 +1,10 @@
 from random import randint
 from time import time
 
+from flask import current_app
+
 from app.config import appConfig
 from app.database.redisdb import rediska
-from app.logger import logger
 from app.tasks.mail import send_register_code, send_restore_code
 from app.utils.cryptography import hash_password
 from app.utils.generators import generate_id
@@ -30,7 +31,10 @@ class RediskaHandler:
         )
 
         rediska.json().set("register", request_id, data, nx=True)
-        logger.info(msg=f"register request created for {data['username']}")
+        current_app.logger.info(
+            "register request created for %s",
+            {data['username']}
+        )
         return request_id
 
     @staticmethod
@@ -49,7 +53,7 @@ class RediskaHandler:
 
         rediska.json().delete("register", request_id)
         rediska.json().set("register", request_id, data, nx=True)
-        logger.info(msg=f"created new code for {data['username']}")
+        current_app.logger.info("created new code for %s", data["username"])
 
     @staticmethod
     def increase_verify_attempts(
@@ -63,11 +67,12 @@ class RediskaHandler:
         rediska.json().set(file, request_id, data, nx=True)
 
     @staticmethod
-    def create_restore_request(email: str) -> str:
+    def create_restore_request(email: str, uuid: str) -> str:
         request_id: str = generate_id(16)
         timestamp: int = int(time())
 
         data: dict[str, str | int] = dict()
+        data["uuid"] = uuid
         data["email"] = email
         data["refresh_attempts"] = 0
         data["verify_attempts"] = 0
@@ -81,7 +86,10 @@ class RediskaHandler:
         )
 
         rediska.json().set("password_restore", request_id, data, nx=True)
-        logger.info(msg=f"created restore request for {data['email']}")
+        current_app.logger.info(
+            "created restore request for user with id: %s",
+            uuid
+        )
         return request_id
 
     @staticmethod
@@ -99,4 +107,7 @@ class RediskaHandler:
         send_restore_code(data["code"], data["email"])
         rediska.json().delete("password_restore", request_id)
         rediska.json().set("password_restore", request_id, data, nx=True)
-        logger.info(msg=f"created new code for {data['email']}")
+        current_app.logger.info(
+            "created new code for user with id: %s",
+            data["uuid"]
+        )

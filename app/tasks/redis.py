@@ -1,5 +1,6 @@
 import typing as t
 from time import time
+from logging import Logger, getLogger
 
 from celery import shared_task
 
@@ -13,6 +14,7 @@ class _TaskConfig():
 
 
 taskConfig: _TaskConfig = _TaskConfig()
+logger: Logger = getLogger("celery")
 
 
 @shared_task(
@@ -35,3 +37,4 @@ def delete_expired_applications(self) -> None:
     for id_, data in restore_applications.items():
         if data.get("deactivation_time") < int(time()):
             rediska.json().delete("password_restore", id_)
+    logger.info(msg="expired applications in redis deleted")

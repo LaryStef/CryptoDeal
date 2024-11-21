@@ -1,7 +1,7 @@
 from celery import shared_task
 from flask_mail import Message
+from logging import Logger, getLogger
 
-from app.logger import logger
 from app.mail import mail
 
 
@@ -13,6 +13,7 @@ class _TaskConfig():
 
 
 taskConfig: _TaskConfig = _TaskConfig()
+logger: Logger = getLogger("celery")
 
 
 @shared_task(
@@ -26,8 +27,10 @@ taskConfig: _TaskConfig = _TaskConfig()
 def send_register_code(self, code: str, recipient: str) -> None:
     recipient = "timurkotov1999@gmail.com"    # just for tests
 
-    message: Message = Message("Registration on CryptoDeal",
-                               recipients=[recipient])
+    message: Message = Message(
+        "Registration on CryptoDeal",
+        recipients=[recipient]
+    )
     message.html = f"""
         <h2>Secret code: {code}<h2>
         <p style="font-size: 12px; color: black">Don't reply to this email<p>
@@ -35,7 +38,7 @@ def send_register_code(self, code: str, recipient: str) -> None:
         Support@cryptodeal.com<p>
     """
     mail.send(message)
-    logger.info(msg=f"registaration code sent to {recipient}")
+    logger.info("registaration code sent to %s", recipient)
 
 
 @shared_task(
@@ -49,8 +52,10 @@ def send_register_code(self, code: str, recipient: str) -> None:
 def send_restore_code(self, code: str, recipient: str) -> None:
     recipient = "timurkotov1999@gmail.com"    # just for tests
 
-    message: Message = Message("Password restore on CryptoDeal",
-                               recipients=[recipient])
+    message: Message = Message(
+        "Password restore on CryptoDeal",
+        recipients=[recipient]
+    )
     message.html = f"""
         <h2>Secret code: {code}<h2>
         <p style="font-size: 16px; color: black">Warning: If it isn't you,
@@ -60,7 +65,7 @@ def send_restore_code(self, code: str, recipient: str) -> None:
         Support@cryptodeal.com<p>
     """
     mail.send(message)
-    logger.info(msg=f"password restore code sent to {recipient}")
+    logger.info("password restore code sent to %s", recipient)
 
 
 @shared_task(
@@ -105,4 +110,4 @@ def send_scrf_attention(self, recipient: str, origin: str | None) -> None:
         Support@cryptodeal.com<p>
     """
     mail.send(message)
-    logger.warning(msg=f"scrf attention sent to {recipient}")
+    logger.warning("scrf attention sent to %s", recipient)

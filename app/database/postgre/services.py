@@ -1,8 +1,9 @@
 from datetime import UTC, datetime, timedelta
 from random import randint
-from typing import Any, Literal, TypeAlias
+from typing import Any, Literal
 from uuid import uuid4
 
+from flask import current_app
 from sqlalchemy import BinaryExpression, Result, Sequence, delete, desc, select
 from sqlalchemy.orm import Mapped
 from werkzeug.exceptions import BadRequest, NotFound
@@ -13,11 +14,7 @@ from app.database.postgre.models import (
     CryptoCourse, CryptocurrencyWallet, CryptoTransaction, FiatWallet, Session,
     User
 )
-from app.logger import logger
 from app.utils.cryptography import hash_password
-
-
-_BalanceList: TypeAlias = list[CryptocurrencyWallet | FiatWallet] | None
 
 
 class PostgreHandler:
@@ -51,7 +48,11 @@ class PostgreHandler:
             delete(table).filter_by(**kwargs)
         )
         db.session.commit()
-        logger.info(msg=f"deleted raw/s with args: {kwargs} in {table}")
+        current_app.logger.info(
+            "deleted raw/s with args: %s in %s",
+            kwargs,
+            table
+        )
 
     @staticmethod
     def delete_exclude(
@@ -64,9 +65,12 @@ class PostgreHandler:
             delete(table).where(column.not_in(exclude)).filter_by(**kwargs)
         )
         db.session.commit()
-        logger.info(msg=f"""
-            deleted all raw/s exclude raws: {kwargs} in {column} in {table}
-        """)
+        current_app.logger.info(
+            "deleted all raw/s exclude raws: %s in %s in %s",
+            kwargs,
+            column,
+            table
+        )
 
     @staticmethod
     def add_user(user_data: dict[str, str | int]) -> tuple[str, int]:
@@ -91,7 +95,11 @@ class PostgreHandler:
         db.session.add(user)
         db.session.add(usd_balance)
         db.session.commit()
-        logger.info(msg=f"added {user_data['role']} {user_data['username']}")
+        current_app.logger.info(
+            "added %s %s",
+            user_data['role'],
+            user_data['username']
+        )
 
         return id_, alien_number
 
@@ -100,7 +108,7 @@ class PostgreHandler:
         user.password_hash = hash_password(password)
         user.restore_date = utcnow()
         db.session.commit()
-        logger.info(msg=f"updated password {user.name}")
+        current_app.logger.info("updated password %s", user.name)
 
     @staticmethod
     def add_session(refresh_id: str, user_id: str, device: str) -> None:
@@ -117,7 +125,7 @@ class PostgreHandler:
         )
         db.session.add(session_raw)
         db.session.commit()
-        logger.info(msg=f"new session added {user_id} on {device}")
+        current_app.logger.info("new session added %s on %s", user_id, device)
 
     @staticmethod
     def update_session(
@@ -136,7 +144,7 @@ class PostgreHandler:
         session_raw.session_id = new_refresh_id
         session_raw.device = device
         db.session.commit()
-        logger.info(msg=f"session refreshed {user_id}")
+        current_app.logger.info("session refreshed %s", user_id)
 
     @classmethod
     def provide_crypto_transaction(
@@ -180,6 +188,13 @@ class PostgreHandler:
                     current_price * amount - usd_balance.amount,
                     ndigits=2
                 )
+                current_app.logger.info(
+                    "buy failed %s %s %s not enough %s",
+                    user_id,
+                    ticker,
+                    amount,
+                    shortage
+                )
                 raise BadRequest(
                     description=(f"you're short of {shortage} USD")
                 )
@@ -209,6 +224,13 @@ class PostgreHandler:
                     amount - crypto_balance.amount,
                     ndigits=2
                 )
+                current_app.logger.info(
+                    "sell failed %s %s %s not enough %s",
+                    user_id,
+                    ticker,
+                    amount,
+                    shortage
+                )
                 raise BadRequest(
                     description=f"you're short of {shortage} {ticker}"
                 )
@@ -232,8 +254,8 @@ class PostgreHandler:
             )
         )
         db.session.commit()
-        logger.info(
-            msg=f"transaction made {user_id} {type_} {ticker} {amount}"
+        current_app.logger.info(
+            "transaction made %s %s %s %s", user_id, type_, ticker, amount
         )
 
     def get_crypto_price(

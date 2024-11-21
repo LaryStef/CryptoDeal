@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from logging import Logger, getLogger
 
 from celery import shared_task
 from sqlalchemy import delete
@@ -15,6 +16,7 @@ class _TaskConfig():
 
 
 taskConfig: _TaskConfig = _TaskConfig()
+logger: Logger = getLogger("celery")
 
 
 @shared_task(
@@ -33,3 +35,4 @@ def delete_expired_sessions(self) -> None:
         delete(Session).filter(Session.last_activity < expire)
     )
     db.session.commit()
+    logger.info(msg="expired sessions in postgre deleted")
