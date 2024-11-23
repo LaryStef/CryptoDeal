@@ -1,8 +1,8 @@
 from logging import Formatter
 
-from flask import Flask
 from celery import Celery, Task
 from celery.signals import after_setup_logger, after_setup_task_logger
+from flask import Flask
 
 
 def celery_init_app(app: Flask) -> Celery:

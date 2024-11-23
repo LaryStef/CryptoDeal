@@ -1,6 +1,6 @@
 import typing as t
-from time import time
 from logging import Logger, getLogger
+from time import time
 
 from celery import shared_task
 

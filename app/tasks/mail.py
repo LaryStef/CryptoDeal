@@ -1,6 +1,7 @@
+from logging import Logger, getLogger
+
 from celery import shared_task
 from flask_mail import Message
-from logging import Logger, getLogger
 
 from app.mail import mail
 from app.tasks import TaskConfig
