@@ -5,7 +5,7 @@ from app.apis import api
 from app.config import appConfig
 from app.database.postgre import db
 from app.database.redisdb import rediska
-from app.logger import setup_logging
+from app.logs import setup_logging
 from app.mail import mail
 from app.routes import main
 from app.tasks import celery_init_app
