@@ -18,10 +18,10 @@ down_revision: Union[str, None] = "b25af5566caa"
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
-table_name = "User"
-attempts_column = "login_attempts"
-mode_column = "login_mode"
-cooldown_column = "login_cooldown_end"
+table_name: str = "User"
+attempts_column: str = "login_attempts"
+mode_column: str = "login_mode"
+cooldown_column: str = "login_cooldown_end"
 
 
 def upgrade() -> None:
