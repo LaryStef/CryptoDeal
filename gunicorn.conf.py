@@ -1,4 +1,9 @@
 # import multiprocessing
+import os
+
+
+log_directory: str = os.path.dirname("logs/")
+os.makedirs(log_directory, exist_ok=True)
 
 
 bind = "127.0.0.1:8000"
