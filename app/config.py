@@ -1,8 +1,6 @@
-# flake8: noqa
 
 import os
-from logging.config import dictConfig
-from typing import Any, TypeAlias
+from typing import TypeAlias
 
 from celery.schedules import crontab
 from dotenv import load_dotenv
@@ -11,15 +9,23 @@ from kombu import Queue
 
 
 load_dotenv()
-_CeleryConf: TypeAlias = dict[str, str | int | list[str] | dict[str, dict[str, str | Any]] | dict[str, int] | tuple[str, ...]]
+_CeleryConf: TypeAlias = dict[
+    str, str | int | bool | tuple[Queue] | tuple[str] | dict[str, int] | dict[
+        str, dict[str, str | crontab]
+    ]
+]
 
 
 class AppConfig(Config):
     # app
     DEBUG: bool = True
-    SQLALCHEMY_DATABASE_URI: str = f"postgresql://postgres:{os.getenv('DATABASE_PASSWORD')}@localhost:5432/postgres"
+    SQLALCHEMY_DATABASE_URI: str = f"postgresql://postgres:{os.getenv('DATABASE_PASSWORD')}@localhost:5432/postgres"  # noqa: E501
     REDIS_URL: str = "redis://localhost:6379/0"
     SECRET_KEY: str | None = os.getenv("SECRET_KEY")
+
+    # logging
+    BACKUP_COUNT: int = 3
+    MAX_BYTES_PER_FILE: int = 4 * 1024 * 1024
 
     # mail
     MAIL_SERVER: str = "smtp.gmail.com"
@@ -27,7 +33,9 @@ class AppConfig(Config):
     MAIL_USE_SSL: bool = True
     MAIL_USERNAME: str | None = os.getenv("MAIL")
     MAIL_PASSWORD: str | None = os.getenv("MAIL_PASSWORD")
-    MAIL_DEFAULT_SENDER: tuple[str, str | None] = ("CryptoDeal", os.getenv("MAIL"))
+    MAIL_DEFAULT_SENDER: tuple[str, str | None] = (
+        "CryptoDeal", os.getenv("MAIL")
+    )
 
     # cooldown and cooldownRec in js files must be same or longer
     MAIL_CODE_COOLDOWN: int = 20
@@ -61,8 +69,8 @@ class AppConfig(Config):
         ),
         "task_default_queue": "normal",
         "task_queues": (
-            Queue(name="normal", routing_key=".mail_tasks.#"),
-            Queue(name="low", routing_key=".db_tasks.#"),
+            Queue(name="normal"),
+            Queue(name="low"),
         ),
         "task_routes": {
             "app.tasks.mail.#": {
@@ -73,66 +81,27 @@ class AppConfig(Config):
             },
             "app.tasks.redis.#": {
                 "queue": "low",
-            }
+            },
         },
         "worker_max_memory_per_child": 50000,
         "broker_transport_options": {
             "visibility_timeout": 43200
         },
         "timezone": "UTC",
-        "worker_logfile": "cryptodeal.log",
         "beat_schedule": {
-                "clear-postgre": {
-                    "task": "delete_expired_sessions",
-                    "schedule": crontab(minute="0", hour="*/12")
-                },
-                "clear-redis": {
-                    "task": "delete_expired_applications",
-                    "schedule": crontab(minute="0", hour="*/12")
-                }
+            "clear-postgre": {
+                "task": "delete_expired_sessions",
+                "schedule": crontab(minute="0", hour="*/12")
+            },
+            "clear-redis": {
+                "task": "delete_expired_applications",
+                "schedule": crontab(minute="0", hour="*/12")
+            },
         },
         "worker_hijack_root_logger": False,
         "worker_redirect_stdouts": True,
         "broker_connection_retry_on_startup": True
     }
 
-    def __init__(self) -> None:
-        super().__init__(root_path=os.path)
 
-        dictConfig(
-            {
-                "version": 1,
-                "disable_existing_loggers": False,
-                "formatters": {
-                    "default": {
-                        "format": "%(asctime)s %(levelname)s in %(module)s at %(lineno)d line: %(message)s"
-                    }
-                },
-                "handlers": {
-                    "stderr": {
-                        "class": "logging.StreamHandler",
-                        "formatter": "default",
-                        "level": "WARNING",
-                        "stream": "ext://sys.stderr"
-                    },
-                    "file": {
-                        "class": "logging.handlers.RotatingFileHandler",
-                        "formatter": "default",
-                        "level": "INFO",
-                        "filename": "cryptodeal.log",
-                        "mode": "a",
-                        "maxBytes": 1000000,
-                        "backupCount": 3
-                    }
-                },
-                "root": {
-                    "level": "INFO",
-                    "handlers": [
-                        "stderr",
-                        "file"
-                    ]
-                }
-            }
-        )
-
-appConfig: AppConfig = AppConfig()
+appConfig: AppConfig = AppConfig(os.path.dirname(__file__))

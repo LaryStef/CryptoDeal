@@ -424,7 +424,7 @@ class Restore(Resource):
             response: Response = make_response("OK")
             response.status_code = 201
             response.headers["Request-Id"] = \
-                RediskaHandler.create_restore_request(email)
+                RediskaHandler.create_restore_request(email, user.uuid)
             return response
 
         except (BadRequest, ResponseError):
