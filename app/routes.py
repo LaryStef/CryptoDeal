@@ -1,6 +1,6 @@
 from flask import Blueprint, abort, current_app, render_template
 from sqlalchemy import ScalarResult
-from werkzeug.exceptions import NotFound, Unauthorized
+from werkzeug.exceptions import NotFound, Unauthorized, HTTPException
 
 from app.database.postgre.models import CryptoCurrency
 from app.database.postgre.services import PostgreHandler
@@ -47,7 +47,7 @@ def handle_unauthorized(e: Unauthorized) -> tuple[str, int]:
     return render_template("unauthorized.html", title="Unauthorized"), 200
 
 
-@main.errorhandler(Exception)
-def handle_exception(e: Exception) -> tuple[dict[str, str], int]:
-    current_app.logger.error(f"Unhandled Exception: {e}", exc_info=True)
+@main.errorhandler(HTTPException)
+def handle_exception(e: HTTPException) -> tuple[dict[str, str], int]:
+    current_app.logger.error(f"Unhandled HTTPException: {e}", exc_info=True)
     return {"error": "Something went wrong!"}, 500
