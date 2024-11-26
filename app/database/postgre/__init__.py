@@ -7,14 +7,13 @@ from app.database.postgre.utc_time import utcnow
 __all__ = [
     "db",
     "utcnow",
-    "Base"
 ]
 
 
 class _Base(DeclarativeBase):
     __abstract__: bool = True
 
-    @declared_attr
+    @declared_attr.directive
     def __tablename__(cls) -> str:
         return cls.__name__
 
