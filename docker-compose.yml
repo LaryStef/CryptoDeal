@@ -1,22 +1,23 @@
-version: "3.8"
+version: "3.9"
 
 services:
   postgres:
     image: postgres:16
+    container_name: postgres_container
     environment:
-      POSTGRES_USER: ${DATABASE_USER}
-      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
-      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_NAME}
       PGDATA: "/var/lib/postgresql/data/pgdata"
     env_file:
       - ./.env
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - postgresdata:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DATABASE_USER} -d ${DATABASE_NAME}"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_NAME}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -26,11 +27,42 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "1"
+          cpus: "0.5"
           memory: "512M"
         reservations:
-          cpus: "0.5"
+          cpus: "0.25"
           memory: "256M"
 
+  redis:
+    image: redislabs/rejson:2.8.2
+    container_name: redis_container
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    env_file:
+      - ./.env
+    networks:
+      - default
+    ports:
+      - "6379:6379"
+    volumes:
+      - redisdata:/data
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: "512M"
+        reservations:
+          cpus: "0.25"
+          memory: "256M"
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "$REDIS_PASSWORD", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    restart: unless-stopped
+    tty: true
+    stdin_open: true
+
 volumes:
-  postgres-data:
+  postgresdata:
+  redisdata:
