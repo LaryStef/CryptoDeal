@@ -9,6 +9,7 @@ from kombu import Queue
 
 
 load_dotenv()
+
 _CeleryConf: TypeAlias = dict[
     str, str | int | bool | tuple[Queue] | tuple[str] | dict[str, int] | dict[
         str, dict[str, str | crontab]
@@ -20,7 +21,8 @@ class AppConfig(Config):
     # app
     DEBUG: bool = True
     SQLALCHEMY_DATABASE_URI: str = f"postgresql://postgres:{os.getenv('DATABASE_PASSWORD')}@localhost:5432/postgres"  # noqa: E501
-    REDIS_URL: str = "redis://localhost:6379/0"
+    REDIS_URL: str = f"redis://{os.getenv('REDIS_USER')}:{os.getenv('REDIS_PASSWORD')}@localhost:6379/0"  # noqa: E501
+    # REDIS_PASSWORD: str = os.getenv("REDIS_PASSWORD", "")
     SECRET_KEY: str | None = os.getenv("SECRET_KEY")
 
     # logging
