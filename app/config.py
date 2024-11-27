@@ -20,9 +20,8 @@ _CeleryConf: TypeAlias = dict[
 class AppConfig(Config):
     # app
     DEBUG: bool = True
-    SQLALCHEMY_DATABASE_URI: str = f"postgresql://postgres:{os.getenv('DATABASE_PASSWORD')}@localhost:5432/postgres"  # noqa: E501
+    SQLALCHEMY_DATABASE_URI: str = f"postgresql://{os.getenv('POSTGRES_USER')}:{os.getenv('POSTGRES_PASSWORD')}@localhost:5432/{os.getenv('POSTGRES_NAME')}"  # noqa: E501
     REDIS_URL: str = f"redis://{os.getenv('REDIS_USER')}:{os.getenv('REDIS_PASSWORD')}@localhost:6379/0"  # noqa: E501
-    # REDIS_PASSWORD: str = os.getenv("REDIS_PASSWORD", "")
     SECRET_KEY: str | None = os.getenv("SECRET_KEY")
 
     # logging
