@@ -20,9 +20,9 @@ _CeleryConf: TypeAlias = dict[
 class AppConfig(Config):
     # app
     DEBUG: bool = True
-    SQLALCHEMY_DATABASE_URI: str = f"postgresql://{os.getenv('POSTGRES_USER')}:{os.getenv('POSTGRES_PASSWORD')}@localhost:5432/{os.getenv('POSTGRES_NAME')}"  # noqa: E501
-    REDIS_URL: str = f"redis://{os.getenv('REDIS_USER')}:{os.getenv('REDIS_PASSWORD')}@localhost:6379/0"  # noqa: E501
-    SECRET_KEY: str | None = os.getenv("SECRET_KEY")
+    SQLALCHEMY_DATABASE_URI: str = f"postgresql://{os.getenv('POSTGRES_USER')}:{os.getenv('POSTGRES_PASSWORD')}@{os.getenv('HOST_NETWORK')}:5432/{os.getenv('POSTGRES_NAME')}"  # noqa: E501
+    REDIS_URL: str = f"redis://{os.getenv('REDIS_USER')}:{os.getenv('REDIS_PASSWORD')}@{os.getenv('HOST_NETWORK')}:6379/0"  # noqa: E501
+    SECRET_KEY: str = os.getenv("SECRET_KEY", "")
 
     # logging
     BACKUP_COUNT: int = 3
@@ -60,7 +60,7 @@ class AppConfig(Config):
 
     # celery
     CELERY: _CeleryConf = {
-        "broker_url": "redis://localhost:6379/0",
+        "broker_url": REDIS_URL,
         "task_ignore_result": True,
         "task_time_limit": 10,
         "imports": (
