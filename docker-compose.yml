@@ -17,7 +17,7 @@ services:
     ports:
       - "5432:5432"
     networks:
-      - default
+      - main
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_NAME}"]
       interval: 10s
@@ -44,7 +44,7 @@ services:
     environment:
       REDIS_ARGS: "--requirepass ${REDIS_PASSWORD}"
     networks:
-      - default
+      - main
     ports:
       - "6379:6379"
     volumes:
@@ -71,7 +71,7 @@ services:
     ports:
       - "81:80"
     networks:
-      - default
+      - main
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "service", "nginx", "status"]
@@ -103,6 +103,38 @@ services:
     depends_on:
       - postgres
       - redis
+
+  worker-main:
+    build: .
+    container_name: worker-main
+    command: python -m celery -A main.celery worker --loglevel=info
+    depends_on:
+      - postgres
+      - redis
+      - app
+
+  beat-main:
+    build: .
+    container_name: beat-main
+    command: python -m celery -A main.celery beat --loglevel=info
+    depends_on:
+      - postgres
+      - redis
+      - app
+
+  app:
+    build: .
+    container_name: app
+    command: gunicorn
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - main
+
+networks:
+  main:
+    driver: bridge
 
 volumes:
   postgresdata:
