@@ -6,7 +6,7 @@ log_directory: str = os.path.dirname("logs/")
 os.makedirs(log_directory, exist_ok=True)
 
 
-bind = "127.0.0.1:8000"
+bind = "0.0.0.0:8000"
 worker_class = "sync"
 # workers = multiprocessing.cpu_count() * 2 + 1
 wsgi_app = "main:app"
