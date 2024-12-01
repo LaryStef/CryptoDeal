@@ -98,6 +98,10 @@ services:
     build: ../CryptoDeal-collector
     container_name: worker-collector
     command: python -m celery -A src worker --loglevel=info
+    networks:
+      - main
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     depends_on:
       - postgres
       - redis
@@ -106,6 +110,10 @@ services:
     build: ../CryptoDeal-collector
     container_name: beat-collector
     command: python -m celery -A src beat --loglevel=info
+    networks:
+      - main
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     depends_on:
       - postgres
       - redis
@@ -114,6 +122,10 @@ services:
     build: .
     container_name: worker-main
     command: python -m celery -A main.celery worker --loglevel=info
+    networks:
+      - main
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     depends_on:
       - postgres
       - redis
@@ -123,6 +135,10 @@ services:
     build: .
     container_name: beat-main
     command: python -m celery -A main.celery beat --loglevel=info
+    networks:
+      - main
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     depends_on:
       - postgres
       - redis
@@ -137,6 +153,8 @@ services:
       - redis
     networks:
       - main
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
 networks:
   main:
