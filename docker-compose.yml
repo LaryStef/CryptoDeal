@@ -87,6 +87,22 @@ services:
         reservations:
           cpus: "0.25"
           memory: "256M"
+  
+  worker-collector:
+    build: ../CryptoDeal-collector
+    container_name: worker-collector
+    command: python -m celery -A src worker --loglevel=info
+    depends_on:
+      - postgres
+      - redis
+  
+  beat-collector:
+    build: ../CryptoDeal-collector
+    container_name: beat-collector
+    command: python -m celery -A src beat --loglevel=info
+    depends_on:
+      - postgres
+      - redis
 
 volumes:
   postgresdata:
