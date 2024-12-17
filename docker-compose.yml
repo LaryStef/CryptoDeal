@@ -95,7 +95,7 @@ services:
           memory: "256M"
   
   worker-collector:
-    build: ../CryptoDeal-collector
+    build: ../Collector
     container_name: worker-collector
     command: python -m celery -A src worker --loglevel=info
     networks:
@@ -107,7 +107,7 @@ services:
       - redis
   
   beat-collector:
-    build: ../CryptoDeal-collector
+    build: ../Collector
     container_name: beat-collector
     command: python -m celery -A src beat --loglevel=info
     networks:
