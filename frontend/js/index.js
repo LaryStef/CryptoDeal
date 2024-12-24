@@ -1,3 +1,5 @@
+import '../scss/index.scss';
+
 const origin = location.origin;
 
 const loginUrl = new URL("api/auth/sign-in", origin);

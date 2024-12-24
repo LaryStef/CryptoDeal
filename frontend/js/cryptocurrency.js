@@ -1,3 +1,4 @@
+import '../scss/cryptocurrency.scss';
 import {
     Chart,
     LineController,

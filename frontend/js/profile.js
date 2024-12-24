@@ -1,3 +1,4 @@
+import '../scss/profile.scss';
 import {
     Chart,
     DoughnutController,
