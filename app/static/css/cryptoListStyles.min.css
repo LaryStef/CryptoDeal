@@ -1,6 +1,6 @@
-/*!****************************************************************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./frontend/scss/cryptocurrency.scss ***!
-  \****************************************************************************************************************************/
+/*!************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./frontend/scss/cryptoList.scss ***!
+  \************************************************************************************************************************/
 :root {
   --background-color: #1b143d;
   --text-color: #7d42e7;
@@ -38,433 +38,143 @@ li {
   list-style: none;
 }
 
-.wtb-window {
-  -ms-transform: translate(-200%);
-  -webkit-transform: translate(-200%);
-  -o-transform: translate(-200%);
-  -moz-transform: translate(-200%);
-  -webkit-transition: transform var(--login-transition-duration) ease-out;
-  -o-transition: transform var(--login-transition-duration) ease-out;
-  -moz-transition: transform var(--login-transition-duration) ease-out;
-  position: absolute;
-  transform: translate(-200%);
-  visibility: hidden;
-  opacity: 0;
-  z-index: 1;
-  transition: transform var(--login-transition-duration) ease-out;
-  margin-top: 20vh;
-  margin-left: 30vw;
-  border-style: none;
-  border-radius: 50px;
-  background-color: var(--background-button-color);
-  width: 40vw;
-  height: 40vh;
-  overflow: hidden;
+/* main part */
+.header {
+  margin: 3%;
+  margin-top: 4%;
+  margin-left: 12%;
+  color: var(--contrast-color);
 }
 
-.cancel-wrap {
+.table-wrap {
   display: flex;
   justify-content: center;
-  align-items: center;
-  height: 50px;
+  padding: 15px;
 }
 
-.cancel-btn {
-  -webkit-transition: color var(--link-transition-duration) linear;
-  -o-transition: color var(--link-transition-duration) linear;
-  -moz-transition: color var(--link-transition-duration) linear;
-  transition: color var(--link-transition-duration) linear;
-  border-style: none;
-  border-radius: 50px;
-  background-color: var(--background-button-color);
-  width: 100px;
-  height: 40px;
-  color: var(--text-color);
-  font-size: 1.125rem;
-}
-.cancel-btn:hover {
-  cursor: pointer;
-  color: var(--text-hover-color);
-}
-
-.trade-mode-wrap {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 70px;
-}
-
-.trade-switch {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 0 5px var(--text-hover-color);
-  border-radius: 50px;
-  background-color: var(--text-color);
-  width: 140px;
-  height: 50px;
-}
-
-.trade-mode-btn {
-  opacity: 0;
-  z-index: 2;
-  border-style: none;
-  border-radius: 50px;
-  width: 70px;
-  height: 50px;
-}
-
-.trade-mode-btn:hover {
-  cursor: pointer;
-}
-
-.trade-switch::before {
-  display: flex;
-  position: absolute;
-  justify-content: center;
-  align-items: center;
-  z-index: 1;
-  width: 70px;
-  height: 50px;
-  content: "Buy";
-  color: var(--background-color);
-  font-size: 1.125rem;
-}
-
-.trade-switch::after {
-  -ms-transform: translate(100%);
-  -webkit-transform: translate(100%);
-  -o-transform: translate(100%);
-  -moz-transform: translate(100%);
-  display: flex;
-  position: absolute;
-  justify-content: center;
-  align-items: center;
-  transform: translate(100%);
-  z-index: 1;
-  width: 70px;
-  height: 50px;
-  content: "Sell";
-  color: var(--background-color);
-  font-size: 1.125rem;
-}
-
-.trade-mode {
-  -webkit-transition: transform var(--login-mode-transition-duration) ease-out;
-  -o-transition: transform var(--login-mode-transition-duration) ease-out;
-  -moz-transition: transform var(--login-mode-transition-duration) ease-out;
-  position: absolute;
-  transform: translate(0%);
-  z-index: 0;
-  transition: transform var(--login-mode-transition-duration) ease-out;
-  border-style: none;
-  border-radius: 50px;
-  background-color: var(--text-hover-color);
-  width: 70px;
-  height: 50px;
-}
-
-.buy-error {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 50px;
-}
-
-.sell-error {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 50px;
-}
-
-.trade-extra {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  gap: 3%;
-  padding-right: 10%;
-  width: 100%;
-  height: 50px;
-  color: var(--text-color);
-  font-size: 1rem;
-}
-
-.trade-price {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  gap: 5%;
-  width: 40%;
-}
-
-.reload-btn {
-  outline: none;
-  border-style: none;
-  border-radius: 50%;
-  background-color: var(--background-button-color);
-  width: 30px;
-  height: 30px;
-}
-.reload-btn:hover {
-  cursor: pointer;
-  box-shadow: 0 0 5px var(--text-hover-color);
-}
-
-.reload-logo {
-  background-color: var(--background-button-color);
-  width: 20px;
-  height: 20px;
-}
-
-.buy-window {
-  -webkit-transition: transform var(--login-mode-transition-duration) ease-out;
-  -o-transition: transform var(--login-mode-transition-duration) ease-out;
-  -moz-transition: transform var(--login-mode-transition-duration) ease-out;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 10%;
-  transform: translate(0%);
-  transition: transform var(--login-mode-transition-duration) ease-out;
-  width: 100%;
-  height: 40%;
-}
-
-.sell-window {
-  -webkit-transition: transform var(--login-mode-transition-duration) ease-out;
-  -o-transition: transform var(--login-mode-transition-duration) ease-out;
-  -moz-transition: transform var(--login-mode-transition-duration) ease-out;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 10%;
-  transform: translate(-100%, -100%);
-  transition: transform var(--login-mode-transition-duration) ease-out;
-  width: 100%;
-  height: 40%;
-}
-
-.buy-fields {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 5%;
-  width: 100%;
-}
-
-.trade-field {
-  -webkit-transition: box-shadow 0.2s linear;
-  -o-transition: box-shadow 0.2s linear;
-  -moz-transition: box-shadow 0.2s linear;
-  transition: box-shadow 0.2s linear;
-  border-style: none;
-  border-radius: 50px;
-  background-color: var(--text-color);
-  padding-left: 2%;
-  width: 20%;
-  height: 40px;
-  /* color: var(--background-color); */
-  font-size: 1.125rem;
-}
-
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-input[type=number] {
-  -moz-appearance: textfield;
-  appearance: none;
-}
-
-.trade-field::placeholder {
-  opacity: 0.6;
-  color: var(--background-button-color);
-}
-
-.trade-field:focus {
-  outline: none !important;
-  box-shadow: 0 0 5px var(--text-hover-color);
-}
-
-.trade-submit {
-  -webkit-transition: background-color 0.2s linear;
-  -o-transition: background-color 0.2s linear;
-  -moz-transition: background-color 0.2s linear;
-  transition: background-color 0.2s linear;
-  padding: 0;
-  width: 15%;
-}
-
-.trade-submit:hover {
-  cursor: pointer;
-  box-shadow: 0 0 5px var(--text-hover-color);
-}
-
-.autofill {
-  cursor: not-allowed;
-}
-
-.wtb-btn {
-  -webkit-transition: all var(--link-transition-duration) linear;
-  -o-transition: all var(--link-transition-duration) linear;
-  -moz-transition: all var(--link-transition-duration) linear;
-  transition: all var(--link-transition-duration) linear;
-  border-width: 1px;
-  border-style: solid;
-  border-style: none;
-  border-radius: 50px;
-  background-color: var(--background-button-color);
-  padding: 14px;
-  color: var(--text-color);
-  font-size: 1rem;
-}
-.wtb-btn:hover {
-  color: var(--text-hover-color);
-}
-
-.wtb-btn:hover {
+.table {
   box-shadow: 0 0 10px var(--contrast-color);
+  border-color: var(--background-button-color);
+  border-radius: 50px;
   background-color: var(--background-button-color);
+  padding: 50px;
 }
 
-.content {
-  display: flex;
-}
-.content .chart-content {
-  width: 50%;
-}
-.content .info-wrap {
-  width: 50%;
+.col1 {
+  width: 40px;
 }
 
-.info-wrap {
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-  align-items: center;
-  gap: 5%;
-  margin-top: 1%;
-  height: 80vh;
+.col2 {
+  width: 350px;
 }
 
-.desc {
-  padding: 10%;
-  padding-top: 0%;
+.col3 {
+  width: 250px;
 }
-.desc p {
-  padding-bottom: 20px;
-  color: var(--text-color);
-  font-size: 1.125rem;
-  text-indent: 20px;
+
+.col4 {
+  width: 250px;
 }
-.desc h3 {
-  padding-bottom: 10px;
-  padding-left: 10px;
-  color: var(--text-color);
+
+.col5 {
+  width: 250px;
+}
+
+.col6 {
+  width: 250px;
+}
+
+.col7 {
+  width: 250px;
+}
+
+.hc {
+  border-bottom: 1px solid black;
+  padding-bottom: 12px;
+  padding-left: 15px;
+  color: var(--text-hover-color);
   font-size: 1.5rem;
 }
-.desc a {
+
+.tc {
+  border-bottom: 1px solid black;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  padding-left: 15px;
   color: var(--text-color);
-  font-size: 1.125rem;
-}
-.desc a:hover {
-  color: var(--text-hover-color);
+  font-size: 1.5rem;
+  text-align: center;
 }
 
-.name-wrap {
+.crypto-name-wrap {
   display: flex;
-  flex-direction: row;
   justify-content: center;
   align-items: center;
-  gap: 15%;
+  gap: 10px;
 }
 
 .crypto-name {
-  color: var(--text-hover-color);
-  font-weight: 500;
-  font-size: 3rem;
-  text-shadow: 1px 1px 2px var(--background-button-color);
-}
-
-.crypto-price {
-  padding-left: 20px;
-  color: var(--contrast-color);
-  font-size: 1.7rem;
+  font-size: 1.5rem;
 }
 
 .crypto-logo {
-  width: 120px;
-  height: 120px;
+  width: 30px;
+  height: 30px;
 }
 
-.chart-content {
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-  align-items: center;
-  gap: 2%;
-  margin-top: 5%;
-  height: 80vh;
+.change-pos {
+  color: #3DF718;
 }
 
-.review {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 5%;
-  width: 100%;
+.change-neg {
+  color: red;
 }
 
-.chart-wrap {
-  margin: 5%;
-  margin-top: 1%;
-  margin-bottom: 1%;
-  box-shadow: 0 0 10px var(--contrast-color);
-  border-radius: 50px;
-  background-color: var(--background-button-color);
-  padding: 2%;
-  width: 1000px;
-  height: 500px;
+.row:hover {
+  background-color: var(--background-color);
 }
 
-.chart-btn-wrap {
+.buy-link {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 6%;
-  margin-right: 5%;
-  margin-left: 5%;
-  padding-right: 2%;
-  padding-left: 2%;
-  width: 1000px;
 }
 
-.chart-btn {
+.buy-btn {
   -webkit-transition: all var(--link-transition-duration) linear;
   -o-transition: all var(--link-transition-duration) linear;
   -moz-transition: all var(--link-transition-duration) linear;
   transition: all var(--link-transition-duration) linear;
-  border-style: none;
+  outline: none;
+  border-style: solid;
+  border-color: var(--text-color);
   border-radius: 50px;
-  background-color: var(--background-button-color);
-  padding: 1%;
+  background-color: var(--text-color);
   width: 100px;
-  height: 40px;
-  color: var(--text-color);
-  font-size: 1.125rem;
+  height: 80%;
+  text-align: center;
+}
+.buy-btn span {
+  color: var(--background-color);
 }
 
-.chart-btn:hover {
-  box-shadow: 0 0 5px var(--contrast-color);
-  color: var(--text-hover-color);
+.buy-btn:hover {
+  box-shadow: 0 0 10px var(--contrast-color);
+  border-color: var(--background-button-color);
+  background-color: var(--background-button-color);
+}
+.buy-btn:hover span {
+  color: var(--text-color);
+}
+
+/* .buy-btn > span {
+    color: var(--background-color);
+} */
+.split {
+  border: 1px solid var(--contrast-color);
+  background-color: var(--contrast-color);
+  width: 100%;
+  height: 5px;
 }
 
 /* navigation bar */
@@ -1434,92 +1144,6 @@ span {
   box-shadow: 0 0 5px var(--text-hover-color);
 }
 
-.success-window {
-  -webkit-transition: transform var(--login-transition-duration) ease-out;
-  -o-transition: transform var(--login-transition-duration) ease-out;
-  -moz-transition: transform var(--login-transition-duration) ease-out;
-  position: absolute;
-  transform: translate(250%);
-  visibility: visible;
-  z-index: 1;
-  transition: transform var(--login-transition-duration) ease-out;
-  margin-top: 35vh;
-  margin-left: 35vw;
-  border-style: none;
-  border-radius: 50px;
-  background-color: var(--background-button-color);
-  width: 30vw;
-  height: 30vh;
-  overflow: hidden;
-}
-
-.success-info-wrap {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 5%;
-  width: 100%;
-  height: 85%;
-  color: var(--text-color);
-}
-
-.grat-block {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
-  font-size: 1.125rem;
-}
-
-.cancel-success-wrap {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 5%;
-}
-
-.cancel-success-btn {
-  -webkit-transition: color var(--link-transition-duration) linear;
-  -o-transition: color var(--link-transition-duration) linear;
-  -moz-transition: color var(--link-transition-duration) linear;
-  transition: color var(--link-transition-duration) linear;
-  border-style: none;
-  border-radius: 50px;
-  background-color: var(--background-button-color);
-  width: 100px;
-  height: 40px;
-  color: var(--text-color);
-  font-size: 1.125rem;
-}
-.cancel-success-btn:hover {
-  cursor: pointer;
-  color: var(--text-hover-color);
-}
-
-.grat-logo {
-  width: 20px;
-  height: 20px;
-}
-
-.transaction-info {
-  font-size: 1.125rem;
-}
-
-.success-balance {
-  font-size: 1rem;
-}
-
 .display-off {
   display: none;
-}
-
-.change-pos {
-  color: #3DF718;
-}
-
-.change-neg {
-  color: red;
 }
