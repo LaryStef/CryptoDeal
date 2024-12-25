@@ -9,7 +9,11 @@ module.exports = {
         cryptoList: "./frontend/js/cryptoList.js",
         index: "./frontend/js/index.js",
         profile: "./frontend/js/profile.js",
-        cryptocurrency: "./frontend/js/cryptocurrency.js"
+        cryptocurrency: "./frontend/js/cryptocurrency.js",
+        indexStyles: "./frontend/js/indexStyles.js",
+        cryptoListStyles: "./frontend/js/cryptoListStyles.js",
+        cryptocurrencyStyles: "./frontend/js/cryptocurrencyStyles.js",
+        profileStyles: "./frontend/js/profileStyles.js",
     },
     output: {
         path: path.resolve(__dirname, "./app/static"),
@@ -35,5 +39,5 @@ module.exports = {
             "extractComments": false,
         })],
     },
-    mode: "production",
+    mode: "development",
 };

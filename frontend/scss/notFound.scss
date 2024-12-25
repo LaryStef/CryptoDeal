@@ -1,0 +1,53 @@
+:root {
+  --background-color: #1b143d;
+  --text-color: #7d42e7;
+  --text-hover-color: #8935a2;
+  --link-transition-duration: 200ms;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Ubuntu Mono";
+}
+
+html, body {
+  overflow: hidden;
+}
+
+body {
+  background-color: var(--background-color);
+  font-size: 16px;
+}
+
+a {
+  text-decoration: none;
+}
+
+.error-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: end;
+  gap: 5px;
+  width: 55vw;
+  height: 40vh;
+}
+
+.error {
+  color: var(--text-color);
+  font-size: 48px;
+}
+
+.index-url {
+  -webkit-transition: color var(--link-transition-duration) linear;
+  -o-transition: color var(--link-transition-duration) linear;
+  -moz-transition: color var(--link-transition-duration) linear;
+  transition: color var(--link-transition-duration) linear;
+  color: var(--text-color);
+  font-size: 18px;
+}
+
+.index-url:hover {
+  color: var(--text-hover-color);
+}
