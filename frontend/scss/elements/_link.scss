@@ -1,0 +1,11 @@
+@use '../colors';
+@use '../const';
+
+.link {
+    transition: color const.$link-transition-duration linear;
+    color: colors.$text-color;
+
+    &:hover {
+        color: colors.$text-hover-color;
+    }
+}

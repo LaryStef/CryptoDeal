@@ -1,5 +1,6 @@
 @use 'const';
 @use 'colors';
+@use 'font';
 
 html {
     font-size: const.$font-size-base;
@@ -17,4 +18,8 @@ a {
 
 li {
     list-style: none;
+}
+
+.display-off {
+    display: none;
 }
