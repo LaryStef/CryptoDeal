@@ -1,0 +1,66 @@
+@use '../colors';
+@use '../const';
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+    padding-top: 3%;
+    padding-bottom: 3%;
+    padding-right: 5%;
+    padding-left: 5%;
+}
+
+.navbar-items {
+    display: flex;
+    gap: 24px;
+}
+
+.partitions {
+    display: flex;
+    justify-content: space-between;
+    width: 40%;
+}
+
+.navbar-logo {
+    width: 40px;
+    height: 40px;
+
+    &:hover {
+        filter: brightness(0) saturate(100%) invert(27%) sepia(15%) saturate(7433%) hue-rotate(263deg) brightness(92%) contrast(91%);
+    }
+}
+
+.auth {
+    display: flex;
+    justify-content: end;
+    width: 16%;
+}
+
+.auth-button {
+    transition: color const.$link-transition-duration linear;
+    border-style: none;
+    background-color: colors.$background-button-color;
+    width: 49%;
+    height: 40px;
+    color: colors.$text-color;
+    font-size: 1rem;
+
+    &:hover {
+        color: colors.$text-hover-color;
+        box-shadow: 0 0 5px colors.$text-hover-color;
+        background-color: colors.$background-color;
+    }
+
+    &.left {
+        margin-right: 5px;
+        border-top-left-radius: 50px;
+        border-bottom-left-radius: 50px;
+    }
+    
+    &.right {
+        border-top-right-radius: 50px;
+        border-bottom-right-radius: 50px;
+    }
+}
