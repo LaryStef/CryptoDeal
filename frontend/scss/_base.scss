@@ -1,0 +1,20 @@
+@use 'const';
+@use 'colors';
+
+html {
+    font-size: const.$font-size-base;
+}
+
+body {
+    background-color: colors.$background-color;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+a {
+    text-decoration: none;
+}
+
+li {
+    list-style: none;
+}
