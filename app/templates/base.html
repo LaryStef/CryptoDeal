@@ -30,17 +30,22 @@
                 <a class="link" href="#">About</a>
             </li>
         </ul>
-        <div class="auth display-off" id="auth-button">
+        <div class="auth" id="auth-button">
             <button class="auth-button left" id="sign-in">Sign in</button>
             <button class="auth-button right" id="sign-up">Sign up</button>
         </div>
-        <a class="profile" id="profile-button" href="{{ url_for('main.profile') }}">
+        <a class="profile display-off" id="profile-button" href="{{ url_for('main.profile') }}">
             <div class="username" id="name">username</div>
             <img src="{{ url_for('static', filename='png/Alien3.png') }}" alt="" class="avatar" id="avatar" decoding="async">
         </a>
     </nav>
     {% endblock %}
-    <div style="height: 1500px;"></div>
+
+    {% block main_container %}
+    {% endblock %}
+
+    <div style="height: 1000px;"></div>
+
     {% block auth %}
     <div class="auth-window" id="login">
         <div class="form-container">
@@ -219,8 +224,6 @@
     </div>
     {% endblock %}
 
-    {% block main_container %}
-    {% endblock %}
     {% block script %}
     {% endblock %}
 </body>
