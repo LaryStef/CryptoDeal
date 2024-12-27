@@ -172,9 +172,6 @@ document.getElementById("right-switch").onclick = rightSwitchTransform;
 document.getElementById("sign-up").onclick = openSignUpWindow;
 document.getElementById("sign-in").onclick = openSignInWindow;
 
-document.getElementById("dropdown-sign-in").onclick = openSignInWindow;
-document.getElementById("dropdown-sign-up").onclick = openSignUpWindow;
-
 document.getElementById("cancel").onclick = closeLoginWindow;
 document.getElementById("mail-cancel").onclick = closeConfirmWindow;
 document.getElementById("email-cancel").onclick = closeEmailWindow;
