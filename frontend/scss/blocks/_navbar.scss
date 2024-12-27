@@ -17,6 +17,19 @@
     gap: 24px;
 }
 
+.link {
+    color: colors.$contrast-color;
+    padding: calc(5% + 5px);
+    border-radius: 50px;
+    transition: all const.$link-transition-duration linear;
+    
+    &:hover {
+        background-color: colors.$contrast-color;
+        color: colors.$background-color;
+        box-shadow: 0 0 5px colors.$contrast-color;
+    }
+}
+
 .partitions {
     display: flex;
     justify-content: space-between;
@@ -24,8 +37,8 @@
 }
 
 .navbar-logo {
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
 
     &:hover {
         filter: brightness(0) saturate(100%) invert(27%) sepia(15%) saturate(7433%) hue-rotate(263deg) brightness(92%) contrast(91%);
@@ -33,34 +46,65 @@
 }
 
 .auth {
+    $gap: 15px;
+    $button-size: 100px;
+
     display: flex;
+    flex-basis: $button-size + $gap;
     justify-content: end;
+    gap: $gap;
     width: 16%;
+
+    .auth-button {
+        transition: all const.$link-transition-duration linear;
+        border-style: none;
+        background-color: colors.$background-color;
+        width: $button-size;
+        height: 40px;
+        color: colors.$text-color;
+        border-radius: 50px;
+        font-size: 1rem;
+        box-shadow: 0 0 5px colors.$text-color;
+        
+        &:hover {
+            color: colors.$contrast-color;
+            box-shadow: 0 0 5px colors.$contrast-color;
+        }
+    }
 }
 
-.auth-button {
-    transition: color const.$link-transition-duration linear;
+.profile {
+    display: flex;
+    gap: 10px;
+    flex-basis: 130px;
+    justify-content: center;
+    align-items: center;
+    width: 16%;
+    height: 50px;
+    box-shadow: 0 0 8px colors.$text-color;
+    background-color: colors.$background-color;
+    transition: all const.$link-transition-duration linear;
     border-style: none;
-    background-color: colors.$background-button-color;
-    width: 49%;
-    height: 40px;
     color: colors.$text-color;
-    font-size: 1rem;
+    border-radius: 50px;
+
+    .avatar {
+        padding-right: 15px;
+        width: 30px;
+        height: 30px;
+    }
+
+    .username {
+        width: 95px;
+        padding-left: 15px;
+        font-size: 1rem;
+        overflow:hidden;
+        white-space:nowrap;
+        text-overflow: ellipsis;
+    }
 
     &:hover {
-        color: colors.$text-hover-color;
-        box-shadow: 0 0 5px colors.$text-hover-color;
-        background-color: colors.$background-color;
-    }
-
-    &.left {
-        margin-right: 5px;
-        border-top-left-radius: 50px;
-        border-bottom-left-radius: 50px;
-    }
-    
-    &.right {
-        border-top-right-radius: 50px;
-        border-bottom-right-radius: 50px;
+        color: colors.$contrast-color;
+        box-shadow: 0 0 8px colors.$contrast-color;
     }
 }
