@@ -7,6 +7,7 @@ html {
 }
 
 body {
+    background: radial-gradient(circle at -150% 70%, #8FFF06 10%, transparent 80%);
     background-color: colors.$background-color;
     max-width: 100%;
     overflow-x: hidden;
@@ -18,8 +19,4 @@ a {
 
 li {
     list-style: none;
-}
-
-.display-off {
-    display: none;
 }
