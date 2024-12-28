@@ -1,0 +1,66 @@
+/*!**********************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./frontend/scss/notFound.scss ***!
+  \**********************************************************************************************************************/
+html, body, ul, ol {
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+li {
+  list-style: none;
+}
+
+* {
+  font-family: "Ubuntu Mono";
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  background: radial-gradient(circle at -170% 70%, #8FFF06 10%, transparent 80%);
+  background-color: #000000;
+  max-width: 100%;
+  overflow-x: hidden;
+  width: 100vw;
+  height: 100vh;
+}
+
+.error-container {
+  display: flex;
+  justify-content: center;
+  align-items: end;
+  width: 100vw;
+  min-width: 700px;
+  margin-top: 30vh;
+}
+.error-container .error-letter {
+  color: #7d42e7;
+  font-weight: bold;
+  font-size: 4em;
+}
+.error-container .space {
+  width: 40px;
+}
+.error-container .error-logo {
+  width: 60px;
+  height: 60px;
+}
+
+.return-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 5vh;
+}
+.return-container a {
+  transition: color 300ms linear;
+  color: #7d42e7;
+}
+.return-container a:hover {
+  color: #8FFF06;
+}

@@ -7,16 +7,10 @@ html {
 }
 
 body {
-    background: radial-gradient(circle at -150% 70%, #8FFF06 10%, transparent 80%);
+    background: radial-gradient(circle at -170% 70%, #8FFF06 10%, transparent 80%);
     background-color: colors.$background-color;
     max-width: 100%;
     overflow-x: hidden;
-}
-
-a {
-    text-decoration: none;
-}
-
-li {
-    list-style: none;
+    width: 100vw;
+    height: 100vh;
 }
