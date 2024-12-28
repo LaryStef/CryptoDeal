@@ -31,6 +31,10 @@ body {
   height: 100vh;
 }
 
+.main-container {
+  transition: filter 400ms linear;
+}
+
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -40,6 +44,7 @@ body {
   padding-bottom: 3%;
   padding-right: 5%;
   padding-left: 5%;
+  transition: filter 400ms linear;
 }
 
 .navbar-items {
@@ -127,6 +132,31 @@ body {
 .profile:hover {
   color: #8FFF06;
   box-shadow: 0 0 8px #8FFF06;
+}
+
+.auth-window {
+  transition: all 400ms ease-out;
+  position: fixed;
+  width: 600px;
+  height: 400px;
+  padding: 50px;
+  padding-top: 0px;
+  box-shadow: 0 0 8px #8FFF06;
+  border-radius: 50px;
+  background-color: #0A0A0A;
+  top: 30vh;
+  left: -50%;
+  overflow: hidden;
+  transform: translateX(-50%);
+}
+
+.auth-window-cancel-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding-top: 5px;
+  height: 30px;
 }
 
 .motto-container {

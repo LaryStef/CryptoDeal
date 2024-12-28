@@ -1,6 +1,8 @@
 @use '../colors';
 @use '../const';
 
+// navigation
+
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -10,6 +12,7 @@
     padding-bottom: 3%;
     padding-right: 5%;
     padding-left: 5%;
+    transition: filter const.$login-transition-duration linear;
 }
 
 .navbar-items {
@@ -109,4 +112,29 @@
     }
 }
 
+// pop-up windows
 
+.auth-window {
+    transition: all const.$login-transition-duration ease-out;
+    position: fixed;
+    width: 600px;
+    height: 400px;
+    padding: 50px;
+    padding-top: 0px;
+    box-shadow: 0 0 8px colors.$contrast-color;
+    border-radius: 50px;
+    background-color: colors.$window-color;
+    top: 30vh;
+    left: -50%;
+    overflow: hidden;
+    transform: translateX(-50%);
+}
+
+.auth-window-cancel-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding-top: 5px;
+    height: 30px;
+}

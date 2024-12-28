@@ -256,8 +256,8 @@ document
     });
 
 function disableButtons() {
-    document.getElementsByClassName("auth-link")[0].disabled = true;
-    document.getElementsByClassName("auth-link")[1].disabled = true;
+    document.getElementsByClassName("auth-button")[0].disabled = true;
+    document.getElementsByClassName("auth-button")[1].disabled = true;
 }
 
 function enableButtons() {
@@ -348,42 +348,33 @@ function leftSwitch() {
 }
 
 function openSignInWindow() {
-    leftSwitch();
+    //leftSwitch();
     let loginWindow = document.getElementById("login");
-    loginWindow.style.opacity = 1;
-    if (window.innerWidth <= 650) {
-        loginWindow.style.transform = "translate(0%, 30%)";
-    } else {
-        loginWindow.style.transform = "translate(50%, 30%)";
-    }
-    document.getElementById("main").style.filter = "brightness(0.5)";
-    document.getElementById("navbar").style.filter = "brightness(0.5)";
-    disableButtons();
+    //loginWindow.style.opacity = 1;
+    loginWindow.style.left = "50%";
+    document.getElementById("main").style.filter = "brightness(0.3)";
+    document.getElementById("navbar").style.filter = "brightness(0.3)";
+    //disableButtons();
 }
 
 function openSignUpWindow() {
-    rightSwitch();
+    //rightSwitch();
     let loginWindow = document.getElementById("login");
-    loginWindow.style.opacity = 1;
-    if (window.innerWidth <= 650) {
-        loginWindow.style.transform = "translate(0%, 30%)";
-    } else {
-        loginWindow.style.transform = "translate(50%, 30%)";
-    }
-    document.getElementById("main").style.filter = "brightness(0.5)";
-    document.getElementById("navbar").style.filter = "brightness(0.5)";
-    disableButtons();
+    //loginWindow.style.opacity = 1;
+    loginWindow.style.left = "50%";
+    document.getElementById("main").style.filter = "brightness(0.3)";
+    document.getElementById("navbar").style.filter = "brightness(0.3)";
+    //disableButtons();
 }
 
 function closeLoginWindow() {
     let loginWindow = document.getElementById("login");
-    loginWindow.style.opacity = 0;
-    loginWindow.style.transform = "translate(-100%, 30%)";
+    loginWindow.style.left = "-50%";
     document.getElementById("main").style.filter = "brightness(1)";
     document.getElementById("navbar").style.filter = "brightness(1)";
     document.getElementById("login-info").innerText = "";
     document.getElementById("register-info").innerText = "";
-    enableButtons();
+    //enableButtons();
 }
 
 document.onkeydown = function (evt) {
