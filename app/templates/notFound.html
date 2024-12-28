@@ -6,18 +6,35 @@
     <title>Document</title>
     <title>CryptoDeal{{ " - " + title }}</title>
     <link rel="icon" href="{{ url_for('static', filename='svg/CryptoDealLogo.svg') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/notFound.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/notFoundStyles.min.css') }}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu+Mono&subset=latin"/>
-    <style>
-        body {
-            background-image: url("{{ url_for('static', filename='svg/CryptoDealLogo.svg') }}");
-        }
-    </style>
 </head>
 <body>
-<div class="error-wrapper">
-    <span class="error">Page not found</span>
-    <a class="index-url" href="{{ url_for('main.index') }}">go to main page</a>
+<div class="main-container">
+    <div class="error-container">
+        <span class="error-letter">4</span>
+        <img class="error-logo" src="{{ url_for('static', filename='svg/CryptoDealLogo.svg') }}" alt="o">
+        <span class="error-letter">4</span>
+        <span class="error-letter">,</span>
+        <div class="space"></div>
+        <span class="error-letter">P</span>
+        <span class="error-letter">a</span>
+        <span class="error-letter">g</span>
+        <span class="error-letter">e</span>
+        <div class="space"></div>
+        <span class="error-letter">n</span>
+        <img class="error-logo" src="{{ url_for('static', filename='svg/CryptoDealLogo.svg') }}" alt="o">
+        <span class="error-letter">t</span>
+        <div class="space"></div>
+        <span class="error-letter">F</span>
+        <img class="error-logo" src="{{ url_for('static', filename='svg/CryptoDealLogo.svg') }}" alt="o">
+        <span class="error-letter">u</span>
+        <span class="error-letter">n</span>
+        <span class="error-letter">d</span>
+    </div>
+    <div class="return-container">
+        <a href="{{ url_for('main.index') }}">Go to main page</a>
+    </div>
 </div>
 </body>
 </html>
