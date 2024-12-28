@@ -7,10 +7,14 @@ html {
 }
 
 body {
-    background: radial-gradient(circle at -170% 70%, #8FFF06 10%, transparent 80%);
+    background: radial-gradient(circle at -170% 70%, colors.$contrast-color 10%, transparent 80%);
     background-color: colors.$background-color;
     max-width: 100%;
     overflow-x: hidden;
     width: 100vw;
     height: 100vh;
+}
+
+.main-container {
+    transition: filter const.$login-transition-duration linear;
 }

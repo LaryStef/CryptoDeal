@@ -31,6 +31,10 @@ body {
   height: 100vh;
 }
 
+.main-container {
+  transition: filter 400ms linear;
+}
+
 .error-container {
   display: flex;
   justify-content: center;
