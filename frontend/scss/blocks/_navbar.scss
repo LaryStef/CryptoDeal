@@ -124,7 +124,7 @@
     box-shadow: 0 0 8px colors.$contrast-color;
     border-radius: 50px;
     background-color: colors.$window-color;
-    top: 30vh;
+    top: calc((100vh - 450px) / 2);
     left: -50%;
     overflow: hidden;
     transform: translateX(-50%);
