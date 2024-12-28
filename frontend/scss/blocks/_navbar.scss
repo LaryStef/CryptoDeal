@@ -53,7 +53,7 @@
     flex-basis: $button-size + $gap;
     justify-content: end;
     gap: $gap;
-    width: 16%;
+    width: calc($button-size * 2 + $gap);
 
     .auth-button {
         transition: all const.$link-transition-duration linear;
@@ -98,8 +98,8 @@
         width: 95px;
         padding-left: 15px;
         font-size: 1rem;
-        overflow:hidden;
-        white-space:nowrap;
+        overflow: hidden;
+        white-space: nowrap;
         text-overflow: ellipsis;
     }
 
@@ -108,3 +108,5 @@
         box-shadow: 0 0 8px colors.$contrast-color;
     }
 }
+
+

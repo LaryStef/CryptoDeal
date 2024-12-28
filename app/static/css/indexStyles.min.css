@@ -78,7 +78,7 @@ body {
   flex-basis: 115px;
   justify-content: end;
   gap: 15px;
-  width: 16%;
+  width: 215px;
 }
 .auth .auth-button {
   transition: all 300ms linear;
