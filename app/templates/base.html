@@ -60,11 +60,11 @@
         </div>
         <div class="auth-block register-block" id="register-container">
             <div class="auth-error-text">
-                <span id="login-info">Some info about auth problems</span>
+                <span id="register-info"></span>
             </div>
-            <form class="login-form" id="register-form-id">
+            <form class="auth-form" id="register-form-id">
                 <input
-                    class="sign-input"
+                    class="auth-input"
                     type="text"
                     name="username"
                     placeholder="username"
@@ -73,7 +73,7 @@
                     required
                 />
                 <input
-                    class="sign-input"
+                    class="auth-input"
                     type="password"
                     name="password"
                     placeholder="password"
@@ -82,7 +82,7 @@
                     required
                 />
                 <input
-                    class="sign-input"
+                    class="auth-input"
                     type="text"
                     name="email"
                     id="email-input"
@@ -91,16 +91,16 @@
                     autocomplete="email"
                     required
                 />
-                <input class="sign-input submit" type="submit" value="submit" />
+                <input class="auth-input auth-submit" type="submit" value="submit" />
             </form>
         </div>
         <div class="auth-block login-block" id="login-container">
             <div class="auth-error-text">
-                <span id="login-info">Some info about auth problems</span>
+                <span id="login-info"></span>
             </div>
-            <form class="login-form" id="login-form-id">
+            <form class="auth-form" id="login-form-id">
                 <input
-                    class="sign-input"
+                    class="auth-input"
                     type="text"
                     name="username"
                     placeholder="username"
@@ -109,7 +109,7 @@
                     required
                 />
                 <input
-                    class="sign-input"
+                    class="auth-input"
                     type="password"
                     name="password"
                     placeholder="password"
@@ -117,7 +117,7 @@
                     autocomplete="current-password"
                     required
                 />
-                <input class="sign-input submit" type="submit" value="submit" />
+                <input class="auth-input auth-submit" type="submit" value="submit" />
             </form>
             <div class="recovery-button-container">
                 <button class="recovery-button" id="recovery-btn" href="#">forget password? Click here!</button>

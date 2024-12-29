@@ -14,6 +14,10 @@ li {
   list-style: none;
 }
 
+input {
+  padding: 0;
+}
+
 * {
   font-family: "Ubuntu Mono";
 }
@@ -23,7 +27,7 @@ html {
 }
 
 body {
-  background: radial-gradient(circle at -170% 70%, #8FFF06 10%, transparent 80%);
+  background: radial-gradient(circle at -180% 100%, #8FFF06 10%, transparent 80%);
   background-color: #000000;
   max-width: 100%;
   overflow-x: hidden;
@@ -148,7 +152,7 @@ body {
 }
 .profile .username {
   width: 95px;
-  padding-left: 15px;
+  padding-left: 20px;
   font-size: 1rem;
   overflow: hidden;
   white-space: nowrap;
@@ -162,14 +166,14 @@ body {
 .auth-window {
   transition: all 400ms ease-out;
   position: fixed;
-  width: 600px;
-  height: 400px;
+  width: 400px;
+  height: 370px;
   padding: 50px;
   padding-top: 0px;
   box-shadow: 0 0 8px #8FFF06;
   border-radius: 50px;
   background-color: #0A0A0A;
-  top: calc((100vh - 450px) / 2);
+  top: calc((100vh - 370px - 50px) / 2);
   left: -50%;
   overflow: hidden;
   transform: translateX(-50%);
@@ -180,7 +184,8 @@ body {
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 90px;
+  padding-top: 50px;
+  height: 40px;
 }
 
 #auth-mode {
@@ -266,6 +271,8 @@ body {
   justify-content: center;
   align-items: center;
   width: 100%;
+  padding-top: 10px;
+  padding-bottom: 10px;
   height: 30px;
   color: #db1a1a;
   font-size: 1.125rem;
@@ -276,6 +283,7 @@ body {
   justify-content: center;
   align-items: center;
   width: 100%;
+  padding-top: 30px;
   height: 50px;
 }
 
@@ -287,6 +295,44 @@ body {
   transition: color 300ms linear;
 }
 .recovery-button:hover {
+  color: #8FFF06;
+}
+
+.auth-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+}
+
+.auth-input {
+  transition: all 300ms linear;
+  box-shadow: 0 0 8px #8935a2;
+  border-style: none;
+  border-radius: 15px;
+  background-color: #0A0A0A;
+  padding-left: 15px;
+  width: 300px;
+  height: 40px;
+  color: #8935a2;
+  font-size: 1.125rem;
+}
+.auth-input::placeholder {
+  opacity: 0.8;
+  color: #8935a2;
+}
+.auth-input:focus {
+  outline: none;
+  box-shadow: 0 0 8px #8FFF06;
+}
+
+.auth-submit {
+  width: 315px;
+}
+.auth-submit:hover {
+  box-shadow: 0 0 5px #8FFF06;
   color: #8FFF06;
 }
 
