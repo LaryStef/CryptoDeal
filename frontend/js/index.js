@@ -11,6 +11,7 @@ const refreshTokensUrl = new URL("api/auth/refresh-tokens", origin);
 
 const textHoverColor = "#8935a2";
 const backgroundColor = "#000000";
+const windowOpeningDurationMS = 400;
 
 const cooldown = 30;
 const cooldownRec = 30;
@@ -264,114 +265,68 @@ function disableButtons() {
 }
 
 function enableButtons() {
-    document.getElementsByClassName("auth-link")[0].disabled = false;
-    document.getElementsByClassName("auth-link")[1].disabled = false;
+    document.getElementsByClassName("auth-button")[0].disabled = false;
+    document.getElementsByClassName("auth-button")[1].disabled = false;
 }
 
 function leftSwitchTransform() {
     document.getElementById("mode-light").style.transform = "translate(0%)";
     document.getElementById("auth-mode").style.setProperty('--right-switch-color', textHoverColor);
     document.getElementById("auth-mode").style.setProperty('--left-switch-color', backgroundColor);
-    // if (window.innerWidth <= 650) {
-    //     document.getElementById("register-container").style.transform =
-    //         "translate(-100%)";
-    //     document.getElementById("login-container").style.transform =
-    //         "translate(0%, -100%)";
-    // } else if (window.innerWidth <= 1000) {
-    //     document.getElementById("register-container").style.transform =
-    //         "translate(-100%)";
-    //     document.getElementById("login-container").style.transform =
-    //         "translate(5%, -100%)";
-    // } else {
-    //     document.getElementById("register-container").style.transform =
-    //         "translate(-100%)";
-    //     document.getElementById("login-container").style.transform =
-    //         "translate(50%, -100%)";
-    // }
+    document.getElementById("register-container").style.left = "-150%";
+    document.getElementById("login-container").style.left = "0%";
 }
 
 function rightSwitchTransform() {
     document.getElementById("mode-light").style.transform = "translate(100%)";
     document.getElementById("auth-mode").style.setProperty('--left-switch-color', textHoverColor);
     document.getElementById("auth-mode").style.setProperty('--right-switch-color', backgroundColor);
-    // if (window.innerWidth <= 650) {
-    //     document.getElementById("register-container").style.transform =
-    //         "translate(0%)";
-    //     document.getElementById("login-container").style.transform =
-    //         "translate(100%, -100%)";
-    // } else if (window.innerWidth <= 1000) {
-    //     document.getElementById("register-container").style.transform =
-    //         "translate(5%)";
-    //     document.getElementById("login-container").style.transform =
-    //         "translate(200%, -100%)";
-    // } else {
-    //     document.getElementById("register-container").style.transform =
-    //         "translate(50%)";
-    //     document.getElementById("login-container").style.transform =
-    //         "translate(200%, -100%)";
-    // }
+    document.getElementById("register-container").style.left = "0%";
+    document.getElementById("login-container").style.left = "150%";
 }
 
 function rightSwitch() {
     document.getElementById("mode-light").classList.add("transition-off");
-    document
-        .getElementById("register-container")
-        .classList.add("transition-off");
+    document.getElementById("register-container").classList.add("transition-off");
     document.getElementById("login-container").classList.add("transition-off");
 
     rightSwitchTransform();
     setTimeout(() => {
-        document
-            .getElementById("mode-light")
-            .classList.remove("transition-off");
-        document
-            .getElementById("register-container")
-            .classList.remove("transition-off");
-        document
-            .getElementById("login-container")
-            .classList.remove("transition-off");
-    }, 400);
+        document.getElementById("mode-light").classList.remove("transition-off");
+        document.getElementById("register-container").classList.remove("transition-off");
+        document.getElementById("login-container").classList.remove("transition-off");
+    }, windowOpeningDurationMS);
 }
 
 function leftSwitch() {
     document.getElementById("mode-light").classList.add("transition-off");
-    document
-        .getElementById("register-container")
-        .classList.add("transition-off");
+    document.getElementById("register-container").classList.add("transition-off");
     document.getElementById("login-container").classList.add("transition-off");
 
     leftSwitchTransform();
     setTimeout(() => {
-        document
-            .getElementById("mode-light")
-            .classList.remove("transition-off");
-        document
-            .getElementById("register-container")
-            .classList.remove("transition-off");
-        document
-            .getElementById("login-container")
-            .classList.remove("transition-off");
-    }, 400);
+        document.getElementById("mode-light").classList.remove("transition-off");
+        document.getElementById("register-container").classList.remove("transition-off");
+        document.getElementById("login-container").classList.remove("transition-off");
+    }, windowOpeningDurationMS);
 }
 
 function openSignInWindow() {
-    //leftSwitch();
+    leftSwitch();
     let loginWindow = document.getElementById("login");
-    //loginWindow.style.opacity = 1;
     loginWindow.style.left = "50%";
     document.getElementById("main").style.filter = "brightness(0.3)";
     document.getElementById("navbar").style.filter = "brightness(0.3)";
-    //disableButtons();
+    disableButtons();
 }
 
 function openSignUpWindow() {
-    //rightSwitch();
+    rightSwitch();
     let loginWindow = document.getElementById("login");
-    //loginWindow.style.opacity = 1;
     loginWindow.style.left = "50%";
     document.getElementById("main").style.filter = "brightness(0.3)";
     document.getElementById("navbar").style.filter = "brightness(0.3)";
-    //disableButtons();
+    disableButtons();
 }
 
 function closeLoginWindow() {
@@ -381,7 +336,7 @@ function closeLoginWindow() {
     document.getElementById("navbar").style.filter = "brightness(1)";
     document.getElementById("login-info").innerText = "";
     document.getElementById("register-info").innerText = "";
-    //enableButtons();
+    enableButtons();
 }
 
 document.onkeydown = function (evt) {
@@ -419,7 +374,7 @@ function closeConfirmWindow() {
 
     setTimeout(() => {
         window.style.visibility = "hidden";
-    }, 400);
+    }, windowOpeningDurationMS);
     enableButtons();
     if (isTimerGoing) {
         disableTimer(timerId);
@@ -632,7 +587,7 @@ function closeEmailWindow() {
         window.style.transform = "translate(200%)";
         window.style.transition =
             "all var(--login-transition-duration) ease-out";
-    }, 400);
+    }, windowOpeningDurationMS);
 
     enableButtons();
 }
@@ -744,7 +699,7 @@ function closePasswordWindow() {
 
     setTimeout(() => {
         window.style.visibility = "hidden";
-    }, 400);
+    }, windowOpeningDurationMS);
     enableButtons();
 }
 

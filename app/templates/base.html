@@ -58,74 +58,69 @@
                 <div class="auth-mode-light" id="mode-light"></div>
             </div>
         </div>
-        <div class="form-container">
-            <div class="register-fields" id="register-container">
-                <div class="error-text">
-                    <span id="register-info"></span>
-                </div>
-                <form class="login-form" id="register-form-id">
-                    <input
-                        class="sign-input"
-                        type="text"
-                        name="username"
-                        placeholder="username"
-                        maxlength="32"
-                        autocomplete="name"
-                        required
-                    />
-                    <input
-                        class="sign-input"
-                        type="password"
-                        name="password"
-                        placeholder="password"
-                        maxlength="32"
-                        autocomplete="new-password"
-                        required
-                    />
-                    <input
-                        class="sign-input"
-                        type="text"
-                        name="email"
-                        id="email-input"
-                        placeholder="email"
-                        maxlength="256"
-                        autocomplete="email"
-                        required
-                    />
-                    <input class="sign-input submit" type="submit" value="submit" />
-                </form>
+        <div class="auth-block register-block" id="register-container">
+            <div class="auth-error-text">
+                <span id="register-info"></span>
             </div>
-            <div class="login-fields" id="login-container">
-                <div class="error-text">
-                    <span id="login-info"></span>
-                </div>
-                <form class="login-form" id="login-form-id">
-                    <input
-                        class="sign-input"
-                        type="text"
-                        name="username"
-                        placeholder="username"
-                        maxlength="32"
-                        autocomplete="name"
-                        required
-                    />
-                    <input
-                        class="sign-input"
-                        type="password"
-                        name="password"
-                        placeholder="password"
-                        maxlength="32"
-                        autocomplete="current-password"
-                        required
-                    />
-                    <input class="sign-input submit" type="submit" value="submit" />
-                </form>
-                <div>
-                    <div class="recovery-container">
-                        <button class="password-recovery" id="recovery-btn" href="#">forget password? Click here!</button>
-                    </div>
-                </div>
+            <form class="login-form" id="register-form-id">
+                <input
+                    class="sign-input"
+                    type="text"
+                    name="username"
+                    placeholder="username"
+                    maxlength="32"
+                    autocomplete="name"
+                    required
+                />
+                <input
+                    class="sign-input"
+                    type="password"
+                    name="password"
+                    placeholder="password"
+                    maxlength="32"
+                    autocomplete="new-password"
+                    required
+                />
+                <input
+                    class="sign-input"
+                    type="text"
+                    name="email"
+                    id="email-input"
+                    placeholder="email"
+                    maxlength="256"
+                    autocomplete="email"
+                    required
+                />
+                <input class="sign-input submit" type="submit" value="submit" />
+            </form>
+        </div>
+        <div class="auth-block login-block" id="login-container">
+            <div class="auth-error-text">
+                <span id="login-info">Some info about auth problems</span>
             </div>
+            <form class="login-form" id="login-form-id">
+                <input
+                    class="sign-input"
+                    type="text"
+                    name="username"
+                    placeholder="username"
+                    maxlength="32"
+                    autocomplete="name"
+                    required
+                />
+                <input
+                    class="sign-input"
+                    type="password"
+                    name="password"
+                    placeholder="password"
+                    maxlength="32"
+                    autocomplete="current-password"
+                    required
+                />
+                <input class="sign-input submit" type="submit" value="submit" />
+            </form>
+            <div class="recovery-button-container">
+                <button class="recovery-button" id="recovery-btn" href="#">forget password? Click here!</button>
             </div>
         </div>
     </div>
