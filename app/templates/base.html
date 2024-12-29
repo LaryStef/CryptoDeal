@@ -48,13 +48,15 @@
 
     {% block auth %}
     <div class="auth-window" id="login">
-        <div class="auth-window-cancel-container">
-            <button class="cancel" id="cancel">cancel</button>
+        <div class="cancel-container">
+            <button class="cancel-button" id="cancel">cancel</button>
         </div>
-        <div class="switch-auth-mode">
-            <button class="switch-auth-mode-button" id="left-switch"></button>
-            <button class="switch-auth-mode-button" id="right-switch"></button>
-            <div class="auth-mode-light" id="mode-light"></div>
+        <div class="auth-mode-container">
+            <div class="auth-mode" id="auth-mode">
+                <button class="auth-mode-button" id="left-switch"></button>
+                <button class="auth-mode-button" id="right-switch"></button>
+                <div class="auth-mode-light" id="mode-light"></div>
+            </div>
         </div>
         <div class="form-container">
             <div class="register-fields" id="register-container">

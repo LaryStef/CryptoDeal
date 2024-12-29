@@ -35,6 +35,31 @@ body {
   transition: filter 400ms linear;
 }
 
+.cancel-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding-top: 10px;
+  height: 30px;
+}
+
+.cancel-button {
+  transition: all 300ms linear;
+  background-color: #0A0A0A;
+  border-radius: 50px;
+  border-style: none;
+  padding: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  box-shadow: 0 0 5px #7d42e7;
+  color: #7d42e7;
+}
+.cancel-button:hover {
+  box-shadow: 0 0 5px #8FFF06;
+  color: #8FFF06;
+}
+
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -150,13 +175,75 @@ body {
   transform: translateX(-50%);
 }
 
-.auth-window-cancel-container {
+.auth-mode-container {
   display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 90px;
+}
+
+#auth-mode {
+  --left-switch-color: #000000;
+  --right-switch-color: #8935a2;
+}
+
+.auth-mode {
+  display: flex;
+  box-shadow: 0 0 5px #8935a2;
+  transition: box-shadow 300ms linear;
+  border-radius: 20px;
+  height: 50px;
+  width: 140px;
+}
+.auth-mode:hover {
+  box-shadow: 0 0 10px #8935a2;
+}
+.auth-mode::before {
+  content: "sign in";
+  color: var(--left-switch-color);
+  display: flex;
+  position: absolute;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  padding-top: 5px;
-  height: 30px;
+  z-index: 1;
+  font-size: 1.125rem;
+  transition: all 400ms linear;
+  width: 70px;
+  height: 50px;
+}
+.auth-mode::after {
+  content: "sign up";
+  color: var(--right-switch-color);
+  display: flex;
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+  font-size: 1.125rem;
+  transition: all 400ms linear;
+  width: 70px;
+  height: 50px;
+  transform: translate(100%);
+}
+
+.auth-mode-button {
+  opacity: 0;
+  z-index: 2;
+  border-radius: 20px;
+  width: 70px;
+  height: 50px;
+}
+
+.auth-mode-light {
+  position: absolute;
+  transform: translate(0%);
+  z-index: 0;
+  transition: transform 400ms ease-out;
+  background-color: #8935a2;
+  border-radius: 20px;
+  width: 70px;
+  height: 50px;
 }
 
 .motto-container {

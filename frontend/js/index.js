@@ -9,6 +9,9 @@ const restoreNewCodeUrl = new URL("api/auth/restore/new-code", origin);
 const restoreVerifyUrl = new URL("api/auth/restore/verify", origin);
 const refreshTokensUrl = new URL("api/auth/refresh-tokens", origin);
 
+const textHoverColor = "#8935a2";
+const backgroundColor = "#000000";
+
 const cooldown = 30;
 const cooldownRec = 30;
 
@@ -267,42 +270,46 @@ function enableButtons() {
 
 function leftSwitchTransform() {
     document.getElementById("mode-light").style.transform = "translate(0%)";
-    if (window.innerWidth <= 650) {
-        document.getElementById("register-container").style.transform =
-            "translate(-100%)";
-        document.getElementById("login-container").style.transform =
-            "translate(0%, -100%)";
-    } else if (window.innerWidth <= 1000) {
-        document.getElementById("register-container").style.transform =
-            "translate(-100%)";
-        document.getElementById("login-container").style.transform =
-            "translate(5%, -100%)";
-    } else {
-        document.getElementById("register-container").style.transform =
-            "translate(-100%)";
-        document.getElementById("login-container").style.transform =
-            "translate(50%, -100%)";
-    }
+    document.getElementById("auth-mode").style.setProperty('--right-switch-color', textHoverColor);
+    document.getElementById("auth-mode").style.setProperty('--left-switch-color', backgroundColor);
+    // if (window.innerWidth <= 650) {
+    //     document.getElementById("register-container").style.transform =
+    //         "translate(-100%)";
+    //     document.getElementById("login-container").style.transform =
+    //         "translate(0%, -100%)";
+    // } else if (window.innerWidth <= 1000) {
+    //     document.getElementById("register-container").style.transform =
+    //         "translate(-100%)";
+    //     document.getElementById("login-container").style.transform =
+    //         "translate(5%, -100%)";
+    // } else {
+    //     document.getElementById("register-container").style.transform =
+    //         "translate(-100%)";
+    //     document.getElementById("login-container").style.transform =
+    //         "translate(50%, -100%)";
+    // }
 }
 
 function rightSwitchTransform() {
     document.getElementById("mode-light").style.transform = "translate(100%)";
-    if (window.innerWidth <= 650) {
-        document.getElementById("register-container").style.transform =
-            "translate(0%)";
-        document.getElementById("login-container").style.transform =
-            "translate(100%, -100%)";
-    } else if (window.innerWidth <= 1000) {
-        document.getElementById("register-container").style.transform =
-            "translate(5%)";
-        document.getElementById("login-container").style.transform =
-            "translate(200%, -100%)";
-    } else {
-        document.getElementById("register-container").style.transform =
-            "translate(50%)";
-        document.getElementById("login-container").style.transform =
-            "translate(200%, -100%)";
-    }
+    document.getElementById("auth-mode").style.setProperty('--left-switch-color', textHoverColor);
+    document.getElementById("auth-mode").style.setProperty('--right-switch-color', backgroundColor);
+    // if (window.innerWidth <= 650) {
+    //     document.getElementById("register-container").style.transform =
+    //         "translate(0%)";
+    //     document.getElementById("login-container").style.transform =
+    //         "translate(100%, -100%)";
+    // } else if (window.innerWidth <= 1000) {
+    //     document.getElementById("register-container").style.transform =
+    //         "translate(5%)";
+    //     document.getElementById("login-container").style.transform =
+    //         "translate(200%, -100%)";
+    // } else {
+    //     document.getElementById("register-container").style.transform =
+    //         "translate(50%)";
+    //     document.getElementById("login-container").style.transform =
+    //         "translate(200%, -100%)";
+    // }
 }
 
 function rightSwitch() {
