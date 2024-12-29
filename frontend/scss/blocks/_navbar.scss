@@ -1,5 +1,6 @@
 @use '../colors';
 @use '../const';
+@use '../elements/cancel';
 
 // navigation
 
@@ -112,7 +113,7 @@
     }
 }
 
-// pop-up windows
+// auth window
 
 .auth-window {
     transition: all const.$login-transition-duration ease-out;
@@ -130,11 +131,72 @@
     transform: translateX(-50%);
 }
 
-.auth-window-cancel-container {
+.auth-mode-container {
     display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 90px;
+}
+
+@mixin auth-mode-shape() {
+    width: 70px;
+    height: 50px;
+}
+
+@mixin auth-mode-pseudo-styles($content, $color) {
+    content: $content;
+    color: $color;
+    display: flex;
+    position: absolute;
     justify-content: center;
     align-items: center;
-    width: 100%;
-    padding-top: 5px;
-    height: 30px;
+    z-index: 1;
+    font-size: 1.125rem;
+    transition: all const.$login-mode-transition-duration linear;
+    @include auth-mode-shape();
+}
+
+#auth-mode {
+    --left-switch-color: #{colors.$background-color};
+    --right-switch-color: #{colors.$text-hover-color};
+}
+
+.auth-mode {
+    display: flex;
+    box-shadow: 0 0 5px colors.$text-hover-color;
+    transition: box-shadow const.$link-transition-duration linear;
+    border-radius: 20px;
+    height: 50px;
+    width: 140px;
+
+    &:hover {
+        box-shadow: 0 0 10px colors.$text-hover-color;
+    }
+
+    &::before {
+        @include auth-mode-pseudo-styles("sign in", var(--left-switch-color));
+    }
+    
+    &::after {
+        @include auth-mode-pseudo-styles("sign up", var(--right-switch-color));
+        transform: translate(100%);
+    }
+}
+
+.auth-mode-button {
+    opacity: 0;
+    z-index: 2;
+    border-radius: 20px;
+    @include auth-mode-shape();
+}
+
+.auth-mode-light {
+    position: absolute;
+    transform: translate(0%);
+    z-index: 0;
+    transition: transform const.$login-mode-transition-duration ease-out;
+    background-color: colors.$text-hover-color;
+    border-radius: 20px;
+    @include auth-mode-shape();
 }
