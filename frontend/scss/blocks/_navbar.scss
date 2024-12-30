@@ -112,15 +112,14 @@
     }
 }
 
-// auth window
+// pop-up windows
 
-.auth-window {
-    $height: 370px;
-    $padding: 50px;
+@mixin window($height, $width, $padding, $left) {
+    left: $left;
+    width: $width;
 
     transition: all const.$login-transition-duration ease-out;
     position: fixed;
-    width: 400px;
     height: $height;
     padding: $padding;
     padding-top: 0px;
@@ -128,9 +127,14 @@
     border-radius: 50px;
     background-color: colors.$window-color;
     top: calc((100vh - $height - $padding) / 2);
-    left: -50%;
     overflow: hidden;
     transform: translateX(-50%);
+}
+
+// auth window
+
+.auth-window {
+    @include window($height: 370px, $width: 400px, $padding: 50px, $left: -50%);
 }
 
 .auth-mode-container {
@@ -251,17 +255,16 @@
     width: 100%;
 }
 
-.auth-input {
+@mixin input-field($width, $font-size) {
+    width: $width;
+    font-size: $font-size;
     transition: all const.$link-transition-duration linear;
     box-shadow: 0 0 8px colors.$text-hover-color;
     border-style: none;
     border-radius: 15px;
     background-color: colors.$window-color;
-    padding-left: 15px;
-    width: 300px;
     height: 40px;
     color: colors.$text-hover-color;
-    font-size: 1.125rem;
 
     &::placeholder {
         opacity: 0.8;
@@ -274,11 +277,79 @@
     }
 }
 
+.auth-input {
+    @include input-field($width: 300px, $font-size: 1.125rem);
+    padding-left: 15px;
+}
+
 .auth-submit {
     width: 315px;
 
     &:hover {
         box-shadow: 0 0 5px colors.$contrast-color;
         color: colors.$contrast-color;
+    }
+}
+
+// email confirm window
+
+.confirm-window {
+    @include window($height: 200px, $width: 400px, $padding: 50px, $left: 150%);
+}
+
+.confirm-message {
+    width: 100%;
+    padding-top: 40px;
+    height: 40px;
+    @include mixins.center-flex();
+    color: colors.$text-hover-color;
+    gap: 5px;
+
+    span {
+        color: colors.$contrast-color;
+    }
+}
+
+.input-code-container {
+    width: 100%;
+    height: 80px;
+    @include mixins.center-flex();
+}
+
+.input-code {
+    @include input-field($width: 150px, $font-size: 1.3rem);
+    text-align: center;
+}
+
+@mixin update-code-container() {
+    @include mixins.center-flex();
+    width: 100%;
+    height: 30px;
+    color: colors.$text-hover-color;
+    gap: 5px;
+}
+
+.update-code-message-container {
+    @include update-code-container();
+}
+
+.update-code-button-container {
+    @include update-code-container();
+}
+
+.update-code-button {
+    transition: all const.$link-transition-duration linear;
+    border-style: none;
+    background-color: colors.$background-color;
+    width: 80px;
+    height: 25px;
+    color: colors.$text-color;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    box-shadow: 0 0 5px colors.$text-color;
+    
+    &:hover {
+        color: colors.$contrast-color;
+        box-shadow: 0 0 5px colors.$contrast-color;
     }
 }
