@@ -236,14 +236,9 @@ document
                     response.headers.get("Request-Id")
                 );
 
-                document
-                    .getElementById("get-code-wrapper")
-                    .classList.add("display-off");
-                document
-                    .getElementById("new-code")
-                    .classList.remove("display-off");
-                document.getElementById("input-code").style.backgroundColor =
-                    "#7d42e7";
+                document.getElementById("get-code-wrapper").classList.add("display-off");
+                document.getElementById("new-code").classList.remove("display-off");
+                document.getElementById("input-code").style.color = "#8935a2";
                 document.getElementById("input-code").value = "";
                 timerId = showTime(cooldown);
 
@@ -253,8 +248,7 @@ document
                 openConfirmWindow(email);
             } else {
                 error = await response.json();
-                document.getElementById("register-info").innerHTML =
-                    error["error"]["message"];
+                document.getElementById("register-info").innerHTML = error["error"]["message"];
             }
         }
     });
@@ -351,13 +345,19 @@ document.onkeydown = function (evt) {
     }
 };
 
+// temporary button
+// TODO delete this section
+
+// TODO resolve problems with invalid code
+
+document.getElementById("temporary-confirm").addEventListener("click", () => {
+    openConfirmWindow("timurkotov1999@gmail.com");
+})
+
 function openConfirmWindow(email) {
     document.getElementById("email").innerText = email;
     let window = document.getElementById("confirm-window");
-    window.style.opacity = 1;
-    window.style.transform = "translate(0%)";
-    window.style.visibility = "visible";
-
+    window.style.left = "50%";
     document.getElementById("main").style.filter = "brightness(0.5)";
     document.getElementById("navbar").style.filter = "brightness(0.5)";
     disableButtons();
@@ -365,16 +365,11 @@ function openConfirmWindow(email) {
 
 function closeConfirmWindow() {
     let window = document.getElementById("confirm-window");
-    window.style.opacity = 0;
-    window.style.transform = "translate(200%)";
+    window.style.left = "150%";
     document.getElementById("main").style.filter = "brightness(1)";
     document.getElementById("navbar").style.filter = "brightness(1)";
-    document.getElementById("input-code").style.backgroundColor = "#7d42e7";
+    document.getElementById("input-code").style.color = "#8935a2";
     document.getElementById("input-code").value = "";
-
-    setTimeout(() => {
-        window.style.visibility = "hidden";
-    }, windowOpeningDurationMS);
     enableButtons();
     if (isTimerGoing) {
         disableTimer(timerId);
@@ -385,6 +380,8 @@ document.addEventListener("input", () => {
     let field = document.getElementById("input-code");
     if (field.value.length === 6) {
         verifyCode();
+    } else {
+        document.getElementById("input-code").style.color = "#8935a2";
     }
 });
 
@@ -449,7 +446,7 @@ async function verifyCode() {
         closeConfirmWindow();
         load_profile();
     } else {
-        document.getElementById("input-code").style.backgroundColor = "#BF1A3E";
+        document.getElementById("input-code").style.color = "#BF1A3E";
     }
 }
 
@@ -468,11 +465,9 @@ async function sendNewCode() {
     });
 
     if (response.status == 200) {
-        document
-            .getElementById("get-code-wrapper")
-            .classList.add("display-off");
+        document.getElementById("get-code-wrapper").classList.add("display-off");
         document.getElementById("new-code").classList.remove("display-off");
-        document.getElementById("input-code").style.backgroundColor = "#7d42e7";
+        document.getElementById("input-code").style.color = "#8935a2";
         document.getElementById("input-code").value = "";
         timerId = showTime(cooldown);
     }
