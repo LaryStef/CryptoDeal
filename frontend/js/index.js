@@ -539,9 +539,7 @@ document.getElementById("email-submit").addEventListener("click", async (e) => {
             disableTimerRec(timerIdRec);
         }
 
-        document
-            .getElementById("get-code-wrapper-rec")
-            .classList.add("display-off");
+        document.getElementById("get-code-wrapper-rec").classList.add("display-off");
         document.getElementById("new-code-rec").classList.remove("display-off");
         timerIdRec = showTimeRec(cooldownRec);
 
@@ -551,17 +549,13 @@ document.getElementById("email-submit").addEventListener("click", async (e) => {
         );
     } else if (response.status === 404 || response.status === 425) {
         let error = await response.json();
-        document.getElementById("pass-info").innerText =
-            error["error"]["message"];
+        document.getElementById("pass-info").innerText = error["error"]["message"];
     }
 });
 
 function openEmailWindow() {
     let window = document.getElementById("email-window");
-    window.style.opacity = 1;
-    window.style.transform = "translate(0%)";
-    window.style.visibility = "visible";
-
+    window.style.left = "50%";
     document.getElementById("main").style.filter = "brightness(0.5)";
     document.getElementById("navbar").style.filter = "brightness(0.5)";
     disableButtons();
@@ -569,21 +563,11 @@ function openEmailWindow() {
 
 function closeEmailWindow() {
     let window = document.getElementById("email-window");
-    window.style.opacity = 0;
-    window.style.transform = "translate(-200%)";
+    window.style.left = "150%";
     document.getElementById("main").style.filter = "brightness(1)";
     document.getElementById("navbar").style.filter = "brightness(1)";
     document.getElementById("email-input-recovery").value = "";
     document.getElementById("pass-info").innerText = "";
-
-    setTimeout(() => {
-        window.style.visibility = "hidden";
-        window.style.transition = "none";
-        window.style.transform = "translate(200%)";
-        window.style.transition =
-            "all var(--login-transition-duration) ease-out";
-    }, windowOpeningDurationMS);
-
     enableButtons();
 }
 

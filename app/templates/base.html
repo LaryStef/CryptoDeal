@@ -61,7 +61,7 @@
             </div>
         </div>
         <div class="auth-block register-block" id="register-container">
-            <div class="auth-error-text">
+            <div class="error-info-container">
                 <span id="register-info"></span>
             </div>
             <form class="auth-form" id="register-form-id">
@@ -97,7 +97,7 @@
             </form>
         </div>
         <div class="auth-block login-block" id="login-container">
-            <div class="auth-error-text">
+            <div class="error-info-container">
                 <span id="login-info"></span>
             </div>
             <form class="auth-form" id="login-form-id">
@@ -145,26 +145,24 @@
             <button class="update-code-button" id="code-btn">new code</button>
         </div>
     </div>
-    <div class="email-recover-window" id="email-window">
-        <div class="email-wrapper">
-            <div class="email-text">
-                <p>Enter your email please:</p>
-            </div>
-            <form class="email-form">
-                <input
-                    class="email-input-recovery"
-                    id="email-input-recovery"
-                    type="email"
-                    placeholder="email"
-                >
-                <input class="email-submit" id="email-submit" type="submit" value="sumbit">
-            </form>
-            <div class="pass-info-wrapper">
-                <span id="pass-info"></span>
-            </div>
-            <div class="email-cancel-container">
-                <button class="email-cancel" id="email-cancel">cancel</button>
-            </div>
+    <div class="start-recover-window" id="email-window">
+        <div class="cancel-container">
+            <button class="cancel-button" id="email-cancel">cancel</button>
+        </div>
+        <div class="start-recover-message">
+            <p>Enter your email:</p>
+        </div>
+        <form class="start-recover-form">
+            <input
+                class="start-recover-email-input"
+                id="email-input-recovery"
+                type="email"
+                placeholder="email"
+            >
+            <input class="start-recover-email-input start-recover-submit" id="email-submit" type="submit" value="sumbit">
+        </form>
+        <div class="error-info-container">
+            <span id="pass-info"></span>
         </div>
     </div>
     <div class="confirm-window-rec" id="confirm-window-rec">
