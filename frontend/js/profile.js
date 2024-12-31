@@ -924,7 +924,7 @@ function validateRegisterData(formData) {
 
     if (username.length < 6 || username.length > 20) {
         document.getElementById("register-info").innerText =
-            "username length must be between 6 and 20";
+            "Username length must be between 6 and 20";
         return false;
     }
     if (username.includes(" ")) {
@@ -1077,7 +1077,7 @@ document.getElementById("submit-rec").addEventListener("click", async (e) => {
 
     if (password.length < 6 || password.length > 20) {
         document.getElementById("new-pass-info").innerText =
-            "username length must be between 6 and 20";
+            "Username length must be between 6 and 20";
         return;
     }
 
