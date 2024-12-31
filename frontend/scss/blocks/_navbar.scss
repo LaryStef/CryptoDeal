@@ -114,6 +114,16 @@
 
 // pop-up windows
 
+.error-info-container {
+    @include mixins.center-flex();
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    height: 30px;
+    color: colors.$text-error-color;
+    font-size: 1.125rem;
+}
+
 @mixin window($height, $width, $padding, $left) {
     left: $left;
     width: $width;
@@ -129,6 +139,15 @@
     top: calc((100vh - $height - $padding) / 2);
     overflow: hidden;
     transform: translateX(-50%);
+}
+
+@mixin submit-button($width) {
+    width: $width;
+
+    &:hover {
+        box-shadow: 0 0 5px colors.$contrast-color;
+        color: colors.$contrast-color;
+    }
 }
 
 // auth window
@@ -219,16 +238,6 @@
     top: -300px;
 }
 
-.auth-error-text {
-    @include mixins.center-flex();
-    width: 100%;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    height: 30px;
-    color: colors.$text-error-color;
-    font-size: 1.125rem;
-}
-
 .recovery-button-container {
     @include mixins.center-flex();
     width: 100%;
@@ -283,12 +292,7 @@
 }
 
 .auth-submit {
-    width: 315px;
-
-    &:hover {
-        box-shadow: 0 0 5px colors.$contrast-color;
-        color: colors.$contrast-color;
-    }
+    @include submit-button($width: 315px);
 }
 
 // email confirm window
@@ -352,4 +356,34 @@
         color: colors.$contrast-color;
         box-shadow: 0 0 5px colors.$contrast-color;
     }
+}
+
+// start recover window
+
+.start-recover-window {
+    @include window($height: 200px, $width: 400px, $padding: 50px, $left: 150%);
+}
+
+.start-recover-message {
+    @include mixins.center-flex();
+    width: 100%;
+    padding-top: 20px;
+    height: 40px;
+    color: colors.$text-hover-color;
+}
+
+.start-recover-form {
+    @include mixins.center-flex();
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+}
+
+.start-recover-email-input {
+    @include input-field($width: 300px, $font-size: 1.125rem);
+    padding-left: 15px;
+}
+
+.start-recover-submit {
+    @include submit-button($width: 315px);
 }
