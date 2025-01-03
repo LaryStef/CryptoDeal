@@ -345,15 +345,6 @@ document.onkeydown = function (evt) {
     }
 };
 
-// temporary button
-// TODO delete this section
-
-// TODO resolve problems with invalid code
-
-document.getElementById("temporary-confirm").addEventListener("click", () => {
-    openPasswordWindow("timurkotov1999@gmail.com");
-})
-
 function openConfirmWindow(email) {
     document.getElementById("email").innerText = email;
     let window = document.getElementById("confirm-window");
