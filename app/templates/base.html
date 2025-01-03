@@ -45,9 +45,6 @@
     {% block main_container %}
     {% endblock %}
 
-    <!-- <div style="height: 1000px; width: 50vw; background-color: chocolate;"></div> -->
-    <div style="height: 1000px;"></div>
-
     {% block auth %}
     <div class="auth-window" id="login">
         <div class="cancel-container">
@@ -130,7 +127,7 @@
         <div class="cancel-container">
             <button class="cancel-button" id="mail-cancel">cancel</button>
         </div>
-        <div class="confirm-message">
+        <div class="email-confirm-message">
             <p>Enter code sent on</p>
             <span id="email"></span>
         </div>
@@ -154,60 +151,60 @@
         </div>
         <form class="start-recover-form">
             <input
-                class="start-recover-email-input"
+                class="start-recover-input"
                 id="email-input-recovery"
                 type="email"
                 placeholder="email"
             >
-            <input class="start-recover-email-input start-recover-submit" id="email-submit" type="submit" value="sumbit">
+            <input class="start-recover-input start-recover-submit" id="email-submit" type="submit" value="sumbit">
         </form>
         <div class="error-info-container">
             <span id="pass-info"></span>
         </div>
     </div>
-    <div class="confirm-window-rec" id="confirm-window-rec">
-        <div class="email-confirm-rec">
-            <div class="code-message">
-                <p>Enter code sent on: </p>
-                <span id="email-rec"></span>
-            </div>
-            <div class="pass-info-wrapper">
-                <span id="new-pass-info"></span>
-            </div>
-            <form class="email-form-rec">
-                <input
-                class="email-input-recovery"
+    <div class="complete-recovery-window" id="confirm-window-rec">
+        <div class="cancel-container">
+            <button class="cancel-button" id="mail-cancel-rec">cancel</button>
+        </div>
+        <div class="complete-recovery-message">
+            <p>Enter code sent on</p>
+            <span id="email-rec"></span>
+        </div>
+        <div class="error-info-container">
+            <span id="new-pass-info"></span>
+        </div>
+        <form class="complete-recovery-form">
+            <input
+                class="complete-recovery-input"
                 id="email-rec1" type="text"
                 placeholder="password"
                 minlength="6"
                 maxlength="20"
-                >
-                <input
-                class="email-input-recovery"
+            >
+            <input
+                class="complete-recovery-input"
                 id="email-rec2" type="text"
                 placeholder="repeat password"
                 minlength="6"
                 maxlength="20"
-                >
+            >
+            <div>
                 <input
-                    class="input-code-rec"
+                    class="input-code"
                     id="input-code-rec"
                     type="text"
                     placeholder="code"
                     maxlength="6"
                 >
-                <input class="email-submit" id="submit-rec" type="submit" value="sumbit">
-            </form>
-            <div class="new-code" id="new-code-rec">
-                <p>get new code in: </p>
-                <span id="code-time-rec">0:00</span>
+                <input class="complete-recovery-input complete-recovery-submit" id="submit-rec" type="submit" value="sumbit">
             </div>
-            <div class="get-code-wrapper display-off" id="get-code-wrapper-rec">
-                <button class="get-code" id="code-btn-rec">get new code</button>
-            </div>
-            <div class="mail-cancel-container">
-                <button class="mail-cancel" id="mail-cancel-rec">cancel</button>
-            </div>
+        </form>
+        <div class="update-code-message-container display-off" id="new-code-rec">
+            <p>Get new code in: </p>
+            <span id="code-time-rec">0:00</span>
+        </div>
+        <div class="update-code-button-container" id="get-code-wrapper-rec">
+            <button class="update-code-button" id="code-btn-rec">new code</button>
         </div>
     </div>
     {% endblock %}

@@ -351,7 +351,7 @@ document.onkeydown = function (evt) {
 // TODO resolve problems with invalid code
 
 document.getElementById("temporary-confirm").addEventListener("click", () => {
-    openConfirmWindow("timurkotov1999@gmail.com");
+    openPasswordWindow("timurkotov1999@gmail.com");
 })
 
 function openConfirmWindow(email) {
@@ -611,16 +611,12 @@ document.getElementById("submit-rec").addEventListener("click", async (e) => {
     e.preventDefault();
 
     let password = document.getElementById("email-rec1").value;
-
     if (password != document.getElementById("email-rec2").value) {
-        document.getElementById("new-pass-info").innerText =
-            "passwords aren't match";
+        document.getElementById("new-pass-info").innerText = "Passwords aren't match";
         return;
     }
-
     if (password.length < 6 || password.length > 20) {
-        document.getElementById("new-pass-info").innerText =
-            "username length must be between 6 and 20";
+        document.getElementById("new-pass-info").innerText = "Password length must be between 6 and 20";
         return;
     }
 
@@ -652,10 +648,7 @@ document.getElementById("submit-rec").addEventListener("click", async (e) => {
 function openPasswordWindow(email) {
     document.getElementById("email-rec").innerText = email;
     let window = document.getElementById("confirm-window-rec");
-    window.style.opacity = 1;
-    window.style.transform = "translate(0%)";
-    window.style.visibility = "visible";
-
+    window.style.left = "50%";
     document.getElementById("main").style.filter = "brightness(0.5)";
     document.getElementById("navbar").style.filter = "brightness(0.5)";
     disableButtons();
@@ -667,18 +660,13 @@ function closePasswordWindow() {
     }
 
     let window = document.getElementById("confirm-window-rec");
-    window.style.opacity = 0;
-    window.style.transform = "translate(200%)";
+    window.style.left = "-50%";
     document.getElementById("main").style.filter = "brightness(1)";
     document.getElementById("navbar").style.filter = "brightness(1)";
     document.getElementById("input-code-rec").value = "";
     document.getElementById("email-rec1").value = "";
     document.getElementById("email-rec2").value = "";
     document.getElementById("new-pass-info").innerText = "";
-
-    setTimeout(() => {
-        window.style.visibility = "hidden";
-    }, windowOpeningDurationMS);
     enableButtons();
 }
 
