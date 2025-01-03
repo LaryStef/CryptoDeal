@@ -330,6 +330,7 @@ body {
 
 .auth-submit {
   width: 315px;
+  padding-left: 0;
 }
 .auth-submit:hover {
   box-shadow: 0 0 5px #8FFF06;
@@ -352,17 +353,17 @@ body {
   transform: translateX(-50%);
 }
 
-.confirm-message {
-  width: 100%;
-  padding-top: 40px;
-  height: 40px;
+.email-confirm-message {
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
+  padding-top: 40px;
+  height: 40px;
   color: #8935a2;
   gap: 5px;
 }
-.confirm-message span {
+.email-confirm-message span {
   color: #8FFF06;
 }
 
@@ -466,7 +467,7 @@ body {
   width: 100%;
 }
 
-.start-recover-email-input {
+.start-recover-input {
   width: 300px;
   font-size: 1.125rem;
   transition: all 300ms linear;
@@ -478,19 +479,97 @@ body {
   color: #8935a2;
   padding-left: 15px;
 }
-.start-recover-email-input::placeholder {
+.start-recover-input::placeholder {
   opacity: 0.8;
   color: #8935a2;
 }
-.start-recover-email-input:focus {
+.start-recover-input:focus {
   outline: none;
   box-shadow: 0 0 8px #8FFF06;
 }
 
 .start-recover-submit {
   width: 315px;
+  padding-left: 0;
 }
 .start-recover-submit:hover {
+  box-shadow: 0 0 5px #8FFF06;
+  color: #8FFF06;
+}
+
+.complete-recovery-window {
+  left: -50%;
+  width: 350px;
+  transition: all 400ms ease-out;
+  position: fixed;
+  height: 330px;
+  padding: 50px;
+  padding-top: 0px;
+  box-shadow: 0 0 8px #8FFF06;
+  border-radius: 50px;
+  background-color: #0A0A0A;
+  top: calc((100vh - 330px - 50px) / 2);
+  overflow: hidden;
+  transform: translateX(-50%);
+}
+
+.complete-recovery-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding-top: 15px;
+  height: 40px;
+  color: #8935a2;
+  gap: 5px;
+}
+.complete-recovery-message span {
+  color: #8FFF06;
+}
+
+.complete-recovery-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+  padding-bottom: 20px;
+}
+.complete-recovery-form div {
+  display: flex;
+  justify-content: center;
+  width: 315px;
+  gap: 15px;
+  width: 100%;
+}
+
+.complete-recovery-input {
+  width: 300px;
+  font-size: 1.125rem;
+  transition: all 300ms linear;
+  box-shadow: 0 0 8px #8935a2;
+  border-style: none;
+  border-radius: 15px;
+  background-color: #0A0A0A;
+  height: 40px;
+  color: #8935a2;
+  padding-left: 15px;
+}
+.complete-recovery-input::placeholder {
+  opacity: 0.8;
+  color: #8935a2;
+}
+.complete-recovery-input:focus {
+  outline: none;
+  box-shadow: 0 0 8px #8FFF06;
+}
+
+.complete-recovery-submit {
+  width: 150px;
+  padding-left: 0;
+}
+.complete-recovery-submit:hover {
   box-shadow: 0 0 5px #8FFF06;
   color: #8FFF06;
 }

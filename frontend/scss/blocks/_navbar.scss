@@ -143,12 +143,27 @@
 
 @mixin submit-button($width) {
     width: $width;
+    padding-left: 0;
 
     &:hover {
         box-shadow: 0 0 5px colors.$contrast-color;
         color: colors.$contrast-color;
     }
 }
+
+@mixin confirm-message($padding-top) {
+    @include mixins.center-flex();
+    width: 100%;
+    padding-top: $padding-top;
+    height: 40px;
+    color: colors.$text-hover-color;
+    gap: 5px;
+
+    span {
+        color: colors.$contrast-color;
+    }
+}
+
 
 // auth window
 
@@ -301,17 +316,8 @@
     @include window($height: 200px, $width: 400px, $padding: 50px, $left: 150%);
 }
 
-.confirm-message {
-    width: 100%;
-    padding-top: 40px;
-    height: 40px;
-    @include mixins.center-flex();
-    color: colors.$text-hover-color;
-    gap: 5px;
-
-    span {
-        color: colors.$contrast-color;
-    }
+.email-confirm-message {
+    @include confirm-message($padding-top: 40px);
 }
 
 .input-code-container {
@@ -379,11 +385,47 @@
     width: 100%;
 }
 
-.start-recover-email-input {
+.start-recover-input {
     @include input-field($width: 300px, $font-size: 1.125rem);
     padding-left: 15px;
 }
 
 .start-recover-submit {
     @include submit-button($width: 315px);
+}
+
+
+// complete recovery window
+
+.complete-recovery-window {
+    @include window($height: 330px, $width: 350px, $padding: 50px, $left: -50%);
+}
+
+.complete-recovery-message {
+    @include confirm-message($padding-top: 15px);
+}
+
+.complete-recovery-form {
+    @include mixins.center-flex();
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    padding-bottom: 20px;
+
+    div {
+        display: flex;
+        justify-content: center;
+        width: 315px;
+        gap: 15px;
+        width: 100%;
+    }
+}
+
+.complete-recovery-input {
+    @include input-field($width: 300px, $font-size: 1.125rem);
+    padding-left: 15px;
+}
+
+.complete-recovery-submit {
+    @include submit-button($width: 150px);
 }
