@@ -499,7 +499,7 @@ body {
 
 .complete-recovery-window {
   left: -50%;
-  width: 350px;
+  width: 370px;
   transition: all 400ms ease-out;
   position: fixed;
   height: 330px;

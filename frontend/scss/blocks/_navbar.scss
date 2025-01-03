@@ -398,7 +398,7 @@
 // complete recovery window
 
 .complete-recovery-window {
-    @include window($height: 330px, $width: 350px, $padding: 50px, $left: -50%);
+    @include window($height: 330px, $width: 370px, $padding: 50px, $left: -50%);
 }
 
 .complete-recovery-message {
