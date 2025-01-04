@@ -1,7 +1,8 @@
 @use '../colors';
 @use '../const';
 @use '../elements/cancel';
-@use '../mixins';
+@use '../mixins/shadow-button' as *;
+@use '../mixins/center-flex' as *;
 
 // navigation
 
@@ -61,25 +62,12 @@
     width: calc($button-size * 2 + $gap);
 
     .auth-button {
-        transition: all const.$link-transition-duration linear;
-        border-style: none;
-        background-color: colors.$background-color;
-        width: $button-size;
-        height: 40px;
-        color: colors.$text-color;
-        border-radius: 50px;
-        font-size: 1rem;
-        box-shadow: 0 0 5px colors.$text-color;
-        
-        &:hover {
-            color: colors.$contrast-color;
-            box-shadow: 0 0 5px colors.$contrast-color;
-        }
+        @include shadow-button($width: $button-size, $color: colors.$text-color, $hover-color: colors.$contrast-color, $background: colors.$background-color);
     }
 }
 
 .profile {
-    @include mixins.center-flex();
+    @include center-flex();
     gap: 10px;
     flex-basis: 130px;
     width: 16%;
@@ -115,7 +103,7 @@
 // pop-up windows
 
 .error-info-container {
-    @include mixins.center-flex();
+    @include center-flex();
     width: 100%;
     padding-top: 10px;
     padding-bottom: 10px;
@@ -152,7 +140,7 @@
 }
 
 @mixin confirm-message($padding-top) {
-    @include mixins.center-flex();
+    @include center-flex();
     width: 100%;
     padding-top: $padding-top;
     height: 40px;
@@ -172,7 +160,7 @@
 }
 
 .auth-mode-container {
-    @include mixins.center-flex();
+    @include center-flex();
     width: 100%;
     padding-top: 50px;
     height: 40px;
@@ -187,7 +175,7 @@
     content: $content;
     color: $color;
     position: absolute;
-    @include mixins.center-flex();
+    @include center-flex();
     z-index: 1;
     font-size: 1.125rem;
     transition: all const.$login-mode-transition-duration linear;
@@ -254,7 +242,7 @@
 }
 
 .recovery-button-container {
-    @include mixins.center-flex();
+    @include center-flex();
     width: 100%;
     padding-top: 30px;
     height: 50px;
@@ -273,7 +261,7 @@
 }
 
 .auth-form {
-    @include mixins.center-flex();
+    @include center-flex();
     flex-direction: column;
     gap: 15px;
     width: 100%;
@@ -323,7 +311,7 @@
 .input-code-container {
     width: 100%;
     height: 80px;
-    @include mixins.center-flex();
+    @include center-flex();
 }
 
 .input-code {
@@ -332,7 +320,7 @@
 }
 
 @mixin update-code-container() {
-    @include mixins.center-flex();
+    @include center-flex();
     width: 100%;
     height: 30px;
     color: colors.$text-hover-color;
@@ -371,7 +359,7 @@
 }
 
 .start-recover-message {
-    @include mixins.center-flex();
+    @include center-flex();
     width: 100%;
     padding-top: 20px;
     height: 40px;
@@ -379,7 +367,7 @@
 }
 
 .start-recover-form {
-    @include mixins.center-flex();
+    @include center-flex();
     flex-direction: column;
     gap: 15px;
     width: 100%;
@@ -406,7 +394,7 @@
 }
 
 .complete-recovery-form {
-    @include mixins.center-flex();
+    @include center-flex();
     flex-direction: column;
     gap: 15px;
     width: 100%;
