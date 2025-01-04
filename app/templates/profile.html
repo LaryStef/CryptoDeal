@@ -6,18 +6,24 @@
 
 {% block main_container %}
 <div id="main">
-    <div class="first-line" id="first-line">
-        <div class="user-info-wrapper">
-            <img src="/static/png/Alien1.png" alt="your avatar" class="main-avatar" id="main-avatar" decoding="async">
-            <h2 class="main-name" id="username">Your username</h2>
-            <span class="usd-balance" id="usd-balance">USD balance: 0.00$</span>
-                       
-        </div>
-        <div>
-            <button class="f-line-btn" id="logout-btn">logout</button>
-            <button class="f-line-btn" id="set-btn">settings</button>
+    <div class="main-block-wrapper">
+        <div class="main-block" id="first-line">
+            <div class="main-block-profile">
+                <img src="" alt="Alien" class="profile-info-avatar" id="main-avatar" decoding="async">
+                <div class="user-info">
+                    <h2 id="username">Your username</h2>
+                    <span id="usd-balance">USD balance: 0.00$</span>      
+                </div>
+            </div>
+            <div class="user-actions">
+                <button id="set-btn">Settings</button>
+                <button id="logout-btn">Logout</button>
+            </div>
         </div>
     </div>
+
+    <div style="height: 1000px;"></div>
+
     <div class="st-block" id="st-block-1">
         <div class="head-line">
             <h3 class="block-header">Cryptocurrency statistics</h3>

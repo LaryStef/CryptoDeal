@@ -121,7 +121,7 @@ body {
   width: 100px;
   height: 40px;
   color: #7d42e7;
-  border-radius: 50px;
+  border-radius: 20px;
   font-size: 1rem;
   box-shadow: 0 0 5px #7d42e7;
 }
@@ -572,6 +572,76 @@ body {
 .complete-recovery-submit:hover {
   box-shadow: 0 0 5px #8FFF06;
   color: #8FFF06;
+}
+
+.main-block-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  padding-left: 25%;
+  padding-right: 25%;
+}
+
+.main-block {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 400px;
+  height: 200px;
+  padding: 30px;
+  background-color: #0A0A0A;
+  border: 2px solid #8935a2;
+  border-radius: 50px;
+  box-shadow: 0 0 10px #8935a2;
+}
+.main-block h2 {
+  margin: 0;
+  color: #8935a2;
+  font-size: 2em;
+}
+.main-block span {
+  color: #8FFF06;
+}
+
+.main-block-profile {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+
+.profile-info-avatar {
+  width: 120px;
+  height: 120px;
+}
+
+.user-info {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.user-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+}
+.user-actions button {
+  transition: all 300ms linear;
+  border-style: none;
+  background-color: #0A0A0A;
+  width: 100px;
+  height: 40px;
+  color: #7d42e7;
+  border-radius: 20px;
+  font-size: 1rem;
+  box-shadow: 0 0 5px #7d42e7;
+}
+.user-actions button:hover {
+  color: #8FFF06;
+  box-shadow: 0 0 5px #8FFF06;
 }
 
 .display-off {
