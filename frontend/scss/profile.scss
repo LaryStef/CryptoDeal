@@ -2,6 +2,69 @@
 @use 'base';
 @use 'blocks/navbar';
 @use 'colors';
+@use 'const';
+@use 'mixins/shadow-button' as *;
+@use 'mixins/center-flex' as *;
+
+// profile info
+
+.main-block-wrapper {
+    @include center-flex();
+    width: 50%;
+    padding-left: 25%;
+    padding-right: 25%;
+}
+
+.main-block {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 400px;
+    height: 200px;
+    padding: 30px;
+    background-color: colors.$window-color;
+    border: 2px solid colors.$text-hover-color;
+    border-radius: 50px;
+    box-shadow: 0 0 10px colors.$text-hover-color;
+
+    h2 {
+        margin: 0;
+        color: colors.$text-hover-color;
+        font-size: 2em;
+    }
+
+    span {
+        color: colors.$contrast-color;
+    }
+}
+
+.main-block-profile {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+.profile-info-avatar {
+    width: 120px;
+    height: 120px;
+}
+
+.user-info {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+}
+
+
+.user-actions {
+    @include center-flex();
+    gap: 30px;
+
+    button {
+        @include shadow-button($width: 100px, $color: colors.$text-color, $hover-color: colors.$contrast-color, $background: colors.$window-color);
+    }
+}
 
 // must be in the end
 
