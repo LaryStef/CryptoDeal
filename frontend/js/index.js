@@ -128,8 +128,7 @@ function isTokensRefreshRequired() {
 
     if (
         access != "" &&
-        Math.floor(Date.now() / 1000) <
-            Number(JSON.parse(atob(access.split(".")[1])).exp) - 1
+        Math.floor(Date.now() / 1000) < Number(JSON.parse(atob(access.split(".")[1])).exp) - 1
     ) {
         load_profile();
         return false;
@@ -184,74 +183,69 @@ document.getElementById("mail-cancel-rec").onclick = closePasswordWindow;
 document.getElementById("code-btn").onclick = sendNewCode;
 document.getElementById("code-btn-rec").onclick = sendNewCodeRec;
 
-document
-    .getElementById("login-form-id")
-    .addEventListener("submit", async (e) => {
-        e.preventDefault();
+document.getElementById("login-form-id").addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-        let formData = new FormData(document.getElementById("login-form-id"));
+    let formData = new FormData(document.getElementById("login-form-id"));
 
-        let response = await fetch(loginUrl, {
+    let response = await fetch(loginUrl, {
+        method: "POST",
+        credentials: "same-origin",
+        body: formData,
+        headers: {
+            "Device": getDeviceData()
+        }
+    });
+
+    if (response.status == 200) {
+        closeLoginWindow();
+        load_profile();
+    } else {
+        let error = await response.json();
+        document.getElementById("login-info").innerHTML = error["error"]["message"];
+    }
+});
+
+document.getElementById("register-form-id").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    let formData = new FormData(
+        document.getElementById("register-form-id")
+    );
+
+    if (validateRegisterData(formData)) {
+        let response = await fetch(registerUrl, {
             method: "POST",
             credentials: "same-origin",
             body: formData,
-            headers: {
-                "Device": getDeviceData()
-            }
         });
 
-        if (response.status == 200) {
-            closeLoginWindow();
-            load_profile();
-        } else {
-            let error = await response.json();
-            document.getElementById("login-info").innerHTML =
-                error["error"]["message"];
-        }
-    });
-
-document
-    .getElementById("register-form-id")
-    .addEventListener("submit", async (e) => {
-        e.preventDefault();
-
-        let formData = new FormData(
-            document.getElementById("register-form-id")
-        );
-
-        if (validateRegisterData(formData)) {
-            let response = await fetch(registerUrl, {
-                method: "POST",
-                credentials: "same-origin",
-                body: formData,
-            });
-
-            if (response.status == 201) {
-                if (isTimerGoing) {
-                    disableTimer(timerId);
-                }
-
-                sessionStorage.setItem(
-                    "request_id",
-                    response.headers.get("Request-Id")
-                );
-
-                document.getElementById("get-code-wrapper").classList.add("display-off");
-                document.getElementById("new-code").classList.remove("display-off");
-                document.getElementById("input-code").style.color = "#8935a2";
-                document.getElementById("input-code").value = "";
-                timerId = showTime(cooldown);
-
-                let email = document.getElementById("email-input").value;
-                sessionStorage.setItem("email-reg", email);
-                closeLoginWindow();
-                openConfirmWindow(email);
-            } else {
-                error = await response.json();
-                document.getElementById("register-info").innerHTML = error["error"]["message"];
+        if (response.status == 201) {
+            if (isTimerGoing) {
+                disableTimer(timerId);
             }
+
+            sessionStorage.setItem(
+                "request_id",
+                response.headers.get("Request-Id")
+            );
+
+            document.getElementById("get-code-wrapper").classList.add("display-off");
+            document.getElementById("new-code").classList.remove("display-off");
+            document.getElementById("input-code").style.color = "#8935a2";
+            document.getElementById("input-code").value = "";
+            timerId = showTime(cooldown);
+
+            let email = document.getElementById("email-input").value;
+            sessionStorage.setItem("email-reg", email);
+            closeLoginWindow();
+            openConfirmWindow(email);
+        } else {
+            error = await response.json();
+            document.getElementById("register-info").innerHTML = error["error"]["message"];
         }
-    });
+    }
+});
 
 function disableButtons() {
     document.getElementsByClassName("auth-button")[0].disabled = true;
@@ -404,9 +398,7 @@ function showTime(duration) {
         if (thisTimerId == timerId) {
             disableTimer(timerId);
             document.getElementById("new-code").classList.add("display-off");
-            document
-                .getElementById("get-code-wrapper")
-                .classList.remove("display-off");
+            document.getElementById("get-code-wrapper").classList.remove("display-off");
         }
     }, (duration + 1) * 1000);
 
@@ -465,35 +457,30 @@ async function sendNewCode() {
 }
 
 function validateRegisterData(formData) {
-    const re =
-        /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+    const re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 
     let username = formData.get("username");
     let pass = formData.get("password");
     let email = formData.get("email");
 
     if (username.length < 6 || username.length > 20) {
-        document.getElementById("register-info").innerText =
-            "username length must be between 6 and 20";
+        document.getElementById("register-info").innerText = "Username length must be between 6 and 20";
         return false;
     }
     if (username.includes(" ")) {
-        document.getElementById("register-info").innerText =
-            "username can't include any spaces";
+        document.getElementById("register-info").innerText = "Username can't include any spaces";
         return false;
     }
     if (pass.length < 6 || pass.length > 20) {
-        document.getElementById("register-info").innerText =
-            "password length must be between 6 and 20";
+        document.getElementById("register-info").innerText = "Password length must be between 6 and 20";
         return false;
     }
     if (pass.includes(" ")) {
-        document.getElementById("register-info").innerText =
-            "password can't include any spaces";
+        document.getElementById("register-info").innerText = "Password can't include any spaces";
         return false;
     }
     if (!re.test(email)) {
-        document.getElementById("register-info").innerText = "invalid email";
+        document.getElementById("register-info").innerText = "Invalid email";
         return false;
     }
 
@@ -577,9 +564,7 @@ async function sendNewCodeRec() {
     });
 
     if (response.status === 200) {
-        document
-            .getElementById("get-code-wrapper-rec")
-            .classList.add("display-off");
+        document.getElementById("get-code-wrapper-rec").classList.add("display-off");
         document.getElementById("new-code-rec").classList.remove("display-off");
         document.getElementById("input-code-rec").value = "";
 
@@ -631,8 +616,7 @@ document.getElementById("submit-rec").addEventListener("click", async (e) => {
     }
     if (response.status === 429 || response.status === 400) {
         error = await response.json();
-        document.getElementById("new-pass-info").innerText =
-            error["error"]["message"];
+        document.getElementById("new-pass-info").innerText = error["error"]["message"];
     }
 });
 
@@ -688,12 +672,8 @@ function showTimeRec(duration) {
     setTimeout(() => {
         if (thisTimerIdRec == timerIdRec && isTimerGoingRec) {
             disableTimerRec(timerIdRec);
-            document
-                .getElementById("new-code-rec")
-                .classList.add("display-off");
-            document
-                .getElementById("get-code-wrapper-rec")
-                .classList.remove("display-off");
+            document.getElementById("new-code-rec").classList.add("display-off");
+            document.getElementById("get-code-wrapper-rec").classList.remove("display-off");
         }
     }, (duration + 1) * 1000);
 
