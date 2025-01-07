@@ -3,6 +3,11 @@
 @use 'base';
 @use 'const';
 
+body {
+    width: 100vw;
+    height: 100vh;
+}
+
 .error-container {
     display: flex;
     justify-content: center;
