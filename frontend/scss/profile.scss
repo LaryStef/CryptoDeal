@@ -207,7 +207,7 @@
 // settings window
 
 .settings-window {
-    @include window($height: 650px, $width: 700px, $padding: 50px, $left: -50%);
+    @include window($height: 600px, $width: 700px, $padding: 50px, $left: -50%);
 }
 
 .session-table-wrap {

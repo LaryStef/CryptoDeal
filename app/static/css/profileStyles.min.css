@@ -773,13 +773,13 @@ body {
   width: 700px;
   transition: all 400ms ease-out;
   position: fixed;
-  height: 650px;
+  height: 600px;
   padding: 50px;
   padding-top: 0px;
   box-shadow: 0 0 8px #8FFF06;
   border-radius: 50px;
   background-color: #0A0A0A;
-  top: calc((100vh - 650px - 50px) / 2);
+  top: calc((100vh - 600px - 50px) / 2);
   overflow: hidden;
   transform: translateX(-50%);
 }

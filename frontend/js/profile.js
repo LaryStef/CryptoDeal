@@ -468,7 +468,7 @@ function loadSessions(clearFirst = false) {
                     </tr>`;
                 } else {
                     sessionNum += 1;
-                    if (sessionNum >= 9) {
+                    if (sessionNum >= 8) {
                         return;
                     }
                     table.innerHTML += `<tr class="row">
