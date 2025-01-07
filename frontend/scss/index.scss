@@ -3,6 +3,11 @@
 @use 'blocks/navbar';
 @use 'colors';
 
+body {
+    width: 100vw;
+    height: 100vh;
+}
+
 .motto-container {
     margin-top: 10%;
     margin-left: calc((100% - 800px) / 2);

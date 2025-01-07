@@ -31,8 +31,6 @@ body {
   background-color: #000000;
   max-width: 100%;
   overflow-x: hidden;
-  width: 100vw;
-  height: 100vh;
 }
 
 .main-container {
@@ -572,6 +570,11 @@ body {
 .complete-recovery-submit:hover {
   box-shadow: 0 0 5px #8FFF06;
   color: #8FFF06;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
 }
 
 .motto-container {
