@@ -208,24 +208,7 @@
 
 .settings-window {
     @include window($height: 650px, $width: 700px, $padding: 50px, $left: -50%);
-    //height: auto;
 }
-
-// .settings-window {
-//     left: -50%;
-//     width: 1000px;
-//     transition: all const.$login-transition-duration ease-out;
-//     position: fixed;
-//     //height: $height;
-//     padding: 50px;
-//     padding-top: 0px;
-//     box-shadow: 0 0 8px colors.$contrast-color;
-//     border-radius: 50px;
-//     background-color: colors.$window-color;
-//     top: calc((100vh - $height - $padding) / 2);
-//     overflow: hidden;
-//     transform: translateX(-50%);
-// }
 
 .session-table-wrap {
     padding-top: 50px;
