@@ -5,6 +5,8 @@
 @use 'const';
 @use 'mixins/shadow-button' as *;
 @use 'mixins/center-flex' as *;
+@use 'mixins/window' as *;
+@use 'mixins/cancel' as *;
 
 // profile info
 
@@ -66,7 +68,8 @@
     gap: 30px;
 
     button {
-        @include shadow-button($width: 100px, $color: colors.$text-color, $hover-color: colors.$contrast-color, $background: colors.$window-color);
+        @include shadow-button($width: 100px, $color: colors.$text-color, $hover-color: colors.$contrast-color,
+            $background: colors.$window-color, $height: 40px);
     }
 }
 
@@ -74,6 +77,7 @@
 
 .crypto-block {
     margin-top: 100px;
+    margin-bottom: 100px;
 }
 
 .crypto-block-header {
@@ -162,28 +166,28 @@
     margin-bottom: 50px;
 }
 
-@mixin cell($text-color) {
+@mixin cell($text-color, $font-size) {
     border-bottom: 1px solid black;
     padding-bottom: 10px;
     color: $text-color;
-    font-size: 1.3rem;
+    font-size: $font-size;
 }
 
 .crypto-table {
     width: 90%;
     
     .hc {
-        @include cell($text-color: colors.$contrast-color);
+        @include cell($text-color: colors.$contrast-color, $font-size: 1.3rem);
     }
 
     .tc {
-        @include cell($text-color: colors.$text-hover-color);
+        @include cell($text-color: colors.$text-hover-color, $font-size: 1.3rem);
         padding-top: 10px;
         text-align: center;
     }
 
     .row:hover {
-        background-color: black;
+        background-color: colors.$background-color;
     }
 }
 
@@ -198,6 +202,75 @@
     .crypto-logo {
         width: 30px;
         height: 30px;
+    }
+}
+
+// settings window
+
+.settings-window {
+    @include window($height: 650px, $width: 700px, $padding: 50px, $left: -50%);
+    //height: auto;
+}
+
+// .settings-window {
+//     left: -50%;
+//     width: 1000px;
+//     transition: all const.$login-transition-duration ease-out;
+//     position: fixed;
+//     //height: $height;
+//     padding: 50px;
+//     padding-top: 0px;
+//     box-shadow: 0 0 8px colors.$contrast-color;
+//     border-radius: 50px;
+//     background-color: colors.$window-color;
+//     top: calc((100vh - $height - $padding) / 2);
+//     overflow: hidden;
+//     transform: translateX(-50%);
+// }
+
+.session-table-wrap {
+    padding-top: 50px;
+    padding-bottom: 30px;
+    width: 100%;
+    @include center-flex();
+}
+
+.session-table {
+    width: 90%;
+
+    caption {
+        font-size: 1.5rem;
+        color: colors.$text-hover-color;
+        padding-bottom: 30px;
+    }
+
+    .session-head-sell {
+        @include cell($text-color: colors.$contrast-color, $font-size: 1.2rem);
+    }
+    
+    .session-cell {
+        @include cell($text-color: colors.$text-hover-color, $font-size: 1.2rem);
+        padding-top: 10px;
+        text-align: center;
+    }
+    
+    .row:hover {
+        background-color: colors.$background-color;
+    }
+
+    .term-btn {
+        @include shadow-button($width: 130px, $color: colors.$text-color, $hover-color: colors.$contrast-color,
+            $background: colors.$window-color, $height: 30px);
+    }
+
+    .term-all {
+        @include shadow-button($width: 130px, $color: colors.$text-color, $hover-color: colors.$contrast-color,
+            $background: colors.$window-color, $height: 30px);
+    }
+
+    .cur-ses {
+        color: colors.$contrast-color;
+        font-size: 1.5rem;
     }
 }
 

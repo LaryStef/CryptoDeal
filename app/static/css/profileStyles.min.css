@@ -648,6 +648,7 @@ body {
 
 .crypto-block {
   margin-top: 100px;
+  margin-bottom: 100px;
 }
 
 .crypto-block-header {
@@ -750,7 +751,7 @@ body {
   text-align: center;
 }
 .crypto-table .row:hover {
-  background-color: black;
+  background-color: #000000;
 }
 
 .crypto-name-wrap {
@@ -765,6 +766,91 @@ body {
 .crypto-name-wrap .crypto-logo {
   width: 30px;
   height: 30px;
+}
+
+.settings-window {
+  left: -50%;
+  width: 700px;
+  transition: all 400ms ease-out;
+  position: fixed;
+  height: 650px;
+  padding: 50px;
+  padding-top: 0px;
+  box-shadow: 0 0 8px #8FFF06;
+  border-radius: 50px;
+  background-color: #0A0A0A;
+  top: calc((100vh - 650px - 50px) / 2);
+  overflow: hidden;
+  transform: translateX(-50%);
+}
+
+.session-table-wrap {
+  padding-top: 50px;
+  padding-bottom: 30px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.session-table {
+  width: 90%;
+}
+.session-table caption {
+  font-size: 1.5rem;
+  color: #8935a2;
+  padding-bottom: 30px;
+}
+.session-table .session-head-sell {
+  border-bottom: 1px solid black;
+  padding-bottom: 10px;
+  color: #8FFF06;
+  font-size: 1.2rem;
+}
+.session-table .session-cell {
+  border-bottom: 1px solid black;
+  padding-bottom: 10px;
+  color: #8935a2;
+  font-size: 1.2rem;
+  padding-top: 10px;
+  text-align: center;
+}
+.session-table .row:hover {
+  background-color: #000000;
+}
+.session-table .term-btn {
+  transition: all 300ms linear;
+  border-style: none;
+  background-color: #0A0A0A;
+  width: 130px;
+  height: 30px;
+  color: #7d42e7;
+  border-radius: 20px;
+  font-size: 1rem;
+  box-shadow: 0 0 5px #7d42e7;
+}
+.session-table .term-btn:hover {
+  color: #8FFF06;
+  box-shadow: 0 0 5px #8FFF06;
+}
+.session-table .term-all {
+  transition: all 300ms linear;
+  border-style: none;
+  background-color: #0A0A0A;
+  width: 130px;
+  height: 30px;
+  color: #7d42e7;
+  border-radius: 20px;
+  font-size: 1rem;
+  box-shadow: 0 0 5px #7d42e7;
+}
+.session-table .term-all:hover {
+  color: #8FFF06;
+  box-shadow: 0 0 5px #8FFF06;
+}
+.session-table .cur-ses {
+  color: #8FFF06;
+  font-size: 1.5rem;
 }
 
 .display-off {
