@@ -1,12 +1,12 @@
 @use '../const';
 @use '../colors';
 
-@mixin shadow-button($width, $color, $hover-color, $background) {
+@mixin shadow-button($width, $color, $hover-color, $background, $height) {
     transition: all const.$link-transition-duration linear;
     border-style: none;
     background-color: $background;
     width: $width;
-    height: 40px;
+    height: $height;
     color: $color;
     border-radius: 20px;
     font-size: 1rem;
