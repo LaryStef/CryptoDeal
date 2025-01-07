@@ -170,6 +170,8 @@ function loadCryptoStatistics(data) {
             <div class="crypto-block-header">
                 <h3 style="font-size: 1.5rem">Cryptocurrency statistics not availible (Buy any cryptocurrency to see statistics)</h3>
             </div>`
+        document.getElementsByTagName("body")[0].style.width = "100vw";
+        document.getElementsByTagName("body")[0].style.height = "100vh";
         return;
     }
     loadCrytoTable(cryptocurrencies);
