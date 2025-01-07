@@ -181,9 +181,8 @@ function loadCryptoStatistics(data) {
 
     if (cryptocurrencies.length == 0) {
         document.getElementById("st-block-1").innerHTML = `
-            <div class="head-line">
-                <h3 class="block-header">Cryptocurrency statistics</h3>
-                <p>(Buy any cryptocurrency to see statistics)</p>
+            <div class="crypto-block-header">
+                <h3 style="font-size: 1.5rem">Cryptocurrency statistics not availible (Buy any cryptocurrency to see statistics)</h3>
             </div>`
         return;
     }
