@@ -20,6 +20,8 @@ const cryptoStatisticsUrl = new URL("api/user/statistics/cryptocurrency", origin
 
 
 const textHoverColor = "#8935a2";
+const contrastColor = "#8FFF06";
+const textErrorColor = "#db1a1a";
 const backgroundColor = "#000000";
 const windowOpeningDurationMS = 400;
 const cooldown = 30;
@@ -145,12 +147,15 @@ function loadChart(doughnutData, walletWorth) {
             elements: {
                 center: {
                     text: walletWorth,
-                    color: '#8FFF06',
+                    color: contrastColor,
                     fontStyle: 'Arial',
                     sidePadding: 40,
                     minFontSize: 15,
                     maxFontSize: 20,
                     lineHeight: 15,
+                },
+                arc: {
+                    backgroundColor: textHoverColor,
                 }
             }
         }
@@ -229,32 +234,31 @@ function loadCrytoTable(cryptocurrencies) {
     for (let i = 0; i < cryptocurrencies.length; i++) {
         let profitCell = "";
         if (cryptocurrencies[i].profit >= 0) {
-            profitCell = `<td class="tc col7 change-pos">+${Math.round(cryptocurrencies[i].profit * 100) / 100}%</td>`;
+            profitCell = `<td class="tc change-pos">+${Math.round(cryptocurrencies[i].profit * 100) / 100}%</td>`;
         } else {
-            profitCell = `<td class="tc col8 change-neg">${Math.round(cryptocurrencies[i].profit * 100) / 100}%</td>`;
+            profitCell = `<td class="tc change-neg">${Math.round(cryptocurrencies[i].profit * 100) / 100}%</td>`;
         }
         let changeCell = "";
         if (cryptocurrencies[i].change >= 0) {
-            changeCell = `<td class="tc col8 change-pos">+${Math.round(cryptocurrencies[i].change * 100) / 100}%</td>`;
+            changeCell = `<td class="tc change-pos">+${Math.round(cryptocurrencies[i].change * 100) / 100}%</td>`;
         } else {
-            changeCell = `<td class="tc col8 change-neg">${Math.round(cryptocurrencies[i].change * 100) / 100}%</td>`;
+            changeCell = `<td class="tc change-neg">${Math.round(cryptocurrencies[i].change * 100) / 100}%</td>`;
         }
         table.innerHTML += `
                 <tr class="row">
-                <td class="tc col1">${i+1}</td>
-                <td class="tc col2">
+                <td class="tc">${i+1}</td>
+                <td class="tc">
                     <div class="crypto-name-wrap">
                         <img class="crypto-logo" src="${cryptocurrencies[i].logoUrl}" alt="">
                         <span class="crypto-name">${cryptocurrencies[i].name}</span>
                     </div>
                 </td>
-                <td class="tc col3">${cryptocurrencies[i].ticker}</td>
-                <td class="tc col4">${convertNumberForUser(cryptocurrencies[i].price)}</td>
-                <td class="tc col5">${Math.round(cryptocurrencies[i].amount * 1000) / 1000}</td>
-                <td class="tc col6">${convertNumberForUser(cryptocurrencies[i].amount * cryptocurrencies[i].price)}</td>
+                <td class="tc">${cryptocurrencies[i].ticker}</td>
+                <td class="tc">${convertNumberForUser(cryptocurrencies[i].price)}</td>
+                <td class="tc">${Math.round(cryptocurrencies[i].amount * 1000) / 1000}</td>
+                <td class="tc">${convertNumberForUser(cryptocurrencies[i].amount * cryptocurrencies[i].price)}</td>
                 ${profitCell}
                 ${changeCell}
-                <td class="tc col9">${convertNumberForUser(cryptocurrencies[i].volume)}</td>
             </tr>`;
     }
 }
@@ -604,7 +608,7 @@ document.getElementById("register-form-id").addEventListener("submit", async (e)
 
             document.getElementById("get-code-wrapper").classList.add("display-off");
             document.getElementById("new-code").classList.remove("display-off");
-            document.getElementById("input-code").style.color = "#8935a2";
+            document.getElementById("input-code").style.color = textHoverColor;
             document.getElementById("input-code").value = "";
             timerId = showTime(cooldown);
 
@@ -726,7 +730,7 @@ function closeConfirmWindow() {
     window.style.left = "150%";
     document.getElementById("main").style.filter = "brightness(1)";
     document.getElementById("navbar").style.filter = "brightness(1)";
-    document.getElementById("input-code").style.color = "#8935a2";
+    document.getElementById("input-code").style.color = textHoverColor;
     document.getElementById("input-code").value = "";
     enableButtons();
     if (isTimerGoing) {
@@ -739,7 +743,7 @@ document.addEventListener("input", () => {
     if (field.value.length === 6) {
         verifyCode();
     } else {
-        document.getElementById("input-code").style.color = "#8935a2";
+        document.getElementById("input-code").style.color = textHoverColor;
     }
 });
 
@@ -802,7 +806,7 @@ async function verifyCode() {
         closeConfirmWindow();
         load_profile();
     } else {
-        document.getElementById("input-code").style.color = "#BF1A3E";
+        document.getElementById("input-code").style.color = textErrorColor;
     }
 }
 
@@ -823,7 +827,7 @@ async function sendNewCode() {
     if (response.status == 200) {
         document.getElementById("get-code-wrapper").classList.add("display-off");
         document.getElementById("new-code").classList.remove("display-off");
-        document.getElementById("input-code").style.color = "#8935a2";
+        document.getElementById("input-code").style.color = textHoverColor;
         document.getElementById("input-code").value = "";
         timerId = showTime(cooldown);
     }

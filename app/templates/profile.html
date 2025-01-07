@@ -21,50 +21,47 @@
             </div>
         </div>
     </div>
-    <div class="st-block" id="st-block-1">
-        <div class="head-line">
-            <h3 class="block-header">Cryptocurrency statistics</h3>
+    <div class="crypto-block" id="st-block-1">
+        <div class="crypto-block-header">
+            <h3>Cryptocurrency statistics</h3>
         </div>
-        <div class="block-content">
-            <div class="main-stat">
-                <div class="usd-stat">
-                    <div class="usd-stat-block">
+        <div class="crypto-block-wrapper">
+            <div class="crypto-stat">
+                <div>
+                    <div class="general-crypto-stat">
                         <p>Total worth: </p>
-                        <div class="worth-info">
+                        <div class="crypto-wallet-worth">
                             <span id="worth-value">0$</span>
-                            <span id="worth-change" class="change-pos">+0%</span>
+                            <span class="crypto-wallet-change change-pos" id="worth-change">+0%</span>
                         </div>
                     </div>
-                    <div class="usd-stat-block">
+                    <div class="general-crypto-stat">
                         <p>Spent all the time: </p>
                         <span id="spent-value">0$</span>
                     </div>
-                    <div class="usd-stat-block">
+                    <div class="general-crypto-stat">
                         <p>Sold all the time: </p>
                         <span id="derived-value">0$</span>
                     </div>
                 </div>
-                <div class="doughnut-content">
-                    <div class="doughnut-wrap">
-                        <canvas class="doughnut" id="doughnut" aria-label="chart" role="img"></canvas>
+                <div class="crypto-doughnut">
+                    <div>
+                        <canvas id="doughnut" aria-label="chart" role="img"></canvas>
                     </div>
-                    <div class="legend">
-                        <ul class="legend-list" id="legend-list"></ul>
-                    </div>
+                    <ul class="crypto-doughnut-legend" id="legend-list"></ul>
                 </div>
             </div>
-            <div class="table-block">
+            <div class="crypto-table-wrapper">
                 <table class="crypto-table" id="crypto-list">
                     <tr>
-                        <th class="hc col1"></th>
-                        <th class="hc col2">name</th>
-                        <th class="hc col3">ticker</th>
-                        <th class="hc col4">price, $</th>
-                        <th class="hc col5">amount</th>
-                        <th class="hc col6">worth, $</th>
-                        <th class="hc col7">your income</th>
-                        <th class="hc col8">change 24h</th>
-                        <th class="hc col9">volume 24h, $</th>
+                        <th class="hc"></th>
+                        <th class="hc">Name</th>
+                        <th class="hc">Ticker</th>
+                        <th class="hc">Price, $</th>
+                        <th class="hc">Amount</th>
+                        <th class="hc">Worth, $</th>
+                        <th class="hc">Income</th>
+                        <th class="hc">Change(24h)</th>
                     </tr>
                 </table>
             </div>
@@ -101,3 +98,7 @@
 {% block script %}
 <script src="{{ url_for('static', filename='js/profile.min.js') }}"></script>
 {% endblock %}
+
+
+<div class="div1"></div>
+<div class="div2"></div>
