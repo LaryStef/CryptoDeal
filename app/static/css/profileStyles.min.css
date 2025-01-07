@@ -599,6 +599,9 @@ body {
   margin: 0;
   color: #8935a2;
   font-size: 2em;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .main-block span {
   color: #8FFF06;
@@ -620,6 +623,7 @@ body {
   justify-content: center;
   flex-direction: column;
   gap: 20px;
+  max-width: 250px;
 }
 
 .user-actions {
