@@ -324,6 +324,12 @@ function closeLoginWindow() {
     document.getElementById("navbar").style.filter = "brightness(1)";
     document.getElementById("login-info").innerText = "";
     document.getElementById("register-info").innerText = "";
+    console.log(111);
+    document.getElementById("register-name-input").value = "";
+    document.getElementById("register-pass-input").value = "";
+    document.getElementById("register-email-input").value = "";
+    document.getElementById("login-name-input").value = "";
+    document.getElementById("login-pass-input").value = "";
     enableButtons();
 }
 
