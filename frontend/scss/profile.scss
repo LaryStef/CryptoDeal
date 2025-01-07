@@ -70,6 +70,137 @@
     }
 }
 
+// cryptocurrency statistics
+
+.crypto-block {
+    margin-top: 100px;
+}
+
+.crypto-block-header {
+    width: 90%;
+    padding-left: 10%;
+    display: flex;
+    align-items: center;
+
+    h3 {
+        font-size: 2rem;
+        color: colors.$contrast-color;
+    }
+}
+
+.crypto-block-wrapper {
+    margin-top: 1%;
+    margin-left: 5%;
+    margin-right: 5%;
+    border: 2px solid colors.$text-hover-color;
+    border-radius: 50px;
+    background-color: colors.$window-color;
+    box-shadow: 0 0 10px colors.$text-hover-color;
+}
+
+.crypto-stat {
+    @include center-flex();
+    justify-content: start;
+    padding-left: 10%;
+    height: 400px;
+    gap: 5%;
+}
+
+.general-crypto-stat {
+    p {
+        color: colors.$text-color;
+    }
+
+    span {
+        color: colors.$contrast-color;
+        font-size: 1.5rem;
+    }
+
+    .crypto-wallet-change {
+        font-size: 1rem;
+    }
+}
+
+.crypto-doughnut {
+    display: flex;
+    align-items: center;
+    gap: 8%;
+}
+
+.crypto-doughnut-legend {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 5px;
+
+    .legend-el {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        span {
+            color: colors.$contrast-color;
+            font-size: 1.2rem;
+        }
+    }
+    
+    .legend-img {
+        width: 30px;
+        height: 30px;
+    }
+
+    .color-rect {
+        display: flex;
+        border: 1px solid white;
+        border-radius: 5px;
+        width: 30px;
+        height: 16px;
+    }
+}
+
+.crypto-table-wrapper {
+    @include center-flex();
+    margin-bottom: 50px;
+}
+
+@mixin cell($text-color) {
+    border-bottom: 1px solid black;
+    padding-bottom: 10px;
+    color: $text-color;
+    font-size: 1.3rem;
+}
+
+.crypto-table {
+    width: 90%;
+    
+    .hc {
+        @include cell($text-color: colors.$contrast-color);
+    }
+
+    .tc {
+        @include cell($text-color: colors.$text-hover-color);
+        padding-top: 10px;
+        text-align: center;
+    }
+
+    .row:hover {
+        background-color: black;
+    }
+}
+
+.crypto-name-wrap {
+    @include center-flex();
+    gap: 10px;
+
+    .crypto-name {
+        font-size: 1.3rem;
+    }
+
+    .crypto-logo {
+        width: 30px;
+        height: 30px;
+    }
+}
+
 // must be in the end
 
 .display-off {
@@ -78,4 +209,12 @@
 
 .transition-off {
     transition: none;
+}
+
+.change-pos {
+    color: #3DF718 !important;
+}
+
+.change-neg {
+    color: red !important;
 }
