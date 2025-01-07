@@ -68,29 +68,21 @@
         </div>
     </div>
 </div>
-<div style="height: 1000px;"></div>
-<div class="settings-win" id="set-win">
-    <div class="cancel-set-wrap">
-        <button class="cancel-set" id="cancel-set">close</button>
+<div class="settings-window" id="set-win">
+    <div class="cancel-container">
+        <button class="cancel-button" id="cancel-set">cancel</button>
     </div>
-    <div class="header-set">
-        <h3>Settings</h3>
-    </div>
-    <div class="table-wrap">
-        <table class="ses-table" id="ses-table">
-            <caption class="sessions-cap">sessions</caption>
+    <div class="session-table-wrap">
+        <table class="session-table" id="ses-table">
+            <caption>Manage your sessions</caption>
             <tr>
-                <th class="col-head cell">Device</th>
-                <th class="col-head cell">Last activity(UTC)</th>
-                <th class="cell term-wrap">
+                <th class="session-head-sell">Device</th>
+                <th class="session-head-sell">Last activity(UTC)</th>
+                <th class="session-head-sell">
                     <button class="term-all" id="term-all">terminate all</button>
                 </th>
             </tr>
         </table>
-    </div>
-    <div class="settings-note">
-        <span>Note: since JWT is used for authentication, session drop on other devices may take about 10 minutes</span>
-        <span>If you want to change password, logout please</span>
     </div>
 </div>
 {% endblock %}

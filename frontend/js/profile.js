@@ -444,30 +444,35 @@ function loadSessions(clearFirst = false) {
 
             if (clearFirst) {
                 table.innerHTML = `
-                    <caption class="sessions-cap">sessions</caption>
+                    <caption>Manage your sessions</caption>
                     <tr>
-                        <th class="col-head cell">Device</th>
-                        <th class="col-head cell">Last activity</th>
-                        <th class="cell term-wrap">
+                        <th class="session-head-sell">Device</th>
+                        <th class="session-head-sell">Last activity(UTC)</th>
+                        <th class="session-head-sell">
                             <button class="term-all" id="term-all">terminate all</button>
                         </th>
-                    </tr>`;
+                    </tr>`
             }
-            
+
+            let sessionNum = 0;
             sessions.forEach((session) => {
                 if (session.isCurrent) {
                     document.getElementById("logout-btn").setAttribute("sessionId", session.sessionId);
 
-                    table.innerHTML += `<tr>
-                        <td class="cell">${session.device}</td>
-                        <td class="cell">${session.lastActivity}</td>
-                        <td class="cell term-wrap cur-ses">Current</td>
+                    table.innerHTML += `<tr class="row">
+                        <td class="session-cell">${session.device}</td>
+                        <td class="session-cell">${session.lastActivity}</td>
+                        <td class="session-cell cur-ses">current</td>
                     </tr>`;
                 } else {
-                    table.innerHTML += `<tr>
-                        <td class="cell">${session.device}</td>
-                        <td class="cell">${session.lastActivity}</td>
-                        <td class="cell term-wrap">
+                    sessionNum += 1;
+                    if (sessionNum >= 9) {
+                        return;
+                    }
+                    table.innerHTML += `<tr class="row">
+                        <td class="session-cell">${session.device}</td>
+                        <td class="session-cell">${session.lastActivity}</td>
+                        <td class="session-cell">
                             <button class="term-btn" sessionId=${session.sessionId}>terminate</button>
                         </td>
                     </tr>`;
@@ -546,16 +551,14 @@ document.onkeydown = function (evt) {
 
 function openSettingsWindow() {
     let window = document.getElementById("set-win");
-    window.style.transform = "translate(0%)";
+    window.style.left = "50%";
     document.getElementById("main").style.filter = "brightness(0.5)";
     document.getElementById("navbar").style.filter = "brightness(0.5)";
-    disableButtons();
 }
 
 function closeSettingsWindow() {
     let window = document.getElementById("set-win");
-    window.style.transform = "translate(-150%)";
+    window.style.left = "-50%";
     document.getElementById("main").style.filter = "brightness(1)";
     document.getElementById("navbar").style.filter = "brightness(1)";
-    enableButtons();
 }
