@@ -3,6 +3,7 @@
 @use '../elements/cancel';
 @use '../mixins/shadow-button' as *;
 @use '../mixins/center-flex' as *;
+@use '../mixins/window' as *;
 
 // navigation
 
@@ -62,7 +63,8 @@
     width: calc($button-size * 2 + $gap);
 
     .auth-button {
-        @include shadow-button($width: $button-size, $color: colors.$text-color, $hover-color: colors.$contrast-color, $background: colors.$background-color);
+        @include shadow-button($width: $button-size, $color: colors.$text-color, $hover-color: colors.$contrast-color,
+            $background: colors.$background-color, $height: 40px);
     }
 }
 
@@ -112,33 +114,6 @@
     font-size: 1.125rem;
 }
 
-@mixin window($height, $width, $padding, $left) {
-    left: $left;
-    width: $width;
-
-    transition: all const.$login-transition-duration ease-out;
-    position: fixed;
-    height: $height;
-    padding: $padding;
-    padding-top: 0px;
-    box-shadow: 0 0 8px colors.$contrast-color;
-    border-radius: 50px;
-    background-color: colors.$window-color;
-    top: calc((100vh - $height - $padding) / 2);
-    overflow: hidden;
-    transform: translateX(-50%);
-}
-
-@mixin submit-button($width) {
-    width: $width;
-    padding-left: 0;
-
-    &:hover {
-        box-shadow: 0 0 5px colors.$contrast-color;
-        color: colors.$contrast-color;
-    }
-}
-
 @mixin confirm-message($padding-top) {
     @include center-flex();
     width: 100%;
@@ -180,6 +155,16 @@
     font-size: 1.125rem;
     transition: all const.$login-mode-transition-duration linear;
     @include auth-mode-shape();
+}
+
+@mixin submit-button($width) {
+    width: $width;
+    padding-left: 0;
+
+    &:hover {
+        box-shadow: 0 0 5px colors.$contrast-color;
+        color: colors.$contrast-color;
+    }
 }
 
 #auth-mode {

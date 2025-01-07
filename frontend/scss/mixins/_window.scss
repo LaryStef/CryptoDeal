@@ -1,0 +1,18 @@
+@use '../colors';
+@use '../const';
+
+@mixin window($height, $width, $padding, $left) {
+    left: $left;
+    width: $width;
+    transition: all const.$login-transition-duration ease-out;
+    position: fixed;
+    height: $height;
+    padding: $padding;
+    padding-top: 0px;
+    box-shadow: 0 0 8px colors.$contrast-color;
+    border-radius: 50px;
+    background-color: colors.$window-color;
+    top: calc((100vh - $height - $padding) / 2);
+    overflow: hidden;
+    transform: translateX(-50%);
+}
