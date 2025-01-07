@@ -35,7 +35,6 @@ class List(Resource):
         #             "logoUrl": "/static/svg/cryptocurrency/BTC.svg",
         #             "pageUrl": "/crypto/BTC",
         #             "price": 65673.1535301987,
-        #             "volume": 28388811901.2917,
         #             "change": 32.8637107645426
         #         },
         #         {
@@ -44,7 +43,6 @@ class List(Resource):
         #             "logoUrl": "/static/svg/cryptocurrency/ETH.svg",
         #             "pageUrl": "/crypto/ETH",
         #             "price": 2387.54530484819,
-        #             "volume": 7865323997.26432,
         #             "change": -1.78983414036351
         #         },
         #         {
@@ -53,7 +51,6 @@ class List(Resource):
         #             "logoUrl": "/static/svg/cryptocurrency/USDT.svg",
         #             "pageUrl": "/crypto/USDT",
         #             "price": 1.02090749587501,
-        #             "volume": 42177103848.3768,
         #             "change": -3.94483257123361
         #         }
         #     ]
@@ -82,7 +79,6 @@ class List(Resource):
                         PostgreHandler,
                         ticker=currency.ticker
                     ).price,
-                    "volume": currency.volume,
                     "change": PostgreHandler.calculate_daily_change(
                         ticker=currency.ticker
                     )
