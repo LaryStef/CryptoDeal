@@ -1,11 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cryptodeal</title>
-</head>
-<body>
-    Something went wrong. Please try again later.
-</body>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>My Website</title>
+    <style>
+      * {
+      font-family: "Ubuntu Mono";
+      }
+
+      html, body, ul, ol {
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        font-size: 16px;
+      }
+
+      body {
+        background-color: #000000;
+      }
+
+      body::before {
+        content: '';
+        position: absolute;
+        width: 100vw;
+        height: 100vh;
+        background: radial-gradient(circle at -180% 100%, #8FFF06 10%, transparent 80%);
+        animation: glow 10s infinite;
+      }
+
+      @keyframes glow {
+        0% { opacity: 0.2; }
+        50% { opacity: 1; }
+        100% { opacity: 0.2; }
+      }
+
+      .main {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        span {
+          font-weight: bold;
+          font-size: 1.6rem;
+          color: #8935a2;
+        }
+      }
+    </style>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="icon" href="./favicon.ico" type="image/x-icon">
+  </head>
+  <body>
+    <div class="main">
+      <span>500, CryptoDeal is under maintenance. Try again later</span>
+    </div>
+  </body>
 </html>
