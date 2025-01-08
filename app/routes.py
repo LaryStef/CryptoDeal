@@ -1,4 +1,4 @@
-from flask import Blueprint, abort, current_app, render_template
+from flask import Blueprint, abort, current_app, render_template, redirect, url_for
 from sqlalchemy import ScalarResult
 from werkzeug.exceptions import NotFound, Unauthorized, HTTPException
 
@@ -44,7 +44,7 @@ def handle_not_found(e: NotFound) -> tuple[str, int]:
 
 @main.app_errorhandler(Unauthorized)
 def handle_unauthorized(e: Unauthorized) -> tuple[str, int]:
-    return render_template("unauthorized.html", title="Unauthorized"), 200
+    return redirect(url_for("main.index"), code=303)
 
 
 @main.errorhandler(HTTPException)
