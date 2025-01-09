@@ -21,6 +21,11 @@ def profile() -> tuple[str, int]:
     return render_template("profile.html", title="Profile"), 200
 
 
+@main.route("/securities/navigation")
+def securities() -> tuple[str, int]:
+    return render_template("securities.html", title="Securities"), 200
+
+
 @main.route("/crypto/list")
 def crypto_list() -> tuple[str, int]:
     return render_template("cryptoList.html", title="Cryptocurrency"), 200
@@ -35,6 +40,16 @@ def currency(ticker: str) -> tuple[str, int]:
     if row is None:
         abort(404)
     return render_template("cryptocurrency.html", title=ticker), 200
+
+
+@main.route("/about")
+def about() -> tuple[str, int]:
+    return render_template("about.html", title="About"), 200
+
+
+@main.route("/news")
+def news() -> tuple[str, int]:
+    return render_template("news.html", title="News"), 200
 
 
 @main.app_errorhandler(NotFound)

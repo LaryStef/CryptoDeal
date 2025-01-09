@@ -15,6 +15,9 @@ module.exports = {
         cryptocurrencyStyles: "./frontend/js/cryptocurrencyStyles.js",
         profileStyles: "./frontend/js/profileStyles.js",
         notFoundStyles: "./frontend/js/notFoundStyles.js",
+        securitiesStyles: "./frontend/js/securitiesStyles.js",
+        aboutStyles: "./frontend/js/aboutStyles.js",
+        newsStyles: "./frontend/js/newsStyles.js",
     },
     output: {
         path: path.resolve(__dirname, "./app/static"),
