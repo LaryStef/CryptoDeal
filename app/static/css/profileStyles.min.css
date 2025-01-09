@@ -588,6 +588,7 @@ body {
   border: 2px solid #8935a2;
   border-radius: 50px;
   box-shadow: 0 0 10px #8935a2;
+  transition: box-shadow 300ms linear;
 }
 .main-block h2 {
   margin: 0;
@@ -599,6 +600,9 @@ body {
 }
 .main-block span {
   color: #8FFF06;
+}
+.main-block:hover {
+  box-shadow: 0 0 16px #8935a2;
 }
 
 .main-block-profile {
@@ -666,6 +670,10 @@ body {
   border-radius: 50px;
   background-color: #0A0A0A;
   box-shadow: 0 0 10px #8935a2;
+  transition: box-shadow 300ms linear;
+}
+.crypto-block-wrapper:hover {
+  box-shadow: 0 0 20px #8935a2;
 }
 
 .crypto-stat {

@@ -27,6 +27,7 @@
     border: 2px solid colors.$text-hover-color;
     border-radius: 50px;
     box-shadow: 0 0 10px colors.$text-hover-color;
+    transition: box-shadow const.$link-transition-duration linear;
 
     h2 {
         margin: 0;
@@ -39,6 +40,10 @@
 
     span {
         color: colors.$contrast-color;
+    }
+
+    &:hover {
+        box-shadow: 0 0 16px colors.$text-hover-color;
     }
 }
 
@@ -99,6 +104,11 @@
     border-radius: 50px;
     background-color: colors.$window-color;
     box-shadow: 0 0 10px colors.$text-hover-color;
+    transition: box-shadow const.$link-transition-duration linear;
+
+    &:hover {
+        box-shadow: 0 0 20px colors.$text-hover-color;
+    }
 }
 
 .crypto-stat {
