@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/newsStyles.min.css') }}">
+{% endblock %}
+
+{% block main_container %}
+<div class="main-container" id="main">
+    <div class="block">
+        <h1 class="header">First news block</h1>
+        <div class="content">
+            <p>From this point news of CryptoDeal project will appear here. Now Cryptodeal even not in beta version, it supports only three cryptocurrencies. Only three weeks ago there was awful design with many strange color combinations. 70% of site has new design now, that looks not perfect but much better than old one. It was first test news block. I believe there will be a lot of blocks in future.</p>
+        </div>
+        <div>
+            <p>Written 08.01.2025 by Lary Stef</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}  
+<script src="{{ url_for('static', filename='js/index.min.js') }}"></script>
+{% endblock %}
