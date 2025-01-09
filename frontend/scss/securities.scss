@@ -1,0 +1,50 @@
+@use 'reset';
+@use 'colors';
+@use 'base';
+@use 'const';
+
+body {
+    width: 100vw;
+    height: 100vh;
+}
+
+.error-container {
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    width: 100vw;
+    min-width: 700px;
+    margin-top: 30vh;
+
+    .error-letter {
+        color: colors.$text-color;
+        font-weight: bold;
+        font-size: 4em;
+    }
+    
+    .space {
+        width: 40px;
+    }
+    
+    .error-logo {
+        width: 60px;
+        height: 60px;
+    }
+}
+
+
+
+.return-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 5vh;
+
+    a {
+        transition: color const.$link-transition-duration linear;
+        color: colors.$text-color;
+
+        &:hover {
+            color: colors.$contrast-color;
+        }
+    }
+}
