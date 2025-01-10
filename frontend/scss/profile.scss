@@ -86,7 +86,7 @@
 
 .crypto-block-header {
     width: 90%;
-    padding-left: 10%;
+    padding-left: 15%;
     display: flex;
     align-items: center;
 
@@ -98,8 +98,8 @@
 
 .crypto-block-wrapper {
     margin-top: 1%;
-    margin-left: 5%;
-    margin-right: 5%;
+    margin-left: 20%;
+    margin-right: 20%;
     border: 2px solid colors.$text-hover-color;
     border-radius: 50px;
     background-color: colors.$window-color;
@@ -108,6 +108,20 @@
 
     &:hover {
         box-shadow: 0 0 20px colors.$text-hover-color;
+    }
+}
+
+@media (max-width: 1400px) {
+    .crypto-block-wrapper {
+        margin-left: 10%;
+        margin-right: 10%;
+    }
+}
+
+@media (max-width: 1200px) {
+    .crypto-block-wrapper {
+        margin-left: 5%;
+        margin-right: 5%;
     }
 }
 
