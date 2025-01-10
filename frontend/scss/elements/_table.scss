@@ -1,0 +1,41 @@
+@use '../colors';
+@use '../mixins/center-flex' as *;
+
+.crypto-name-wrap {
+    @include center-flex();
+    gap: 10px;
+    
+    .crypto-name {
+        font-size: 1.3rem;
+    }
+    
+    .crypto-logo {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+@mixin cell($text-color, $font-size) {
+    border-bottom: 1px solid black;
+    padding-bottom: 10px;
+    color: $text-color;
+    font-size: $font-size;
+}
+
+@mixin table($width) {
+    width: $width;
+
+    .hc {
+        @include cell($text-color: colors.$contrast-color, $font-size: 1.3rem);
+    }
+
+    .tc {
+        @include cell($text-color: colors.$text-hover-color, $font-size: 1.3rem);
+        padding-top: 10px;
+        text-align: center;
+    }
+
+    .row:hover {
+        background-color: colors.$background-color;
+    }
+}

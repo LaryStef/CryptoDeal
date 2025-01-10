@@ -568,6 +568,20 @@ body {
   color: #8FFF06;
 }
 
+.crypto-name-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.crypto-name-wrap .crypto-name {
+  font-size: 1.3rem;
+}
+.crypto-name-wrap .crypto-logo {
+  width: 30px;
+  height: 30px;
+}
+
 .main-container {
   margin-top: 30px;
   margin-bottom: 100px;
@@ -576,8 +590,6 @@ body {
 .header {
   width: 90%;
   padding-left: 15%;
-  display: flex;
-  align-items: center;
 }
 .header h3 {
   font-size: 2rem;
@@ -592,12 +604,12 @@ body {
 }
 
 .table {
+  width: 60%;
   border: 2px solid #8935a2;
   border-radius: 50px;
   background-color: #0A0A0A;
   box-shadow: 0 0 10px #8935a2;
   padding: 30px;
-  width: 60%;
 }
 .table .hc {
   border-bottom: 1px solid black;
@@ -627,20 +639,6 @@ body {
     width: 90%;
   }
 }
-.crypto-name-wrap {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-}
-.crypto-name-wrap .crypto-name {
-  font-size: 1.3rem;
-}
-.crypto-name-wrap .crypto-logo {
-  width: 30px;
-  height: 30px;
-}
-
 .trade-link {
   transition: all 300ms linear;
 }

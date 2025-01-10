@@ -1,8 +1,9 @@
 @use 'reset';
 @use 'base';
-@use 'blocks/navbar';
 @use 'colors';
 @use 'const';
+@use 'blocks/navbar';
+@use 'elements/table' as *;
 @use 'mixins/center-flex' as *;
 
 .main-container {
@@ -13,8 +14,6 @@
 .header {
     width: 90%;
     padding-left: 15%;
-    display: flex;
-    align-items: center;
 
     h3 {
         font-size: 2rem;
@@ -29,34 +28,13 @@
     width: 100%;
 }
 
-@mixin cell($text-color, $font-size) {
-    border-bottom: 1px solid black;
-    padding-bottom: 10px;
-    color: $text-color;
-    font-size: $font-size;
-}
-
 .table {
+    @include table($width: 60%);
     border: 2px solid colors.$text-hover-color;
     border-radius: 50px;
     background-color: colors.$window-color;
     box-shadow: 0 0 10px colors.$text-hover-color;
     padding: 30px;
-    width: 60%;
-    
-    .hc {
-        @include cell($text-color: colors.$contrast-color, $font-size: 1.3rem);
-    }
-
-    .tc {
-        @include cell($text-color: colors.$text-hover-color, $font-size: 1.3rem);
-        padding-top: 10px;
-        text-align: center;
-    }
-
-    .row:hover {
-        background-color: colors.$background-color;
-    }
 }
 
 @media (max-width: 1400px) {
@@ -68,20 +46,6 @@
 @media (max-width: 1200px) {
     .table {
         width: 90%;
-    }
-}
-
-.crypto-name-wrap {
-    @include center-flex();
-    gap: 10px;
-    
-    .crypto-name {
-        font-size: 1.3rem;
-    }
-    
-    .crypto-logo {
-        width: 30px;
-        height: 30px;
     }
 }
 
@@ -100,7 +64,6 @@
     }
 
 }
-
 
 // must be in the end
 

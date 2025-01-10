@@ -568,6 +568,20 @@ body {
   color: #8FFF06;
 }
 
+.crypto-name-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.crypto-name-wrap .crypto-name {
+  font-size: 1.3rem;
+}
+.crypto-name-wrap .crypto-logo {
+  width: 30px;
+  height: 30px;
+}
+
 .main-block-wrapper {
   display: flex;
   justify-content: center;
@@ -646,23 +660,21 @@ body {
   box-shadow: 0 0 5px #8FFF06;
 }
 
-.crypto-block {
+.block {
   margin-top: 100px;
   margin-bottom: 100px;
 }
 
-.crypto-block-header {
+.block-header {
   width: 90%;
   padding-left: 15%;
-  display: flex;
-  align-items: center;
 }
-.crypto-block-header h3 {
+.block-header h3 {
   font-size: 2rem;
   color: #8FFF06;
 }
 
-.crypto-block-wrapper {
+.block-wrapper {
   margin-top: 1%;
   margin-left: 20%;
   margin-right: 20%;
@@ -672,22 +684,51 @@ body {
   box-shadow: 0 0 10px #8935a2;
   transition: box-shadow 300ms linear;
 }
-.crypto-block-wrapper:hover {
+.block-wrapper:hover {
   box-shadow: 0 0 20px #8935a2;
 }
 
 @media (max-width: 1400px) {
-  .crypto-block-wrapper {
+  .block-wrapper {
     margin-left: 10%;
     margin-right: 10%;
   }
 }
 @media (max-width: 1200px) {
-  .crypto-block-wrapper {
+  .block-wrapper {
     margin-left: 5%;
     margin-right: 5%;
   }
 }
+.block-table-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.block-table {
+  width: 90%;
+}
+.block-table .hc {
+  border-bottom: 1px solid black;
+  padding-bottom: 10px;
+  color: #8FFF06;
+  font-size: 1.3rem;
+}
+.block-table .tc {
+  border-bottom: 1px solid black;
+  padding-bottom: 10px;
+  color: #8935a2;
+  font-size: 1.3rem;
+  padding-top: 10px;
+  text-align: center;
+}
+.block-table .row:hover {
+  background-color: #000000;
+}
+
 .crypto-stat {
   display: flex;
   justify-content: center;
@@ -740,48 +781,6 @@ body {
   border-radius: 5px;
   width: 30px;
   height: 16px;
-}
-
-.crypto-table-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 50px;
-}
-
-.crypto-table {
-  width: 90%;
-}
-.crypto-table .hc {
-  border-bottom: 1px solid black;
-  padding-bottom: 10px;
-  color: #8FFF06;
-  font-size: 1.3rem;
-}
-.crypto-table .tc {
-  border-bottom: 1px solid black;
-  padding-bottom: 10px;
-  color: #8935a2;
-  font-size: 1.3rem;
-  padding-top: 10px;
-  text-align: center;
-}
-.crypto-table .row:hover {
-  background-color: #000000;
-}
-
-.crypto-name-wrap {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-}
-.crypto-name-wrap .crypto-name {
-  font-size: 1.3rem;
-}
-.crypto-name-wrap .crypto-logo {
-  width: 30px;
-  height: 30px;
 }
 
 .settings-window {

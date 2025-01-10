@@ -1,8 +1,9 @@
 @use 'reset';
 @use 'base';
-@use 'blocks/navbar';
 @use 'colors';
 @use 'const';
+@use 'blocks/navbar';
+@use 'elements/table' as *;
 @use 'mixins/shadow-button' as *;
 @use 'mixins/center-flex' as *;
 @use 'mixins/window' as *;
@@ -77,18 +78,16 @@
     }
 }
 
-// cryptocurrency statistics
+// blocks
 
-.crypto-block {
+.block {
     margin-top: 100px;
     margin-bottom: 100px;
 }
 
-.crypto-block-header {
+.block-header {
     width: 90%;
     padding-left: 15%;
-    display: flex;
-    align-items: center;
 
     h3 {
         font-size: 2rem;
@@ -96,7 +95,7 @@
     }
 }
 
-.crypto-block-wrapper {
+.block-wrapper {
     margin-top: 1%;
     margin-left: 20%;
     margin-right: 20%;
@@ -112,18 +111,30 @@
 }
 
 @media (max-width: 1400px) {
-    .crypto-block-wrapper {
+    .block-wrapper {
         margin-left: 10%;
         margin-right: 10%;
     }
 }
 
 @media (max-width: 1200px) {
-    .crypto-block-wrapper {
+    .block-wrapper {
         margin-left: 5%;
         margin-right: 5%;
     }
 }
+
+.block-table-wrapper {
+    @include center-flex();
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.block-table {
+    @include table($width: 90%);
+}
+
+// cryptocurrency statistics
 
 .crypto-stat {
     @include center-flex();
@@ -181,50 +192,6 @@
         border-radius: 5px;
         width: 30px;
         height: 16px;
-    }
-}
-
-.crypto-table-wrapper {
-    @include center-flex();
-    margin-bottom: 50px;
-}
-
-@mixin cell($text-color, $font-size) {
-    border-bottom: 1px solid black;
-    padding-bottom: 10px;
-    color: $text-color;
-    font-size: $font-size;
-}
-
-.crypto-table {
-    width: 90%;
-    
-    .hc {
-        @include cell($text-color: colors.$contrast-color, $font-size: 1.3rem);
-    }
-
-    .tc {
-        @include cell($text-color: colors.$text-hover-color, $font-size: 1.3rem);
-        padding-top: 10px;
-        text-align: center;
-    }
-
-    .row:hover {
-        background-color: colors.$background-color;
-    }
-}
-
-.crypto-name-wrap {
-    @include center-flex();
-    gap: 10px;
-
-    .crypto-name {
-        font-size: 1.3rem;
-    }
-
-    .crypto-logo {
-        width: 30px;
-        height: 30px;
     }
 }
 
