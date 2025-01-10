@@ -1,0 +1,1 @@
+import '../securities.scss';
