@@ -139,11 +139,11 @@ class Balance(Resource):
         #     }
         # }
 
-        availible_assets: list[str] = ["cryptocurrency", "currency"]
+        available_assets: list[str] = ["cryptocurrency", "currency"]
 
         try:
-            if asset not in availible_assets:
-                raise BadRequest(description=f"Type not in {availible_assets}")
+            if asset not in available_assets:
+                raise BadRequest(description=f"Type not in {available_assets}")
 
             ids: list[str] = request.args.getlist("id")
             access_token: str | None = request.cookies.get("access_token")
@@ -234,11 +234,11 @@ class Statistics(Resource):
         #     ]
         # }
 
-        availible_assets: list[str] = ["cryptocurrency"]
+        available_assets: list[str] = ["cryptocurrency"]
 
         try:
-            if asset not in availible_assets:
-                raise BadRequest(description=f"Type not in {availible_assets}")
+            if asset not in available_assets:
+                raise BadRequest(description=f"Type not in {available_assets}")
 
             access_token: str | None = request.cookies.get("access_token")
             access_payload: t.Any = validate_token(
