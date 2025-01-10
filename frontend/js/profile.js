@@ -9,6 +9,7 @@ const refreshTokensUrl = new URL("api/auth/refresh-tokens", origin);
 const profileDataUrl = new URL("api/user", origin);
 const sessionUrl = new URL("api/sessions", origin);
 const cryptoStatisticsUrl = new URL("api/user/statistics/cryptocurrency", origin);
+const cryptoTransactionHistoryUrl = new URL("api/crypto/transaction/history", origin);
 
 const textHoverColor = "#8935a2";
 const contrastColor = "#8FFF06";
@@ -166,10 +167,11 @@ function loadCryptoStatistics(data) {
     }
 
     if (cryptocurrencies.length == 0) {
-        document.getElementById("st-block-1").innerHTML = `
-            <div class="crypto-block-header">
-                <h3 style="font-size: 1.5rem">Cryptocurrency statistics not availible (Buy any cryptocurrency to see statistics)</h3>
-            </div>`
+        document.getElementById("crypto-statistics").innerHTML = `
+            <div class="block-header">
+                <h3 style="font-size: 1.5rem">Cryptocurrency statistics not available (Buy any cryptocurrency to see it)</h3>
+            </div>`;
+        document.getElementById("crypto-transactions").innerHTML = ``;
         document.getElementsByTagName("body")[0].style.width = "100vw";
         document.getElementsByTagName("body")[0].style.height = "100vh";
         return;
@@ -248,6 +250,43 @@ function loadCrytoTable(cryptocurrencies) {
                 ${changeCell}
             </tr>`;
     }
+}
+
+function loadCryptoTransactionHistory() {
+    fetch(cryptoTransactionHistoryUrl, {
+        method: "GET",
+        credentials: "same-origin",
+        headers: {
+            "X-SCRF-TOKEN": getCookie("access_scrf_token"),
+        },
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data);
+            const transactions = data.transactions;
+            const table = document.getElementById("crypto-transaction-history");
+
+            let num = 1;
+            transactions.forEach((transaction) => {
+                table.innerHTML += `
+                    <tr class="row">
+                        <td class="tc">${num}</td>
+                        <td class="tc">
+                            <div class="crypto-name-wrap">
+                                <img class="crypto-logo" src="${transaction.logoUrl}" alt="">
+                                <span class="crypto-name">${transaction.name}</span>
+                            </div>
+                        </td>
+                        <td class="tc">${transaction.ticker}</td>
+                        <td class="tc">${transaction.type}</td>
+                        <td class="tc">${transaction.amount}</td>
+                        <td class="tc">${convertNumberForUser(transaction.price)}</td>
+                        <td class="tc">${convertNumberForUser(transaction.price * transaction.amount)}</td>
+                        <td class="tc">${transaction.date}</td>
+                    </tr>`;
+                    num += 1;
+            });
+        })
 }
 
 function getDeviceData() {
@@ -428,6 +467,7 @@ function loadMainInfo() {
     })
         .then((response) => response.json())
         .then((data) => loadCryptoStatistics(data));
+    loadCryptoTransactionHistory();
 }
 
 function loadSessions(clearFirst = false) {

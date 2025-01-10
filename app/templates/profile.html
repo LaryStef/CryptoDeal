@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block main_container %}
-<div id="main">
+<div class="main-container" id="main">
     <div class="main-block-wrapper">
         <div class="main-block" id="first-line">
             <div class="main-block-profile">
@@ -21,11 +21,11 @@
             </div>
         </div>
     </div>
-    <div class="crypto-block" id="st-block-1">
-        <div class="crypto-block-header">
+    <div class="block" id="crypto-statistics">
+        <div class="block-header">
             <h3>Cryptocurrency statistics</h3>
         </div>
-        <div class="crypto-block-wrapper">
+        <div class="block-wrapper">
             <div class="crypto-stat">
                 <div>
                     <div class="general-crypto-stat">
@@ -51,8 +51,8 @@
                     <ul class="crypto-doughnut-legend" id="legend-list"></ul>
                 </div>
             </div>
-            <div class="crypto-table-wrapper">
-                <table class="crypto-table" id="crypto-list">
+            <div class="block-table-wrapper">
+                <table class="block-table" id="crypto-list">
                     <tr>
                         <th class="hc"></th>
                         <th class="hc">Name</th>
@@ -67,6 +67,28 @@
             </div>
         </div>
     </div>
+    <div class="block" id="crypto-transactions">
+        <div class="block-header">
+            <h3>Cryptocurrency transactions</h3>
+        </div>
+        <div class="block-wrapper">
+            <div class="block-table-wrapper">
+                <table class="block-table" id="crypto-transaction-history">
+                    <tr>
+                        <th class="hc">#</th>
+                        <th class="hc">name</th>
+                        <th class="hc">ticker</th>
+                        <th class="hc">type</th>
+                        <th class="hc">amount</th>
+                        <th class="hc">price, $</th>
+                        <th class="hc">sum</th>
+                        <th class="hc">date</th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
 </div>
 <div class="settings-window" id="set-win">
     <div class="cancel-container">
