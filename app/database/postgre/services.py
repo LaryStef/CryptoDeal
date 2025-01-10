@@ -3,7 +3,7 @@ from random import randint
 from typing import Any, Literal
 from uuid import uuid4
 
-from flask import current_app
+from flask import current_app, url_for
 from sqlalchemy import BinaryExpression, Result, Sequence, delete, desc, select
 from sqlalchemy.orm import Mapped
 from werkzeug.exceptions import BadRequest, NotFound
@@ -284,6 +284,10 @@ class PostgreHandler:
             "amount": transaction[1].amount,
             "type": transaction[1].type_,
             "date": transaction[1].time.strftime("%d.%m.%Y %H:%M"),
+            "logoUrl": url_for(
+                "static",
+                filename=f"svg/cryptocurrency/{transaction[1].ticker}.svg"
+            ),
         } for transaction in transactions]
 
     @staticmethod

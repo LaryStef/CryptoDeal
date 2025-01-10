@@ -361,7 +361,7 @@ class Histoty(Resource):
         )
 
         return {
-            "history": PostgreHandler.get_crypto_history(
+            "transactions": PostgreHandler.get_crypto_history(
                 access_payload.get("uuid", "")
             )
         }, 200
