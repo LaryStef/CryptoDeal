@@ -12,7 +12,7 @@ from app.config import appConfig
 from app.database.postgre import db, utcnow
 from app.database.postgre.models import (
     CryptoCourse, CryptocurrencyWallet, CryptoTransaction, FiatWallet, Session,
-    User
+    User, CryptoCurrency
 )
 from app.utils.cryptography import hash_password
 
@@ -269,14 +269,22 @@ class PostgreHandler:
             )
         ).scalar()
 
-    def get_crypto_history(self, user_id: str) -> list[CryptoCourse]:
-        transactions: list[CryptoTransaction] | None = db.session.execute(
-            select(CryptoTransaction).filter_by(user_id=user_id)
-        ).scalar()
+    @staticmethod
+    def get_crypto_history(user_id: str) -> list[CryptoCourse]:
+        transactions: tuple[str | None, CryptoTransaction | None] = db.session.execute(
+            select(CryptoCurrency.name, CryptoTransaction).join_from(CryptoCurrency, CryptoTransaction).filter_by(user_id=user_id)
+        ).all()
 
         if transactions is None:
             return []
-        return transactions
+        return [{
+            "name": transaction[0],
+            "ticker": transaction[1].ticker,
+            "price": transaction[1].price,
+            "amount": transaction[1].amount,
+            "type": transaction[1].type_,
+            "date": transaction[1].time.strftime("%d.%m.%Y %H:%M"),
+        } for transaction in transactions]
 
     @staticmethod
     def get_balance(
