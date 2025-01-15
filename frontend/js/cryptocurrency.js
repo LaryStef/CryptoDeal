@@ -9,14 +9,20 @@ import {
     Filler,
 } from "chart.js";
 
+const textColor = "#7d42e7";
+const chartAxesDataColor = "#C5FFC3";
+const chartGridColor = "#291F5D";
+const chartFillColor = "#22131E";
+const chartLineColor = "#CC54B0";
+const chartDotsColor = chartLineColor;
+
+const fontFamily = "Ubuntu Mono";
 const cooldown = 30;
 const cooldownRec = 30;
-const textColor = "#7d42e7";
-
-const ticker = window.location.pathname.split("/")[2];
 let currentCryptoPrice = 0;
 let userUSDBalance = 0;
 let userCryptoBalance = 0;
+const ticker = window.location.pathname.split("/")[2];
 
 const origin = location.origin;
 const loginUrl = new URL("api/auth/sign-in", origin);
@@ -83,10 +89,10 @@ function getChart() {
         CategoryScale,
         Filler
     );
-    Chart.defaults.font.family = "Ubuntu Mono";
-    Chart.defaults.backgroundColor = "#FF6384";
-    Chart.defaults.borderColor = "#291F5D";
-    Chart.defaults.color = "#C5FFC3";
+    Chart.defaults.font.family = fontFamily;
+    Chart.defaults.backgroundColor = chartDotsColor;    // dots on chart
+    Chart.defaults.borderColor = chartGridColor;    // grid
+    Chart.defaults.color = chartAxesDataColor;    // data on axes
 
     const chartCfg = {
         type: "line",
@@ -146,10 +152,11 @@ function updateChart(chart, timeFrame) {
                 labels: data["dataX"],
                 datasets: [
                     {
-                        borderColor: "#FF6384",
+                        label: "chart :)",
+                        borderColor: chartLineColor,    // chart line
                         fill: {
                             target: "origin",
-                            above: "#843072",
+                            above: chartFillColor,    // filling above chart
                         },
                         hidden: false,
                         data: data["dataY"],
@@ -157,7 +164,7 @@ function updateChart(chart, timeFrame) {
                 ]
             };
             chart.update();
-            
+
             document.getElementById("price-head").innerText = Math.round(data["price"] * 1000) / 1000 + "$";
             document.getElementById("chart-vol").innerText = convertNumberForUser(data["volume"]);
 
@@ -191,14 +198,23 @@ function updateChart(chart, timeFrame) {
 }
 
 document.getElementById("chart-btn-day").addEventListener("click", () => {
+    document.getElementById("chart-btn-day").classList.add("active");
+    document.getElementById("chart-btn-month").classList.remove("active");
+    document.getElementById("chart-btn-year").classList.remove("active");
     updateChart(gloablChartObj, "hour");
 });
 
 document.getElementById("chart-btn-month").addEventListener("click", () => {
+    document.getElementById("chart-btn-month").classList.add("active");
+    document.getElementById("chart-btn-day").classList.remove("active");
+    document.getElementById("chart-btn-year").classList.remove("active");
     updateChart(gloablChartObj, "day");
 });
 
 document.getElementById("chart-btn-year").addEventListener("click", () => {
+    document.getElementById("chart-btn-year").classList.add("active");
+    document.getElementById("chart-btn-day").classList.remove("active");
+    document.getElementById("chart-btn-month").classList.remove("active");
     updateChart(gloablChartObj, "month");
 });
 

@@ -5,7 +5,54 @@
 {% endblock %}
 
 {% block main_container %}
-<div class="wtb-window" id="wtb-window">
+<div class="main-container" id="main">
+    <div>
+        <div class="general-info">
+            <div class="head-line">
+                <div class="main-info-wrapper">
+                    <img class="item-logo" id="crypto-logo" src="/static/svg/cryptocurrency/ETH.svg" alt="">
+                    <div class="main-info">
+                        <h2 class="item-name" id="main-name">Ethereum(ETH)</h2>
+                        <span class="item-price" id="price-head">69782.873$</span>
+                    </div>
+                </div>
+                <button class="trade-button" id="wtb-btn">Trade</button>
+            </div>
+            <div class="description" id="crypto-desc"></div>
+        </div>
+    </div>
+    <div class="chart-content">
+        <div class="chart-block">
+            <div class="crypto-summary">
+                <div>
+                    <span class="crypto-summary-name" id="chart-low-text">Low 24h: </span>
+                    <span class="crypto-summary-info" id="chart-low-info">43271.721</span>
+                </div>
+                <div>
+                    <span class="crypto-summary-name" id="chart-high-text">High 24h: </span>
+                    <span class="crypto-summary-info" id="chart-high-info">73238.001</span>
+                </div>
+                <div>
+                    <span class="crypto-summary-name">Volume 24h: </span>
+                    <span class="crypto-summary-info" id="chart-vol">17.31B</span>
+                </div>
+                <div>
+                    <span class="crypto-summary-name" id="chart-change-text">Change 24h: </span>
+                    <span class="change-pos" id="chart-change-info">+4.287%</span>
+                </div>
+            </div>
+            <div class="chart-wrap">
+                <canvas class="chart" id="chart" aria-label="chart" role="img"></canvas>
+            </div>
+        </div>
+        <div class="time-interval-button-wrapper">
+            <button class="time-interval-button active" id="chart-btn-day">daily</button>
+            <button class="time-interval-button" id="chart-btn-month">monthly</button>
+            <button class="time-interval-button" id="chart-btn-year">yearly</button>
+        </div>
+    </div>
+</div>
+<div style="display: none;" class="wtb-window" id="wtb-window">
     <div class="cancel-wrap">
         <button class="cancel-btn" id="cancel-wtb">cancel</button>
     </div>
@@ -86,7 +133,7 @@
         </div>
     </div>
 </div>
-<div class="success-window" id="success-window">
+<div style="display: none;" class="success-window" id="success-window">
     <div class="success-info-wrap">
         <div class="grat-block">
             <p class="transaction-info" id="transaction-info">You bought 12.32 BTC for 337822.81$</p>
@@ -98,49 +145,6 @@
     </div>
     <div class="cancel-success-wrap">
         <button class="cancel-success-btn" id="close-success">cancel</button>
-    </div>
-</div>
-<div id="main">
-    <div class="content">
-        <div class="info-wrap">
-            <div class="name-wrap">
-                <img class="crypto-logo" id="crypto-logo" src="/static/svg/cryptocurrency/ETH.svg" alt="">
-                <div class="short-inf">
-                    <span class="crypto-name" id="main-name">Ethereum(ETH)</span>
-                    <span class="crypto-price" id="price-head">69782.873$</span>
-                </div>
-                <button class="wtb-btn" id="wtb-btn">Buy/Sell</button>
-            </div>
-            <div class="desc" id="crypto-desc"></div>
-        </div>
-        <div class="chart-content">
-            <div class="review">
-                <div>
-                    <span id="chart-low-text">Low 24h: </span>
-                    <span id="chart-low-info">43271.721</span>
-                </div>
-                <div>
-                    <span id="chart-high-text">High 24h: </span>
-                    <span id="chart-high-info">73238.001</span>
-                </div>
-                <div>
-                    <span>Volume 24h: </span>
-                    <span id="chart-vol">17.31B</span>
-                </div>
-                <div>
-                    <span id="chart-change-text">Change 24h: </span>
-                    <span class="change-pos" id="chart-change-info">+4.287%</span>
-                </div>
-            </div>
-            <div class="chart-wrap">
-                <canvas class="chart" id="chart" aria-label="chart" role="img"></canvas>
-            </div>
-            <div class="chart-btn-wrap">
-                <button class="chart-btn" id="chart-btn-day">daily</button>
-                <button class="chart-btn" id="chart-btn-month">monthly</button>
-                <button class="chart-btn" id="chart-btn-year">yearly</button>
-            </div>
-        </div>
     </div>
 </div>
 {% endblock %}
