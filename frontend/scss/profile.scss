@@ -8,6 +8,10 @@
 @use 'mixins/center-flex' as *;
 @use 'mixins/window' as *;
 
+.main-container {
+    margin-bottom: 200px;
+}
+
 // profile info
 
 .main-block-wrapper {
@@ -82,7 +86,6 @@
 
 .block {
     margin-top: 100px;
-    margin-bottom: 100px;
 }
 
 .block-header {

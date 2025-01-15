@@ -582,6 +582,10 @@ body {
   height: 30px;
 }
 
+.main-container {
+  margin-bottom: 200px;
+}
+
 .main-block-wrapper {
   display: flex;
   justify-content: center;
@@ -662,7 +666,6 @@ body {
 
 .block {
   margin-top: 100px;
-  margin-bottom: 100px;
 }
 
 .block-header {
