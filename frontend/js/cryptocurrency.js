@@ -10,6 +10,8 @@ import {
 } from "chart.js";
 
 const textColor = "#7d42e7";
+const textHoverColor = "#8935a2";
+const backgroundColor = "#000000";
 const chartAxesDataColor = "#C5FFC3";
 const chartGridColor = "#291F5D";
 const chartFillColor = "#22131E";
@@ -17,6 +19,7 @@ const chartLineColor = "#CC54B0";
 const chartDotsColor = chartLineColor;
 
 const fontFamily = "Ubuntu Mono";
+const windowOpeningDurationMS = 400;
 const cooldown = 30;
 const cooldownRec = 30;
 let currentCryptoPrice = 0;
@@ -25,6 +28,7 @@ let userCryptoBalance = 0;
 const ticker = window.location.pathname.split("/")[2];
 
 const origin = location.origin;
+
 const loginUrl = new URL("api/auth/sign-in", origin);
 const registerUrl = new URL("api/auth/register/apply", origin);
 const newCodeUrl = new URL("api/auth/register/new-code", origin);
@@ -562,16 +566,12 @@ function getDeviceData() {
         case "Mac OS":
         case "Mac OS X":
         case "Android":
-            osVersion =
-                /(?:Android|Mac OS|Mac OS X|MacPPC|MacIntel|Mac_PowerPC|Macintosh) ([\.\_\d]+)/.exec(
-                    userAgent
-                )[1];
+            osVersion = /(?:Android|Mac OS|Mac OS X|MacPPC|MacIntel|Mac_PowerPC|Macintosh) ([\.\_\d]+)/.exec(userAgent)[1];
             break;
 
         case "iOS":
             osVersion = /OS (\d+)_(\d+)_?(\d+)?/.exec(nVer);
-            osVersion =
-                osVersion[1] + "." + osVersion[2] + "." + (osVersion[3] | 0);
+            osVersion = osVersion[1] + "." + osVersion[2] + "." + (osVersion[3] | 0);
             break;
     }
 
@@ -602,8 +602,7 @@ function isTokensRefreshRequired() {
 
     if (
         access != "" &&
-        Math.floor(Date.now() / 1000) <
-            Number(JSON.parse(atob(access.split(".")[1])).exp) - 1
+        Math.floor(Date.now() / 1000) < Number(JSON.parse(atob(access.split(".")[1])).exp) - 1
     ) {
         load_profile();
         return false;
@@ -627,10 +626,7 @@ function getCookie(cookie) {
 function load_profile() {
     let authClasses = document.getElementById("auth-button").classList;
     let profileClasses = document.getElementById("profile-button").classList;
-    if (
-        !authClasses.contains("display-off") &&
-        profileClasses.contains("display-off")
-    ) {
+    if (!authClasses.contains("display-off") && profileClasses.contains("display-off")) {
         authClasses.add("display-off");
         profileClasses.remove("display-off");
     }
@@ -650,9 +646,6 @@ document.getElementById("right-switch").onclick = rightSwitchTransform;
 document.getElementById("sign-up").onclick = openSignUpWindow;
 document.getElementById("sign-in").onclick = openSignInWindow;
 
-document.getElementById("dropdown-sign-in").onclick = openSignInWindow;
-document.getElementById("dropdown-sign-up").onclick = openSignUpWindow;
-
 document.getElementById("cancel").onclick = closeLoginWindow;
 document.getElementById("mail-cancel").onclick = closeConfirmWindow;
 document.getElementById("email-cancel").onclick = closeEmailWindow;
@@ -661,209 +654,152 @@ document.getElementById("mail-cancel-rec").onclick = closePasswordWindow;
 document.getElementById("code-btn").onclick = sendNewCode;
 document.getElementById("code-btn-rec").onclick = sendNewCodeRec;
 
-document
-    .getElementById("login-form-id")
-    .addEventListener("submit", async (e) => {
-        e.preventDefault();
+document.getElementById("login-form-id").addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-        let formData = new FormData(document.getElementById("login-form-id"));
+    let formData = new FormData(document.getElementById("login-form-id"));
 
-        let response = await fetch(loginUrl, {
+    let response = await fetch(loginUrl, {
+        method: "POST",
+        credentials: "same-origin",
+        body: formData,
+        headers: {
+            "Device": getDeviceData()
+        }
+    });
+
+    if (response.status == 200) {
+        closeLoginWindow();
+        load_profile();
+    } else {
+        let error = await response.json();
+        document.getElementById("login-info").innerHTML = error["error"]["message"];
+    }
+});
+
+document.getElementById("register-form-id").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    let formData = new FormData(
+        document.getElementById("register-form-id")
+    );
+
+    if (validateRegisterData(formData)) {
+        let response = await fetch(registerUrl, {
             method: "POST",
             credentials: "same-origin",
             body: formData,
-            headers: {
-                Device: getDeviceData(),
-            },
         });
 
-        if (response.status == 200) {
-            closeLoginWindow();
-            load_profile();
-        } else {
-            let error = await response.json();
-            document.getElementById("login-info").innerHTML =
-                error["error"]["message"];
-        }
-    });
-
-document
-    .getElementById("register-form-id")
-    .addEventListener("submit", async (e) => {
-        e.preventDefault();
-
-        let formData = new FormData(
-            document.getElementById("register-form-id")
-        );
-
-        if (validateRegisterData(formData)) {
-            let response = await fetch(registerUrl, {
-                method: "POST",
-                credentials: "same-origin",
-                body: formData,
-            });
-
-            if (response.status == 201) {
-                if (isTimerGoing) {
-                    disableTimer(timerId);
-                }
-
-                sessionStorage.setItem(
-                    "request_id",
-                    response.headers.get("Request-Id")
-                );
-
-                document
-                    .getElementById("get-code-wrapper")
-                    .classList.add("display-off");
-                document
-                    .getElementById("new-code")
-                    .classList.remove("display-off");
-                document.getElementById("input-code").style.backgroundColor =
-                    "#7d42e7";
-                document.getElementById("input-code").value = "";
-                timerId = showTime(cooldown);
-
-                let email = document.getElementById("email-input").value;
-                sessionStorage.setItem("email-reg", email);
-                closeLoginWindow();
-                openConfirmWindow(email);
-            } else {
-                error = await response.json();
-                document.getElementById("register-info").innerHTML =
-                    error["error"]["message"];
+        if (response.status == 201) {
+            if (isTimerGoing) {
+                disableTimer(timerId);
             }
+
+            sessionStorage.setItem(
+                "request_id",
+                response.headers.get("Request-Id")
+            );
+
+            document.getElementById("get-code-wrapper").classList.add("display-off");
+            document.getElementById("new-code").classList.remove("display-off");
+            document.getElementById("input-code").style.color = "#8935a2";
+            document.getElementById("input-code").value = "";
+            timerId = showTime(cooldown);
+
+            let email = document.getElementById("email-input").value;
+            sessionStorage.setItem("email-reg", email);
+            closeLoginWindow();
+            openConfirmWindow(email);
+        } else {
+            error = await response.json();
+            document.getElementById("register-info").innerHTML = error["error"]["message"];
         }
-    });
+    }
+});
 
 function disableButtons() {
-    document.getElementsByClassName("auth-link")[0].disabled = true;
-    document.getElementsByClassName("auth-link")[1].disabled = true;
+    document.getElementsByClassName("auth-button")[0].disabled = true;
+    document.getElementsByClassName("auth-button")[1].disabled = true;
 }
 
 function enableButtons() {
-    document.getElementsByClassName("auth-link")[0].disabled = false;
-    document.getElementsByClassName("auth-link")[1].disabled = false;
+    document.getElementsByClassName("auth-button")[0].disabled = false;
+    document.getElementsByClassName("auth-button")[1].disabled = false;
 }
 
 function leftSwitchTransform() {
     document.getElementById("mode-light").style.transform = "translate(0%)";
-    if (window.innerWidth <= 650) {
-        document.getElementById("register-container").style.transform =
-            "translate(-100%)";
-        document.getElementById("login-container").style.transform =
-            "translate(0%, -100%)";
-    } else if (window.innerWidth <= 1000) {
-        document.getElementById("register-container").style.transform =
-            "translate(-100%)";
-        document.getElementById("login-container").style.transform =
-            "translate(5%, -100%)";
-    } else {
-        document.getElementById("register-container").style.transform =
-            "translate(-100%)";
-        document.getElementById("login-container").style.transform =
-            "translate(50%, -100%)";
-    }
+    document.getElementById("auth-mode").style.setProperty('--right-switch-color', textHoverColor);
+    document.getElementById("auth-mode").style.setProperty('--left-switch-color', backgroundColor);
+    document.getElementById("register-container").style.left = "-150%";
+    document.getElementById("login-container").style.left = "0%";
 }
 
 function rightSwitchTransform() {
     document.getElementById("mode-light").style.transform = "translate(100%)";
-    if (window.innerWidth <= 650) {
-        document.getElementById("register-container").style.transform =
-            "translate(0%)";
-        document.getElementById("login-container").style.transform =
-            "translate(100%, -100%)";
-    } else if (window.innerWidth <= 1000) {
-        document.getElementById("register-container").style.transform =
-            "translate(5%)";
-        document.getElementById("login-container").style.transform =
-            "translate(200%, -100%)";
-    } else {
-        document.getElementById("register-container").style.transform =
-            "translate(50%)";
-        document.getElementById("login-container").style.transform =
-            "translate(200%, -100%)";
-    }
+    document.getElementById("auth-mode").style.setProperty('--left-switch-color', textHoverColor);
+    document.getElementById("auth-mode").style.setProperty('--right-switch-color', backgroundColor);
+    document.getElementById("register-container").style.left = "0%";
+    document.getElementById("login-container").style.left = "150%";
 }
 
 function rightSwitch() {
     document.getElementById("mode-light").classList.add("transition-off");
-    document
-        .getElementById("register-container")
-        .classList.add("transition-off");
+    document.getElementById("register-container").classList.add("transition-off");
     document.getElementById("login-container").classList.add("transition-off");
 
     rightSwitchTransform();
     setTimeout(() => {
-        document
-            .getElementById("mode-light")
-            .classList.remove("transition-off");
-        document
-            .getElementById("register-container")
-            .classList.remove("transition-off");
-        document
-            .getElementById("login-container")
-            .classList.remove("transition-off");
-    }, 400);
+        document.getElementById("mode-light").classList.remove("transition-off");
+        document.getElementById("register-container").classList.remove("transition-off");
+        document.getElementById("login-container").classList.remove("transition-off");
+    }, windowOpeningDurationMS);
 }
 
 function leftSwitch() {
     document.getElementById("mode-light").classList.add("transition-off");
-    document
-        .getElementById("register-container")
-        .classList.add("transition-off");
+    document.getElementById("register-container").classList.add("transition-off");
     document.getElementById("login-container").classList.add("transition-off");
 
     leftSwitchTransform();
     setTimeout(() => {
-        document
-            .getElementById("mode-light")
-            .classList.remove("transition-off");
-        document
-            .getElementById("register-container")
-            .classList.remove("transition-off");
-        document
-            .getElementById("login-container")
-            .classList.remove("transition-off");
-    }, 400);
+        document.getElementById("mode-light").classList.remove("transition-off");
+        document.getElementById("register-container").classList.remove("transition-off");
+        document.getElementById("login-container").classList.remove("transition-off");
+    }, windowOpeningDurationMS);
 }
 
 function openSignInWindow() {
     leftSwitch();
     let loginWindow = document.getElementById("login");
-    loginWindow.style.opacity = 1;
-    if (window.innerWidth <= 650) {
-        loginWindow.style.transform = "translate(0%, 30%)";
-    } else {
-        loginWindow.style.transform = "translate(50%, 30%)";
-    }
-    document.getElementById("main").style.filter = "brightness(0.5)";
-    document.getElementById("navbar").style.filter = "brightness(0.5)";
+    loginWindow.style.left = "50%";
+    document.getElementById("main").style.filter = "brightness(0.3)";
+    document.getElementById("navbar").style.filter = "brightness(0.3)";
     disableButtons();
 }
 
 function openSignUpWindow() {
     rightSwitch();
     let loginWindow = document.getElementById("login");
-    loginWindow.style.opacity = 1;
-    if (window.innerWidth <= 650) {
-        loginWindow.style.transform = "translate(0%, 30%)";
-    } else {
-        loginWindow.style.transform = "translate(50%, 30%)";
-    }
-    document.getElementById("main").style.filter = "brightness(0.5)";
-    document.getElementById("navbar").style.filter = "brightness(0.5)";
+    loginWindow.style.left = "50%";
+    document.getElementById("main").style.filter = "brightness(0.3)";
+    document.getElementById("navbar").style.filter = "brightness(0.3)";
     disableButtons();
 }
 
 function closeLoginWindow() {
     let loginWindow = document.getElementById("login");
-    loginWindow.style.opacity = 0;
-    loginWindow.style.transform = "translate(-100%, 30%)";
+    loginWindow.style.left = "-50%";
     document.getElementById("main").style.filter = "brightness(1)";
     document.getElementById("navbar").style.filter = "brightness(1)";
     document.getElementById("login-info").innerText = "";
     document.getElementById("register-info").innerText = "";
+    document.getElementById("register-name-input").value = "";
+    document.getElementById("register-pass-input").value = "";
+    document.getElementById("register-email-input").value = "";
+    document.getElementById("login-name-input").value = "";
+    document.getElementById("login-pass-input").value = "";
     enableButtons();
 }
 
@@ -882,10 +818,7 @@ document.onkeydown = function (evt) {
 function openConfirmWindow(email) {
     document.getElementById("email").innerText = email;
     let window = document.getElementById("confirm-window");
-    window.style.opacity = 1;
-    window.style.transform = "translate(0%)";
-    window.style.visibility = "visible";
-
+    window.style.left = "50%";
     document.getElementById("main").style.filter = "brightness(0.5)";
     document.getElementById("navbar").style.filter = "brightness(0.5)";
     disableButtons();
@@ -893,16 +826,11 @@ function openConfirmWindow(email) {
 
 function closeConfirmWindow() {
     let window = document.getElementById("confirm-window");
-    window.style.opacity = 0;
-    window.style.transform = "translate(200%)";
+    window.style.left = "150%";
     document.getElementById("main").style.filter = "brightness(1)";
     document.getElementById("navbar").style.filter = "brightness(1)";
-    document.getElementById("input-code").style.backgroundColor = "#7d42e7";
+    document.getElementById("input-code").style.color = "#8935a2";
     document.getElementById("input-code").value = "";
-
-    setTimeout(() => {
-        window.style.visibility = "hidden";
-    }, 400);
     enableButtons();
     if (isTimerGoing) {
         disableTimer(timerId);
@@ -913,6 +841,8 @@ document.addEventListener("input", () => {
     let field = document.getElementById("input-code");
     if (field.value.length === 6) {
         verifyCode();
+    } else {
+        document.getElementById("input-code").style.color = "#8935a2";
     }
 });
 
@@ -944,9 +874,7 @@ function showTime(duration) {
         if (thisTimerId == timerId) {
             disableTimer(timerId);
             document.getElementById("new-code").classList.add("display-off");
-            document
-                .getElementById("get-code-wrapper")
-                .classList.remove("display-off");
+            document.getElementById("get-code-wrapper").classList.remove("display-off");
         }
     }, (duration + 1) * 1000);
 
@@ -958,17 +886,17 @@ function disableTimer(timerID) {
     isTimerGoing = false;
 }
 
-function verifyCode() {
+async function verifyCode() {
     let data = new Map();
     data.set("code", document.getElementById("input-code").value);
 
-    response = fetch(verifyCodeUrl, {
+    response = await fetch(verifyCodeUrl, {
         method: "POST",
         credentials: "same-origin",
         headers: {
             "Content-Type": "application/json",
             "Request-Id": sessionStorage.getItem("request_id"),
-            Device: getDeviceData(),
+            "Device": getDeviceData()
         },
         body: JSON.stringify(Object.fromEntries(data)),
     });
@@ -977,7 +905,7 @@ function verifyCode() {
         closeConfirmWindow();
         load_profile();
     } else {
-        document.getElementById("input-code").style.backgroundColor = "#BF1A3E";
+        document.getElementById("input-code").style.color = "#BF1A3E";
     }
 }
 
@@ -996,46 +924,39 @@ async function sendNewCode() {
     });
 
     if (response.status == 200) {
-        document
-            .getElementById("get-code-wrapper")
-            .classList.add("display-off");
+        document.getElementById("get-code-wrapper").classList.add("display-off");
         document.getElementById("new-code").classList.remove("display-off");
-        document.getElementById("input-code").style.backgroundColor = "#7d42e7";
+        document.getElementById("input-code").style.color = "#8935a2";
         document.getElementById("input-code").value = "";
         timerId = showTime(cooldown);
     }
 }
 
 function validateRegisterData(formData) {
-    const re =
-        /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+    const re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 
     let username = formData.get("username");
     let pass = formData.get("password");
     let email = formData.get("email");
 
     if (username.length < 6 || username.length > 20) {
-        document.getElementById("register-info").innerText =
-            "Username length must be between 6 and 20";
+        document.getElementById("register-info").innerText = "Username length must be between 6 and 20";
         return false;
     }
     if (username.includes(" ")) {
-        document.getElementById("register-info").innerText =
-            "username can't include any spaces";
+        document.getElementById("register-info").innerText = "Username can't include any spaces";
         return false;
     }
     if (pass.length < 6 || pass.length > 20) {
-        document.getElementById("register-info").innerText =
-            "password length must be between 6 and 20";
+        document.getElementById("register-info").innerText = "Password length must be between 6 and 20";
         return false;
     }
     if (pass.includes(" ")) {
-        document.getElementById("register-info").innerText =
-            "password can't include any spaces";
+        document.getElementById("register-info").innerText = "Password can't include any spaces";
         return false;
     }
     if (!re.test(email)) {
-        document.getElementById("register-info").innerText = "invalid email";
+        document.getElementById("register-info").innerText = "Invalid email";
         return false;
     }
 
@@ -1072,9 +993,7 @@ document.getElementById("email-submit").addEventListener("click", async (e) => {
             disableTimerRec(timerIdRec);
         }
 
-        document
-            .getElementById("get-code-wrapper-rec")
-            .classList.add("display-off");
+        document.getElementById("get-code-wrapper-rec").classList.add("display-off");
         document.getElementById("new-code-rec").classList.remove("display-off");
         timerIdRec = showTimeRec(cooldownRec);
 
@@ -1084,17 +1003,13 @@ document.getElementById("email-submit").addEventListener("click", async (e) => {
         );
     } else if (response.status === 404 || response.status === 425) {
         let error = await response.json();
-        document.getElementById("pass-info").innerText =
-            error["error"]["message"];
+        document.getElementById("pass-info").innerText = error["error"]["message"];
     }
 });
 
 function openEmailWindow() {
     let window = document.getElementById("email-window");
-    window.style.opacity = 1;
-    window.style.transform = "translate(0%)";
-    window.style.visibility = "visible";
-
+    window.style.left = "50%";
     document.getElementById("main").style.filter = "brightness(0.5)";
     document.getElementById("navbar").style.filter = "brightness(0.5)";
     disableButtons();
@@ -1102,21 +1017,11 @@ function openEmailWindow() {
 
 function closeEmailWindow() {
     let window = document.getElementById("email-window");
-    window.style.opacity = 0;
-    window.style.transform = "translate(-200%)";
+    window.style.left = "150%";
     document.getElementById("main").style.filter = "brightness(1)";
     document.getElementById("navbar").style.filter = "brightness(1)";
     document.getElementById("email-input-recovery").value = "";
     document.getElementById("pass-info").innerText = "";
-
-    setTimeout(() => {
-        window.style.visibility = "hidden";
-        window.style.transition = "none";
-        window.style.transform = "translate(200%)";
-        window.style.transition =
-            "all var(--login-transition-duration) ease-out";
-    }, 400);
-
     enableButtons();
 }
 
@@ -1135,9 +1040,7 @@ async function sendNewCodeRec() {
     });
 
     if (response.status === 200) {
-        document
-            .getElementById("get-code-wrapper-rec")
-            .classList.add("display-off");
+        document.getElementById("get-code-wrapper-rec").classList.add("display-off");
         document.getElementById("new-code-rec").classList.remove("display-off");
         document.getElementById("input-code-rec").value = "";
 
@@ -1160,16 +1063,12 @@ document.getElementById("submit-rec").addEventListener("click", async (e) => {
     e.preventDefault();
 
     let password = document.getElementById("email-rec1").value;
-
     if (password != document.getElementById("email-rec2").value) {
-        document.getElementById("new-pass-info").innerText =
-            "passwords aren't match";
+        document.getElementById("new-pass-info").innerText = "Passwords aren't match";
         return;
     }
-
     if (password.length < 6 || password.length > 20) {
-        document.getElementById("new-pass-info").innerText =
-            "Username length must be between 6 and 20";
+        document.getElementById("new-pass-info").innerText = "Password length must be between 6 and 20";
         return;
     }
 
@@ -1179,12 +1078,12 @@ document.getElementById("submit-rec").addEventListener("click", async (e) => {
         headers: {
             "Content-Type": "application/json",
             "Request-Id": sessionStorage.getItem("request_id"),
-            Device: getDeviceData(),
+            "Device": getDeviceData()
         },
         body: JSON.stringify({
             password: password,
-            code: document.getElementById("input-code-rec").value,
-        }),
+            code: document.getElementById("input-code-rec").value
+        })
     });
 
     if (response.status === 200) {
@@ -1193,18 +1092,14 @@ document.getElementById("submit-rec").addEventListener("click", async (e) => {
     }
     if (response.status === 429 || response.status === 400) {
         error = await response.json();
-        document.getElementById("new-pass-info").innerText =
-            error["error"]["message"];
+        document.getElementById("new-pass-info").innerText = error["error"]["message"];
     }
 });
 
 function openPasswordWindow(email) {
     document.getElementById("email-rec").innerText = email;
     let window = document.getElementById("confirm-window-rec");
-    window.style.opacity = 1;
-    window.style.transform = "translate(0%)";
-    window.style.visibility = "visible";
-
+    window.style.left = "50%";
     document.getElementById("main").style.filter = "brightness(0.5)";
     document.getElementById("navbar").style.filter = "brightness(0.5)";
     disableButtons();
@@ -1216,18 +1111,13 @@ function closePasswordWindow() {
     }
 
     let window = document.getElementById("confirm-window-rec");
-    window.style.opacity = 0;
-    window.style.transform = "translate(200%)";
+    window.style.left = "-50%";
     document.getElementById("main").style.filter = "brightness(1)";
     document.getElementById("navbar").style.filter = "brightness(1)";
     document.getElementById("input-code-rec").value = "";
     document.getElementById("email-rec1").value = "";
     document.getElementById("email-rec2").value = "";
     document.getElementById("new-pass-info").innerText = "";
-
-    setTimeout(() => {
-        window.style.visibility = "hidden";
-    }, 400);
     enableButtons();
 }
 
@@ -1258,12 +1148,8 @@ function showTimeRec(duration) {
     setTimeout(() => {
         if (thisTimerIdRec == timerIdRec && isTimerGoingRec) {
             disableTimerRec(timerIdRec);
-            document
-                .getElementById("new-code-rec")
-                .classList.add("display-off");
-            document
-                .getElementById("get-code-wrapper-rec")
-                .classList.remove("display-off");
+            document.getElementById("new-code-rec").classList.add("display-off");
+            document.getElementById("get-code-wrapper-rec").classList.remove("display-off");
         }
     }, (duration + 1) * 1000);
 
