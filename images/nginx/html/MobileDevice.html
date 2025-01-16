@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>CryptoDeal</title>
+    <style>
+      * {
+        font-family: "Ubuntu Mono";
+      }
+
+      html, body, ul, ol {
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        font-size: 16px;
+      }
+
+      body {
+        background-color: #000000;
+      }
+
+      body::before {
+        content: '';
+        position: absolute;
+        width: 100vw;
+        height: 100vh;
+        background: radial-gradient(circle at -200% 70%, #8FFF06 10%, transparent 80%);
+        animation: glow 10s infinite;
+      }
+
+      @keyframes glow {
+        0% { opacity: 0.2; }
+        50% { opacity: 1; }
+        100% { opacity: 0.2; }
+      }
+
+      .main {
+        width: 90vw;
+        height: 100vh;
+        padding-left: 5vw;
+        padding-right: 5vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+
+        p {
+          font-weight: bold;
+          font-size: 1rem;
+          color: #8935a2;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="main">
+      <p>There is no mobile version</p>
+      <p>Come here from desctop device</p>
+    </div>
+  </body>
+</html>
