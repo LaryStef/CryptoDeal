@@ -145,18 +145,23 @@
         </div>
     </div>
 </div>
-<div style="display: none;" class="success-window" id="success-window">
-    <div class="success-info-wrap">
-        <div class="grat-block">
-            <p class="transaction-info" id="transaction-info">You bought 12.32 BTC for 337822.81$</p>
-            <img class="grat-logo" src="{{ url_for('static', filename='svg/Success.svg') }}" alt="">
-        </div>
-        
-        <span class="success-balance" id="crypto-success-balance">BTC balance: 62.92</span>
-        <span class="success-balance" id="usd-success-balance">USD balance: 32119.44</span>
+<div class="success-window" id="success-window">
+    <div class="cancel-container">
+        <button class="cancel-button" id="close-success">done</button>
     </div>
-    <div class="cancel-success-wrap">
-        <button class="cancel-success-btn" id="close-success">cancel</button>
+    <div class="transaction-info-wrapper">
+        <img class="success-logo" src="{{ url_for('static', filename='svg/Success.svg') }}" alt="">
+        <span class="transaction-info" id="transaction-info"></span>
+    </div>
+    <div class="updated-balance">
+        <div>
+            <span id="updated-balance-ticker"></span>
+            <span class="updated-balance-info" id="crypto-updated-balance"></span>
+        </div>
+        <div>
+            <span>USD balance: </span>
+            <span class="updated-balance-info" id="usd-updated-balance"></span>
+        </div>
     </div>
 </div>
 {% endblock %}

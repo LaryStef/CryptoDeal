@@ -347,35 +347,28 @@ document.getElementById("close-success").addEventListener("click", () => {
 
 function openSuccessWindow() {
     let window = document.getElementById("success-window");
-    window.style.transform = "translate(0%)";
-
+    window.style.left = "50%";
     document.getElementById("main").style.filter = "brightness(0.3)";
     document.getElementById("navbar").style.filter = "brightness(0.3)";
 }
 
 function closeSuccessWindow() {
     let window = document.getElementById("success-window");
-    window.style.transform = "translate(250%)";
-
+    window.style.left = "150%";
     document.getElementById("main").style.filter = "brightness(1)";
     document.getElementById("navbar").style.filter = "brightness(1)";
 }
 
-function updateSuccessWindow(
-    transactionType,
-    amountCrypto,
-    amountUSD,
-) {
+function updateSuccessWindow(transactionType, amountCrypto, amountUSD) {
     const transactionInfoEl = document.getElementById("transaction-info");
     if (transactionType === "buy"){
         transactionInfoEl.innerText = `You bought ${amountCrypto} ${ticker} for ${amountUSD}$`;        
-    }
-    else if (transactionType === "sell"){
+    } else if (transactionType === "sell"){
         transactionInfoEl.innerText = `You sold ${amountCrypto} ${ticker} for ${amountUSD}$`;
     }
-    
-    document.getElementById("crypto-success-balance").innerText = `Your ${ticker} balance: ${userCryptoBalance}`;
-    document.getElementById("usd-success-balance").innerText = `Your USD balance: ${convertNumberForUser(userUSDBalance)}`;
+    document.getElementById("updated-balance-ticker").innerText = `${ticker} balance: `;
+    document.getElementById("crypto-updated-balance").innerText = (Math.round(userCryptoBalance * 100) / 100).toString();
+    document.getElementById("usd-updated-balance").innerText = convertNumberForUser(userUSDBalance).toString();
 }
 
 document.getElementById("crypto-amount-buy").addEventListener("input", () => {
