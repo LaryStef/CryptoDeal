@@ -3,8 +3,16 @@
 @use 'base';
 @use 'const';
 @use 'blocks/navbar';
-@use 'mixins/center-flex' as *;
+@use 'elements/switch-mode-button';
+@use 'elements/switch-mode-light';
 @use 'mixins/shadow-button' as *;
+@use 'mixins/submit-button' as *;
+@use 'mixins/center-flex' as *;
+@use 'mixins/switch-mode' as *;
+@use 'mixins/window' as *;
+@use 'mixins/input' as *;
+
+// cryptocurrency info
 
 .main-container {
     @include center-flex();
@@ -161,6 +169,121 @@
     .active {
         color: colors.$contrast-color;
         box-shadow: 0 0 5px colors.$contrast-color;
+    }
+}
+
+// trade window
+
+.trade-window {
+    @include window($height: 320px, $width: 700px, $padding: 30px, $left: -50%);
+}
+
+.trade-mode-container {
+    width: 100%;
+    @include center-flex();
+    margin-bottom: 10px;
+    margin-top: 30px;
+}
+
+#trade-mode-wrapper {
+    --left-switch-color: #{colors.$background-color};
+    --right-switch-color: #{colors.$text-hover-color};
+}
+
+.trade-mode {
+    @include switch-mode($left-button: "buy", $right-button: "sell");
+}
+
+.trade-block {
+    width: 100%;
+    height: 300px;
+    transition: left const.$login-mode-transition-duration ease-out;
+    position: relative;
+}
+
+.buy-block {
+    left: 0%;
+    top: -300px;
+}
+
+.sell-block {
+    left: -150%;
+}
+
+.trade-error-info {
+    @include center-flex();
+    width: 100%;
+    height: 50px;
+    color: colors.$text-error-color;
+}
+
+.buy-fields {
+    @include center-flex();
+    gap: 30px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.trade-input {
+    @include input-field($width: 220px, $font-size: 1.125rem);
+    padding-left: 15px;
+}
+
+input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+    appearance: none;
+}
+
+.trade-submit {
+    @include submit-button($width: 100px);
+}
+
+.autofill {
+    cursor: not-allowed;
+}
+
+.trade-info-container {
+    @include center-flex();
+    gap: 2%;
+    margin-top: 50px;
+    margin-bottom: 10px;
+
+    .trade-info {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    span {
+        color: colors.$text-hover-color;
+    }
+
+    .trade-info-field {
+        color: colors.$contrast-color;
+    }
+
+    .update-button {
+        transition: transform 600ms ease-out;
+        border-style: none;
+        background-color: colors.$window-color;
+        padding: 10px;
+        border-radius: 20px;
+
+        &:hover {
+            transform: rotate(-360deg);
+        } 
+    }
+
+    .update-logo {
+        filter: brightness(0) saturate(100%) invert(27%) sepia(15%) saturate(7433%) hue-rotate(263deg) brightness(92%) contrast(91%);
+
+        width: 30px;
+        height: 30px;
     }
 }
 
