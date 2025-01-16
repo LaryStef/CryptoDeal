@@ -1,0 +1,11 @@
+@use '../colors';
+
+@mixin submit-button($width) {
+    width: $width;
+    padding-left: 0;
+
+    &:hover {
+        box-shadow: 0 0 5px colors.$contrast-color;
+        color: colors.$contrast-color;
+    }
+}
