@@ -1,9 +1,14 @@
 @use '../colors';
 @use '../const';
 @use '../elements/cancel';
+@use '../elements/switch-mode-button';
+@use '../elements/switch-mode-light';
 @use '../mixins/shadow-button' as *;
+@use '../mixins/submit-button' as *;
 @use '../mixins/center-flex' as *;
+@use '../mixins/switch-mode' as *;
 @use '../mixins/window' as *;
+@use '../mixins/input' as *;
 
 // navigation
 
@@ -127,7 +132,6 @@
     }
 }
 
-
 // auth window
 
 .auth-window {
@@ -141,74 +145,8 @@
     height: 40px;
 }
 
-@mixin auth-mode-shape() {
-    width: 70px;
-    height: 50px;
-}
-
-@mixin auth-mode-pseudo-styles($content, $color) {
-    content: $content;
-    color: $color;
-    position: absolute;
-    @include center-flex();
-    z-index: 1;
-    font-size: 1.125rem;
-    transition: all const.$login-mode-transition-duration linear;
-    @include auth-mode-shape();
-}
-
-@mixin submit-button($width) {
-    width: $width;
-    padding-left: 0;
-
-    &:hover {
-        box-shadow: 0 0 5px colors.$contrast-color;
-        color: colors.$contrast-color;
-    }
-}
-
-#auth-mode {
-    --left-switch-color: #{colors.$background-color};
-    --right-switch-color: #{colors.$text-hover-color};
-}
-
 .auth-mode {
-    display: flex;
-    box-shadow: 0 0 5px colors.$text-hover-color;
-    transition: box-shadow const.$link-transition-duration linear;
-    border-radius: 20px;
-    height: 50px;
-    width: 140px;
-
-    &:hover {
-        box-shadow: 0 0 10px colors.$text-hover-color;
-    }
-
-    &::before {
-        @include auth-mode-pseudo-styles("sign in", var(--left-switch-color));
-    }
-    
-    &::after {
-        @include auth-mode-pseudo-styles("sign up", var(--right-switch-color));
-        transform: translate(100%);
-    }
-}
-
-.auth-mode-button {
-    opacity: 0;
-    z-index: 2;
-    border-radius: 20px;
-    @include auth-mode-shape();
-}
-
-.auth-mode-light {
-    position: absolute;
-    transform: translate(0%);
-    z-index: 0;
-    transition: transform const.$login-mode-transition-duration ease-out;
-    background-color: colors.$text-hover-color;
-    border-radius: 20px;
-    @include auth-mode-shape();
+    @include switch-mode($left-button: "sign in", $right-button: "sign up");
 }
 
 .auth-block {
@@ -250,28 +188,6 @@
     flex-direction: column;
     gap: 15px;
     width: 100%;
-}
-
-@mixin input-field($width, $font-size) {
-    width: $width;
-    font-size: $font-size;
-    transition: all const.$link-transition-duration linear;
-    box-shadow: 0 0 8px colors.$text-hover-color;
-    border-style: none;
-    border-radius: 15px;
-    background-color: colors.$window-color;
-    height: 40px;
-    color: colors.$text-hover-color;
-
-    &::placeholder {
-        opacity: 0.8;
-        color: colors.$text-hover-color;
-    }
-
-    &:focus {
-        outline: none;
-        box-shadow: 0 0 8px colors.$contrast-color;
-    }
 }
 
 .auth-input {
@@ -366,7 +282,6 @@
 .start-recover-submit {
     @include submit-button($width: 315px);
 }
-
 
 // complete recovery window
 

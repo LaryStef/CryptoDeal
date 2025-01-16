@@ -58,6 +58,25 @@ body {
   color: #8FFF06;
 }
 
+.switch-mode-button {
+  opacity: 0;
+  z-index: 2;
+  border-radius: 20px;
+  width: 70px;
+  height: 50px;
+}
+
+.switch-mode-light {
+  position: absolute;
+  transform: translate(0%);
+  z-index: 0;
+  transition: transform 400ms ease-out;
+  background-color: #8935a2;
+  border-radius: 20px;
+  width: 70px;
+  height: 50px;
+}
+
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -194,11 +213,6 @@ body {
   height: 40px;
 }
 
-#auth-mode {
-  --left-switch-color: #000000;
-  --right-switch-color: #8935a2;
-}
-
 .auth-mode {
   display: flex;
   box-shadow: 0 0 5px #8935a2;
@@ -236,25 +250,6 @@ body {
   width: 70px;
   height: 50px;
   transform: translate(100%);
-}
-
-.auth-mode-button {
-  opacity: 0;
-  z-index: 2;
-  border-radius: 20px;
-  width: 70px;
-  height: 50px;
-}
-
-.auth-mode-light {
-  position: absolute;
-  transform: translate(0%);
-  z-index: 0;
-  transition: transform 400ms ease-out;
-  background-color: #8935a2;
-  border-radius: 20px;
-  width: 70px;
-  height: 50px;
 }
 
 .auth-block {

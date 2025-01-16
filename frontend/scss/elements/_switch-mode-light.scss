@@ -1,0 +1,13 @@
+@use '../const';
+@use '../colors';
+
+.switch-mode-light {
+    position: absolute;
+    transform: translate(0%);
+    z-index: 0;
+    transition: transform const.$login-mode-transition-duration ease-out;
+    background-color: colors.$text-hover-color;
+    border-radius: 20px;
+    width: 70px;
+    height: 50px;
+}

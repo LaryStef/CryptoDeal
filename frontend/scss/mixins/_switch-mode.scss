@@ -1,0 +1,25 @@
+@use '../colors';
+@use '../const';
+@use 'switch-mode-pseudo-styles' as *;
+
+@mixin switch-mode($left-button, $right-button) {
+    display: flex;
+    box-shadow: 0 0 5px colors.$text-hover-color;
+    transition: box-shadow const.$link-transition-duration linear;
+    border-radius: 20px;
+    height: 50px;
+    width: 140px;
+
+    &:hover {
+        box-shadow: 0 0 10px colors.$text-hover-color;
+    }
+
+    &::before {
+        @include switch-mode-pseudo-styles($left-button, var(--left-switch-color));
+    }
+    
+    &::after {
+        @include switch-mode-pseudo-styles($right-button, var(--right-switch-color));
+        transform: translate(100%);
+    }
+}
