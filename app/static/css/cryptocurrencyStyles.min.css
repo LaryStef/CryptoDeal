@@ -918,6 +918,53 @@ input[type=number] {
   height: 30px;
 }
 
+.success-window {
+  left: 150%;
+  width: 400px;
+  transition: all 400ms ease-out;
+  position: fixed;
+  height: 150px;
+  padding: 30px;
+  padding-top: 0px;
+  box-shadow: 0 0 8px #8FFF06;
+  border-radius: 50px;
+  background-color: #0A0A0A;
+  top: calc((100vh - 150px - 30px) / 2);
+  overflow: hidden;
+  transform: translateX(-50%);
+}
+
+.transaction-info-wrapper {
+  margin-top: 40px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.transaction-info-wrapper .transaction-info {
+  font-size: 1.2rem;
+  color: #8935a2;
+}
+
+.success-logo {
+  width: 20px;
+  height: 20px;
+}
+
+.updated-balance {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15%;
+}
+.updated-balance span {
+  color: #8935a2;
+}
+.updated-balance .updated-balance-info {
+  color: #8FFF06;
+}
+
 .display-off {
   display: none;
 }

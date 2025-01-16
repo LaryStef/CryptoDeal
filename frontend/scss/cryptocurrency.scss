@@ -281,9 +281,44 @@ input[type=number] {
 
     .update-logo {
         filter: brightness(0) saturate(100%) invert(27%) sepia(15%) saturate(7433%) hue-rotate(263deg) brightness(92%) contrast(91%);
-
         width: 30px;
         height: 30px;
+    }
+}
+
+// successful trade window
+
+.success-window {
+    @include window($height: 150px, $width: 400px, $padding: 30px, $left: 150%);
+}
+
+.transaction-info-wrapper {
+    margin-top: 40px;
+    margin-bottom: 20px;
+    @include center-flex();
+    gap: 10px;
+
+    .transaction-info {
+        font-size: 1.2rem;
+        color: colors.$text-hover-color;
+    }
+}
+
+.success-logo {
+    width: 20px;
+    height: 20px;
+}
+
+.updated-balance {
+    @include center-flex();
+    gap: 15%;
+
+    span {
+        color: colors.$text-hover-color;
+    }
+
+    .updated-balance-info {
+        color: colors.$contrast-color;
     }
 }
 
