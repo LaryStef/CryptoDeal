@@ -594,8 +594,8 @@ document.onkeydown = function (evt) {
 function openSettingsWindow() {
     let window = document.getElementById("set-win");
     window.style.left = "50%";
-    document.getElementById("main").style.filter = "brightness(0.5)";
-    document.getElementById("navbar").style.filter = "brightness(0.5)";
+    document.getElementById("main").style.filter = "brightness(0.3)";
+    document.getElementById("navbar").style.filter = "brightness(0.3)";
 }
 
 function closeSettingsWindow() {

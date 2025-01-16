@@ -345,8 +345,8 @@ function openConfirmWindow(email) {
     document.getElementById("email").innerText = email;
     let window = document.getElementById("confirm-window");
     window.style.left = "50%";
-    document.getElementById("main").style.filter = "brightness(0.5)";
-    document.getElementById("navbar").style.filter = "brightness(0.5)";
+    document.getElementById("main").style.filter = "brightness(0.3)";
+    document.getElementById("navbar").style.filter = "brightness(0.3)";
     disableButtons();
 }
 
@@ -536,8 +536,8 @@ document.getElementById("email-submit").addEventListener("click", async (e) => {
 function openEmailWindow() {
     let window = document.getElementById("email-window");
     window.style.left = "50%";
-    document.getElementById("main").style.filter = "brightness(0.5)";
-    document.getElementById("navbar").style.filter = "brightness(0.5)";
+    document.getElementById("main").style.filter = "brightness(0.3)";
+    document.getElementById("navbar").style.filter = "brightness(0.3)";
     disableButtons();
 }
 
@@ -626,8 +626,8 @@ function openPasswordWindow(email) {
     document.getElementById("email-rec").innerText = email;
     let window = document.getElementById("confirm-window-rec");
     window.style.left = "50%";
-    document.getElementById("main").style.filter = "brightness(0.5)";
-    document.getElementById("navbar").style.filter = "brightness(0.5)";
+    document.getElementById("main").style.filter = "brightness(0.3)";
+    document.getElementById("navbar").style.filter = "brightness(0.3)";
     disableButtons();
 }
 
