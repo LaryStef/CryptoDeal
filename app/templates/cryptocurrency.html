@@ -52,59 +52,24 @@
         </div>
     </div>
 </div>
-<div style="display: none;" class="wtb-window" id="wtb-window">
-    <div class="cancel-wrap">
-        <button class="cancel-btn" id="cancel-wtb">cancel</button>
+<div class="trade-window" id="wtb-window">
+    <div class="cancel-container">
+        <button class="cancel-button" id="cancel-wtb">cancel</button>
     </div>
-    <div class="trade-mode-wrap">
-        <div class="trade-switch">
-            <button class="trade-mode-btn" id="buy-mode">Buy</button>
-            <button class="trade-mode-btn" id="sell-mode">Sell</button>
-            <div class="trade-mode" id="trade-mode"></div>
-        </div>
-    </div>
-    <div class="buy-window" id="buy-window">
-        <div class="buy-error">
-            <span id="buy-error-message"></span>
-        </div>
-        <div class="buy-fields">
-            <input
-                class="trade-field"
-                id="crypto-amount-buy"
-                type="number"
-                placeholder="amount of crypto"
-                autocomplete="off"
-                autofocus
-                required
-            >
-            <input
-                class="trade-field autofill"
-                id="crypto-price-buy"
-                type="text"
-                value=""
-                placeholder="price"
-                autocomplete="off"
-                readonly
-            >
-            <input class="trade-field trade-submit" id="buy-purchase" type="button" value="purchase">
-        </div>
-        <div class="trade-extra">
-            <div class="trade-price">
-                <button class="reload-btn">
-                    <img class="reload-logo" src="{{ url_for('static', filename='svg/Reload.svg') }}" alt="refresh">
-                </button>
-                <div id="crypto-trade-price-buy">current price: 46347.721$</div>
-            </div>
-            <div id="usd-balance">USD balance: 784.01</div>
+    <div class="trade-mode-container">
+        <div class="trade-mode" id="trade-mode-wrapper">
+            <button class="switch-mode-button" id="buy-mode"></button>
+            <button class="switch-mode-button" id="sell-mode"></button>
+            <div class="switch-mode-light" id="trade-mode"></div>
         </div>
     </div>
-    <div class="sell-window" id="sell-window">
-        <div class="sell-error">
+    <div class="sell-block trade-block" id="sell-window">
+        <div class="trade-error-info">
             <span id="sell-error-message"></span>
         </div>
         <div class="buy-fields">
             <input
-                class="trade-field"
+                class="trade-input"
                 id="crypto-amount-sell"
                 type="number"
                 placeholder="amount of crypto"
@@ -113,23 +78,70 @@
                 required
             >
             <input
-                class="trade-field autofill"
+                class="trade-input autofill"
                 id="crypto-income-sell"
                 type="text"
                 placeholder="income"
                 autocomplete="off"
                 readonly
             >
-            <input class="trade-field trade-submit" id="sell-purchase" type="button" value="purchase">
+            <input class="trade-input trade-submit" id="sell-purchase" type="button" value="purchase">
         </div>
-        <div class="trade-extra">
-            <div class="trade-price">
-                <button class="reload-btn" id="update-crypto-price-btn">
-                    <img class="reload-logo" src="{{ url_for('static', filename='svg/Reload.svg') }}" alt="refresh">
-                </button>
-                <div id="crypto-trade-price-sell">current price: 46347.721$</div>
+        <div class="trade-info-container">
+            <div class="trade-info">
+                <div>
+                    <span>Current price: </span>
+                    <span class="trade-info-field" id="crypto-trade-price-sell"></span>
+                </div>
+                <div>
+                    <span>Cryptocurrency balance: </span>
+                    <span class="trade-info-field" id="crypto-balance"></span>
+                </div>
             </div>
-            <div id="crypto-balance">crypto balance: 784.01</div>
+            <button class="update-button" id="update-sell-info-button">
+                <img class="update-logo" src="{{ url_for('static', filename='svg/Reload.svg') }}" alt="refresh">
+            </button>
+        </div>
+    </div>
+    <div class="buy-block trade-block" id="buy-window">
+        <div class="trade-error-info">
+            <span id="buy-error-message"></span>
+        </div>
+        <div class="buy-fields">
+            <input
+                class="trade-input"
+                id="crypto-amount-buy"
+                type="number"
+                placeholder="amount of crypto"
+                autocomplete="off"
+                autofocus
+                required
+            >
+            <input
+                class="trade-input autofill"
+                id="crypto-price-buy"
+                type="text"
+                value=""
+                placeholder="price"
+                autocomplete="off"
+                readonly
+            >
+            <input class="trade-input trade-submit" id="buy-purchase" type="button" value="purchase">
+        </div>
+        <div class="trade-info-container">
+            <div class="trade-info">
+                <div>
+                    <span>Current price: </span>
+                    <span class="trade-info-field" id="crypto-trade-price-buy"></span>
+                </div>
+                <div>
+                    <span>USD balance: </span>
+                    <span class="trade-info-field" id="usd-balance"></span>
+                </div>
+            </div>
+            <button class="update-button" id="update-buy-info-button">
+                <img class="update-logo" src="{{ url_for('static', filename='svg/Reload.svg') }}" alt="refresh">
+            </button>
         </div>
     </div>
 </div>

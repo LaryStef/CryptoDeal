@@ -9,7 +9,7 @@ import {
     Filler,
 } from "chart.js";
 
-const textColor = "#7d42e7";
+const windowColor = "#0A0A0A";
 const textHoverColor = "#8935a2";
 const backgroundColor = "#000000";
 const chartAxesDataColor = "#C5FFC3";
@@ -256,7 +256,7 @@ function updateTradeWindowInfo() {
                 userCryptoBalance = Math.round(data["balance"][ticker] * 100) / 100;
             }
 
-            document.getElementById("crypto-balance").innerText = ticker + " balance: " + userCryptoBalance;
+            document.getElementById("crypto-balance").innerText = userCryptoBalance;
         });
     fetch(usdBalanceUrl.get(), {
         method: "GET",
@@ -273,7 +273,7 @@ function updateTradeWindowInfo() {
                 userUSDBalance = Math.round(data["balance"]["USD"] * 100) / 100;
             }
 
-            document.getElementById("usd-balance").innerText = "USD balance: " + convertNumberForUser(data["balance"]["USD"]) + "$";
+            document.getElementById("usd-balance").innerText = convertNumberForUser(data["balance"]["USD"]) + "$";
         });
     fetch(cryptoPriceUrl + ticker, {
         method: "GET",
@@ -282,29 +282,30 @@ function updateTradeWindowInfo() {
         .then((response) => response.json())
         .then((data) => {
             currentCryptoPrice = Math.round(data["price"] * 100) / 100;
-            document.getElementById("crypto-trade-price-buy").innerText = ticker + " price: " + currentCryptoPrice + "$";
-            document.getElementById("crypto-trade-price-sell").innerText = ticker + " price: " + currentCryptoPrice + "$";
+            document.getElementById("crypto-trade-price-buy").innerText =  currentCryptoPrice + "$";
+            document.getElementById("crypto-trade-price-sell").innerText = currentCryptoPrice + "$";
         });
 }
 
-document.getElementById("update-crypto-price-btn").addEventListener("click", () => {
+document.getElementById("update-sell-info-button").addEventListener("click", () => {
+    updateTradeWindowInfo();
+});
+
+document.getElementById("update-buy-info-button").addEventListener("click", () => {
     updateTradeWindowInfo();
 });
 
 function openTradeWindow() {
     let window = document.getElementById("wtb-window");
-    window.style.opacity = 1;
-    window.style.transform = "translate(0%)";
-    window.style.visibility = "visible";
-
-    document.getElementById("main").style.filter = "brightness(0.5)";
-    document.getElementById("navbar").style.filter = "brightness(0.5)";
+    window.style.left = "50%";
+    document.getElementById("main").style.filter = "brightness(0.3)";
+    document.getElementById("navbar").style.filter = "brightness(0.3)";
     updateTradeWindowInfo();
 }
 
 function closeTradeWindow() {
     let window = document.getElementById("wtb-window");
-    window.style.transform = "translate(-200%)";
+    window.style.left = "-50%";
     document.getElementById("main").style.filter = "brightness(1)";
     document.getElementById("navbar").style.filter = "brightness(1)";
     document.getElementById("crypto-amount-buy").value = "";
@@ -315,11 +316,6 @@ function closeTradeWindow() {
     document.getElementById("sell-error-message").innerText = "";
     colorPriceField("crypto-price-buy");
     colorPriceField("crypto-income-sell");
-
-    setTimeout(() => {
-        window.style.visibility = "hidden";
-        window.style.opacity = 0;
-    }, 400);
 }
 
 document.getElementById("buy-mode").onclick = () => {
@@ -330,15 +326,19 @@ document.getElementById("sell-mode").onclick = () => {
 }
 
 function openBuyMode() {
-    document.getElementById("buy-window").style.transform = "translate(0%)";
-    document.getElementById("sell-window").style.transform = "translate(-100%, -100%)";
     document.getElementById("trade-mode").style.transform = "translate(0%)";
+    document.getElementById("trade-mode-wrapper").style.setProperty('--right-switch-color', textHoverColor);
+    document.getElementById("trade-mode-wrapper").style.setProperty('--left-switch-color', backgroundColor);
+    document.getElementById("sell-window").style.left = "-150%";
+    document.getElementById("buy-window").style.left = "0%";
 }
 
 function openSellMode() {
-    document.getElementById("buy-window").style.transform = "translate(100%)";
-    document.getElementById("sell-window").style.transform = "translate(0%, -100%)";
     document.getElementById("trade-mode").style.transform = "translate(100%)";
+    document.getElementById("trade-mode-wrapper").style.setProperty('--left-switch-color', textHoverColor);
+    document.getElementById("trade-mode-wrapper").style.setProperty('--right-switch-color', backgroundColor);
+    document.getElementById("sell-window").style.left = "0%";
+    document.getElementById("buy-window").style.left = "150%";
 }
 
 document.getElementById("close-success").addEventListener("click", () => {
@@ -349,8 +349,8 @@ function openSuccessWindow() {
     let window = document.getElementById("success-window");
     window.style.transform = "translate(0%)";
 
-    document.getElementById("main").style.filter = "brightness(0.5)";
-    document.getElementById("navbar").style.filter = "brightness(0.5)";
+    document.getElementById("main").style.filter = "brightness(0.3)";
+    document.getElementById("navbar").style.filter = "brightness(0.3)";
 }
 
 function closeSuccessWindow() {
@@ -439,8 +439,8 @@ document.getElementById("crypto-amount-sell").addEventListener("input", () => {
 });
 
 function colorPriceField(id, defaultColor=true) {
-    const color = defaultColor ? textColor : "red";
-    document.getElementById(id).style.backgroundColor = color;
+    const color = defaultColor ? textHoverColor : "red";
+    document.getElementById(id).style.color = color;
 }
 
 document.getElementById("buy-purchase").addEventListener("click", () => {
@@ -819,8 +819,8 @@ function openConfirmWindow(email) {
     document.getElementById("email").innerText = email;
     let window = document.getElementById("confirm-window");
     window.style.left = "50%";
-    document.getElementById("main").style.filter = "brightness(0.5)";
-    document.getElementById("navbar").style.filter = "brightness(0.5)";
+    document.getElementById("main").style.filter = "brightness(0.3)";
+    document.getElementById("navbar").style.filter = "brightness(0.3)";
     disableButtons();
 }
 
@@ -1010,8 +1010,8 @@ document.getElementById("email-submit").addEventListener("click", async (e) => {
 function openEmailWindow() {
     let window = document.getElementById("email-window");
     window.style.left = "50%";
-    document.getElementById("main").style.filter = "brightness(0.5)";
-    document.getElementById("navbar").style.filter = "brightness(0.5)";
+    document.getElementById("main").style.filter = "brightness(0.3)";
+    document.getElementById("navbar").style.filter = "brightness(0.3)";
     disableButtons();
 }
 
@@ -1100,8 +1100,8 @@ function openPasswordWindow(email) {
     document.getElementById("email-rec").innerText = email;
     let window = document.getElementById("confirm-window-rec");
     window.style.left = "50%";
-    document.getElementById("main").style.filter = "brightness(0.5)";
-    document.getElementById("navbar").style.filter = "brightness(0.5)";
+    document.getElementById("main").style.filter = "brightness(0.3)";
+    document.getElementById("navbar").style.filter = "brightness(0.3)";
     disableButtons();
 }
 
