@@ -311,7 +311,7 @@ input[type=number] {
 
 .updated-balance {
     @include center-flex();
-    gap: 15%;
+    gap: 10%;
 
     span {
         color: colors.$text-hover-color;
