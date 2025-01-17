@@ -956,7 +956,7 @@ input[type=number] {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 15%;
+  gap: 10%;
 }
 .updated-balance span {
   color: #8935a2;
