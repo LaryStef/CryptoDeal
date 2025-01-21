@@ -62,9 +62,9 @@ const gloablChartObj = getChart();
 loadCryptocurrencyData();
 
 function convertNumberForUser(number) {
-    if (number > 1_000_000_000) return (Math.round(number / 10_000_000) / 100).toString() + "B";
-    if (number > 1_000_000) return (Math.round(number / 10_000) / 100).toString() + "M";
-    if (number > 1000) return (Math.round(number / 10) / 100).toString() + "K";
+    if (number >= 1_000_000_000) return (Math.round(number / 10_000_000) / 100).toString() + "B";
+    if (number >= 1_000_000) return (Math.round(number / 10_000) / 100).toString() + "M";
+    if (number >= 1000) return (Math.round(number / 10) / 100).toString() + "K";
     return (Math.round(number * 100) / 100).toString();
 }
 
@@ -700,7 +700,7 @@ document.getElementById("register-form-id").addEventListener("submit", async (e)
             document.getElementById("input-code").value = "";
             timerId = showTime(cooldown);
 
-            let email = document.getElementById("email-input").value;
+            let email = document.getElementById("register-email-input").value;
             sessionStorage.setItem("email-reg", email);
             closeLoginWindow();
             openConfirmWindow(email);

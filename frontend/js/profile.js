@@ -30,9 +30,9 @@ class BalanceUrl {
 }
 
 function convertNumberForUser(number) {
-    if (number > 1_000_000_000) return (Math.round(number / 10_000_000) / 100).toString() + "B";
-    if (number > 1_000_000) return (Math.round(number / 10_000) / 100).toString() + "M";
-    if (number > 1000) return (Math.round(number / 10) / 100).toString() + "K";
+    if (number >= 1_000_000_000) return (Math.round(number / 10_000_000) / 100).toString() + "B";
+    if (number >= 1_000_000) return (Math.round(number / 10_000) / 100).toString() + "M";
+    if (number >= 1000) return (Math.round(number / 10) / 100).toString() + "K";
     return (Math.round(number * 100) / 100).toString();
 }
 
@@ -186,14 +186,16 @@ function formDoughnutData(cryptocurrencies) {
         "#f18e1c",
         "#e32322",
         "#6d398b",
+        "#142C95",
         "#2a71b0",
         "#008e5b",
+        "#8C9686",
     ];
 
     const legend = document.getElementById("legend-list");
     let doughnutData = []
     for (let i = 0; i < cryptocurrencies.length ; i++) {
-        if (i == 5) {
+        if (i == colors.length - 1) {
             legend.innerHTML += `<li class="legend-el" id="legend-${i + 1}">
                 <div class="color-rect" style="background-color: ${colors[i]};"></div>
                 <span>Other</span></li>`
@@ -222,19 +224,19 @@ function loadCrytoTable(cryptocurrencies) {
     let table = document.getElementById("crypto-list");
     for (let i = 0; i < cryptocurrencies.length; i++) {
         let profitCell = "";
-        if (cryptocurrencies[i].profit >= 0) {
+        if (Math.round(cryptocurrencies[i].profit * 100) / 100 >= 0) {
             profitCell = `<td class="tc change-pos">+${Math.round(cryptocurrencies[i].profit * 100) / 100}%</td>`;
         } else {
             profitCell = `<td class="tc change-neg">${Math.round(cryptocurrencies[i].profit * 100) / 100}%</td>`;
         }
         let changeCell = "";
-        if (cryptocurrencies[i].change >= 0) {
+        if (Math.round(cryptocurrencies[i].change * 100) / 100 >= 0) {
             changeCell = `<td class="tc change-pos">+${Math.round(cryptocurrencies[i].change * 100) / 100}%</td>`;
         } else {
             changeCell = `<td class="tc change-neg">${Math.round(cryptocurrencies[i].change * 100) / 100}%</td>`;
         }
         table.innerHTML += `
-                <tr class="row">
+            <tr class="row">
                 <td class="tc">${i+1}</td>
                 <td class="tc">
                     <div class="crypto-name-wrap">
@@ -262,7 +264,6 @@ function loadCryptoTransactionHistory() {
     })
         .then((response) => response.json())
         .then((data) => {
-            console.log(data);
             const transactions = data.transactions;
             const table = document.getElementById("crypto-transaction-history");
 

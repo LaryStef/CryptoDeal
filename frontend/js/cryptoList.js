@@ -30,7 +30,7 @@ function loadCryptoTable() {
             let num = 1;
             currencyList.forEach((currency) => {
                 let volume;
-                if (currency.volume > 1_000_000_000) {
+                if (currency.volume >= 1_000_000_000) {
                     volume = (Math.round(currency.volume / 1_000_000) / 1000).toString() + "B"
                 } else {
                     volume = (Math.round(currency.volume / 1000) / 1000).toString() + "M"
@@ -285,7 +285,7 @@ document.getElementById("register-form-id").addEventListener("submit", async (e)
             document.getElementById("input-code").value = "";
             timerId = showTime(cooldown);
 
-            let email = document.getElementById("email-input").value;
+            let email = document.getElementById("register-email-input").value;
             sessionStorage.setItem("email-reg", email);
             closeLoginWindow();
             openConfirmWindow(email);
