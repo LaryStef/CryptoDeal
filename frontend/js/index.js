@@ -233,7 +233,7 @@ document.getElementById("register-form-id").addEventListener("submit", async (e)
             document.getElementById("input-code").value = "";
             timerId = showTime(cooldown);
 
-            let email = document.getElementById("email-input").value;
+            let email = document.getElementById("register-email-input").value;
             sessionStorage.setItem("email-reg", email);
             closeLoginWindow();
             openConfirmWindow(email);
