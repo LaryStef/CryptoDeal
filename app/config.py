@@ -51,7 +51,7 @@ class AppConfig(Config):
     # restore_cooldown must be more then restore_lifetime
     RESTORE_LIFETIME: int = 1200
     ACCESS_TOKEN_LIFETIME: int = 10000
-    RESTORE_COOLDOWN: int = 20000
+    RESTORE_COOLDOWN: int = 300
     REFRESH_TOKEN_LIFETIME: int = 12000
     JWT_ENCODING_ALGORITHM: str = "HS256"
     LOGIN_COOLDOWN: int = 2
