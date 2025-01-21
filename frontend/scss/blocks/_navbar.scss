@@ -256,7 +256,7 @@
 // start recover window
 
 .start-recover-window {
-    @include window($height: 200px, $width: 400px, $padding: 50px, $left: 150%);
+    @include window($height: 200px, $width: 500px, $padding: 50px, $left: 150%);
 }
 
 .start-recover-message {

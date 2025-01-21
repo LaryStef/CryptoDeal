@@ -423,7 +423,7 @@ body {
 
 .start-recover-window {
   left: 150%;
-  width: 400px;
+  width: 500px;
   transition: all 400ms ease-out;
   position: fixed;
   height: 200px;
