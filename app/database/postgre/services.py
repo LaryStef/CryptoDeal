@@ -160,7 +160,7 @@ class PostgreHandler:
         )
 
         if course_row is None:
-            raise BadRequest(description=f"no such ticker: {ticker}")
+            raise BadRequest(description=f"No such ticker: {ticker}")
         current_price: float = course_row.price
 
         user: User | None = db.session.execute(
@@ -168,7 +168,7 @@ class PostgreHandler:
         ).scalar()
 
         if user is None:
-            raise NotFound(description=f"no such ticker: {ticker}")
+            raise NotFound(description=f"No such ticker: {ticker}")
 
         usd_balance: FiatWallet | None = None
         for fiat in user.user_fiat_wallet:
@@ -196,7 +196,7 @@ class PostgreHandler:
                     shortage
                 )
                 raise BadRequest(
-                    description=(f"you're short of {shortage} USD")
+                    description=(f"You're short of {shortage} USD")
                 )
 
             if crypto_balance is None:
@@ -217,7 +217,7 @@ class PostgreHandler:
 
         elif type_ == "sell":
             if crypto_balance is None:
-                raise BadRequest(description=f"you don't have any {ticker}")
+                raise BadRequest(description=f"You don't have any {ticker}")
 
             if crypto_balance.amount < amount:
                 shortage = round(
@@ -232,7 +232,7 @@ class PostgreHandler:
                     shortage
                 )
                 raise BadRequest(
-                    description=f"you're short of {shortage} {ticker}"
+                    description=f"You're short of {shortage} {ticker}"
                 )
 
             usd_balance.amount += round(amount * current_price, ndigits=2)

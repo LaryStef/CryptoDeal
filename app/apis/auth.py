@@ -411,11 +411,12 @@ class Restore(Resource):
                 return {
                     "error": {
                         "code": "Too early",
-                        "message": f"""Password has been restored recently,
-                            try in
-                            {(appConfig.RESTORE_COOLDOWN - cooldown) // 60 + 1}
-                            minutes
-                        """,
+                        "message": (
+                            "Password has been restored recently, "
+                            "try in "
+                            f"{(appConfig.RESTORE_COOLDOWN - cooldown) // 60 + 1} "
+                            "minutes"
+                        ),
                         "details": """Password restore procedure has 10
                             minutes cooldown"""
                     }
