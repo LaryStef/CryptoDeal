@@ -15,10 +15,9 @@ from app.database.postgre.services import PostgreHandler
 from app.database.redisdb.services import RediskaHandler, rediska
 from app.shemas import LoginSchema, RegisterSchema
 from app.aliases import RESTError
-from app.security.decorators import authorization_required
-from app.security.generators import generate_id
-from app.security.JWT import generate_tokens, validate_token
-
+from app.security import (
+    authorization_required, generate_id, generate_tokens, validate_token
+)
 
 api = Namespace("auth", path="/auth/")
 

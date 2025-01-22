@@ -1,10 +1,12 @@
-from flask import Blueprint, abort, current_app, render_template, redirect, url_for
+from flask import (
+    Blueprint, abort, current_app, render_template, redirect, url_for
+)
 from sqlalchemy import ScalarResult
 from werkzeug.exceptions import NotFound, Unauthorized, HTTPException
 
 from app.database.postgre.models import CryptoCurrency
 from app.database.postgre.services import PostgreHandler
-from app.utils.decorators import authorization_required
+from app.security import authorization_required
 
 
 main: Blueprint = Blueprint("main", __name__)

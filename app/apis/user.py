@@ -10,8 +10,7 @@ from app.database.postgre.models import (
 )
 from app.database.postgre.services import PostgreHandler
 from app.aliases import RESTError
-from app.security.decorators import authorization_required
-from app.security.JWT import validate_token
+from app.security import authorization_required, validate_token
 
 
 api = Namespace("user", path="/user/")

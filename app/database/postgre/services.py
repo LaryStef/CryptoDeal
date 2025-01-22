@@ -16,7 +16,7 @@ from app.database.postgre.models import (
     CryptoCourse, CryptocurrencyWallet, CryptoTransaction, FiatWallet, Session,
     User, CryptoCurrency
 )
-from app.security.cryptography import hash_password
+from app.security import hash_password
 
 
 class PostgreHandler:
