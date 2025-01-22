@@ -1,4 +1,4 @@
-from datetime import UTC, datetime, timedelta
+from datetime import datetime, timedelta
 from random import randint
 from typing import Any, Literal
 from uuid import uuid4
@@ -6,15 +6,17 @@ from uuid import uuid4
 from flask import current_app, url_for
 from sqlalchemy import BinaryExpression, Result, Sequence, delete, desc, select
 from sqlalchemy.orm import Mapped
+from sqlalchemy.sql.expression import text
+from sqlalchemy.sql.functions import now
 from werkzeug.exceptions import BadRequest, NotFound
 
 from app.config import appConfig
-from app.database.postgre import db, utcnow
+from app.database.postgre import db
 from app.database.postgre.models import (
-    CryptoCourse, CryptocurrencyWallet, CryptoTransaction, FiatWallet, Session,
-    User, CryptoCurrency
+    CryptoCourse, CryptoCurrency, CryptocurrencyWallet, CryptoTransaction,
+    FiatWallet, Session, User
 )
-from app.utils.cryptography import hash_password
+from app.security import hash_password
 
 
 class PostgreHandler:
@@ -106,7 +108,9 @@ class PostgreHandler:
     @staticmethod
     def update_password(user: User, password: str) -> None:
         user.password_hash = hash_password(password)
-        user.restore_date = utcnow()
+        user.restore_date = now().op('AT TIME ZONE')('UTC') + text(
+            "INTERVAL '3 hours'"
+        )
         db.session.commit()
         current_app.logger.info("updated password %s", user.name)
 
@@ -265,14 +269,18 @@ class PostgreHandler:
             select(CryptoCourse).filter_by(
                 ticker=ticker).filter_by(
                 type_="hour").filter_by(
-                number=datetime.now(UTC).hour
+                number=datetime.now().hour
             )
         ).scalar()
 
     @staticmethod
     def get_crypto_history(user_id: str) -> list[CryptoCourse]:
-        transactions: tuple[str | None, CryptoTransaction | None] = db.session.execute(
-            select(CryptoCurrency.name, CryptoTransaction).join_from(CryptoCurrency, CryptoTransaction).filter_by(user_id=user_id)
+        transactions: tuple[
+            str | None, CryptoTransaction | None
+        ] = db.session.execute(
+            select(CryptoCurrency.name, CryptoTransaction).join_from(
+                CryptoCurrency, CryptoTransaction
+            ).filter_by(user_id=user_id)
         ).all()
 
         if transactions is None:
@@ -324,7 +332,7 @@ class PostgreHandler:
 
     @staticmethod
     def calculate_daily_change(ticker: str) -> float:
-        hour: int = datetime.now(UTC).hour
+        hour: int = datetime.now().hour
 
         course_day_ago: CryptoCourse = db.session.execute(
             select(

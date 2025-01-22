@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime
 from time import time
 from typing import Any
 from uuid import uuid4
@@ -9,15 +9,15 @@ from flask_restx import Namespace, Resource
 from redis.exceptions import ResponseError
 from werkzeug.exceptions import BadRequest, NotFound, Unauthorized
 
+from app.aliases import RESTError
 from app.config import appConfig
 from app.database.postgre.models import User
 from app.database.postgre.services import PostgreHandler
 from app.database.redisdb.services import RediskaHandler, rediska
+from app.security import (
+    authorization_required, generate_id, generate_tokens, validate_token
+)
 from app.shemas import LoginSchema, RegisterSchema
-from app.utils.aliases import RESTError
-from app.utils.decorators import authorization_required
-from app.utils.generators import generate_id
-from app.utils.JWT import generate_tokens, validate_token
 
 
 api = Namespace("auth", path="/auth/")
@@ -253,7 +253,9 @@ class RefreshCode(Resource):
                     }
                 }, 429
 
-            if register_data.get("accept_new_request") > int(time()):
+            if register_data.get(
+                "accept_new_request"
+            ) > int(time()) + appConfig.TIMESTAMP_OFFSET:
                 return {
                     "error": {
                         "code": "Too early",
@@ -297,7 +299,9 @@ class VerifyCode(Resource):
             if code is None or register_data is None:
                 raise BadRequest
 
-            if register_data["deactivation_time"] <= int(time()):
+            if register_data["deactivation_time"] <= int(
+                time()
+            ) + appConfig.TIMESTAMP_OFFSET:
                 return {
                     "error": {
                         "code": "Bad Request",
@@ -403,10 +407,9 @@ class Restore(Resource):
                     }
                 }, 404
 
-            cooldown: int = int(datetime.now().timestamp()) \
-                - int(user.restore_date.timestamp()) \
-                + int(timedelta(hours=3.0).total_seconds())  # because of utc((
-
+            cooldown: int = int(datetime.now().timestamp()) - int(
+                user.restore_date.timestamp()
+            )
             if cooldown < appConfig.RESTORE_COOLDOWN:
                 return {
                     "error": {
@@ -414,7 +417,9 @@ class Restore(Resource):
                         "message": (
                             "Password has been restored recently, "
                             "try in "
-                            f"{(appConfig.RESTORE_COOLDOWN - cooldown) // 60 + 1} "
+                            f"{(
+                                appConfig.RESTORE_COOLDOWN - cooldown
+                            ) // 60 + 1} "
                             "minutes"
                         ),
                         "details": """Password restore procedure has 10
@@ -469,7 +474,9 @@ class RestoreNewCode(Resource):
                     }
                 }, 429
 
-            if restore_data.get("accept_new_request") > int(time()):
+            if restore_data.get("accept_new_request") > int(
+                time()
+            ) + appConfig.TIMESTAMP_OFFSET:
                 return {
                     "error": {
                         "code": "Too early",

@@ -19,6 +19,9 @@ _CeleryConf: TypeAlias = dict[
 class AppConfig(Config):
     # app
     DEBUG: bool = True
+    TIMESTAMP_OFFSET = 10800  # 3 hours(UTC+3)
+
+    # db
     SQLALCHEMY_DATABASE_URI: str = f"postgresql://{os.getenv('POSTGRES_USER')}:{os.getenv('POSTGRES_PASSWORD')}@{os.getenv('HOST_NETWORK')}:5432/{os.getenv('POSTGRES_NAME')}"  # noqa: E501
     REDIS_URL: str = f"redis://{os.getenv('REDIS_USER')}:{os.getenv('REDIS_PASSWORD')}@{os.getenv('HOST_NETWORK')}:6379/0"  # noqa: E501
     SECRET_KEY: str = os.getenv("SECRET_KEY", "")
@@ -36,11 +39,10 @@ class AppConfig(Config):
     MAIL_DEFAULT_SENDER: tuple[str, str | None] = (
         "CryptoDeal", os.getenv("MAIL")
     )
-
     # cooldown and cooldownRec in js files must be same or longer
     MAIL_CODE_COOLDOWN: int = 20
-    MAIL_CODE_VERIFY_ATTEMPTS: int = 3
-    MAIL_CODE_REFRESH_ATTEMTPTS: int = 3
+    MAIL_CODE_VERIFY_ATTEMPTS: int = 5
+    MAIL_CODE_REFRESH_ATTEMTPTS: int = 5
 
     # user
     START_USD_BALANCE = 10000
@@ -87,7 +89,7 @@ class AppConfig(Config):
         "broker_transport_options": {
             "visibility_timeout": 43200
         },
-        "timezone": "UTC",
+        "timezone": "Europe/Moscow",
         "beat_schedule": {
             "clear-postgre": {
                 "task": "delete_expired_sessions",

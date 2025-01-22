@@ -1,12 +1,9 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase, declared_attr
 
-from app.database.postgre.utc_time import utcnow
-
 
 __all__ = [
     "db",
-    "utcnow",
 ]
 
 

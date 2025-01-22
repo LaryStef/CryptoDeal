@@ -13,7 +13,7 @@ def generate_tokens(
     refresh_id: str
 ) -> tuple[str, str]:
 
-    timestamp = int(time())
+    timestamp = int(time()) + appConfig.TIMESTAMP_OFFSET
 
     payload.update({
         "exp": timestamp + appConfig.ACCESS_TOKEN_LIFETIME,
@@ -72,11 +72,12 @@ def validate_token(
             token,
             key=appConfig.SECRET_KEY,
             algorithms=[appConfig.JWT_ENCODING_ALGORITHM],
+            leeway=appConfig.TIMESTAMP_OFFSET,
             options={
                 "verify_exp": True,
                 "verify_signature": True,
                 "require": token_requirements
             })
-
-    except InvalidTokenError:
+    except InvalidTokenError as ex:
+        print(ex)
         return None

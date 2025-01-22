@@ -3,8 +3,10 @@ from typing import TYPE_CHECKING, Literal
 
 from sqlalchemy import TIMESTAMP, Float, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.sql.expression import text
+from sqlalchemy.sql.functions import now
 
-from app.database.postgre import db, utcnow
+from app.database.postgre import db
 
 
 if TYPE_CHECKING:
@@ -22,18 +24,24 @@ class User(db.Model):
     email: Mapped[str] = mapped_column(String(256), unique=True)
     register_date: Mapped[datetime] = mapped_column(
         TIMESTAMP,
-        server_default=utcnow()
+        server_default=now().op('AT TIME ZONE')('UTC') + text(
+            "INTERVAL '3 hours'"
+        )
     )
     restore_date: Mapped[datetime] = mapped_column(
         TIMESTAMP,
-        server_default=utcnow()
+        server_default=now().op('AT TIME ZONE')('UTC') + text(
+            "INTERVAL '3 hours'"
+        )
     )
     alien_number: Mapped[int] = mapped_column(Integer, default=0)
     crypto_spent: Mapped[float] = mapped_column(Float, default=0)
     crypto_derived: Mapped[float] = mapped_column(Float, default=0)
     login_cooldown_end: Mapped[datetime] = mapped_column(
         TIMESTAMP,
-        server_default=utcnow()
+        server_default=now().op('AT TIME ZONE')('UTC') + text(
+            "INTERVAL '3 hours'"
+        )
     )
     login_attempts: Mapped[int] = mapped_column(Integer, default=0)
     login_mode: Mapped[Literal["fast", "slow"]] = mapped_column(
