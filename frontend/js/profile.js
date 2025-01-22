@@ -11,6 +11,7 @@ const sessionUrl = new URL("api/sessions", origin);
 const cryptoStatisticsUrl = new URL("api/user/statistics/cryptocurrency", origin);
 const cryptoTransactionHistoryUrl = new URL("api/crypto/transaction/history", origin);
 
+const timezoneOffset = 10800;
 const textHoverColor = "#8935a2";
 const contrastColor = "#8FFF06";
 
@@ -401,7 +402,7 @@ function isTokensRefreshRequired() {
 
     if (
         access != "" &&
-        Math.floor(Date.now() / 1000) < Number(JSON.parse(atob(access.split(".")[1])).exp) - 1
+        Math.floor(Date.now() / 1000) + timezoneOffset < Number(JSON.parse(atob(access.split(".")[1])).exp) - 1
     ) {
         return false;
     }
@@ -490,7 +491,7 @@ function loadSessions(clearFirst = false) {
                     <caption>Manage your sessions</caption>
                     <tr>
                         <th class="session-head-sell">Device</th>
-                        <th class="session-head-sell">Last activity(UTC)</th>
+                        <th class="session-head-sell">Last activity</th>
                         <th class="session-head-sell">
                             <button class="term-all" id="term-all">terminate all</button>
                         </th>

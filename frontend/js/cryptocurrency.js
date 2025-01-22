@@ -20,6 +20,7 @@ const chartDotsColor = chartLineColor;
 
 const fontFamily = "Ubuntu Mono";
 const windowOpeningDurationMS = 400;
+const timezoneOffset = 10800;
 const cooldown = 30;
 const cooldownRec = 30;
 let currentCryptoPrice = 0;
@@ -573,6 +574,8 @@ function getDeviceData() {
 
 if (isTokensRefreshRequired()) {
     refreshTokens();
+} else {
+    load_profile();
 }
 
 async function refreshTokens() {
@@ -595,9 +598,8 @@ function isTokensRefreshRequired() {
 
     if (
         access != "" &&
-        Math.floor(Date.now() / 1000) < Number(JSON.parse(atob(access.split(".")[1])).exp) - 1
+        Math.floor(Date.now() / 1000) + timezoneOffset < Number(JSON.parse(atob(access.split(".")[1])).exp) - 1
     ) {
-        load_profile();
         return false;
     }
     return true;
