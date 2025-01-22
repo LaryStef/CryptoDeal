@@ -2,8 +2,8 @@ from datetime import datetime
 
 from sqlalchemy import TIMESTAMP, Float, ForeignKey, String
 from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy.sql.functions import now
 from sqlalchemy.sql.expression import text
+from sqlalchemy.sql.functions import now
 
 from app.database.postgre import db
 

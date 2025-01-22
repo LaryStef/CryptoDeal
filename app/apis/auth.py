@@ -9,15 +9,16 @@ from flask_restx import Namespace, Resource
 from redis.exceptions import ResponseError
 from werkzeug.exceptions import BadRequest, NotFound, Unauthorized
 
+from app.aliases import RESTError
 from app.config import appConfig
 from app.database.postgre.models import User
 from app.database.postgre.services import PostgreHandler
 from app.database.redisdb.services import RediskaHandler, rediska
-from app.shemas import LoginSchema, RegisterSchema
-from app.aliases import RESTError
 from app.security import (
     authorization_required, generate_id, generate_tokens, validate_token
 )
+from app.shemas import LoginSchema, RegisterSchema
+
 
 api = Namespace("auth", path="/auth/")
 

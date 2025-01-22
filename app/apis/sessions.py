@@ -4,9 +4,9 @@ from flask import Response, make_response, request
 from flask_restx import Namespace, Resource
 from werkzeug.exceptions import BadRequest
 
+from app.aliases import RESTError
 from app.database.postgre.models import Session
 from app.database.postgre.services import PostgreHandler
-from app.aliases import RESTError
 from app.security import authorization_required, validate_token
 
 

@@ -5,8 +5,8 @@ from flask import current_app
 
 from app.config import appConfig
 from app.database.redisdb import rediska
+from app.security import generate_id, hash_password
 from app.tasks.mail import send_register_code, send_restore_code
-from app.security import hash_password, generate_id
 
 
 class RediskaHandler:

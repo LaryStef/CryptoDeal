@@ -1,8 +1,8 @@
 from flask import (
-    Blueprint, abort, current_app, render_template, redirect, url_for
+    Blueprint, abort, current_app, redirect, render_template, url_for
 )
 from sqlalchemy import ScalarResult
-from werkzeug.exceptions import NotFound, Unauthorized, HTTPException
+from werkzeug.exceptions import HTTPException, NotFound, Unauthorized
 
 from app.database.postgre.models import CryptoCurrency
 from app.database.postgre.services import PostgreHandler

@@ -7,11 +7,11 @@ from flask_restx import Namespace, Resource
 from sqlalchemy import ScalarResult
 from werkzeug.exceptions import BadRequest, NotFound
 
+from app.aliases import RESTError
 from app.database.postgre.models import CryptoCourse, CryptoCurrency
 from app.database.postgre.services import PostgreHandler
-from app.shemas import CryptoTransactionSchema
-from app.aliases import RESTError
 from app.security import authorization_required, validate_token
+from app.shemas import CryptoTransactionSchema
 
 
 api: Namespace = Namespace("crypto", path="/crypto/")

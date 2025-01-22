@@ -1,5 +1,5 @@
-from .decorators import authorization_required
 from .cryptography import hash_password
+from .decorators import authorization_required
 from .generators import generate_id
 from .JWT import generate_tokens, validate_token
 

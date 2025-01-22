@@ -6,15 +6,15 @@ from uuid import uuid4
 from flask import current_app, url_for
 from sqlalchemy import BinaryExpression, Result, Sequence, delete, desc, select
 from sqlalchemy.orm import Mapped
-from werkzeug.exceptions import BadRequest, NotFound
-from sqlalchemy.sql.functions import now
 from sqlalchemy.sql.expression import text
+from sqlalchemy.sql.functions import now
+from werkzeug.exceptions import BadRequest, NotFound
 
 from app.config import appConfig
 from app.database.postgre import db
 from app.database.postgre.models import (
-    CryptoCourse, CryptocurrencyWallet, CryptoTransaction, FiatWallet, Session,
-    User, CryptoCurrency
+    CryptoCourse, CryptoCurrency, CryptocurrencyWallet, CryptoTransaction,
+    FiatWallet, Session, User
 )
 from app.security import hash_password
 
