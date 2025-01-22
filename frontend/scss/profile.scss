@@ -1,12 +1,12 @@
-@use 'reset';
-@use 'base';
-@use 'colors';
-@use 'const';
-@use 'blocks/navbar';
-@use 'elements/table' as *;
-@use 'mixins/shadow-button' as *;
-@use 'mixins/center-flex' as *;
-@use 'mixins/window' as *;
+@use "reset";
+@use "base";
+@use "colors";
+@use "const";
+@use "blocks/navbar";
+@use "elements/table" as *;
+@use "mixins/shadow-button" as *;
+@use "mixins/center-flex" as *;
+@use "mixins/window" as *;
 
 .main-container {
     margin-bottom: 200px;
@@ -16,31 +16,31 @@
 
 .main-block-wrapper {
     @include center-flex();
-    width: 50%;
-    padding-left: 25%;
     padding-right: 25%;
+    padding-left: 25%;
+    width: 50%;
 }
 
 .main-block {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    width: 400px;
-    height: 200px;
-    padding: 30px;
-    background-color: colors.$window-color;
+    transition: box-shadow const.$link-transition-duration linear;
+    box-shadow: 0 0 10px colors.$text-hover-color;
     border: 2px solid colors.$text-hover-color;
     border-radius: 50px;
-    box-shadow: 0 0 10px colors.$text-hover-color;
-    transition: box-shadow const.$link-transition-duration linear;
+    background-color: colors.$window-color;
+    padding: 30px;
+    width: 400px;
+    height: 200px;
 
     h2 {
         margin: 0;
+        overflow: hidden;
         color: colors.$text-hover-color;
         font-size: 2em;
-        overflow: hidden;
-        white-space: nowrap;
         text-overflow: ellipsis;
+        white-space: nowrap;
     }
 
     span {
@@ -65,20 +65,24 @@
 
 .user-info {
     display: flex;
-    justify-content: center;
     flex-direction: column;
+    justify-content: center;
     gap: 20px;
     max-width: 250px;
 }
-
 
 .user-actions {
     @include center-flex();
     gap: 30px;
 
     button {
-        @include shadow-button($width: 100px, $color: colors.$text-color, $hover-color: colors.$contrast-color,
-            $background: colors.$window-color, $height: 40px);
+        @include shadow-button(
+            $width: 100px,
+            $color: colors.$text-color,
+            $hover-color: colors.$contrast-color,
+            $background: colors.$window-color,
+            $height: 40px
+        );
     }
 }
 
@@ -89,24 +93,24 @@
 }
 
 .block-header {
-    width: 90%;
     padding-left: 15%;
+    width: 90%;
 
     h3 {
-        font-size: 2rem;
         color: colors.$contrast-color;
+        font-size: 2rem;
     }
 }
 
 .block-wrapper {
+    transition: box-shadow const.$link-transition-duration linear;
     margin-top: 1%;
-    margin-left: 20%;
     margin-right: 20%;
+    margin-left: 20%;
+    box-shadow: 0 0 10px colors.$text-hover-color;
     border: 2px solid colors.$text-hover-color;
     border-radius: 50px;
     background-color: colors.$window-color;
-    box-shadow: 0 0 10px colors.$text-hover-color;
-    transition: box-shadow const.$link-transition-duration linear;
 
     &:hover {
         box-shadow: 0 0 20px colors.$text-hover-color;
@@ -115,15 +119,15 @@
 
 @media (max-width: 1400px) {
     .block-wrapper {
-        margin-left: 10%;
         margin-right: 10%;
+        margin-left: 10%;
     }
 }
 
 @media (max-width: 1200px) {
     .block-wrapper {
-        margin-left: 5%;
         margin-right: 5%;
+        margin-left: 5%;
     }
 }
 
@@ -142,9 +146,9 @@
 .crypto-stat {
     @include center-flex();
     justify-content: start;
+    gap: 5%;
     padding-left: 10%;
     height: 400px;
-    gap: 5%;
 }
 
 .general-crypto-stat {
@@ -170,8 +174,8 @@
 
 .crypto-doughnut-legend {
     display: flex;
-    justify-content: center;
     flex-direction: column;
+    justify-content: center;
     gap: 8px;
 
     .legend-el {
@@ -183,7 +187,7 @@
             font-size: 1.2rem;
         }
     }
-    
+
     .legend-img {
         width: 20px;
         height: 20px;
@@ -215,33 +219,43 @@
     width: 90%;
 
     caption {
-        font-size: 1.5rem;
-        color: colors.$text-hover-color;
         padding-bottom: 30px;
+        color: colors.$text-hover-color;
+        font-size: 1.5rem;
     }
 
     .session-head-sell {
         @include cell($text-color: colors.$contrast-color, $font-size: 1.2rem);
     }
-    
+
     .session-cell {
         @include cell($text-color: colors.$text-hover-color, $font-size: 1.2rem);
         padding-top: 10px;
         text-align: center;
     }
-    
+
     .row:hover {
         background-color: colors.$background-color;
     }
 
     .term-btn {
-        @include shadow-button($width: 130px, $color: colors.$text-color, $hover-color: colors.$contrast-color,
-            $background: colors.$window-color, $height: 30px);
+        @include shadow-button(
+            $width: 130px,
+            $color: colors.$text-color,
+            $hover-color: colors.$contrast-color,
+            $background: colors.$window-color,
+            $height: 30px
+        );
     }
 
     .term-all {
-        @include shadow-button($width: 130px, $color: colors.$text-color, $hover-color: colors.$contrast-color,
-            $background: colors.$window-color, $height: 30px);
+        @include shadow-button(
+            $width: 130px,
+            $color: colors.$text-color,
+            $hover-color: colors.$contrast-color,
+            $background: colors.$window-color,
+            $height: 30px
+        );
     }
 
     .cur-ses {
@@ -261,7 +275,7 @@
 }
 
 .change-pos {
-    color: #3DF718 !important;
+    color: #3df718 !important;
 }
 
 .change-neg {

@@ -1,7 +1,7 @@
-@use 'reset';
-@use 'base';
-@use 'blocks/navbar';
-@use 'colors';
+@use "reset";
+@use "base";
+@use "blocks/navbar";
+@use "colors";
 
 body {
     width: 100vw;
@@ -9,13 +9,13 @@ body {
 }
 
 .motto-container {
-    margin-top: 10%;
-    margin-left: calc((100% - 800px) / 2);
-    margin-right: calc((100% - 800px) / 2);
     display: flex;
-    gap: 40px;
     flex-direction: column;
     align-items: start;
+    gap: 40px;
+    margin-top: 10%;
+    margin-right: calc((100% - 800px) / 2);
+    margin-left: calc((100% - 800px) / 2);
 }
 
 .motto {

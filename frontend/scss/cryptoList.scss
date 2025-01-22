@@ -1,10 +1,10 @@
-@use 'reset';
-@use 'base';
-@use 'colors';
-@use 'const';
-@use 'blocks/navbar';
-@use 'elements/table' as *;
-@use 'mixins/center-flex' as *;
+@use "reset";
+@use "base";
+@use "colors";
+@use "const";
+@use "blocks/navbar";
+@use "elements/table" as *;
+@use "mixins/center-flex" as *;
 
 .main-container {
     margin-top: 30px;
@@ -12,28 +12,28 @@
 }
 
 .header {
-    width: 90%;
     padding-left: 15%;
+    width: 90%;
 
     h3 {
-        font-size: 2rem;
         color: colors.$contrast-color;
+        font-size: 2rem;
     }
 }
 
 .table-wrapper {
-    margin-top: 100px;
     display: flex;
     justify-content: center;
+    margin-top: 100px;
     width: 100%;
 }
 
 .table {
     @include table($width: 60%);
+    box-shadow: 0 0 10px colors.$text-hover-color;
     border: 2px solid colors.$text-hover-color;
     border-radius: 50px;
     background-color: colors.$window-color;
-    box-shadow: 0 0 10px colors.$text-hover-color;
     padding: 30px;
 }
 
@@ -62,7 +62,6 @@
             color: colors.$contrast-color;
         }
     }
-
 }
 
 // must be in the end
@@ -76,7 +75,7 @@
 }
 
 .change-pos {
-    color: #3DF718 !important;
+    color: #3df718 !important;
 }
 
 .change-neg {

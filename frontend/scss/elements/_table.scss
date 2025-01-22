@@ -1,14 +1,14 @@
-@use '../colors';
-@use '../mixins/center-flex' as *;
+@use "../colors";
+@use "../mixins/center-flex" as *;
 
 .crypto-name-wrap {
     @include center-flex();
     gap: 10px;
-    
+
     .crypto-name {
         font-size: 1.3rem;
     }
-    
+
     .crypto-logo {
         width: 30px;
         height: 30px;

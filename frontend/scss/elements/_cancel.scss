@@ -1,28 +1,28 @@
-@use '../colors';
-@use '../const';
+@use "../colors";
+@use "../const";
 
 .cancel-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%;
     padding-top: 10px;
+    width: 100%;
     height: 30px;
 }
 
 .cancel-button {
     transition: all const.$link-transition-duration linear;
-    background-color: colors.$window-color;
-    border-radius: 50px;
-    border-style: none;
-    padding: 5px;
-    padding-left: 10px;
-    padding-right: 10px;
     box-shadow: 0 0 5px colors.$text-color;
+    border-style: none;
+    border-radius: 50px;
+    background-color: colors.$window-color;
+    padding: 5px;
+    padding-right: 10px;
+    padding-left: 10px;
     color: colors.$text-color;
 
     &:hover {
         box-shadow: 0 0 5px colors.$contrast-color;
-        color: colors.$contrast-color;    
+        color: colors.$contrast-color;
     }
 }

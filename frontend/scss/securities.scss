@@ -1,7 +1,7 @@
-@use 'reset';
-@use 'colors';
-@use 'base';
-@use 'const';
+@use "reset";
+@use "colors";
+@use "base";
+@use "const";
 
 body {
     width: 100vw;
@@ -12,27 +12,25 @@ body {
     display: flex;
     justify-content: center;
     align-items: end;
+    margin-top: 30vh;
     width: 100vw;
     min-width: 700px;
-    margin-top: 30vh;
 
     .error-letter {
         color: colors.$text-color;
         font-weight: bold;
         font-size: 4em;
     }
-    
+
     .space {
         width: 40px;
     }
-    
+
     .error-logo {
         width: 60px;
         height: 60px;
     }
 }
-
-
 
 .return-container {
     display: flex;

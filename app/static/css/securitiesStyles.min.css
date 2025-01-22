@@ -1,7 +1,10 @@
 /*!************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./frontend/scss/securities.scss ***!
   \************************************************************************************************************************/
-html, body, ul, ol {
+html,
+body,
+ul,
+ol {
   margin: 0;
   padding: 0;
 }
@@ -27,7 +30,7 @@ html {
 }
 
 body {
-  background: radial-gradient(circle at -180% 100%, #8FFF06 10%, transparent 80%);
+  background: radial-gradient(circle at -180% 100%, #8fff06 10%, transparent 80%);
   background-color: #000000;
   max-width: 100%;
   overflow-x: hidden;
@@ -42,9 +45,9 @@ body {
   display: flex;
   justify-content: center;
   align-items: end;
+  margin-top: 30vh;
   width: 100vw;
   min-width: 700px;
-  margin-top: 30vh;
 }
 .error-container .error-letter {
   color: #7d42e7;
@@ -69,5 +72,5 @@ body {
   color: #7d42e7;
 }
 .return-container a:hover {
-  color: #8FFF06;
+  color: #8fff06;
 }
