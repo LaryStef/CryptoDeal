@@ -68,7 +68,7 @@ services:
         reservations:
           cpus: "0.25"
           memory: "256M"
-  
+
   nginx:
     build: ./images/nginx/
     container_name: nginx
@@ -93,7 +93,7 @@ services:
         reservations:
           cpus: "0.25"
           memory: "256M"
-  
+
   worker-collector:
     build: ../Collector
     container_name: worker-collector
@@ -105,7 +105,7 @@ services:
     depends_on:
       - postgres
       - redis
-  
+
   beat-collector:
     build: ../Collector
     container_name: beat-collector
@@ -117,6 +117,18 @@ services:
     depends_on:
       - postgres
       - redis
+
+  flower:
+    build: ../Collector
+    container_name: flower
+    command: python -m celery -A src flower --port=5555
+    networks:
+      - main
+    ports:
+      - "5555:5555"
+    depends_on:
+      - beat-collector
+      - worker-collector
 
   worker-main:
     build: .
