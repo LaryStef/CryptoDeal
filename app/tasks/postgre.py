@@ -22,9 +22,9 @@ logger: Logger = getLogger("celery")
     priority=taskConfig.priority
 )
 def delete_expired_sessions(self) -> None:
-    expire: datetime = datetime.now() \
-        - timedelta(seconds=appConfig.REFRESH_TOKEN_LIFETIME) \
-        - timedelta(hours=3)  # because of utc((
+    expire: datetime = datetime.now() - timedelta(
+        seconds=appConfig.REFRESH_TOKEN_LIFETIME
+    )
 
     db.session.execute(
         delete(Session).filter(Session.last_activity < expire)

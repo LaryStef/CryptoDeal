@@ -6,15 +6,15 @@ from flask import current_app
 from app.config import appConfig
 from app.database.redisdb import rediska
 from app.tasks.mail import send_register_code, send_restore_code
-from app.utils.cryptography import hash_password
-from app.utils.generators import generate_id
+from app.security.cryptography import hash_password
+from app.security.generators import generate_id
 
 
 class RediskaHandler:
     @staticmethod
     def create_register_request(data: dict[str, str | int]) -> str:
         request_id: str = generate_id(16)
-        timestamp: int = int(time())
+        timestamp: int = int(time()) + appConfig.TIMESTAMP_OFFSET
 
         data["refresh_attempts"] = 0
         data["verify_attempts"] = 0
@@ -43,7 +43,9 @@ class RediskaHandler:
         request_id: str
     ) -> None:
         data["refresh_attempts"] += 1
-        data["accept_new_request"] = int(time()) + appConfig.MAIL_CODE_COOLDOWN
+        data["accept_new_request"] = int(
+            time()
+        ) + appConfig.TIMESTAMP_OFFSET + appConfig.MAIL_CODE_COOLDOWN
 
         data["code"] = "".join([str(randint(0, 9)) for _ in range(6)])
 
@@ -69,7 +71,7 @@ class RediskaHandler:
     @staticmethod
     def create_restore_request(email: str, uuid: str) -> str:
         request_id: str = generate_id(16)
-        timestamp: int = int(time())
+        timestamp: int = int(time()) + appConfig.TIMESTAMP_OFFSET
 
         data: dict[str, str | int] = dict()
         data["uuid"] = uuid
@@ -97,7 +99,7 @@ class RediskaHandler:
         data: dict[str, str | int],
         request_id: str
     ) -> None:
-        timestamp: int = int(time())
+        timestamp: int = int(time()) + appConfig.TIMESTAMP_OFFSET
 
         data["refresh_attempts"] += 1
         data["accept_new_request"] = timestamp + appConfig.MAIL_CODE_COOLDOWN

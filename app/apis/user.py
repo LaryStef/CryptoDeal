@@ -9,9 +9,9 @@ from app.database.postgre.models import (
     CryptoCurrency, CryptocurrencyWallet, FiatWallet, Session, User
 )
 from app.database.postgre.services import PostgreHandler
-from app.utils.aliases import RESTError
-from app.utils.decorators import authorization_required
-from app.utils.JWT import validate_token
+from app.aliases import RESTError
+from app.security.decorators import authorization_required
+from app.security.JWT import validate_token
 
 
 api = Namespace("user", path="/user/")
@@ -101,7 +101,6 @@ class Profile(Resource):
                     {
                         "sessionId": session.session_id,
                         "device": session.device,
-                        # TODO: display last activity in user's timezone
                         "lastActivity": session.last_activity.strftime(
                             "%Y-%m-%d %H:%M"
                         ),

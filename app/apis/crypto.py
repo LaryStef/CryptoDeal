@@ -1,6 +1,6 @@
 import typing as t
 from calendar import monthrange
-from datetime import UTC, datetime
+from datetime import datetime
 
 from flask import request, url_for
 from flask_restx import Namespace, Resource
@@ -10,9 +10,9 @@ from werkzeug.exceptions import BadRequest, NotFound
 from app.database.postgre.models import CryptoCourse, CryptoCurrency
 from app.database.postgre.services import PostgreHandler
 from app.shemas import CryptoTransactionSchema
-from app.utils.aliases import RESTError
-from app.utils.decorators import authorization_required
-from app.utils.JWT import validate_token
+from app.aliases import RESTError
+from app.security.decorators import authorization_required
+from app.security.JWT import validate_token
 
 
 api: Namespace = Namespace("crypto", path="/crypto/")
@@ -191,7 +191,7 @@ class CryptoCurrencyData(Resource):
             type_=frame
         )
 
-        date: datetime = datetime.now(UTC)
+        date: datetime = datetime.now()
         day: int = date.day
         month: int = date.month
         response: _CurrencyResponse = {
@@ -218,8 +218,8 @@ class CryptoCurrencyData(Resource):
             response["dataX"].extend(range(1, day + 1))
         elif frame == "month":
             mid_month: int = 1 if day >= 16 else 0
-            response["dataX"] = [i for i in range(month*2+mid_month, 25)]
-            response["dataX"].extend(range(1, month*2+mid_month))
+            response["dataX"] = [i for i in range(month * 2 + mid_month, 25)]
+            response["dataX"].extend(range(1, month * 2 + mid_month))
 
         prices: dict[int, float] = {
             raw.number: raw.price for raw in course_data
@@ -237,7 +237,7 @@ class CryptoCurrencyData(Resource):
         response["volume"] = currency_data.volume
         response["change"] = (
             current_price / response["dataY"][0] - 1
-        )*100
+        ) * 100
         return response, 200
 
 
@@ -268,7 +268,7 @@ class CryptoCurrencyPrice(Resource):
             CryptoCourse,
             ticker=ticker,
             type_="hour",
-            number=datetime.now(UTC).hour
+            number=datetime.now().hour
         ).price
 
         return {

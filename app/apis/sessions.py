@@ -6,9 +6,9 @@ from werkzeug.exceptions import BadRequest
 
 from app.database.postgre.models import Session
 from app.database.postgre.services import PostgreHandler
-from app.utils.aliases import RESTError
-from app.utils.decorators import authorization_required
-from app.utils.JWT import validate_token
+from app.aliases import RESTError
+from app.security.decorators import authorization_required
+from app.security.JWT import validate_token
 
 
 api = Namespace("sessions", path="/sessions/")
