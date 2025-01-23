@@ -4,6 +4,7 @@ from time import time
 
 from celery import shared_task
 
+from app.config import appConfig
 from app.database.redisdb import rediska
 from app.tasks import TaskConfig as TaskConfig
 
@@ -23,7 +24,9 @@ def delete_expired_applications(self) -> None:
     register_applications: dict[str, t.Any] = rediska.json().get("register")
 
     for id_, data in register_applications.items():
-        if data.get("deactivation_time") < int(time()):
+        if data.get("deactivation_time") < int(
+            time()
+        ) + appConfig.TIMESTAMP_OFFSET:
             rediska.json().delete("register", id_)
 
     restore_applications: dict[str, t.Any] = rediska.json().get(
@@ -31,6 +34,8 @@ def delete_expired_applications(self) -> None:
     )
 
     for id_, data in restore_applications.items():
-        if data.get("deactivation_time") < int(time()):
+        if data.get("deactivation_time") < int(
+            time()
+        ) + appConfig.TIMESTAMP_OFFSET:
             rediska.json().delete("password_restore", id_)
     logger.info(msg="expired applications in redis deleted")

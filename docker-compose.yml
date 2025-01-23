@@ -75,9 +75,11 @@ services:
     tty: true
     stdin_open: true
     ports:
-      - "81:80"
+      - "80:80"
     networks:
       - main
+    depends_on:
+      - app
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "service", "nginx", "status"]
