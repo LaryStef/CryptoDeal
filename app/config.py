@@ -45,8 +45,8 @@ class AppConfig(Config):
     MAIL_CODE_REFRESH_ATTEMTPTS: int = 5
 
     # user
-    START_USD_BALANCE = 10000
-    START_RUB_BALANCE = 1000000
+    START_USD_BALANCE = 1000000
+    START_RUB_BALANCE = 10000000
 
     # authentification and authorization
     REGISTER_LIFETIME: int = 1200
