@@ -80,6 +80,8 @@ services:
       - main
     depends_on:
       - app
+    volumes:
+      - nginx:/etc/nginx
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "service", "nginx", "status"]
@@ -177,3 +179,4 @@ networks:
 volumes:
   postgresdata:
   redisdata:
+  nginx:
