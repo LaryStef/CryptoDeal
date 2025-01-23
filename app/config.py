@@ -1,5 +1,7 @@
 import os
 from typing import TypeAlias
+from pytz import timezone, utc
+from datetime import datetime
 
 from celery.schedules import crontab
 from dotenv import load_dotenv
@@ -19,7 +21,11 @@ _CeleryConf: TypeAlias = dict[
 class AppConfig(Config):
     # app
     DEBUG: bool = True
-    TIMESTAMP_OFFSET = 10800  # 3 hours(UTC+3)
+    TIMESTAMP_OFFSET = (
+        datetime.now(
+            (timezone(os.getenv("TIMEZONE")))
+        ).hour - datetime.now(utc).hour
+    ) * 3600
 
     # db
     SQLALCHEMY_DATABASE_URI: str = f"postgresql://{os.getenv('POSTGRES_USER')}:{os.getenv('POSTGRES_PASSWORD')}@{os.getenv('HOST_NETWORK')}:5432/{os.getenv('POSTGRES_NAME')}"  # noqa: E501
@@ -52,7 +58,7 @@ class AppConfig(Config):
     REGISTER_LIFETIME: int = 1200
     # restore_cooldown must be more then restore_lifetime
     RESTORE_LIFETIME: int = 1200
-    ACCESS_TOKEN_LIFETIME: int = 10000
+    ACCESS_TOKEN_LIFETIME: int = 600
     RESTORE_COOLDOWN: int = 300
     REFRESH_TOKEN_LIFETIME: int = 12000
     JWT_ENCODING_ALGORITHM: str = "HS256"
@@ -89,7 +95,7 @@ class AppConfig(Config):
         "broker_transport_options": {
             "visibility_timeout": 43200
         },
-        "timezone": "Europe/Moscow",
+        "timezone": os.getenv("TIMEZONE"),
         "beat_schedule": {
             "clear-postgre": {
                 "task": "delete_expired_sessions",
