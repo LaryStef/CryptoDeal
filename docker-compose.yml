@@ -78,6 +78,8 @@ services:
       - "81:80"
     networks:
       - main
+    depends_on:
+      - app
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "service", "nginx", "status"]
