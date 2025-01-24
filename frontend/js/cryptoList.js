@@ -27,16 +27,16 @@ function loadCryptoTable() {
         .then((data) => {
             const currencyList = data.CryptoCurrencyList;
             const table = document.getElementById("crypto-list");
-            
+
             let num = 1;
             currencyList.forEach((currency) => {
                 let volume;
-                if (currency.volume >= 1_000_000_000) {
+                if (Math.round(currency.volume / 1_000_000) / 1000 >= 1_000_000_000) {
                     volume = (Math.round(currency.volume / 1_000_000) / 1000).toString() + "B"
                 } else {
                     volume = (Math.round(currency.volume / 1000) / 1000).toString() + "M"
                 }
-                
+
                 let change;
                 let changeClass;
                 if (currency.change >= 0) {
