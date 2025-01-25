@@ -31,13 +31,13 @@ class BalanceUrl {
 }
 
 function convertNumberForUser(number) {
-    if (Math.round(number / 10_000_000) / 100 >= 1_000_000_000) {
+    if (Math.round(number / 10_000_000) * 10_000_000 >= 1_000_000_000) {
         return (Math.round(number / 10_000_000) / 100).toString() + "B";
     }
-    if (Math.round(number / 10_000) / 100 >= 1_000_000) {
+    if (Math.round(number / 10_000) * 10_000 >= 1_000_000) {
         return (Math.round(number / 10_000) / 100).toString() + "M";
     }
-    if (Math.round(number / 10) / 100 >= 1000) {
+    if (Math.round(number / 10) * 10 >= 1000) {
         return (Math.round(number / 10) / 100).toString() + "K";
     }
     return (Math.round(number * 100) / 100).toString();
