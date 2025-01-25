@@ -133,13 +133,15 @@ services:
   flower:
     build: ../Collector
     container_name: flower
-    command: python -m celery -A src flower --port=5555
+    command: python -m celery flower --port=5555 --persistent=True --max_tasks=1000 --db=/app/celery/flower
     networks:
       - main
     environment:
       - TZ=${TIMEZONE}
     ports:
       - "5555:5555"
+    volumes:
+      - flower:/app/celery
     depends_on:
       - beat-collector
       - worker-collector
@@ -196,3 +198,4 @@ volumes:
   postgresdata:
   redisdata:
   nginx:
+  flower:
