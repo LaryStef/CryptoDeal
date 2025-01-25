@@ -32,9 +32,9 @@ function loadCryptoTable() {
             currencyList.forEach((currency) => {
                 let volume;
                 if (Math.round(currency.volume / 1_000_000) * 1_000_000 >= 1_000_000_000) {
-                    volume = (Math.round(currency.volume / 1_000_000) / 1000).toString() + "B"
+                    volume = (Math.round(currency.volume / 1_000_000) / 1000).toString() + "B";
                 } else {
-                    volume = (Math.round(currency.volume / 1000) * 1000).toString() + "M"
+                    volume = (Math.round(currency.volume / 1000) / 1000).toString() + "M";
                 }
 
                 let change;
