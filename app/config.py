@@ -51,8 +51,8 @@ class AppConfig(Config):
     MAIL_CODE_REFRESH_ATTEMTPTS: int = 5
 
     # user
-    START_USD_BALANCE = 1000000
-    START_RUB_BALANCE = 10000000
+    START_USD_BALANCE = 1_000_000
+    START_RUB_BALANCE = 10_000_000
 
     # authentification and authorization
     REGISTER_LIFETIME: int = 1200
@@ -60,7 +60,7 @@ class AppConfig(Config):
     RESTORE_LIFETIME: int = 1200
     ACCESS_TOKEN_LIFETIME: int = 600
     RESTORE_COOLDOWN: int = 300
-    REFRESH_TOKEN_LIFETIME: int = 12000
+    REFRESH_TOKEN_LIFETIME: int = 60 * 60 * 24 * 30
     JWT_ENCODING_ALGORITHM: str = "HS256"
     LOGIN_COOLDOWN: int = 2
     LOGIN_FAST_ATTEMPTS: int = 10
