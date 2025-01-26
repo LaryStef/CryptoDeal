@@ -1,6 +1,7 @@
 from time import time
 from typing import Any, Literal
 
+from flask import current_app
 from jwt import InvalidTokenError, decode, encode
 
 from app.config import appConfig
@@ -78,6 +79,7 @@ def validate_token(
                 "verify_signature": True,
                 "require": token_requirements
             })
+
     except InvalidTokenError as ex:
-        print(ex)
+        current_app.logger.error(msg=f"decoding exception: {ex}")
         return None
