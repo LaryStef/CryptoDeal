@@ -21,10 +21,11 @@ _CeleryConf: TypeAlias = dict[
 class AppConfig(Config):
     # app
     DEBUG: bool = True
-    TIMESTAMP_OFFSET = (
-        datetime.now(
-            (timezone(os.getenv("TIMEZONE")))
-        ).hour - datetime.now(utc).hour
+    TZ_HOUR_DIFF: int = datetime.now(
+        (timezone(os.getenv("TIMEZONE")))
+    ).hour - datetime.now(utc).hour
+    TIMESTAMP_OFFSET: int = (
+        TZ_HOUR_DIFF if TZ_HOUR_DIFF > 0 else TZ_HOUR_DIFF + 24
     ) * 3600
 
     # db
