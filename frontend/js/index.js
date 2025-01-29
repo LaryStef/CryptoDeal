@@ -11,11 +11,13 @@ const refreshTokensUrl = new URL("api/auth/refresh-tokens", origin);
 
 const textHoverColor = "#8935a2";
 const backgroundColor = "#000000";
+const wrongCodeColor = "#BF1A3E";
 const windowOpeningDurationMS = 400;
 
 const timezoneOffset = 10800;
 const cooldown = 30;
 const cooldownRec = 30;
+const accessTokenLifetime = 600;
 
 function getDeviceData() {
     let browser = "unknown browser";
@@ -109,6 +111,14 @@ if (isTokensRefreshRequired()) {
     refreshTokens();
 } else {
     load_profile();
+}
+refreshTokensCycle();
+
+function refreshTokensCycle() {
+    setTimeout(() => {
+        refreshTokens();
+        refreshTokensCycle();
+    }, (accessTokenLifetime - 30) * 1000);
 }
 
 async function refreshTokens() {
@@ -231,7 +241,7 @@ document.getElementById("register-form-id").addEventListener("submit", async (e)
 
             document.getElementById("get-code-wrapper").classList.add("display-off");
             document.getElementById("new-code").classList.remove("display-off");
-            document.getElementById("input-code").style.color = "#8935a2";
+            document.getElementById("input-code").style.color = textHoverColor;
             document.getElementById("input-code").value = "";
             timerId = showTime(cooldown);
 
@@ -357,7 +367,7 @@ function closeConfirmWindow() {
     window.style.left = "150%";
     document.getElementById("main").style.filter = "brightness(1)";
     document.getElementById("navbar").style.filter = "brightness(1)";
-    document.getElementById("input-code").style.color = "#8935a2";
+    document.getElementById("input-code").style.color = textHoverColor;
     document.getElementById("input-code").value = "";
     enableButtons();
     if (isTimerGoing) {
@@ -370,7 +380,7 @@ document.addEventListener("input", () => {
     if (field.value.length === 6) {
         verifyCode();
     } else {
-        document.getElementById("input-code").style.color = "#8935a2";
+        document.getElementById("input-code").style.color = textHoverColor;
     }
 });
 
@@ -433,7 +443,7 @@ async function verifyCode() {
         closeConfirmWindow();
         load_profile();
     } else {
-        document.getElementById("input-code").style.color = "#BF1A3E";
+        document.getElementById("input-code").style.color = wrongCodeColor;
     }
 }
 
@@ -454,7 +464,7 @@ async function sendNewCode() {
     if (response.status == 200) {
         document.getElementById("get-code-wrapper").classList.add("display-off");
         document.getElementById("new-code").classList.remove("display-off");
-        document.getElementById("input-code").style.color = "#8935a2";
+        document.getElementById("input-code").style.color = textHoverColor;
         document.getElementById("input-code").value = "";
         timerId = showTime(cooldown);
     }

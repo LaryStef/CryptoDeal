@@ -9,8 +9,8 @@ import {
     Filler,
 } from "chart.js";
 
-const windowColor = "#0A0A0A";
 const textHoverColor = "#8935a2";
+const wrongCodeColor = "#BF1A3E";
 const backgroundColor = "#000000";
 const chartAxesDataColor = "#C5FFC3";
 const chartGridColor = "#291F5D";
@@ -23,6 +23,7 @@ const windowOpeningDurationMS = 400;
 const timezoneOffset = 10800;
 const cooldown = 30;
 const cooldownRec = 30;
+const accessTokenLifetime = 600;
 let currentCryptoPrice = 0;
 let userUSDBalance = 0;
 let userCryptoBalance = 0;
@@ -583,6 +584,14 @@ if (isTokensRefreshRequired()) {
 } else {
     load_profile();
 }
+refreshTokensCycle();
+
+function refreshTokensCycle() {
+    setTimeout(() => {
+        refreshTokens();
+        refreshTokensCycle();
+    }, (accessTokenLifetime - 30) * 1000);
+}
 
 async function refreshTokens() {
     let response = await fetch(refreshTokensUrl, {
@@ -704,7 +713,7 @@ document.getElementById("register-form-id").addEventListener("submit", async (e)
 
             document.getElementById("get-code-wrapper").classList.add("display-off");
             document.getElementById("new-code").classList.remove("display-off");
-            document.getElementById("input-code").style.color = "#8935a2";
+            document.getElementById("input-code").style.color = textHoverColor;
             document.getElementById("input-code").value = "";
             timerId = showTime(cooldown);
 
@@ -830,7 +839,7 @@ function closeConfirmWindow() {
     window.style.left = "150%";
     document.getElementById("main").style.filter = "brightness(1)";
     document.getElementById("navbar").style.filter = "brightness(1)";
-    document.getElementById("input-code").style.color = "#8935a2";
+    document.getElementById("input-code").style.color = textHoverColor;
     document.getElementById("input-code").value = "";
     enableButtons();
     if (isTimerGoing) {
@@ -843,7 +852,7 @@ document.addEventListener("input", () => {
     if (field.value.length === 6) {
         verifyCode();
     } else {
-        document.getElementById("input-code").style.color = "#8935a2";
+        document.getElementById("input-code").style.color = textHoverColor;
     }
 });
 
@@ -906,7 +915,7 @@ async function verifyCode() {
         closeConfirmWindow();
         load_profile();
     } else {
-        document.getElementById("input-code").style.color = "#BF1A3E";
+        document.getElementById("input-code").style.color = wrongCodeColor;
     }
 }
 
@@ -927,7 +936,7 @@ async function sendNewCode() {
     if (response.status == 200) {
         document.getElementById("get-code-wrapper").classList.add("display-off");
         document.getElementById("new-code").classList.remove("display-off");
-        document.getElementById("input-code").style.color = "#8935a2";
+        document.getElementById("input-code").style.color = textHoverColor;
         document.getElementById("input-code").value = "";
         timerId = showTime(cooldown);
     }

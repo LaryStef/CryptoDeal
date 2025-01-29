@@ -12,6 +12,7 @@ const cryptoStatisticsUrl = new URL("api/user/statistics/cryptocurrency", origin
 const cryptoTransactionHistoryUrl = new URL("api/crypto/transaction/history", origin);
 
 const timezoneOffset = 10800;
+const accessTokenLifetime = 600;
 const textHoverColor = "#8935a2";
 const contrastColor = "#8FFF06";
 
@@ -386,6 +387,14 @@ if (isTokensRefreshRequired()) {
     refreshTokens();
 } else {
     loadProfile();
+}
+refreshTokensCycle();
+
+function refreshTokensCycle() {
+    setTimeout(() => {
+        refreshTokens();
+        refreshTokensCycle();
+    }, (accessTokenLifetime - 30) * 1000);
 }
 
 async function refreshTokens() {
