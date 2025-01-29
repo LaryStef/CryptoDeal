@@ -47,7 +47,7 @@ class AppConfig(Config):
         "CryptoDeal", os.getenv("MAIL")
     )
     # cooldown and cooldownRec in js files must be same or longer
-    MAIL_CODE_COOLDOWN: int = 20
+    MAIL_CODE_COOLDOWN: int = 25
     MAIL_CODE_VERIFY_ATTEMPTS: int = 5
     MAIL_CODE_REFRESH_ATTEMTPTS: int = 5
 

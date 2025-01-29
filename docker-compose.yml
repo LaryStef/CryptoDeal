@@ -133,7 +133,7 @@ services:
   flower:
     build: ../Collector
     container_name: flower
-    command: python -m celery flower --port=5555 --persistent=True --max_tasks=1000 --db=/app/celery/flower
+    command: python -m celery flower --port=5555 --persistent=True --max_tasks=200 --db=/app/celery/flower
     networks:
       - main
     environment:
