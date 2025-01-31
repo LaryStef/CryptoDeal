@@ -689,7 +689,7 @@ body {
   box-shadow: 0 0 20px #8935a2;
 }
 
-@media (max-width: 1400px) {
+@media (max-width: 1600px) {
   .block-wrapper {
     margin-right: 10%;
     margin-left: 10%;
