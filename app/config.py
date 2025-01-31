@@ -29,8 +29,8 @@ class AppConfig(Config):
     ) * 3600
 
     # db
-    SQLALCHEMY_DATABASE_URI: str = f"postgresql://{os.getenv('POSTGRES_USER')}:{os.getenv('POSTGRES_PASSWORD')}@{os.getenv('HOST_NETWORK')}:5432/{os.getenv('POSTGRES_NAME')}"  # noqa: E501
-    REDIS_URL: str = f"redis://{os.getenv('REDIS_USER')}:{os.getenv('REDIS_PASSWORD')}@{os.getenv('HOST_NETWORK')}:6379/0"  # noqa: E501
+    SQLALCHEMY_DATABASE_URI: str = f"postgresql://{os.getenv('POSTGRES_USER')}:{os.getenv('POSTGRES_PASSWORD')}@postgres:5432/{os.getenv('POSTGRES_NAME')}"  # noqa: E501
+    REDIS_URL: str = f"redis://{os.getenv('REDIS_USER')}:{os.getenv('REDIS_PASSWORD')}@redis:6379/0"  # noqa: E501
     SECRET_KEY: str = os.getenv("SECRET_KEY", "")
 
     # logging
