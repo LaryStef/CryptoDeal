@@ -392,12 +392,12 @@ refreshTokensCycle();
 
 function refreshTokensCycle() {
     setTimeout(() => {
-        refreshTokens();
+        refreshTokens(false);
         refreshTokensCycle();
     }, (accessTokenLifetime - 30) * 1000);
 }
 
-async function refreshTokens() {
+async function refreshTokens(loadData=true) {
     let response = await fetch(refreshTokensUrl, {
         method: "POST",
         credentials: "same-origin",
@@ -407,7 +407,7 @@ async function refreshTokens() {
         },
     });
 
-    if (response.status === 200) {
+    if (response.status === 200 && loadData) {
         loadProfile();
     }
 }
