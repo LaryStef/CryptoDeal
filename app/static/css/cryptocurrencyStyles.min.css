@@ -924,7 +924,7 @@ input[type=number] {
 
 .success-window {
   left: 150%;
-  width: 400px;
+  width: 450px;
   transition: all 400ms ease-out;
   position: fixed;
   height: 150px;

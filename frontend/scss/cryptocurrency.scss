@@ -301,7 +301,7 @@ input[type="number"] {
 // successful trade window
 
 .success-window {
-    @include window($height: 150px, $width: 400px, $padding: 30px, $left: 150%);
+    @include window($height: 150px, $width: 450px, $padding: 30px, $left: 150%);
 }
 
 .transaction-info-wrapper {
