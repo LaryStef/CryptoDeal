@@ -43,5 +43,5 @@ module.exports = {
             "extractComments": false,
         })],
     },
-    mode: "development",
+    mode: "production",
 };
