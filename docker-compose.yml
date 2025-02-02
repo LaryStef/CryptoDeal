@@ -27,14 +27,6 @@ services:
       timeout: 5s
       retries: 5
       start_period: 10s
-    deploy:
-      resources:
-        limits:
-          cpus: "0.5"
-          memory: "512M"
-        reservations:
-          cpus: "0.25"
-          memory: "256M"
 
   redis:
     image: redis/redis-stack:6.2.6-v17
@@ -60,14 +52,6 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
-    deploy:
-      resources:
-        limits:
-          cpus: "0.5"
-          memory: "512M"
-        reservations:
-          cpus: "0.25"
-          memory: "256M"
 
   nginx:
     build: ./images/nginx/
@@ -76,14 +60,13 @@ services:
     stdin_open: true
     ports:
       - "80:80"
+      - "443:443"
     networks:
       - main
     environment:
       - TZ=${TIMEZONE}
     depends_on:
       - app
-    volumes:
-      - nginx:/etc/nginx
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "service", "nginx", "status"]
@@ -91,14 +74,6 @@ services:
       timeout: 5s
       retries: 5
       start_period: 10s
-    deploy:
-      resources:
-        limits:
-          cpus: "0.5"
-          memory: "512M"
-        reservations:
-          cpus: "0.25"
-          memory: "256M"
 
   worker-collector:
     build: ../Collector
@@ -187,5 +162,4 @@ networks:
 volumes:
   postgresdata:
   redisdata:
-  nginx:
   flower:
