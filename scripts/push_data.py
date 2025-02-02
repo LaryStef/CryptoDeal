@@ -1119,7 +1119,10 @@ def _push_data_from_csv(tickers: list[str], session: Session) -> None:
                         CryptoCourse(
                             ID=_generate_id(16),
                             ticker=ticker,
-                            price=float(row[1].replace(",", "")),
+                            price=round(
+                                float(row[1].replace(",", "")),
+                                ndigits=2
+                            ),
                             type_="month",
                             number=int(row[0].split("/")[0]) * 2 - offset
                         )
@@ -1148,7 +1151,10 @@ def _push_data_from_csv(tickers: list[str], session: Session) -> None:
                         CryptoCourse(
                             ID=_generate_id(16),
                             ticker=ticker,
-                            price=float(row[1].replace(",", "")),
+                            price=round(
+                                float(row[1].replace(",", "")),
+                                ndigits=2
+                            ),
                             type_="day",
                             number=int(row[0].split("/")[1])
                         )
