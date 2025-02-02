@@ -25,8 +25,6 @@ logger: Logger = getLogger("celery")
     priority=taskConfig.priority
 )
 def send_register_code(self, code: str, recipient: str) -> None:
-    recipient = "timurkotov1999@gmail.com"    # just for tests
-
     message: Message = Message(
         "Registration on CryptoDeal",
         recipients=[recipient]
@@ -50,8 +48,6 @@ def send_register_code(self, code: str, recipient: str) -> None:
     priority=taskConfig.priority
 )
 def send_restore_code(self, code: str, recipient: str) -> None:
-    recipient = "timurkotov1999@gmail.com"    # just for tests
-
     message: Message = Message(
         "Password restore on CryptoDeal",
         recipients=[recipient]
@@ -77,8 +73,6 @@ def send_restore_code(self, code: str, recipient: str) -> None:
     priority=taskConfig.priority
 )
 def send_scrf_attention(self, recipient: str, origin: str | None) -> None:
-    recipient: str = "timurkotov1999@gmail.com"    # just for tests
-
     message: Message = Message("SCRF attack attention", recipients=[recipient])
     message.html = f"""
         <h2 style="color: black">Attention: your account is under attack!</h2>

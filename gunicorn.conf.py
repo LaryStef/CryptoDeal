@@ -1,4 +1,4 @@
-# import multiprocessing
+import multiprocessing
 import os
 
 
@@ -8,7 +8,7 @@ os.makedirs(log_directory, exist_ok=True)
 
 bind = "0.0.0.0:8000"
 worker_class = "sync"
-# workers = multiprocessing.cpu_count() * 2 + 1
+workers = multiprocessing.cpu_count() * 2 + 1
 wsgi_app = "main:app"
 reload = True
 backlog = 1024
