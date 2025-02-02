@@ -1095,14 +1095,15 @@ def _add_test_prices() -> None:
 def _push_data_from_csv(tickers: list[str], session: Session) -> None:
     counter: int = 0
 
-    year_dates: list[str] = ["01/01/2025", "01/15/2025"]
+    # offset = 0 if len(year_dates) % 2 == 0 else 1
+    year_dates: list[str] = ["01/01/2025", "01/15/2025", "02/01/2025"]
     year_dates.extend([
         f"{str(i // 2).zfill(2)}/{'01' if i % 2 == 0 else '15'}/2024"
-        for i in range(4, 26)
+        for i in range(5, 26)
     ])
 
     for ticker in tickers:
-        offset: int = 0
+        offset: int = 1
         with open(f"../crypto_prices_data/{ticker}.csv") as file:
             reader: csv.reader = csv.reader(file)
             for row in reader:
@@ -1126,8 +1127,9 @@ def _push_data_from_csv(tickers: list[str], session: Session) -> None:
                     offset = 0 if offset else 1
                     counter += 1
 
-    month_dates: list[str] = ["12/31/2024"]
-    month_dates.extend([f"01/{str(i).zfill(2)}/2025" for i in range(1, 31)])
+    month_dates: list[str] = []
+    month_dates.extend([f"01/{str(i).zfill(2)}/2025" for i in range(3, 32)])
+    month_dates.extend(["02/01/2025", "02/02/2025"])
 
     print()
     for ticker in tickers:
