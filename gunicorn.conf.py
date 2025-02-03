@@ -7,6 +7,7 @@ os.makedirs(log_directory, exist_ok=True)
 
 
 bind = "0.0.0.0:8000"
+forwarded_allow_ips = '*'
 worker_class = "sync"
 workers = multiprocessing.cpu_count() * 2 + 1
 wsgi_app = "main:app"
