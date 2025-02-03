@@ -35,7 +35,7 @@
             <button class="auth-button right" id="sign-up">Sign up</button>
         </div>
         <a class="profile display-off" id="profile-button" href="{{ url_for('main.profile') }}">
-            <div class="username" id="name">username</div>
+            <div class="username" id="name"></div>
             <img src="{{ url_for('static', filename='png/Alien3.png') }}" alt="" class="avatar" id="avatar" decoding="async">
         </a>
     </nav>
@@ -140,7 +140,7 @@
         </div>
         <div class="update-code-message-container display-off" id="new-code">
             <p>Get new code in: </p>
-            <span id="code-time">0:00</span>
+            <span id="code-time"></span>
         </div>
         <div class="update-code-button-container" id="get-code-wrapper">
             <button class="update-code-button" id="code-btn">new code</button>
@@ -205,7 +205,7 @@
         </form>
         <div class="update-code-message-container display-off" id="new-code-rec">
             <p>Get new code in: </p>
-            <span id="code-time-rec">0:00</span>
+            <span id="code-time-rec"></span>
         </div>
         <div class="update-code-button-container" id="get-code-wrapper-rec">
             <button class="update-code-button" id="code-btn-rec">new code</button>
