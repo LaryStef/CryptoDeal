@@ -28,6 +28,7 @@ psycopg2-binary = "^2.9.10"
 [tool.poetry.group.dev.dependencies]
 flower = "^2.0.1"
 isort = "^5.13.2"
+poetry = "^2.0.1"
 
 [build-system]
 requires = ["poetry-core"]
