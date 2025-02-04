@@ -2,7 +2,9 @@
 @use "../mixins/center-flex" as *;
 
 .crypto-name-wrap {
-    @include center-flex();
+    display: flex;
+    align-items: center;
+    padding-left: 10%;
     gap: 10px;
 
     .crypto-name {
