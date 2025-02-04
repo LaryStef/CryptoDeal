@@ -15,6 +15,7 @@
 .block {
     transition: box-shadow const.$link-transition-duration linear;
     margin-top: 100px;
+    margin-bottom: 100px;
     box-shadow: 0 0 10px colors.$text-hover-color;
     border: 2px solid colors.$text-hover-color;
     border-radius: 50px;
