@@ -1,1 +1,1 @@
-Closed beta tomorrow:)
+Closed beta now:)
