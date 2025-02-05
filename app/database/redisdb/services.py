@@ -1,7 +1,10 @@
 from random import randint
 from time import time
+from datetime import datetime
+from typing import TypeAlias, Any
 
 from flask import current_app
+from redis import ResponseError
 
 from app.config import appConfig
 from app.database.redisdb import rediska
@@ -10,6 +13,8 @@ from app.tasks.mail import send_register_code, send_restore_code
 
 
 class RediskaHandler:
+    _chart_cache: TypeAlias = dict[str, str | float | list[int] | list[float]]
+
     @staticmethod
     def create_register_request(data: dict[str, str | int]) -> str:
         request_id: str = generate_id(16)
@@ -112,3 +117,34 @@ class RediskaHandler:
             "created new code for user with id: %s",
             data["uuid"]
         )
+
+    @staticmethod
+    def set_chart_cache(chart_data: _chart_cache) -> None:
+        try:
+            rediska.json().get("chart_cache", chart_data["ticker"])
+        except ResponseError:
+            rediska.json().set("chart_cache", chart_data["ticker"], {
+                "hour": {},
+                "day": {},
+                "month": {},
+            })
+
+        chart_data["fresh_at"] = datetime.now().strftime("%Y-%m-%d %H")
+        rediska.json().set(
+            "chart_cache",
+            f"$.{chart_data['ticker']}.{chart_data['frame']}",
+            chart_data
+        )
+        current_app.logger.info("chart cache updated")
+
+    @staticmethod
+    def get_chart_cache(ticker: str, frame: str) -> _chart_cache | None:
+        cache: list[dict[Any, Any]] = rediska.json().get(
+            "chart_cache",
+            f"$.{ticker}.{frame}"
+        )
+        if len(cache) == 0 \
+            or cache[0] == {} \
+            or cache[0]["fresh_at"] != datetime.now().strftime("%Y-%m-%d %H"):
+            return None
+        return cache

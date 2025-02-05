@@ -8,6 +8,7 @@ from sqlalchemy import ScalarResult
 from werkzeug.exceptions import BadRequest, NotFound
 
 from app.aliases import RESTError
+from app.database.redisdb.services import RediskaHandler
 from app.database.postgre.models import CryptoCourse, CryptoCurrency
 from app.database.postgre.services import PostgreHandler
 from app.security import authorization_required, validate_token
@@ -95,9 +96,11 @@ class List(Resource):
 
 @api.route("/<string:ticker>/<string:frame>")
 class CryptoCurrencyData(Resource):
+    _response: t.TypeAlias = dict[str, str | float | list[int] | list[float]]
+
     def get(
-        self, ticker: str, frame: t.Literal["day", "month", "year"]
-    ) -> RESTError | dict[str, str | list[int | float]]:
+        self, ticker: str, frame: t.Literal["hour", "day", "month"]
+    ) -> RESTError | _response:
         # response example
         # {
         #     "ticker": "ETH",
@@ -182,6 +185,14 @@ class CryptoCurrencyData(Resource):
                     "details": "No such frame supported by server"
                 }
             }, 400
+        
+        cached_response: dict[
+            str,
+            str | float | list[float] | list[float]
+        ] | None = RediskaHandler.get_chart_cache(ticker, frame)
+
+        if cached_response is not None:
+            return cached_response[0], 200
 
         course_data: ScalarResult[CryptoCourse] = PostgreHandler.get(
             CryptoCourse,
@@ -237,6 +248,8 @@ class CryptoCurrencyData(Resource):
         response["change"] = (
             current_price / response["dataY"][0] - 1
         ) * 100
+
+        RediskaHandler.set_chart_cache(response)
         return response, 200
 
 

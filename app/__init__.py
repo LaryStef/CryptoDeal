@@ -29,6 +29,8 @@ def create_app() -> tuple[Flask, Celery]:
         rediska.json().set(name="register", path=".", obj={})
     if rediska.json().get("password_restore") is None:
         rediska.json().set(name="password_restore", path=".", obj={})
+    if rediska.json().get("chart_cache") is None:
+        rediska.json().set(name="chart_cache", path=".", obj={})
 
     with app.app_context():
         db.create_all()
