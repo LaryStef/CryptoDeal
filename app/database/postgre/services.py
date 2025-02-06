@@ -77,7 +77,7 @@ class PostgreHandler:
     @staticmethod
     def add_user(user_data: dict[str, str | int]) -> tuple[str, int]:
         id_: str = uuid4().__str__()
-        alien_number: int = randint(1, 5)
+        alien_number: int = randint(1, 11)
 
         user: User = User(
             uuid=id_,
