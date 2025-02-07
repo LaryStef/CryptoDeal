@@ -11,6 +11,8 @@ from app.database.postgre.models import (
 )
 from app.database.postgre.services import PostgreHandler
 from app.security import authorization_required, validate_token
+from app.aliens import alien_colors
+from app.config import appConfig
 
 
 api = Namespace("user", path="/user/")
@@ -307,6 +309,63 @@ class Statistics(Resource):
                     "derived": user.crypto_derived,
                     "cryptocurrencies": cryptocurrencies
                 }
+
+        except BadRequest as error:
+            return {
+                "error": {
+                    "code": "Bad request",
+                    "message": "Can't recognize request",
+                    "details": error.description
+                }
+            }, 400
+
+
+@api.route("/alien/colors")
+class Colors(Resource):
+    def get(self) -> tuple[dict[str, list[str]], int] | RESTError:
+        # response example
+        # {
+        #     "colors": [
+        #         "#404cb8",
+        #         "#8fff06",
+        #         "#664993",
+        #         "#38054a",
+        #         "#f758b7",
+        #         "#b04e33",
+        #         "#cc9764",
+        #         "#f8ee24",
+        #         "#204917",
+        #         "#218064",
+        #         "#b13333",
+        #         "#afb58f"
+        #     ]
+        # }
+
+        return {
+            "colors": list(alien_colors.values())
+        }, 200
+
+
+@api.route("/avatar/<int:alien_number>")
+class Avatar(Resource):
+    @authorization_required("access")
+    def put(self, alien_number: int) -> tuple[dict[str, str], int] | RESTError:
+        try:
+            if alien_number < 1 or alien_number > appConfig.ALIEN_COUNT:
+                raise BadRequest(description="Invalid alien number")
+
+            access_token: str | None = request.cookies.get("access_token")
+            access_payload: t.Any = validate_token(
+                token=access_token,
+                type="access"
+            )
+
+            if access_payload is None:
+                raise BadRequest("Access token is not valid")
+            user_id: str = access_payload.get("uuid", "")
+
+            PostgreHandler.update_avatar(user_id, alien_number)
+            return "OK", 200
 
         except BadRequest as error:
             return {
