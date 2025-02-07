@@ -1170,3 +1170,63 @@ function disableTimerRec(timerID) {
     clearInterval(timerID);
     isTimerGoingRec = false;
 }
+
+document.getElementById("login-visibility-button").addEventListener("click", () => {
+    const button = document.getElementById("login-visibility-button");
+    if (button.getAttribute("data-state") === "hidden") {
+        document.getElementById("login-pass-input").setAttribute("type", "text");
+        document.getElementById("login-pass-show-icon").classList.add("display-off");
+        document.getElementById("login-pass-hide-icon").classList.remove("display-off");
+        button.setAttribute("data-state", "visible");
+    } else {
+        document.getElementById("login-pass-input").setAttribute("type", "password");
+        document.getElementById("login-pass-show-icon").classList.remove("display-off");
+        document.getElementById("login-pass-hide-icon").classList.add("display-off");
+        button.setAttribute("data-state", "hidden");
+    }
+})
+
+document.getElementById("register-visibility-button").addEventListener("click", () => {
+    const button = document.getElementById("register-visibility-button");
+    if (button.getAttribute("data-state") === "hidden") {
+        document.getElementById("register-pass-input").setAttribute("type", "text");
+        document.getElementById("register-pass-show-icon").classList.add("display-off");
+        document.getElementById("register-pass-hide-icon").classList.remove("display-off");
+        button.setAttribute("data-state", "visible");
+    } else {
+        document.getElementById("register-pass-input").setAttribute("type", "password");
+        document.getElementById("register-pass-show-icon").classList.remove("display-off");
+        document.getElementById("register-pass-hide-icon").classList.add("display-off");
+        button.setAttribute("data-state", "hidden");
+    }
+})
+
+document.getElementById("recover-visibility-button1").addEventListener("click", () => {
+    const button = document.getElementById("recover-visibility-button1");
+    if (button.getAttribute("data-state") === "hidden") {
+        document.getElementById("email-rec1").setAttribute("type", "text");
+        document.getElementById("recover-pass-show-icon1").classList.add("display-off");
+        document.getElementById("recover-pass-hide-icon1").classList.remove("display-off");
+        button.setAttribute("data-state", "visible");
+    } else {
+        document.getElementById("email-rec1").setAttribute("type", "password");
+        document.getElementById("recover-pass-show-icon1").classList.remove("display-off");
+        document.getElementById("recover-pass-hide-icon1").classList.add("display-off");
+        button.setAttribute("data-state", "hidden");
+    }
+})
+
+document.getElementById("recover-visibility-button2").addEventListener("click", () => {
+    const button = document.getElementById("recover-visibility-button2");
+    if (button.getAttribute("data-state") === "hidden") {
+        document.getElementById("email-rec2").setAttribute("type", "text");
+        document.getElementById("recover-pass-show-icon2").classList.add("display-off");
+        document.getElementById("recover-pass-hide-icon2").classList.remove("display-off");
+        button.setAttribute("data-state", "visible");
+    } else {
+        document.getElementById("email-rec2").setAttribute("type", "password");
+        document.getElementById("recover-pass-show-icon2").classList.remove("display-off");
+        document.getElementById("recover-pass-hide-icon2").classList.add("display-off");
+        button.setAttribute("data-state", "hidden");
+    }
+})

@@ -71,16 +71,32 @@
                     autocomplete="name"
                     required
                 />
-                <input
-                    class="auth-input"
-                    id="register-pass-input"
-                    type="password"
-                    name="password"
-                    placeholder="password"
-                    maxlength="32"
-                    autocomplete="new-password"
-                    required
-                />
+                <div class="password-wrapper">
+                    <input
+                        class="auth-input pass-input"
+                        id="register-pass-input"
+                        type="password"
+                        name="password"
+                        placeholder="password"
+                        maxlength="32"
+                        autocomplete="new-password"
+                        required
+                    />
+                    <button class="visibility-button" data-state="hidden" id="register-visibility-button" type="button">
+                        <img
+                            class="visibility-icon"
+                            id="register-pass-show-icon"
+                            src="{{ url_for('static', filename='svg/Show.svg') }}"
+                            alt="show"
+                        >
+                        <img
+                            class="visibility-icon display-off"
+                            id="register-pass-hide-icon"
+                            src="{{ url_for('static', filename='svg/Hide.svg') }}"
+                            alt="hide"
+                        >
+                    </button>
+                </div>
                 <input
                     class="auth-input"
                     id="register-email-input"
@@ -110,20 +126,36 @@
                     autocomplete="name"
                     required
                 />
-                <input
-                    class="auth-input"
-                    id="login-pass-input"
-                    type="password"
-                    name="password"
-                    placeholder="password"
-                    maxlength="32"
-                    autocomplete="current-password"
-                    required
-                />
+                <div class="password-wrapper">
+                    <input
+                        class="auth-input pass-input"
+                        id="login-pass-input"
+                        type="password"
+                        name="password"
+                        placeholder="password"
+                        maxlength="32"
+                        autocomplete="current-password"
+                        required
+                    />
+                    <button class="visibility-button" data-state="hidden" id="login-visibility-button" type="button">
+                        <img
+                            class="visibility-icon"
+                            id="login-pass-show-icon"
+                            src="{{ url_for('static', filename='svg/Show.svg') }}"
+                            alt="show"
+                        >
+                        <img
+                            class="visibility-icon display-off"
+                            id="login-pass-hide-icon"
+                            src="{{ url_for('static', filename='svg/Hide.svg') }}"
+                            alt="hide"
+                        >
+                    </button>
+                </div>
                 <input class="auth-input auth-submit" type="submit" value="submit" />
             </form>
             <div class="recovery-button-container">
-                <button class="recovery-button" id="recovery-btn" href="#">forget password? Click here!</button>
+                <button class="recovery-button" id="recovery-btn" href="#">Forgot password? Click here!</button>
             </div>
         </div>
     </div>
@@ -178,20 +210,54 @@
             <span id="new-pass-info"></span>
         </div>
         <form class="complete-recovery-form">
-            <input
-                class="complete-recovery-input"
-                id="email-rec1" type="text"
-                placeholder="password"
-                minlength="6"
-                maxlength="20"
-            >
-            <input
-                class="complete-recovery-input"
-                id="email-rec2" type="text"
-                placeholder="repeat password"
-                minlength="6"
-                maxlength="20"
-            >
+            <div class="password-wrapper">
+                <input
+                    class="complete-recovery-input imagine-pass-input"
+                    id="email-rec1"
+                    type="password"
+                    placeholder="password"
+                    minlength="6"
+                    maxlength="20"
+                >
+                <button class="visibility-button" data-state="hidden" id="recover-visibility-button1" type="button">
+                    <img
+                        class="visibility-icon"
+                        id="recover-pass-show-icon1"
+                        src="{{ url_for('static', filename='svg/Show.svg') }}"
+                        alt="show"
+                    >
+                    <img
+                        class="visibility-icon display-off"
+                        id="recover-pass-hide-icon1"
+                        src="{{ url_for('static', filename='svg/Hide.svg') }}"
+                        alt="hide"
+                    >
+                </button>
+            </div>
+            <div class="password-wrapper">
+                <input
+                    class="complete-recovery-input imagine-pass-input"
+                    id="email-rec2"
+                    type="password"
+                    placeholder="repeat password"
+                    minlength="6"
+                    maxlength="20"
+                >
+                <button class="visibility-button" data-state="hidden" id="recover-visibility-button2" type="button">
+                    <img
+                        class="visibility-icon"
+                        id="recover-pass-show-icon2"
+                        src="{{ url_for('static', filename='svg/Show.svg') }}"
+                        alt="show"
+                    >
+                    <img
+                        class="visibility-icon display-off"
+                        id="recover-pass-hide-icon2"
+                        src="{{ url_for('static', filename='svg/Hide.svg') }}"
+                        alt="hide"
+                    >
+                </button>
+            </div>
             <div>
                 <input
                     class="input-code"
