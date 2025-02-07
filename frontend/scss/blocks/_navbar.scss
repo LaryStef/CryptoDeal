@@ -205,6 +205,40 @@
     @include submit-button($width: 315px);
 }
 
+.password-wrapper {
+    $width: 315px;
+    $gap: 30px;
+    $visibility-icon-width: 30px;
+
+    display: flex;
+    width: $width;
+    align-items: center;
+    justify-content: space-between;
+
+    .visibility-button {
+        width: $visibility-icon-width + 10px;
+        height: $visibility-icon-width + 10px;
+        border-style: none;
+        background-color: colors.$window-color;
+
+        &:hover {
+            .visibility-icon {
+                filter: brightness(0) saturate(100%) invert(27%) sepia(15%) saturate(7433%)
+                    hue-rotate(263deg) brightness(92%) contrast(91%);
+            }
+        }
+
+        .visibility-icon {
+            width: $visibility-icon-width;
+            height: $visibility-icon-width;
+        }
+    }    
+}
+
+.pass-input {
+    width: 250px;
+}
+
 // email confirm window
 
 .confirm-window {
@@ -322,4 +356,8 @@
 
 .complete-recovery-submit {
     @include submit-button($width: 150px);
+}
+
+.imagine-pass-input {
+    width: 250px;
 }
