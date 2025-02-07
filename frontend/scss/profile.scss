@@ -12,6 +12,21 @@
     margin-bottom: 200px;
 }
 
+.color-rect {
+    display: flex;
+    border: 1px solid white;
+    border-radius: 5px;
+    width: 30px;
+    height: 16px;
+}
+
+.window-caption {
+    color: colors.$text-hover-color;
+    font-size: 1.5rem;
+    font-weight: normal;
+    padding-bottom: 30px;
+}
+
 // profile info
 
 .main-block-wrapper {
@@ -192,14 +207,6 @@
         width: 20px;
         height: 20px;
     }
-
-    .color-rect {
-        display: flex;
-        border: 1px solid white;
-        border-radius: 5px;
-        width: 30px;
-        height: 16px;
-    }
 }
 
 // settings window
@@ -217,12 +224,6 @@
 
 .session-table {
     width: 90%;
-
-    caption {
-        padding-bottom: 30px;
-        color: colors.$text-hover-color;
-        font-size: 1.5rem;
-    }
 
     .session-head-sell {
         @include cell($text-color: colors.$contrast-color, $font-size: 1.2rem);
@@ -262,6 +263,61 @@
         color: colors.$contrast-color;
         font-size: 1.5rem;
     }
+}
+
+// Avatar window
+
+.avatar-window {
+    @include window($height: 280px, $width: 350px, $padding: 30px, $left: -50%);
+}
+
+.change-avatar-wrapper {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.change-avatar-content {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.changed-avatar {
+    width: 120px;
+    height: 120px;
+}
+
+.choose-color-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+
+    .color-rect {
+        display: flex;
+        border-radius: 8px;
+        width: 40px;
+        height: 24px;
+        border: 2px solid white;
+        transition: border-color const.$link-transition-duration linear;
+
+        &:hover {
+            border-color: grey;
+        }
+    }
+}
+
+.confirm-avatar-button {
+    @include shadow-button(
+        $width: 80px,
+        $color: colors.$text-color,
+        $hover-color: colors.$contrast-color,
+        $background: colors.$window-color,
+        $height: 30px
+    );
+    font-size: 0.9rem;
 }
 
 // must be in the end
