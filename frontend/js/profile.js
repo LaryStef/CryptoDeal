@@ -6,8 +6,10 @@ import {
 
 const origin = location.origin;
 const refreshTokensUrl = new URL("api/auth/refresh-tokens", origin);
-const profileDataUrl = new URL("api/user", origin);
 const sessionUrl = new URL("api/sessions", origin);
+const profileDataUrl = new URL("api/user", origin);
+const alienColorsUrl = new URL("api/user/alien/colors", origin);
+const updateAvatarUrl = new URL("api/user/avatar", origin);
 const cryptoStatisticsUrl = new URL("api/user/statistics/cryptocurrency", origin);
 const cryptoTransactionHistoryUrl = new URL("api/crypto/transaction/history", origin);
 
@@ -24,6 +26,16 @@ class BalanceUrl {
         }
 
         this.url = urlConstructor;
+    }
+
+    get() {
+        return this.url;
+    }
+}
+
+class AlienUrl {
+    constructor(origin, alienNumber) {
+        this.url = new URL(`static/png/Alien${alienNumber}.png`, origin);
     }
 
     get() {
@@ -186,6 +198,7 @@ function loadCryptoStatistics(data) {
     }
     loadCrytoTable(cryptocurrencies);
     loadChart(formDoughnutData(cryptocurrencies), walletWorth);
+    loadAvatarColors();
 }
 
 function formDoughnutData(cryptocurrencies) {
@@ -296,6 +309,24 @@ function loadCryptoTransactionHistory() {
                     num += 1;
             });
         })
+}
+
+function loadAvatarColors() {
+    fetch(alienColorsUrl, {
+        method: "GET",
+        credentials: "same-origin",
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            const colors = data.colors;
+            const colorsList = document.getElementById("colors-list");
+            colorsList.innerHTML = "";
+            let counter = 0;
+            colors.forEach((color) => {
+                counter += 1;
+                colorsList.innerHTML += `<button class="color-rect" style="background-color: ${color}" data-num=${counter}></button>`
+            });
+        });
 }
 
 function getDeviceData() {
@@ -460,6 +491,7 @@ function loadMainInfo() {
     );
     document.getElementById("avatar").src = avatarUrl;
     document.getElementById("main-avatar").src = avatarUrl;
+    document.getElementById("changed-avatar").src = avatarUrl;
 
     const balanceUrl = new BalanceUrl(origin, "currency", ["USD"]);
     fetch(balanceUrl.get(), {
@@ -541,7 +573,49 @@ function loadSessions(clearFirst = false) {
 }
 
 document.getElementById("set-btn").onclick = openSettingsWindow;
-document.getElementById("cancel-set").onclick = closeSettingsWindow;
+document.getElementById("cancel-ses").onclick = closeSettingsWindow;
+document.getElementById("open-avatar-btn").onclick = openAvatarWindow;
+document.getElementById("cancel-avatar").onclick = closeAvatarWindow;
+
+function openAvatarWindow() {
+    let window = document.getElementById("avatar-window");
+    window.style.left = "50%";
+    document.getElementById("main").style.filter = "brightness(0.3)";
+    document.getElementById("navbar").style.filter = "brightness(0.3)";
+}
+
+function closeAvatarWindow() {
+    let window = document.getElementById("avatar-window");
+    window.style.left = "-50%";
+    document.getElementById("main").style.filter = "brightness(1)";
+    document.getElementById("navbar").style.filter = "brightness(1)";
+}
+
+document.getElementById("colors-list").addEventListener("click", (event) => {
+    if (event.target.classList.contains("color-rect")) {
+        const alienUrl = new AlienUrl(origin, event.target.attributes["data-num"].value);
+        document.getElementById("changed-avatar").setAttribute("src", alienUrl.get());
+        document.getElementById("changed-avatar").setAttribute("data-num", event.target.attributes["data-num"].value);
+    }
+});
+
+document.getElementById("confirm-new-avatar").addEventListener("click", () => {
+    const newAvatarNum = document.getElementById("changed-avatar").getAttribute("data-num");
+    fetch(updateAvatarUrl + "/" + newAvatarNum, {
+        method: "PUT",
+        credentials: "same-origin",
+        headers: {
+            "X-SCRF-TOKEN": getCookie("access_scrf_token"),
+        },
+    })
+        .then((response) => {
+            if (response.status === 200) {
+                console.log("Avatar changed");
+                refreshTokens();
+                window.location.reload();
+            }
+        });
+});
 
 document.getElementById("ses-table").addEventListener("click", (event) => {
     if (isTokensRefreshRequired()) {
@@ -609,14 +683,14 @@ document.onkeydown = function (evt) {
 };
 
 function openSettingsWindow() {
-    let window = document.getElementById("set-win");
+    let window = document.getElementById("ses-win");
     window.style.left = "50%";
     document.getElementById("main").style.filter = "brightness(0.3)";
     document.getElementById("navbar").style.filter = "brightness(0.3)";
 }
 
 function closeSettingsWindow() {
-    let window = document.getElementById("set-win");
+    let window = document.getElementById("ses-win");
     window.style.left = "-50%";
     document.getElementById("main").style.filter = "brightness(1)";
     document.getElementById("navbar").style.filter = "brightness(1)";

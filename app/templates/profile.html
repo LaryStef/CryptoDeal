@@ -16,7 +16,8 @@
                 </div>
             </div>
             <div class="user-actions">
-                <button id="set-btn">Settings</button>
+                <button id="open-avatar-btn">Avatar</button>
+                <button id="set-btn">Sessions</button>
                 <button id="logout-btn">Logout</button>
             </div>
         </div>
@@ -88,15 +89,29 @@
             </div>
         </div>
     </div>
-
 </div>
-<div class="settings-window" id="set-win">
+<div class="avatar-window" id="avatar-window">
     <div class="cancel-container">
-        <button class="cancel-button" id="cancel-set">cancel</button>
+        <button class="cancel-button" id="cancel-avatar">cancel</button>
+    </div>
+    <div class="change-avatar-wrapper">
+        <div>
+            <span class="window-caption">Change your avatar</span>
+        </div>
+        <div class="change-avatar-content">
+            <img class="changed-avatar" id="changed-avatar" src="{{ url_for('static', filename='png/Alien4.png') }}" alt="">
+            <div class="choose-color-container" id="colors-list"></div>
+        </div>
+        <button class="confirm-avatar-button" id="confirm-new-avatar">confirm</button>
+    </div>
+</div>
+<div class="settings-window" id="ses-win">
+    <div class="cancel-container">
+        <button class="cancel-button" id="cancel-ses">cancel</button>
     </div>
     <div class="session-table-wrap">
         <table class="session-table" id="ses-table">
-            <caption>Manage your sessions</caption>
+            <caption class="window-caption">Manage your sessions</caption>
             <tr>
                 <th class="session-head-sell">Device</th>
                 <th class="session-head-sell">Last activity</th>
