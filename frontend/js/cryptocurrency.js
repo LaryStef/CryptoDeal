@@ -309,6 +309,7 @@ function openTradeWindow() {
     document.getElementById("main").style.filter = "brightness(0.3)";
     document.getElementById("navbar").style.filter = "brightness(0.3)";
     updateTradeWindowInfo();
+    disableButtons();
 }
 
 function closeTradeWindow() {
@@ -324,6 +325,7 @@ function closeTradeWindow() {
     document.getElementById("sell-error-message").innerText = "";
     colorPriceField("crypto-price-buy");
     colorPriceField("crypto-income-sell");
+    enableButtons();
 }
 
 document.getElementById("buy-mode").onclick = () => {
@@ -358,6 +360,7 @@ function openSuccessWindow() {
     window.style.left = "50%";
     document.getElementById("main").style.filter = "brightness(0.3)";
     document.getElementById("navbar").style.filter = "brightness(0.3)";
+    disableButtons();
 }
 
 function closeSuccessWindow() {
@@ -365,6 +368,7 @@ function closeSuccessWindow() {
     window.style.left = "150%";
     document.getElementById("main").style.filter = "brightness(1)";
     document.getElementById("navbar").style.filter = "brightness(1)";
+    enableButtons();
 }
 
 function updateSuccessWindow(transactionType, amountCrypto, amountUSD) {
@@ -731,11 +735,13 @@ document.getElementById("register-form-id").addEventListener("submit", async (e)
 function disableButtons() {
     document.getElementsByClassName("auth-button")[0].disabled = true;
     document.getElementsByClassName("auth-button")[1].disabled = true;
+    document.getElementById("wtb-btn").disabled = true;
 }
 
 function enableButtons() {
     document.getElementsByClassName("auth-button")[0].disabled = false;
     document.getElementsByClassName("auth-button")[1].disabled = false;
+    document.getElementById("wtb-btn").disabled = true;
 }
 
 function leftSwitchTransform() {

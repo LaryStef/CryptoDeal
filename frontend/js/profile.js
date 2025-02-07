@@ -582,6 +582,7 @@ function openAvatarWindow() {
     window.style.left = "50%";
     document.getElementById("main").style.filter = "brightness(0.3)";
     document.getElementById("navbar").style.filter = "brightness(0.3)";
+    disableButtons();
 }
 
 function closeAvatarWindow() {
@@ -589,6 +590,7 @@ function closeAvatarWindow() {
     window.style.left = "-50%";
     document.getElementById("main").style.filter = "brightness(1)";
     document.getElementById("navbar").style.filter = "brightness(1)";
+    enableButtons();
 }
 
 document.getElementById("colors-list").addEventListener("click", (event) => {
@@ -682,11 +684,24 @@ document.onkeydown = function (evt) {
     }
 };
 
+function disableButtons() {
+    document.getElementById("open-avatar-btn").disabled = true;
+    document.getElementById("set-btn").disabled = true;
+    document.getElementById("logout-btn").disabled = true;
+}
+
+function enableButtons() {
+    document.getElementById("open-avatar-btn").disabled = false;
+    document.getElementById("set-btn").disabled = false;
+    document.getElementById("logout-btn").disabled = false;
+}
+
 function openSettingsWindow() {
     let window = document.getElementById("ses-win");
     window.style.left = "50%";
     document.getElementById("main").style.filter = "brightness(0.3)";
     document.getElementById("navbar").style.filter = "brightness(0.3)";
+    disableButtons();
 }
 
 function closeSettingsWindow() {
@@ -694,6 +709,7 @@ function closeSettingsWindow() {
     window.style.left = "-50%";
     document.getElementById("main").style.filter = "brightness(1)";
     document.getElementById("navbar").style.filter = "brightness(1)";
+    enableButtons();
 }
 
 document.getElementById("login-visibility-button").addEventListener("click", () => {
