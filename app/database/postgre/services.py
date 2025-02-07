@@ -77,7 +77,7 @@ class PostgreHandler:
     @staticmethod
     def add_user(user_data: dict[str, str | int]) -> tuple[str, int]:
         id_: str = uuid4().__str__()
-        alien_number: int = randint(1, 11)
+        alien_number: int = randint(1, appConfig.ALIEN_COUNT)
 
         user: User = User(
             uuid=id_,
@@ -370,3 +370,12 @@ class PostgreHandler:
                 seconds=appConfig.LOGIN_COOLDOWN
             )
         db.session.commit()
+
+    @staticmethod
+    def update_avatar(uuid: str, alien_number: int) -> None:
+        user: User = db.session.execute(
+            select(User).filter_by(uuid=uuid)
+        ).scalar()
+        user.alien_number = alien_number
+        db.session.commit()
+        current_app.logger.info(f"avatar updated {uuid} {alien_number}")

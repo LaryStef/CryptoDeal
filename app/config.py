@@ -54,6 +54,7 @@ class AppConfig(Config):
     # user
     START_USD_BALANCE = 1_000_000
     START_RUB_BALANCE = 10_000_000
+    ALIEN_COUNT: int = 12
 
     # authentification and authorization
     REGISTER_LIFETIME: int = 1200
