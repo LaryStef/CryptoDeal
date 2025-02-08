@@ -114,6 +114,31 @@ if (isTokensRefreshRequired()) {
 }
 refreshTokensCycle();
 
+const motto1 = "Try your trading skills on CryptoDeal.";
+const motto2 = "Buy, sell and track changes in your cryptowallet.";
+const motto3 = "Easy, fast and losslessly.";
+const typeSpeed = 40;
+
+if (document.getElementById("motto-container") != null) {
+    typeMotto(motto1, 0, typeSpeed, "motto1");
+    setTimeout(() => {
+        typeMotto(motto2, 0, typeSpeed, "motto2");
+    }, (motto1.length + 1) * typeSpeed);
+    setTimeout(() => {
+        typeMotto(motto3, 0, typeSpeed, "motto3");
+    }, (motto1.length + motto2.length + 1) * typeSpeed);
+}
+
+function typeMotto(text, i, speed, id) {
+    if (i < text.length) {
+        document.getElementById(id).innerHTML += text.charAt(i);
+        i++;
+        setTimeout(() => {
+            typeMotto(text, i, speed, id);
+        }, speed);
+    }
+}
+
 function refreshTokensCycle() {
     setTimeout(() => {
         refreshTokens();

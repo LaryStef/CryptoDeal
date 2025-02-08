@@ -185,7 +185,7 @@ class CryptoCurrencyData(Resource):
                     "details": "No such frame supported by server"
                 }
             }, 400
-        
+
         cached_response: dict[
             str,
             str | float | list[float] | list[float]
