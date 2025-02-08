@@ -20,7 +20,6 @@ _CeleryConf: TypeAlias = dict[
 
 class AppConfig(Config):
     # app
-    DEBUG: bool = True
     TZ_HOUR_DIFF: int = datetime.now(
         (timezone(os.getenv("TIMEZONE")))
     ).hour - datetime.now(utc).hour
