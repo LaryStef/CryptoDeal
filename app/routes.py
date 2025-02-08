@@ -1,5 +1,5 @@
 from flask import (
-    Blueprint, abort, current_app, redirect, render_template, url_for
+    Blueprint, abort, current_app, redirect, render_template, url_for, Response, request
 )
 from sqlalchemy import ScalarResult
 from werkzeug.exceptions import HTTPException, NotFound, Unauthorized
@@ -68,3 +68,15 @@ def handle_unauthorized(e: Unauthorized) -> tuple[str, int]:
 def handle_exception(e: HTTPException) -> tuple[dict[str, str], int]:
     current_app.logger.error(f"Unhandled HTTPException: {e}", exc_info=True)
     return {"error": "Something went wrong!"}, 500
+
+
+@main.after_app_request
+def after_request(response: Response) -> Response:
+    if not request.path.startswith("/static/"):
+        return response
+
+    response.cache_control.public = True
+    response.cache_control.max_age = 300
+    response.cache_control.no_cache = False
+    response.cache_control.no_store = False
+    return response
