@@ -33,7 +33,35 @@ module.exports = {
       rules: [
         {
             test: /\.s[ac]ss$/i,
-          use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
+            use: [
+                MiniCssExtractPlugin.loader,
+                "css-loader",
+                {
+                    loader: "postcss-loader",
+                    options: {
+                        postcssOptions: {
+                            plugins: [
+                                [
+                                    "autoprefixer",
+                                    {
+                                        "overrideBrowserslist": [
+                                            "last 5 versions",
+                                            "> 1%",
+                                            "IE >= 10",
+                                            "Firefox >= 30",
+                                            "Chrome >= 30",
+                                            "Safari >= 7",
+                                            "iOS >= 7",
+                                            "Android >= 4.4"
+                                        ],
+                                    },
+                                ],
+                            ],
+                        },
+                    },
+                },
+                "sass-loader",
+            ],
         },
       ],
     },
