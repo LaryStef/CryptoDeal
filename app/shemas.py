@@ -34,8 +34,8 @@ class TransactionSchema(Schema):
 
 
 class CryptoTransactionSchema(TransactionSchema):
-    ticker: Field = fields.Str(required=True, validate=validate.Length(3, 8))
+    ticker: Field = fields.Str(required=True, validate=validate.Length(2, 8))
 
 
 class FiatTransactionSchema(TransactionSchema):
-    iso: Field = fields.Str(required=True, validate=validate.Length(3, 8))
+    iso: Field = fields.Str(required=True, validate=validate.Length(2, 8))
