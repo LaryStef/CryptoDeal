@@ -33,7 +33,7 @@ def send_register_code(self, code: str, recipient: str) -> None:
         <h2>Secret code: {code}<h2>
         <p style="font-size: 12px; color: black">Don't reply to this email<p>
         <p style="font-size: 12px; color: black">Support on
-        Support@cryptodeal.com<p>
+        timurkotov1999@gmail.com<p>
     """
     mail.send(message)
     logger.info("registaration code sent to %s", recipient)
@@ -58,7 +58,7 @@ def send_restore_code(self, code: str, recipient: str) -> None:
         immediately change password<p>
         <p style="font-size: 12px; color: black">Don't reply to this email<p>
         <p style="font-size: 12px; color: black">Support on
-        Support@cryptodeal.com<p>
+        timurkotov1999@gmail.com<p>
     """
     mail.send(message)
     logger.info("password restore code sent to %s", recipient)
@@ -101,7 +101,7 @@ def send_scrf_attention(self, recipient: str, origin: str | None) -> None:
         <p style="font-size: 12px; color: black; padding-top: 5%">Don't reply
         to this email<p>
         <p style="font-size: 12px; color: black">Support on
-        Support@cryptodeal.com<p>
+        timurkotov1999@gmail.com<p>
     """
     mail.send(message)
     logger.warning("scrf attention sent to %s", recipient)
