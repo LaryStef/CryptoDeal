@@ -741,7 +741,7 @@ function disableButtons() {
 function enableButtons() {
     document.getElementsByClassName("auth-button")[0].disabled = false;
     document.getElementsByClassName("auth-button")[1].disabled = false;
-    document.getElementById("wtb-btn").disabled = true;
+    document.getElementById("wtb-btn").disabled = false;
 }
 
 function leftSwitchTransform() {
