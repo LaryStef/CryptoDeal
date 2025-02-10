@@ -14,14 +14,14 @@
 
 .block {
     transition: box-shadow const.$link-transition-duration linear;
-    margin-top: 100px;
-    margin-bottom: 100px;
+    margin-top: 50px;
+    margin-bottom: 50px;
     box-shadow: 0 0 10px colors.$text-hover-color;
     border: 2px solid colors.$text-hover-color;
     border-radius: 50px;
     background-color: colors.$window-color;
     padding: 30px;
-    width: 50%;
+    width: 60%;
     color: colors.$text-hover-color;
     font-size: 1.2rem;
 
