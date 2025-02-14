@@ -36,19 +36,19 @@ class Profile(Resource):
             #             "alienNumber": 1,
             #             "role": "user",
             #             "email": "poopka06@gmail.com",
-            #             "registerDate": "2024-07-09 20:52:41.792133"
+            #             "registerDate": "2024-07-09 20:52"
             #         },
             #         "sessions": [
             #             {
             #                 "sessionId": "5ZB7k7c7hxr9KcX2",
             #                 "device": "Chrome, Windows10",
-            #                 "lastActivity": "2024-07-30 19:56:41.192498",
+            #                 "lastActivity": "2024-07-30 19:56",
             #                 "isCurrent": false
             #             },
             #             {
             #                 "sessionId": "vLEiYUtkmK8DHZWg",
             #                 "device": "Chrome, Linux",
-            #                 "lastActivity": "2024-08-04 20:27:41.80115",
+            #                 "lastActivity": "2024-08-04 20:27",
             #                 "isCurrent": true
             #             }
             #         ]
