@@ -19,4 +19,5 @@
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
     "workbench.editor.enablePreviewFromQuickOpen": false,
+    "python.analysis.autoImportCompletions": true
 }

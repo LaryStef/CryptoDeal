@@ -12,8 +12,8 @@ from kombu import Queue
 load_dotenv()
 
 _CeleryConf: TypeAlias = dict[
-    str, str | int | bool | tuple[Queue] | tuple[str] | dict[str, int] | dict[
-        str, dict[str, str | crontab]
+    str, str | int | bool | tuple[Queue] | tuple[str] | dict[
+        str, int | dict[str, str | crontab]
     ]
 ]
 
