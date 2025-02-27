@@ -1,1 +1,1 @@
-Closed beta now:)
+Enjoy)
