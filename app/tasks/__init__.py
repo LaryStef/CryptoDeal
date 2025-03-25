@@ -1,4 +1,5 @@
-from logging import Formatter
+from logging import Formatter, Logger
+from typing import Any
 
 from celery import Celery, Task
 from celery.signals import after_setup_logger, after_setup_task_logger
@@ -19,7 +20,11 @@ def celery_init_app(app: Flask) -> Celery:
 
 
 @after_setup_logger.connect
-def setup_celery_logger(logger, *args, **kwargs):
+def setup_celery_logger(
+    logger: Logger,
+    *args: tuple[Any, ...],
+    **kwargs: dict[str, Any],
+) -> None:
     formatter: Formatter = Formatter(
         fmt="[%(asctime)s.%(msecs)03d] %(module)10s:%(lineno)-3d %(levelname)-7s - %(message)s",  # noqa: E501
         datefmt="%Y-%m-%d %H:%M:%S"
@@ -29,7 +34,11 @@ def setup_celery_logger(logger, *args, **kwargs):
 
 
 @after_setup_task_logger.connect
-def setup_celery_task_logger(logger, *args, **kwargs):
+def setup_celery_task_logger(
+    logger: Logger,
+    *args: tuple[Any, ...],
+    **kwargs: dict[str, Any],
+) -> None:
     formatter: Formatter = Formatter(
         fmt="[%(asctime)s.%(msecs)03d] %(module)10s:%(lineno)-3d %(levelname)-7s - %(message)s",  # noqa: E501
         datefmt="%Y-%m-%d %H:%M:%S"
