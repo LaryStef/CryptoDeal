@@ -363,7 +363,7 @@ class Transaction(Resource):
 
 
 @api.route("/transaction/history")
-class Histoty(Resource):
+class History(Resource):
     @authorization_required("access")
     def get(self) -> RESTError | dict[str, list[dict[str, str | int]]]:
         access_token: str | None = request.cookies.get("access_token")
